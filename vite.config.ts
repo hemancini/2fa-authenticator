@@ -1,14 +1,20 @@
-import { defineConfig } from "vite";
+import { spawn } from "node:child_process";
+
 import react from "@vitejs/plugin-react";
 import path, { resolve } from "path";
-import makeManifest from "./utils/plugins/make-manifest";
-import customDynamicImport from "./utils/plugins/custom-dynamic-import";
-import addHmr from "./utils/plugins/add-hmr";
+import { defineConfig } from "vite";
+
 import manifest from "./manifest";
+import addHmr from "./utils/plugins/add-hmr";
+import customDynamicImport from "./utils/plugins/custom-dynamic-import";
+import makeManifest from "./utils/plugins/make-manifest";
 
 const root = resolve(__dirname, "src");
 const pagesDir = resolve(root, "pages");
 const assetsDir = resolve(root, "assets");
+const routesDir = resolve(root, "routes");
+const componentsDir = resolve(root, "components");
+const definitionsDir = resolve(root, "definitions");
 const outDir = resolve(__dirname, "dist");
 const publicDir = resolve(__dirname, "public");
 
@@ -24,6 +30,9 @@ export default defineConfig({
       "@src": root,
       "@assets": assetsDir,
       "@pages": pagesDir,
+      "@routes": routesDir,
+      "@components": componentsDir,
+      "@definitions": definitionsDir,
     },
   },
   plugins: [
@@ -34,6 +43,15 @@ export default defineConfig({
     }),
     customDynamicImport(),
     addHmr({ background: enableHmrInBackgroundScript, view: true }),
+    {
+      name: "postbuild",
+      closeBundle: async () => {
+        const vite = spawn("vite", ["build", "--config", "vite.config.capture.ts", `${isDev ? "--watch" : ""}`]);
+        vite.stdout.on("data", (data) => {
+          console.log(`${data}`.split("\n").join(""));
+        });
+      },
+    },
   ],
   publicDir,
   build: {
@@ -47,6 +65,7 @@ export default defineConfig({
         devtools: resolve(pagesDir, "devtools", "index.html"),
         panel: resolve(pagesDir, "panel", "index.html"),
         content: resolve(pagesDir, "content", "index.ts"),
+        capture: resolve(pagesDir, "content", "capture.scss"),
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
@@ -59,9 +78,7 @@ export default defineConfig({
       },
       output: {
         entryFileNames: "src/pages/[name]/index.js",
-        chunkFileNames: isDev
-          ? "assets/js/[name].js"
-          : "assets/js/[name].[hash].js",
+        chunkFileNames: isDev ? "assets/js/[name].js" : "assets/js/[name].[hash].js",
         assetFileNames: (assetInfo) => {
           const { dir, name: _name } = path.parse(assetInfo.name);
           const assetFolder = dir.split("/").at(-1);

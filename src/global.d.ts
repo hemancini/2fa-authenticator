@@ -31,7 +31,24 @@ declare module "*.png" {
   export default content;
 }
 
+declare module "*.gif" {
+  const content: string;
+  export default content;
+}
+
 declare module "*.json" {
   const content: string;
   export default content;
+}
+
+declare global {
+  type Message =
+    | {
+        type: "captureQR";
+        data: any;
+      }
+    | {
+        type: "saveConfig";
+        data: any;
+      };
 }

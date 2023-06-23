@@ -1,5 +1,5 @@
-import { createRoot } from "react-dom/client";
 import App from "@src/pages/content/components/Demo/app";
+import { createRoot } from "react-dom/client";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
 refreshOnUpdate("pages/content");

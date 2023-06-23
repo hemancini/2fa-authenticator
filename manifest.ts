@@ -9,6 +9,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: packageJson.description,
   options_page: "src/pages/options/index.html",
+  permissions: ["tabs", "activeTab", "storage", "identity", "scripting"],
   background: {
     service_worker: "src/pages/background/index.js",
     type: "module",
@@ -25,8 +26,8 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   content_scripts: [
     {
-      matches: ["http://*/*", "https://*/*", "<all_urls>"],
-      js: ["src/pages/content/index.js"],
+      matches: ["https://*.us.trustedauth.com/*"],
+      // js: ["src/pages/capture/index.js"],
       // KEY for cache invalidation
       css: ["assets/css/contentStyle<KEY>.chunk.css"],
     },
@@ -34,12 +35,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   devtools_page: "src/pages/devtools/index.html",
   web_accessible_resources: [
     {
-      resources: [
-        "assets/js/*.js",
-        "assets/css/*.css",
-        "icon-128.png",
-        "icon-34.png",
-      ],
+      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png"],
       matches: ["*://*/*"],
     },
   ],

@@ -1,25 +1,59 @@
-import React from "react";
-import logo from "@assets/img/logo.svg";
 import "@pages/popup/Popup.css";
 
+import AppBar from "@components/AppBar";
+import Drawer from "@components/Drawer";
+import Main from "@routes/Main";
+import { useState } from "react";
+import { Link, Redirect, Route, Router, Switch } from "wouter";
+import makeMatcher from "wouter/matcher";
+
+const defaultMatcher = makeMatcher();
+
+/*
+ * A custom routing matcher function that supports multipath routes
+ */
+const multipathMatcher = (patterns, path) => {
+  for (const pattern of [patterns].flat()) {
+    const [match, params] = defaultMatcher(pattern, path);
+    if (match) return [match, params];
+  }
+  return [false, null];
+};
+
+const popupHomePage = "/src/pages/popup/index.html";
+const newtabHomePage = "/src/pages/newtab/index.html";
+const homeMultiPath = [popupHomePage, newtabHomePage];
+
 const Popup = () => {
+  const [draweOpen, setDrawerOpen] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/pages/popup/Popup.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
+    <Router matcher={multipathMatcher as any}>
+      <header>
+        <AppBar {...{ draweOpen, setDrawerOpen }} />
+        <nav>
+          <Drawer {...{ draweOpen, setDrawerOpen }} />
+        </nav>
       </header>
-    </div>
+      <main>
+        <Switch>
+          <Route path={homeMultiPath as any}>
+            <Main />
+          </Route>
+          <Route path="/">
+            <Redirect to={popupHomePage} />
+          </Route>
+          <Route path="/about">
+            <Link href="/">
+              <a className="link">home</a>
+            </Link>
+          </Route>
+          <Route path="/:anything*">
+            <b>404:</b> {"Sorry, this page isn't ready yet!"}
+          </Route>
+        </Switch>
+      </main>
+    </Router>
   );
 };
 

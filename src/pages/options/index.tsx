@@ -1,7 +1,8 @@
+import "@pages/options/index.css";
+
+import Options from "@pages/options/Options";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Options from "@pages/options/Options";
-import "@pages/options/index.css";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
 refreshOnUpdate("pages/options");

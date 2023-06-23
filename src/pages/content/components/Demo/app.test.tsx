@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
 import App from "@pages/content/components/Demo/app";
+import { render, screen } from "@testing-library/react";
 
 describe("appTest", () => {
   test("render text", () => {
