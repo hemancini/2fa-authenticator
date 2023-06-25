@@ -18,14 +18,6 @@ export class KeyUtilities {
     return Number(`0x${s}`);
   }
 
-  private static hex2str(hex: string) {
-    let str = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      str += String.fromCharCode(this.hex2dec(hex.substr(i, 2)));
-    }
-    return str;
-  }
-
   private static leftpad(str: string, len: number, pad: string): string {
     if (len + 1 >= str.length) {
       str = new Array(len + 1 - str.length).join(pad) + str;

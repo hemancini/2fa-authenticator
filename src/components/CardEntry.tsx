@@ -1,56 +1,30 @@
+import CounterProgress from "@components/CounterProgress";
 import DialogQR from "@components/DialogQR";
+import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box from "@mui/material/Box";
 import { blue } from "@mui/material/colors";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CounterProgress from "@src/components/CounterProgress";
-import { ReactNode, useEffect, useState } from "react";
+import { OTPEntry } from "@src/models/otp";
+import { useEffect, useState } from "react";
 
-function IconButtonCard(props: IconButtonProps & { children: ReactNode } & { mr?: number }) {
-  const { children, mr } = props;
-  const iconSize = 29;
-  return (
-    <IconButton {...props} sx={{ height: iconSize, width: iconSize, mr }}>
-      {children}
-    </IconButton>
-  );
-}
+const issuerBypass = "WOM";
 
-export default function OutlinedCard() {
+export default function OutlinedCard({ entry, count, discount }: { entry: OTPEntry; count: number; discount: number }) {
+  const period = entry?.period || 30;
+  const initProgress = 100 - (count * 100) / period;
+
   const [showQR, setShowQR] = useState(false);
-
-  const [count, setCount] = useState(30);
-  const [numero, setNumero] = useState("");
-  const [progress, setProgress] = useState(100);
+  const [progress, setProgress] = useState(initProgress);
   const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
-    const generarOTP = () => {
-      const nuevoNumero = Math.floor(Math.random() * 900000) + 100000;
-      setNumero(nuevoNumero.toString());
-    };
-    generarOTP();
+    setProgress((prevProgress) => (count > 1 ? prevProgress - 1 * 3.33 : 100));
+  }, [count]);
 
-    const timerCount = setInterval(() => {
-      setCount((prevCount) => {
-        setProgress((prevProgress) => (prevCount > 1 ? prevProgress - 1 * 3.33 : 100));
-        if (prevCount === 1) {
-          generarOTP();
-          return 30;
-        } else {
-          return prevCount - 1;
-        }
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(timerCount);
-    };
-  }, []);
   return (
     <Card
       variant="outlined"
@@ -69,59 +43,60 @@ export default function OutlinedCard() {
             }}
           >
             <Typography sx={{ fontSize: 14 }} color="text.secondary">
-              ISSUER
+              {entry.issuer}&nbsp;
             </Typography>
           </Box>
           <Box sx={{ display: showOptions ? "block" : "none" }}>
-            <IconButtonCard mr={0.5}>
-              <PersonIcon />
-            </IconButtonCard>
-            <IconButtonCard onClick={() => setShowQR(!showQR)}>
+            {entry.issuer === issuerBypass && (
+              <IconButtonResize mr={0.2}>
+                <PersonIcon />
+              </IconButtonResize>
+            )}
+            <IconButtonResize onClick={() => setShowQR(!showQR)}>
               <QrCode2Icon />
-            </IconButtonCard>
-            <IconButtonCard>
+            </IconButtonResize>
+            <IconButtonResize>
               <PushPinIcon />
-            </IconButtonCard>
+            </IconButtonResize>
           </Box>
         </Box>
         <Box aria-label="otp-code" display="flex">
           <CardActionArea>
             <Typography
-              className={count <= 3 && "parpadea"}
+              className={discount <= 3 && "parpadea"}
               sx={{
-                color: count <= 3 ? "red" : blue[500],
+                color: discount <= 3 ? "red" : blue[500],
                 fontWeight: "bold",
                 fontSize: "1.9rem",
                 letterSpacing: 4,
                 lineHeight: 1,
               }}
             >
-              {numero}
+              {entry.code}
             </Typography>
           </CardActionArea>
           <Box sx={{ minWidth: "100%" }} />
         </Box>
-        <Box aria-label="account" display="flex" position="relative">
-          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+        <Box display="flex" position="relative" sx={{ mb: 1 }}>
+          <Box aria-label="account" sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
             <Typography sx={{ fontSize: 14, py: 0.5 }} color="text.secondary">
-              35942-17317
+              {entry.account}&nbsp;
             </Typography>
           </Box>
           <Box
             sx={{
               position: "absolute",
-              bottom: "20%",
-              right: "3%",
+              bottom: "19%",
+              right: "4%",
             }}
           >
             <CounterProgress
+              size={25}
+              count={discount}
               value={progress}
-              count={count}
               sx={{
-                color: count <= 5 && "red",
+                color: discount <= 5 && "red",
                 scale: "-1 1",
-                height: "30px !important",
-                width: "30px !important",
               }}
             />
           </Box>

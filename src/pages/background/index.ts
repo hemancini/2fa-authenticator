@@ -18,6 +18,74 @@ const storageKey = "pr-commit-noti-toast-config";
 const cachedPassphrase = "";
 let contentTab: chrome.tabs.Tab | undefined;
 
+chrome.runtime.onConnect.addListener((port) => {
+  port.onDisconnect.addListener(() => {
+    console.log("Port disconnected");
+  });
+  port.onMessage.addListener(async (message: Message) => {
+    switch (message.type) {
+      case "captureQR":
+        try {
+          await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
+            if (!tab?.[0]?.id) {
+              console.log("captureQR: No active tab found");
+              return;
+            }
+            await chrome.scripting.executeScript({
+              target: { tabId: tab[0].id, allFrames: true },
+              files: ["/src/pages/capture/index.js"],
+            });
+            await chrome.scripting.insertCSS({
+              files: ["/assets/css/contentCapture.chunk.css"],
+              target: { tabId: tab[0].id },
+            });
+            await chrome.tabs.sendMessage(tab[0].id, {
+              action: "capture",
+              info: message,
+            });
+          });
+          sendMessageToClient(port, {
+            type: "captureQR",
+            data: "OK",
+          });
+        } catch (error) {
+          console.error(error);
+        }
+        break;
+      case "saveConfig":
+        void chrome.storage.sync.set({ [storageKey]: message.data });
+    }
+  });
+});
+
+chrome.runtime.onMessage.addListener(async (message, sender) => {
+  if (message.action === "getCapture") {
+    if (!sender.tab) {
+      return;
+    }
+    const url = await getCapture(sender.tab);
+    if (contentTab && contentTab.id) {
+      message.info.url = url;
+      chrome.tabs.sendMessage(contentTab.id, {
+        action: "sendCaptureUrl",
+        info: message.info,
+      });
+    }
+  } else if (message.action === "getTotp") {
+    getTotp(message.info);
+  }
+  // https://stackoverflow.com/a/56483156
+  return true;
+});
+
+async function getCapture(tab: chrome.tabs.Tab) {
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+    format: "png",
+  });
+  contentTab = tab;
+  return dataUrl;
+}
+
 async function getTotp(text: string, silent = false) {
   if (!contentTab || !contentTab.id || !text) {
     return false;
@@ -147,8 +215,6 @@ async function getTotp(text: string, silent = false) {
         if (algorithm) {
           entryData[hash].algorithm = algorithm;
         }
-        console.log("account:", JSON.stringify(account, null, 2));
-        console.log("entryData:", JSON.stringify(entryData, null, 2));
         if (
           // If the entries are encrypted and we aren't unlocked, error.
           (await EntryStorage.hasEncryptionKey()) !== encryption.getEncryptionStatus()
@@ -163,84 +229,5 @@ async function getTotp(text: string, silent = false) {
     }
   }
 }
-
-chrome.runtime.onConnect.addListener((port) => {
-  port.onDisconnect.addListener(() => {
-    console.log("Port disconnected");
-  });
-});
-
-chrome.runtime.onMessage.addListener(async (message: Message) => {
-  switch (message.type) {
-    case "captureQR":
-      try {
-        await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
-          if (!tab?.[0]?.id) {
-            console.log("captureQR: No active tab found");
-            return;
-          }
-          await chrome.scripting.executeScript({
-            target: { tabId: tab[0].id, allFrames: true },
-            files: ["/src/pages/capture/index.js"],
-          });
-          await chrome.scripting.insertCSS({
-            files: ["/assets/css/contentCapture.chunk.css"],
-            target: { tabId: tab[0].id },
-          });
-          chrome.tabs.update(tab[0].id, { active: true }, (tab) => {
-            console.log("captureQR: Tab updated");
-          });
-        });
-      } catch (error) {
-        console.error(error);
-      }
-
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-        const tab = tabs[0];
-        if (!tab || !tab.id) {
-          return;
-        }
-
-        chrome.tabs.sendMessage(tab.id, {
-          action: "capture",
-          info: message,
-        });
-      });
-
-      break;
-    case "saveConfig":
-      void chrome.storage.sync.set({ [storageKey]: message.data });
-  }
-});
-
-async function getCapture(tab: chrome.tabs.Tab) {
-  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
-    format: "png",
-  });
-  contentTab = tab;
-  return dataUrl;
-}
-
-chrome.runtime.onMessage.addListener(async (message, sender) => {
-  if (message.action === "getCapture") {
-    if (!sender.tab) {
-      return;
-    }
-    const url = await getCapture(sender.tab);
-    console.log("contentTab:", JSON.stringify(contentTab));
-    if (contentTab && contentTab.id) {
-      console.log("contentTab:", contentTab);
-      message.info.url = url;
-      chrome.tabs.sendMessage(contentTab.id, {
-        action: "sendCaptureUrl",
-        info: message.info,
-      });
-    }
-  } else if (message.action === "getTotp") {
-    getTotp(message.info);
-  }
-  // https://stackoverflow.com/a/56483156
-  return true;
-});
 
 console.log("background loaded");

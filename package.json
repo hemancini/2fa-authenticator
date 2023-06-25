@@ -25,6 +25,7 @@
     "@mui/icons-material": "5.11.16",
     "@mui/material": "5.13.5",
     "crypto-js": "4.1.1",
+    "framer-motion": "10.12.17",
     "jsqr": "1.4.0",
     "node-gost-crypto": "1.0.2",
     "qrcode-reader": "1.0.4",

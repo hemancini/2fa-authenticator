@@ -61,7 +61,6 @@ export class BrowserStorage {
   }
 
   // TODO: promise this
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async get() {
     const storageLocation = await this.getStorageLocation();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -185,8 +184,8 @@ export class EntryStorage {
       storageItem.issuer = entry.issuer;
     }
 
-    if (entry.account) {
-      storageItem.account = entry.account;
+    if (entry.issuer) {
+      storageItem.account = entry.issuer;
     }
 
     if (entry.digits && entry.digits !== 6) {
@@ -434,6 +433,9 @@ export class EntryStorage {
     const storageItem = this.getOTPStorageFromEntry(entry);
     _data[entry.hash] = storageItem;
     _data = this.ensureUniqueIndex(_data);
+    Object.values(_data).map((entry) => {
+      console.log("update() =>", entry.issuer, entry.index);
+    });
     await BrowserStorage.set(_data);
   }
 
@@ -444,6 +446,9 @@ export class EntryStorage {
       _data[entry.hash] = storageItem;
     });
     _data = this.ensureUniqueIndex(_data);
+    Object.values(_data).map((entry) => {
+      console.log("set() =>", entry.issuer, entry.index);
+    });
     await BrowserStorage.set(_data);
   }
 
@@ -509,6 +514,9 @@ export class EntryStorage {
       });
     }
 
+    Object.values(data).map((entry) => {
+      console.log("get() =>", entry.issuer, entry.index);
+    });
     return data;
   }
 

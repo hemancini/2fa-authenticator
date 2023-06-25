@@ -1,7 +1,15 @@
 import { sendMessageToBackground } from "@src/chrome/message";
 
 export function captureQR() {
-  sendMessageToBackground({
-    message: { type: "captureQR", data: null },
+  return new Promise((resolve) => {
+    sendMessageToBackground({
+      message: { type: "captureQR", data: null },
+      handleSuccess: (result) => {
+        if (result === "OK") {
+          window.close();
+          resolve(result);
+        }
+      },
+    });
   });
 }

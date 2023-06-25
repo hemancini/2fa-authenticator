@@ -1,7 +1,7 @@
 import * as uuid from "uuid/v4";
 
 import { Encryption } from "./encryption";
-import { KeyUtilities } from "./key-utilities";
+import { KeyUtilities } from "./keyUtilities";
 import { EntryStorage } from "./storage";
 
 export enum OTPType {

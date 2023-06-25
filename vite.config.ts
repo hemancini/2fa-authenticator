@@ -46,7 +46,7 @@ export default defineConfig({
     {
       name: "postbuild",
       closeBundle: async () => {
-        const vite = spawn("vite", ["build", "--config", "vite.config.capture.ts", `${isDev ? "--watch" : ""}`]);
+        const vite = spawn("vite", ["build", "--config", "vite.config.capture.ts"]);
         vite.stdout.on("data", (data) => {
           console.log(`${data}`.split("\n").join(""));
         });
@@ -65,11 +65,11 @@ export default defineConfig({
         devtools: resolve(pagesDir, "devtools", "index.html"),
         panel: resolve(pagesDir, "panel", "index.html"),
         content: resolve(pagesDir, "content", "index.ts"),
-        capture: resolve(pagesDir, "content", "capture.scss"),
+        capture: resolve(pagesDir, "content", "capture.ts"),
+        captureCSS: resolve(pagesDir, "content", "capture.scss"),
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
-        newtab: resolve(pagesDir, "newtab", "index.html"),
         options: resolve(pagesDir, "options", "index.html"),
       },
       watch: {
