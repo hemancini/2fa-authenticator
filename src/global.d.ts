@@ -48,7 +48,11 @@ declare global {
         data: any;
       }
     | {
-        type: "saveConfig";
+        type: "getCapture";
+        data: any;
+      }
+    | {
+        type: "getTotp";
         data: any;
       };
 }

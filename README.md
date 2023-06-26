@@ -1,15 +1,28 @@
 ## TODO
 
-- [X] useContext
+- [X] **useContext**
+  - [X] get enties
+  - [X] edit enties
+  - [X] auto refresh
 - [ ] **edit entries**
   - [X] drag and drop
-  - [X] sort icon
   - [X] delete entry
-  - [ ] add entry
-- [ ] control errors
-  - [ ] QR code
+  - [X] edit entry
+  - [X] add entry
+- [ ] **add entry**
+  - [X] scan QR code
+  - [ ] manual input
+  - [ ] otp uri
+  - [ ] image file
+- [ ] **control errors**
+  - [ ] scan QR code
 - [ ] i18n
+  - [ ] spanish
+  - [ ] english
 - [ ] themes
+- [ ] options
+  - [ ] autofill
+  - [ ] entrust bypass 
 
 ---
 

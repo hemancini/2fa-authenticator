@@ -6,7 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { OTPEntry } from "@src/models/otp";
 import * as React from "react";
 
-export default function FormDialog({
+export default function ConfirmRemoveEntry({
   entry,
   isConfirmOpen,
   setIsConfirmOpen,

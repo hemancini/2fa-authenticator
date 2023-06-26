@@ -222,7 +222,7 @@ export class OTPEntry implements OTPEntryInterface {
         );
       } catch (error) {
         this.code = CodeState.Invalid;
-        console.log("Invalid secret.", error);
+        console.warn("Invalid secret.", error);
       }
     }
   }

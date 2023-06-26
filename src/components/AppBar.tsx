@@ -1,3 +1,4 @@
+import AddEntryMenu from "@components/AddEntryMenu";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
@@ -29,7 +30,8 @@ export default function ButtonAppBar({
   draweOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isEntriesEdit, setIsEntriesEdit] = useState(false);
+  const [isEntriesEdit, setEntriesEdit] = useState(false);
+  const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
   const { onSaveEdit, setOnSaveEdit } = useContext(EntriesContext);
   return (
     <>
@@ -42,7 +44,7 @@ export default function ButtonAppBar({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                // onClick={() => setDrawerOpen(!draweOpen)}
+              // onClick={() => setDrawerOpen(!draweOpen)}
               >
                 <MenuIcon />
               </IconButton>
@@ -54,7 +56,12 @@ export default function ButtonAppBar({
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
             {isEntriesEdit ? (
               <>
-                <IconButton size="small" color="inherit" aria-label="Add entry" onClick={() => alert("add entry")}>
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  aria-label="Add entry"
+                  onClick={() => setAddEntryMenuOpen(true)}
+                >
                   <AddIcon sx={defaultIconSize} />
                 </IconButton>
                 <IconButton
@@ -65,7 +72,7 @@ export default function ButtonAppBar({
                   href="/"
                   onClick={() => {
                     setOnSaveEdit(!onSaveEdit);
-                    setIsEntriesEdit(false);
+                    setEntriesEdit(false);
                   }}
                 >
                   <DoneIcon sx={defaultIconSize} />
@@ -73,7 +80,7 @@ export default function ButtonAppBar({
               </>
             ) : (
               <>
-                <IconButton size="small" color="inherit" aria-label="Scan QR" onClick={captureQR}>
+                <IconButton size="small" color="inherit" aria-label="Scan QR" onClick={() => captureQR()}>
                   <QrCodeScannerIcon sx={defaultIconSize} />
                 </IconButton>
                 <IconButton
@@ -82,7 +89,7 @@ export default function ButtonAppBar({
                   aria-label="Edit Entries"
                   LinkComponent={Link}
                   href="/entries/edit"
-                  onClick={() => setIsEntriesEdit(true)}
+                  onClick={() => setEntriesEdit(true)}
                 >
                   <EditIcon sx={defaultIconSize} />
                 </IconButton>
@@ -92,6 +99,7 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <Offset />
+      <AddEntryMenu isAddEntryMenuOpen={isAddEntryMenuOpen} setAddEntryMenuOpen={setAddEntryMenuOpen} />
     </>
   );
 }

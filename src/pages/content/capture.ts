@@ -1,4 +1,5 @@
 import scanGIF from "@assets/img/scan.gif";
+import { getCapture, getTotp } from "@src/models/actions";
 // import jsQR from "jsqr";
 import QRCode from "qrcode-reader";
 
@@ -59,6 +60,8 @@ if (!document.getElementById("__ga_grayLayout__")) {
         break;
     }
   });
+} else {
+  console.warn("capture.ts: grayLayout already exists");
 }
 
 sessionStorage.setItem("captureBoxPositionLeft", "0");
@@ -166,9 +169,9 @@ function grayLayoutUp(event: MouseEvent) {
 
   // make sure captureBox and grayLayout is hidden
   setTimeout(() => {
-    chrome.runtime.sendMessage({
-      action: "getCapture",
-      info: {
+    getCapture({
+      type: "getCapture",
+      data: {
         captureBoxLeft,
         captureBoxTop,
         captureBoxWidth,
@@ -226,9 +229,9 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
           qrRes = text.result;
         }
 
-        chrome.runtime.sendMessage({
-          action: "getTotp",
-          info: qrRes,
+        getTotp({
+          type: "getTotp",
+          data: qrRes,
         });
       };
       qrReader.decode(imageData);

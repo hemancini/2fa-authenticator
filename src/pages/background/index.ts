@@ -21,12 +21,13 @@ chrome.runtime.onConnect.addListener((port) => {
     console.log("Port disconnected");
   });
   port.onMessage.addListener(async (message: Message) => {
+    console.log("onMessage() =>", message.type + ":", JSON.stringify(message.data));
     switch (message.type) {
       case "captureQR":
         try {
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
             if (!tab?.[0]?.id) {
-              console.log("captureQR: No active tab found");
+              console.warn("captureQR: No active tab found");
               return;
             }
             await chrome.scripting.executeScript({
@@ -41,37 +42,47 @@ chrome.runtime.onConnect.addListener((port) => {
               action: "capture",
               info: message,
             });
+            sendMessageToClient(port, {
+              type: "captureQR",
+              data: "received",
+            });
           });
-          // sendMessageToClient(port, {
-          //   type: "captureQR",
-          //   data: "OK",
-          // });
         } catch (error) {
-          console.error(error);
+          console.warn(error);
+        }
+        break;
+      case "getCapture":
+        try {
+          await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
+            if (!tab?.[0]?.id) {
+              console.warn("getCapture: No active tab found");
+              return;
+            }
+            const url = await getCapture(tab?.[0]);
+            message.data.url = url;
+            // TODO: replace with sendMessageToBackground
+            chrome.tabs.sendMessage(contentTab.id, {
+              action: "sendCaptureUrl",
+              info: message.data,
+            });
+          });
+        } catch (error) {
+          console.warn(error);
+        }
+        break;
+      case "getTotp":
+        try {
+          await getTotp(message.data);
+          sendMessageToClient(port, {
+            type: "getTotp",
+            data: "received",
+          });
+        } catch (error) {
+          console.warn(error);
         }
         break;
     }
   });
-});
-
-chrome.runtime.onMessage.addListener(async (message, sender) => {
-  if (message.action === "getCapture") {
-    if (!sender.tab) {
-      return;
-    }
-    const url = await getCapture(sender.tab);
-    if (contentTab && contentTab.id) {
-      message.info.url = url;
-      chrome.tabs.sendMessage(contentTab.id, {
-        action: "sendCaptureUrl",
-        info: message.info,
-      });
-    }
-  } else if (message.action === "getTotp") {
-    getTotp(message.info);
-  }
-  // https://stackoverflow.com/a/56483156
-  return true;
 });
 
 async function getCapture(tab: chrome.tabs.Tab) {
@@ -84,6 +95,7 @@ async function getCapture(tab: chrome.tabs.Tab) {
 
 async function getTotp(text: string, silent = false) {
   if (!contentTab || !contentTab.id || !text) {
+    console.log("getTotp: No active tab found");
     return false;
   }
   const id = contentTab.id;
@@ -142,7 +154,7 @@ async function getTotp(text: string, silent = false) {
       try {
         label = decodeURIComponent(label);
       } catch (error) {
-        console.error(error);
+        console.warn(error);
       }
       if (label.indexOf(":") !== -1) {
         issuer = label.split(":")[0];
@@ -219,6 +231,7 @@ async function getTotp(text: string, silent = false) {
           return false;
         }
         await EntryStorage.import(encryption, entryData);
+        console.log("getTotp() => Added entry:", JSON.stringify(entryData[hash]));
         !silent && chrome.tabs.sendMessage(id, { action: "added", account });
         return true;
       }

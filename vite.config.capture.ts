@@ -18,8 +18,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@src": root,
-      "@assets": assetsDir,
       "@pages": pagesDir,
+      "@assets": assetsDir,
     },
   },
   plugins: [
