@@ -1,4 +1,6 @@
+import ConfirmRemoveEntry from "@components/ConfirmRemoveEntry";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Card, CardContent, FormControl } from "@mui/material";
 import Box from "@mui/material/Box";
 import blue from "@mui/material/colors/blue";
@@ -6,71 +8,111 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import EntriesContext from "@src/contexts/Entries";
 import { OTPEntry } from "@src/models/otp";
-import { useContext } from "react";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
+import { useState } from "react";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
-  "label + &": {
-    marginTop: theme.spacing(3),
-  },
   "& .MuiInputBase-input": {
+    fontSize: 14,
     borderRadius: 4,
+    padding: "1px 5px",
     position: "relative",
-    backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
     border: "1px solid",
     borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
-    fontSize: 14,
-    width: "auto",
-    padding: "1px 5px",
-    transition: theme.transitions.create(["border-color", "background-color", "box-shadow"]),
+    backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
+    "&:focus": {
+      borderColor: theme.palette.primary.main,
+    },
   },
 }));
 
-export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
-  const { entriesEdit, setEntriesEdit } = useContext(EntriesContext);
+export default function OutlinedCard({
+  entry,
+  entriesEdit,
+  setEntriesEdit,
+}: {
+  entry: OTPEntry;
+  entriesEdit: OTPEntry[];
+  setEntriesEdit: (entriesEdit: OTPEntry[]) => void;
+}) {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  const dragMotion = useMotionValue(0);
+  const dragControls = useDragControls();
 
   const handleUpdateEntry = ({ hash, issuer, account }: { hash: string; issuer?: string; account?: string }) => {
     const index = entriesEdit.findIndex((entry) => entry.hash === hash);
-    entriesEdit[index].issuer = issuer || entriesEdit[index].issuer;
-    entriesEdit[index].account = account || entriesEdit[index].account;
+    if (issuer) entriesEdit[index].issuer = issuer;
+    if (account) entriesEdit[index].account = account;
     setEntriesEdit(entriesEdit);
   };
 
+  const handleRemoveEntry = (hash: string) => {
+    const index = entriesEdit.findIndex((entry) => entry.hash === hash);
+    entriesEdit.splice(index, 1);
+    setEntriesEdit(entriesEdit);
+    setIsConfirmOpen(false);
+  };
+
   return (
-    <Card variant="outlined" sx={{ display: "flex", my: 1.7 }}>
-      <CardContent sx={{ py: 0.3, pl: 1.5, pb: "0px !important" }}>
-        <FormControl aria-label="issuer" sx={{ display: "flex", py: 0.6, pt: 0.5, width: "20ch" }}>
-          <BootstrapInput
-            defaultValue={entry.issuer}
-            onChange={(e) => handleUpdateEntry({ hash: entry.hash, issuer: e.target.value })}
-          />
-        </FormControl>
-        <Box aria-label="otp-code" display="flex" sx={{ ml: 1 }}>
-          <Typography
-            sx={{
-              color: blue[500],
-              fontWeight: "bold",
-              fontSize: "1.9rem",
-              letterSpacing: 12,
-              lineHeight: 0.8,
-            }}
-          >
-            ••••••
-          </Typography>
+    <Reorder.Item
+      value={entry}
+      dragListener={false}
+      style={{ y: dragMotion, position: "relative" }}
+      id={entry.index.toString()}
+      dragControls={dragControls}
+    >
+      <Card variant="outlined" sx={{ my: 1.7, display: "flex" }}>
+        <CardContent sx={{ py: 0.6, pl: 0.6 }}>
+          <FormControl aria-label="issuer" sx={{ display: "flex", width: "20ch" }}>
+            <BootstrapInput
+              defaultValue={entry.issuer}
+              onChange={(e) => handleUpdateEntry({ hash: entry.hash, issuer: e.target.value })}
+            />
+          </FormControl>
+          <Box aria-label="otp-code" display="flex" sx={{ ml: 1 }}>
+            <Typography
+              component="span"
+              sx={{
+                color: blue[500],
+                fontWeight: "bold",
+                fontSize: "1.9rem",
+                letterSpacing: 12,
+                lineHeight: 1,
+                userSelect: "none",
+                pointerEvents: "none",
+              }}
+            >
+              ••••••
+            </Typography>
+          </Box>
+          <FormControl aria-label="account" sx={{ display: "flex", width: "20ch" }}>
+            <BootstrapInput
+              defaultValue={entry.account}
+              onChange={(e) => handleUpdateEntry({ hash: entry.hash, account: e.target.value })}
+            />
+          </FormControl>
+        </CardContent>
+        <Box pl={1} display="flex" justifyContent="center" alignItems="center">
+          <IconButton aria-label="drag entry" size="large" onPointerDown={(event) => dragControls.start(event)}>
+            <DragHandleIcon sx={{ fontSize: 40 }} />
+          </IconButton>
         </Box>
-        <FormControl aria-label="account" sx={{ display: "flex", py: 0.5, pb: 0.8, width: "20ch" }}>
-          <BootstrapInput
-            defaultValue={entry.account}
-            onChange={(e) => handleUpdateEntry({ hash: entry.hash, account: e.target.value })}
-          />
-        </FormControl>
-      </CardContent>
-      <Box display="flex" justifyContent="center" alignItems="center" sx={{ pl: 1 }}>
-        <IconButton size="large">
-          <DragHandleIcon sx={{ fontSize: 40 }} />
-        </IconButton>
-      </Box>
-    </Card>
+      </Card>
+      <IconButton
+        aria-label="remove entry"
+        onClick={() => setIsConfirmOpen(true)}
+        sx={{ color: "#e57373", width: 22, height: 22, position: "absolute", right: -9, top: -9 }}
+      >
+        <RemoveCircleIcon sx={{ fontSize: 15 }} />
+      </IconButton>
+      <ConfirmRemoveEntry
+        entry={entry}
+        isConfirmOpen={isConfirmOpen}
+        setIsConfirmOpen={setIsConfirmOpen}
+        handleRemoveEntry={handleRemoveEntry}
+      />
+    </Reorder.Item>
   );
 }

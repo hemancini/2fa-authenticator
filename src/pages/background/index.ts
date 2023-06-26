@@ -13,8 +13,6 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-const storageKey = "pr-commit-noti-toast-config";
-
 const cachedPassphrase = "";
 let contentTab: chrome.tabs.Tab | undefined;
 
@@ -44,16 +42,14 @@ chrome.runtime.onConnect.addListener((port) => {
               info: message,
             });
           });
-          sendMessageToClient(port, {
-            type: "captureQR",
-            data: "OK",
-          });
+          // sendMessageToClient(port, {
+          //   type: "captureQR",
+          //   data: "OK",
+          // });
         } catch (error) {
           console.error(error);
         }
         break;
-      case "saveConfig":
-        void chrome.storage.sync.set({ [storageKey]: message.data });
     }
   });
 });

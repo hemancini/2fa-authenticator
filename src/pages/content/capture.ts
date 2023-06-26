@@ -1,5 +1,5 @@
 import scanGIF from "@assets/img/scan.gif";
-import jsQR from "jsqr";
+// import jsQR from "jsqr";
 import QRCode from "qrcode-reader";
 
 if (!document.getElementById("__ga_grayLayout__")) {
@@ -216,13 +216,12 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
         let qrRes = "";
         if (error) {
           console.error(error);
-          const jsQrCode = jsQR(imageData.data, imageData.width, imageData.height);
-
-          if (jsQrCode) {
-            qrRes = jsQrCode.data;
-          } else {
-            alert(chrome.i18n.getMessage("errorqr"));
-          }
+          // const jsQrCode = jsQR(imageData.data, imageData.width, imageData.height);
+          // if (jsQrCode) {
+          //   qrRes = jsQrCode.data;
+          // } else {
+          //   alert(chrome.i18n.getMessage("errorqr"));
+          // }
         } else {
           qrRes = text.result;
         }

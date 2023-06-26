@@ -4,12 +4,12 @@
 - [ ] **edit entries**
   - [X] drag and drop
   - [X] sort icon
-  - [ ] pin entry
-  - [ ] delete entry
+  - [X] delete entry
   - [ ] add entry
 - [ ] control errors
   - [ ] QR code
 - [ ] i18n
+- [ ] themes
 
 ---
 

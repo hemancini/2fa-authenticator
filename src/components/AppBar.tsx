@@ -35,7 +35,7 @@ export default function ButtonAppBar({
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar disableGutters sx={{ display: "flex", px: 1, minHeight: toolbarMinHeight }}>
-          <Box sx={{ display: "flex", flexGrow: 1, width: 20 }}>
+          <Box sx={{ display: "flex", flexGrow: 1, width: 22 }}>
             {!isEntriesEdit && (
               <IconButton
                 size="small"

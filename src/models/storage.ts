@@ -184,8 +184,8 @@ export class EntryStorage {
       storageItem.issuer = entry.issuer;
     }
 
-    if (entry.issuer) {
-      storageItem.account = entry.issuer;
+    if (entry.account) {
+      storageItem.account = entry.account;
     }
 
     if (entry.digits && entry.digits !== 6) {
@@ -434,7 +434,7 @@ export class EntryStorage {
     _data[entry.hash] = storageItem;
     _data = this.ensureUniqueIndex(_data);
     Object.values(_data).map((entry) => {
-      console.log("update() =>", entry.issuer, entry.index);
+      console.log("update() =>", entry.issuer, entry.account);
     });
     await BrowserStorage.set(_data);
   }
@@ -447,7 +447,7 @@ export class EntryStorage {
     });
     _data = this.ensureUniqueIndex(_data);
     Object.values(_data).map((entry) => {
-      console.log("set() =>", entry.issuer, entry.index);
+      console.log("set() =>", entry.issuer, entry.account);
     });
     await BrowserStorage.set(_data);
   }

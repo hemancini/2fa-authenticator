@@ -10,9 +10,7 @@ export default function EntriesEdit() {
     <Container sx={{ py: 0.5, pt: 0.2 }}>
       <Reorder.Group axis="y" values={entriesEdit} onReorder={setEntriesEdit}>
         {entriesEdit?.map((entry) => (
-          <Reorder.Item key={entry.index} value={entry}>
-            <CardEntryEdit entry={entry} />
-          </Reorder.Item>
+          <CardEntryEdit key={entry.index} entry={entry} entriesEdit={entriesEdit} setEntriesEdit={setEntriesEdit} />
         ))}
       </Reorder.Group>
     </Container>
