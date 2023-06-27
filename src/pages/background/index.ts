@@ -93,8 +93,9 @@ async function getCapture(tab: chrome.tabs.Tab) {
   return dataUrl;
 }
 
-async function getTotp(text: string, silent = false) {
-  if (!contentTab || !contentTab.id || !text) {
+async function getTotp(message: { text: string; fromPopup?: boolean }, silent = false) {
+  const { text, fromPopup } = message;
+  if ((!fromPopup || !text) && (!contentTab || !contentTab.id)) {
     console.log("getTotp: No active tab found");
     return false;
   }
@@ -110,7 +111,7 @@ async function getTotp(text: string, silent = false) {
 
       const getTotpPromises: Array<Promise<boolean>> = [];
       for (const otpUrl of otpUrls) {
-        getTotpPromises.push(getTotp(otpUrl, true));
+        getTotpPromises.push(getTotp({ text: otpUrl }, true));
       }
 
       const getTotpResults = await Promise.allSettled(getTotpPromises);

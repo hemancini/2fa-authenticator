@@ -1,14 +1,3 @@
-type GetDataType<T extends Message["type"]> = Exclude<
-  Extract<
-    Message,
-    {
-      type: T;
-      data?: unknown;
-    }
-  >["data"],
-  undefined
->;
-
 export function sendMessageToBackground<M extends Message>({
   message,
   handleSuccess,

@@ -10,10 +10,24 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
-import { captureQR } from "@src/models/actions";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
+
+export const captureQRCode = async () => {
+  return new Promise((resolve) => {
+    sendMessageToBackground({
+      message: { type: "captureQR", data: null },
+      handleSuccess: (result) => {
+        if (result === "received") {
+          resolve(result);
+          window.close();
+        }
+      },
+    });
+  });
+};
 
 const toolbarMinHeight = 45;
 const defaultIconSize = { fontSize: 20 };
@@ -80,7 +94,7 @@ export default function ButtonAppBar({
               </>
             ) : (
               <>
-                <IconButton size="small" color="inherit" aria-label="Scan QR" onClick={() => captureQR()}>
+                <IconButton size="small" color="inherit" aria-label="Scan QR" onClick={() => captureQRCode()}>
                   <QrCodeScannerIcon sx={defaultIconSize} />
                 </IconButton>
                 <IconButton

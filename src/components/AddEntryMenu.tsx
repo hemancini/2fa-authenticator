@@ -1,3 +1,4 @@
+import { captureQRCode } from "@components/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,44 +16,34 @@ import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import TextField from "@mui/material/TextField";
-import { captureQR } from "@src/models/actions";
-import { useState } from "react";
-
-export interface DialogTitleProps {
-  children?: React.ReactNode;
-  onClose: () => void;
-}
+import { sendMessageToBackground } from "@src/chrome/message";
+import { useMemo, useState } from "react";
 
 export interface AddEntryProps {
-  onClose: () => void;
+  handlerOnCandel: () => void;
+}
+export interface AddEntryMenuProps {
+  isAddEntryMenuOpen: boolean;
+  setAddEntryMenuOpen: (isAddEntryMenuOpen: boolean) => void;
 }
 
-function BootstrapDialogTitle(props: DialogTitleProps) {
-  const { children, onClose, ...other } = props;
-  return (
-    <DialogTitle fontSize={18} sx={{ m: 0, mb: 0.5, p: 0, px: 1.4 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 2,
-            top: 1,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
+const getTotp = (message: GetTotp) => {
+  return new Promise((resolve) => {
+    sendMessageToBackground({
+      message,
+      handleSuccess: (result) => {
+        if (result === "received") {
+          resolve(result);
+        }
+      },
+    });
+  });
+};
 
 const ManualEntry = (props: AddEntryProps) => {
-  const { onClose } = props;
+  const { handlerOnCandel } = props;
   const [isAdvance, setAdvance] = useState(false);
   const [age, setAge] = useState("");
 
@@ -106,7 +97,7 @@ const ManualEntry = (props: AddEntryProps) => {
         )}
       </Box>
       <Box mt={1} display="grid" gap={2} gridTemplateColumns="1fr 1fr">
-        <Button size="small" variant="outlined" fullWidth onClick={onClose}>
+        <Button size="small" variant="outlined" fullWidth onClick={handlerOnCandel}>
           Cancel
         </Button>
         <Button size="small" variant="contained" fullWidth>
@@ -117,25 +108,72 @@ const ManualEntry = (props: AddEntryProps) => {
   );
 };
 
-export default function AddEntryMenu({
-  isAddEntryMenuOpen,
-  setAddEntryMenuOpen,
-}: {
-  isAddEntryMenuOpen: boolean;
-  setAddEntryMenuOpen: (isAddEntryMenuOpen: boolean) => void;
-}) {
-  const [isManualEntryOpen, setManualEntryOpen] = useState(false);
+const ManualTotpEntry = (props: AddEntryProps) => {
+  const { handlerOnCandel } = props;
+  const data = "otpauth://totp/WOM:14514-55017?secret=XL2P2GOOPTEI4HXL&issuer=WOM";
+  return (
+    <Box>
+      <Box mx={0.5} display="grid" gap={2} mb={2.5}>
+        <TextareaAutosize minRows={3} maxRows={7} style={{ width: "100%" }} defaultValue={data}></TextareaAutosize>
+      </Box>
+      <Box mt={1} display="grid" gap={2} gridTemplateColumns="1fr 1fr">
+        <Button size="small" variant="outlined" fullWidth onClick={handlerOnCandel}>
+          Cancel
+        </Button>
+        <Button
+          size="small"
+          variant="contained"
+          fullWidth
+          onClick={async () => {
+            const asd = await getTotp({ type: "getTotp", data: { text: data, fromPopup: true } });
+            console.log("asd:", asd);
+            alert(asd);
+          }}
+        >
+          Add
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen }: AddEntryMenuProps) {
+  const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
 
   const handleOnAddEntryClose = () => {
     setAddEntryMenuOpen(false);
     setTimeout(() => {
-      setManualEntryOpen(false);
+      setManualEntryOptions("");
     }, 500);
   };
 
-  const handleOnAddEntryManualClose = () => {
-    setManualEntryOpen(false);
+  const handleOnAddEntryCancel = () => {
+    setManualEntryOptions("");
   };
+
+  const SwitchMenu = () =>
+    useMemo(() => {
+      switch (manualEntryOptions) {
+        case "TOTP":
+          return <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} />;
+        case "MANUAL":
+          return <ManualEntry handlerOnCandel={handleOnAddEntryCancel} />;
+        default:
+          return (
+            <>
+              <Button variant="contained" fullWidth onClick={() => captureQRCode()}>
+                Scan QR Code
+              </Button>
+              <Button variant="contained" fullWidth onClick={() => setManualEntryOptions("TOTP")}>
+                Otp auth url
+              </Button>
+              <Button fullWidth variant="contained" onClick={() => setManualEntryOptions("MANUAL")}>
+                Manual Entry
+              </Button>
+            </>
+          );
+      }
+    }, [manualEntryOptions]);
 
   return (
     <Dialog
@@ -144,36 +182,25 @@ export default function AddEntryMenu({
       onClose={handleOnAddEntryClose}
       sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1, pb: 0, minWidth: 220 } }}
     >
-      <BootstrapDialogTitle onClose={handleOnAddEntryClose}>Add new entry</BootstrapDialogTitle>
+      <DialogTitle fontSize={18} sx={{ m: 0, mb: 0.5, p: 0, px: 1.4 }}>
+        Add new entry
+        <IconButton
+          aria-label="close"
+          onClick={handleOnAddEntryClose}
+          sx={{
+            top: 1,
+            right: 2,
+            position: "absolute",
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <Divider />
       <DialogContent sx={{ px: 1, display: "grid", direction: "column", gap: 2 }}>
-        {!isManualEntryOpen ? (
-          <>
-            <Button variant="contained" fullWidth onClick={() => captureQR()}>
-              Scan QR Code
-            </Button>
-            <Button variant="contained" fullWidth>
-              Otp auth url
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={() => {
-                setManualEntryOpen(true);
-              }}
-            >
-              Manual Entry
-            </Button>
-          </>
-        ) : (
-          <ManualEntry onClose={handleOnAddEntryManualClose} />
-        )}
+        <SwitchMenu />
       </DialogContent>
-      {/* <DialogActions>
-        <Button autoFocus onClick={handleOnAddEntryClose}>
-            Save changes
-          </Button>
-      </DialogActions> */}
     </Dialog>
   );
 }

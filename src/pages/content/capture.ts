@@ -1,5 +1,5 @@
 import scanGIF from "@assets/img/scan.gif";
-import { getCapture, getTotp } from "@src/models/actions";
+import { sendMessageToBackground } from "@src/chrome/message";
 // import jsQR from "jsqr";
 import QRCode from "qrcode-reader";
 
@@ -169,14 +169,21 @@ function grayLayoutUp(event: MouseEvent) {
 
   // make sure captureBox and grayLayout is hidden
   setTimeout(() => {
-    getCapture({
-      type: "getCapture",
-      data: {
-        captureBoxLeft,
-        captureBoxTop,
-        captureBoxWidth,
-        captureBoxHeight,
-      },
+    return new Promise((resolve) => {
+      sendMessageToBackground({
+        message: {
+          type: "getCapture",
+          data: {
+            captureBoxLeft,
+            captureBoxTop,
+            captureBoxWidth,
+            captureBoxHeight,
+          },
+        },
+        handleSuccess: (result) => {
+          resolve(result);
+        },
+      });
     });
   }, 200);
   return false;
@@ -229,9 +236,16 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
           qrRes = text.result;
         }
 
-        getTotp({
-          type: "getTotp",
-          data: qrRes,
+        return new Promise((resolve) => {
+          sendMessageToBackground({
+            message: {
+              type: "getTotp",
+              data: { text: qrRes as string },
+            },
+            handleSuccess: (result) => {
+              resolve(result);
+            },
+          });
         });
       };
       qrReader.decode(imageData);

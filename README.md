@@ -1,8 +1,8 @@
 ## TODO
 
 - [X] **useContext**
-  - [X] get enties
-  - [X] edit enties
+  - [X] get entries
+  - [X] edit entries
   - [X] auto refresh
 - [ ] **edit entries**
   - [X] drag and drop

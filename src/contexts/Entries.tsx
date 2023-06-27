@@ -9,8 +9,8 @@ const Context = createContext({
   entries: [],
   entriesEdit: [],
   onSaveEdit: false,
-  setOnSaveEdit: (onSaveEdit: boolean) => { },
-  setEntriesEdit: (entries: OTPEntry[]) => { },
+  setOnSaveEdit: (onSaveEdit: boolean) => {},
+  setEntriesEdit: (entries: OTPEntry[]) => {},
 });
 
 export function EntriesContextProvider({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
     }
   }, []);
 
-  const removeEntry = useCallback(async (entriesSorted: OTPEntry[]) => {
+  const removeEntries = async (entriesSorted: OTPEntry[]) => {
     const entries = (await EntryStorage.get()) as OTPEntry[];
     const entriesDiff = entries.filter((entry) => !entriesSorted.some((entryEdit) => entryEdit.hash === entry.hash));
     console.log("entriesDiff.length:", entriesDiff.length);
@@ -48,9 +48,9 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
         })
       );
     }
-  }, []);
+  };
 
-  const updateEntriesState = useCallback(async (typeUpdate?: "popup" | "edit" | "all"): Promise<OTPEntry[]> => {
+  const updateEntriesState = async (typeUpdate?: "popup" | "edit" | "all"): Promise<OTPEntry[]> => {
     console.log("updateEntriesState");
     const entries = await EntryStorage.get();
     if (typeUpdate === "popup") {
@@ -62,7 +62,7 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
       setEntriesEdit(entries);
     }
     return entries;
-  }, []);
+  };
 
   useEffect(() => {
     updateCodes();
@@ -79,7 +79,7 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
     if (entriesSorted.length > 0) {
       (async () => {
         await EntryStorage.set(entriesSorted);
-        await removeEntry(entriesSorted);
+        await removeEntries(entriesSorted);
         await updateEntriesState("all");
       })();
     }

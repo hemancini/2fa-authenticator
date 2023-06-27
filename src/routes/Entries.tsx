@@ -19,7 +19,7 @@ export default function Entries() {
                 <CardEntry entry={entry} count={count} discount={discount} />
               </li>
             )),
-          [entries, count, discount]
+          [count, discount, entries]
         )}
       </ul>
     </Container>
