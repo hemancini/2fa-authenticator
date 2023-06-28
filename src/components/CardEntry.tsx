@@ -2,6 +2,7 @@ import CounterProgress from "@components/CounterProgress";
 import DialogQR from "@components/DialogQR";
 import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
+import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -50,12 +51,15 @@ export default function OutlinedCard({ entry, count, discount }: { entry: OTPEnt
             </Box>
             <Box display={showOptions ? "flex" : "none"} position="absolute" right={-5}>
               {entry.issuer === issuerBypass && (
-                <IconButtonResize>
+                <IconButtonResize mr={0.6}>
                   <PersonIcon />
                 </IconButtonResize>
               )}
               <IconButtonResize onClick={() => setShowQR(!showQR)}>
                 <QrCode2Icon />
+              </IconButtonResize>
+              <IconButtonResize>
+                <PushPinIcon sx={{ transform: "rotate(40deg)" }} />
               </IconButtonResize>
             </Box>
           </BoxRelative>

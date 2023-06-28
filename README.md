@@ -4,6 +4,7 @@
   - [X] get entries
   - [X] edit entries
   - [X] auto refresh
+  - [ ] pin entry
 - [ ] **edit entries**
   - [X] drag and drop
   - [X] delete entry
@@ -12,7 +13,7 @@
 - [ ] **add entry**
   - [X] scan QR code
   - [ ] manual input
-  - [ ] otp uri
+  - [X] otp uri
   - [ ] image file
 - [ ] **control errors**
   - [ ] scan QR code

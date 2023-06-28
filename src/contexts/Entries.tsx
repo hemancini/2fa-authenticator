@@ -7,15 +7,16 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 const Context = createContext({
   second: 0,
   entries: [],
-  entriesEdit: [],
-  onSaveEdit: false,
-  setOnSaveEdit: (onSaveEdit: boolean) => {},
-  setEntriesEdit: (entries: OTPEntry[]) => {},
+  entriesEdited: [],
+  onSaveEdited: false,
+  updateEntriesState: (source: string) => {},
+  setEntriesEdited: (entries: OTPEntry[]) => {},
+  setOnSaveEdited: (onSaveEdited: boolean) => {},
 });
 
 export function EntriesContextProvider({ children }: { children: React.ReactNode }) {
-  const [entriesEdit, setEntriesEdit] = useState<OTPEntry[]>([]);
-  const [onSaveEdit, setOnSaveEdit] = useState<boolean>(false);
+  const [onSaveEdited, setOnSaveEdited] = useState<undefined | boolean>(undefined);
+  const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
   const [second, setSecond] = useState<number>(0);
 
@@ -36,14 +37,15 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
     }
   }, []);
 
-  const removeEntries = async (entriesSorted: OTPEntry[]) => {
+  const removeEntries = async (entriesEdited: OTPEntry[]) => {
     const entries = (await EntryStorage.get()) as OTPEntry[];
-    const entriesDiff = entries.filter((entry) => !entriesSorted.some((entryEdit) => entryEdit.hash === entry.hash));
-    console.log("entriesDiff.length:", entriesDiff.length);
-    if (entriesDiff.length > 0) {
-      console.log("entriesDiff:", JSON.stringify(entriesDiff, null, 2));
+    const entriesToRemove = entries.filter(
+      (entry) => !entriesEdited.some((entryEdit) => entryEdit.hash === entry.hash)
+    );
+    if (entriesToRemove.length > 0) {
+      console.log("entriesToRemove:", JSON.stringify(entriesToRemove, null, 2));
       await Promise.all(
-        entriesDiff.map(async (entry) => {
+        entriesToRemove.map(async (entry) => {
           await EntryStorage.remove(entry.hash);
         })
       );
@@ -56,10 +58,10 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
     if (typeUpdate === "popup") {
       setEntries(entries);
     } else if (typeUpdate === "edit") {
-      setEntriesEdit(entries);
+      setEntriesEdited(entries);
     } else if (typeUpdate === "all") {
       setEntries(entries);
-      setEntriesEdit(entries);
+      setEntriesEdited(entries);
     }
     return entries;
   };
@@ -74,19 +76,20 @@ export function EntriesContextProvider({ children }: { children: React.ReactNode
   }, []);
 
   useEffect(() => {
-    console.log("onSaveEdit");
-    const entriesSorted = entriesEdit.map((entry, index) => ({ ...entry, index })) as OTPEntry[];
-    if (entriesSorted.length > 0) {
+    if (onSaveEdited !== undefined) {
+      const entriesSorted = entriesEdited.map((entry, index) => ({ ...entry, index })) as OTPEntry[];
       (async () => {
         await EntryStorage.set(entriesSorted);
         await removeEntries(entriesSorted);
         await updateEntriesState("all");
       })();
     }
-  }, [onSaveEdit]);
+  }, [onSaveEdited]);
 
   return (
-    <Context.Provider value={{ entries, second, onSaveEdit, setOnSaveEdit, entriesEdit, setEntriesEdit }}>
+    <Context.Provider
+      value={{ entries, second, onSaveEdited, setOnSaveEdited, entriesEdited, setEntriesEdited, updateEntriesState }}
+    >
       {children}
     </Context.Provider>
   );

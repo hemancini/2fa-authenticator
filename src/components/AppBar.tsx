@@ -44,9 +44,10 @@ export default function ButtonAppBar({
   draweOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isEntriesEdit, setEntriesEdit] = useState(false);
+  const [isEntriesEdit, setEntriesEdited] = useState(false);
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
-  const { onSaveEdit, setOnSaveEdit } = useContext(EntriesContext);
+  const { onSaveEdited, setOnSaveEdited } = useContext(EntriesContext);
+
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
@@ -58,7 +59,17 @@ export default function ButtonAppBar({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-              // onClick={() => setDrawerOpen(!draweOpen)}
+                // onClick={() => setDrawerOpen(!draweOpen)}
+                onClick={() => {
+                  const windowType = "panel";
+                  chrome.windows.create({
+                    // url: chrome.extension.getURL("view/popup.html?popup=true"),
+                    url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
+                    type: windowType,
+                    height: window.innerHeight,
+                    width: window.innerWidth,
+                  });
+                }}
               >
                 <MenuIcon />
               </IconButton>
@@ -74,7 +85,10 @@ export default function ButtonAppBar({
                   size="small"
                   color="inherit"
                   aria-label="Add entry"
-                  onClick={() => setAddEntryMenuOpen(true)}
+                  onClick={() => {
+                    setOnSaveEdited(!onSaveEdited);
+                    setAddEntryMenuOpen(true);
+                  }}
                 >
                   <AddIcon sx={defaultIconSize} />
                 </IconButton>
@@ -85,8 +99,8 @@ export default function ButtonAppBar({
                   LinkComponent={Link}
                   href="/"
                   onClick={() => {
-                    setOnSaveEdit(!onSaveEdit);
-                    setEntriesEdit(false);
+                    setOnSaveEdited(!onSaveEdited);
+                    setEntriesEdited(false);
                   }}
                 >
                   <DoneIcon sx={defaultIconSize} />
@@ -103,7 +117,7 @@ export default function ButtonAppBar({
                   aria-label="Edit Entries"
                   LinkComponent={Link}
                   href="/entries/edit"
-                  onClick={() => setEntriesEdit(true)}
+                  onClick={() => setEntriesEdited(true)}
                 >
                   <EditIcon sx={defaultIconSize} />
                 </IconButton>

@@ -1,7 +1,7 @@
 import { sendMessageToClient } from "@src/chrome/message";
 import { Encryption } from "@src/models/encryption";
 import { getOTPAuthPerLineFromOPTAuthMigration } from "@src/models/migration";
-import { EntryStorage, ManagedStorage } from "@src/models/storage";
+import { EntryStorage } from "@src/models/storage";
 import uuid from "uuid/v4";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
@@ -81,6 +81,18 @@ chrome.runtime.onConnect.addListener((port) => {
           console.warn(error);
         }
         break;
+      case "getTotp2":
+        try {
+          const entry = await getTotp2(message.data);
+          console.log("getTotp2() =>", entry);
+          sendMessageToClient(port, {
+            type: "getTotp",
+            data: entry,
+          });
+        } catch (error) {
+          console.warn(error);
+        }
+        break;
     }
   });
 });
@@ -93,10 +105,59 @@ async function getCapture(tab: chrome.tabs.Tab) {
   return dataUrl;
 }
 
+async function getTotp2(message: { url: string }) {
+  const { url } = message;
+  const regexTotp = /^otpauth:\/\/[^/]+\/[^:]+:[^/]+$/;
+
+  if (!regexTotp.test(url)) {
+    console.warn("getTotp2() => bad url", url);
+    return false;
+  }
+
+  const hash = await uuid();
+  const urlObj = new URL(url);
+  const entryData: { [hash: string]: OTPStorage } = {};
+  const period = parseInt(urlObj.searchParams.get("period") || "30");
+  entryData[hash] = {
+    hash,
+    account: urlObj.pathname.split(":")[1],
+    issuer: urlObj.searchParams.get("issuer"),
+    secret: urlObj.searchParams.get("secret"),
+    type: urlObj.pathname.split(":")[0].split("/")[2],
+    encrypted: false,
+    index: 0,
+    counter: 0,
+    pinned: false,
+    period: isNaN(period) || period < 0 || period > 60 || 60 % period !== 0 ? undefined : period,
+    digits: urlObj.searchParams.get("digits") === "8" ? 8 : 6,
+    algorithm: urlObj.searchParams.get("algorithm") === "SHA256" ? "SHA256" : "SHA1",
+  };
+
+  if (!entryData[hash].issuer) {
+    console.warn("getTotp2() => no issuer", url);
+    return false;
+  }
+  // secret is required
+  if (!entryData[hash].secret) {
+    console.warn("getTotp2() => no secret", url);
+    return false;
+  }
+  // If the entries are encrypted and we aren't unlocked, error.
+  const encryption = new Encryption(cachedPassphrase);
+  if ((await EntryStorage.hasEncryptionKey()) !== encryption.getEncryptionStatus()) {
+    console.warn("getTotp2() => encryption status mismatch");
+    return false;
+  }
+
+  console.log("getTotp2() => entryData", JSON.stringify(entryData, null, 2));
+  await EntryStorage.import(encryption, entryData);
+  return entryData[hash];
+}
+
 async function getTotp(message: { text: string; fromPopup?: boolean }, silent = false) {
   const { text, fromPopup } = message;
   if ((!fromPopup || !text) && (!contentTab || !contentTab.id)) {
-    console.log("getTotp: No active tab found");
+    console.warn("getTotp: No active tab found");
     return false;
   }
   const id = contentTab.id;

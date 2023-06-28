@@ -5,12 +5,17 @@ import { Reorder } from "framer-motion";
 import { useContext } from "react";
 
 export default function EntriesEdit() {
-  const { entriesEdit, setEntriesEdit } = useContext(EntriesContext);
+  const { entriesEdited, setEntriesEdited } = useContext(EntriesContext);
   return (
     <Container sx={{ py: 0.5, pt: 0.2 }}>
-      <Reorder.Group axis="y" values={entriesEdit} onReorder={setEntriesEdit}>
-        {entriesEdit?.map((entry) => (
-          <CardEntryEdit key={entry.index} entry={entry} entriesEdit={entriesEdit} setEntriesEdit={setEntriesEdit} />
+      <Reorder.Group axis="y" values={entriesEdited} onReorder={setEntriesEdited}>
+        {entriesEdited?.map((entry) => (
+          <CardEntryEdit
+            key={entry.index}
+            entry={entry}
+            entriesEdited={entriesEdited}
+            setEntriesEdited={setEntriesEdited}
+          />
         ))}
       </Reorder.Group>
     </Container>

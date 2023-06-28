@@ -32,7 +32,7 @@ export default function ConfirmRemoveEntry({
         <Button size="small" variant="outlined" fullWidth onClick={() => setIsConfirmOpen(false)}>
           Cancel
         </Button>
-        <Button size="small" variant="contained" fullWidth onClick={() => handleRemoveEntry(entry.hash)}>
+        <Button size="small" variant="contained" autoFocus fullWidth onClick={() => handleRemoveEntry(entry.hash)}>
           Remove
         </Button>
       </DialogActions>

@@ -29,12 +29,12 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export default function OutlinedCard({
   entry,
-  entriesEdit,
-  setEntriesEdit,
+  entriesEdited,
+  setEntriesEdited,
 }: {
   entry: OTPEntry;
-  entriesEdit: OTPEntry[];
-  setEntriesEdit: (entriesEdit: OTPEntry[]) => void;
+  entriesEdited: OTPEntry[];
+  setEntriesEdited: (entriesEdited: OTPEntry[]) => void;
 }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -42,16 +42,16 @@ export default function OutlinedCard({
   const dragControls = useDragControls();
 
   const handleUpdateEntry = ({ hash, issuer, account }: { hash: string; issuer?: string; account?: string }) => {
-    const index = entriesEdit.findIndex((entry) => entry.hash === hash);
-    if (issuer) entriesEdit[index].issuer = issuer;
-    if (account) entriesEdit[index].account = account;
-    setEntriesEdit(entriesEdit);
+    const index = entriesEdited.findIndex((entry) => entry.hash === hash);
+    if (issuer) entriesEdited[index].issuer = issuer;
+    if (account) entriesEdited[index].account = account;
+    setEntriesEdited(entriesEdited);
   };
 
   const handleRemoveEntry = (hash: string) => {
-    const index = entriesEdit.findIndex((entry) => entry.hash === hash);
-    entriesEdit.splice(index, 1);
-    setEntriesEdit(entriesEdit);
+    const index = entriesEdited.findIndex((entry) => entry.hash === hash);
+    entriesEdited.splice(index, 1);
+    setEntriesEdited(entriesEdited);
     setIsConfirmOpen(false);
   };
 

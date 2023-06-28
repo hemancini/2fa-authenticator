@@ -54,5 +54,9 @@ declare global {
     | {
         type: "getTotp";
         data: any;
+      }
+    | {
+        type: "getTotp2";
+        data: any;
       };
 }
