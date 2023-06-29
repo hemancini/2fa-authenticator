@@ -8,8 +8,9 @@ import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { blue } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
+import EntriesContext from "@src/contexts/Entries";
 import { OTPEntry } from "@src/models/otp";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 
 const issuerBypass = "WOM";
 
@@ -22,8 +23,13 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   );
 };
 
-export default function OutlinedCard({ entry, count, discount }: { entry: OTPEntry; count: number; discount: number }) {
+export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
+  const { second, updateEntriesState } = useContext(EntriesContext);
+
   const period = entry?.period || 30;
+
+  const count = second % period;
+  const discount = period - (second % period);
   const initProgress = 100 - (count * 100) / period;
 
   const [showQR, setShowQR] = useState(false);
@@ -31,8 +37,8 @@ export default function OutlinedCard({ entry, count, discount }: { entry: OTPEnt
   const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
-    setProgress((prevProgress) => (count > 1 ? prevProgress - 1 * 3.33 : 100));
-  }, [count]);
+    setProgress((prevProgress) => (count > 0 ? prevProgress - 1 * (100 / period) : 100));
+  }, [second]);
 
   return (
     <>
@@ -46,21 +52,38 @@ export default function OutlinedCard({ entry, count, discount }: { entry: OTPEnt
           <BoxRelative>
             <Box aria-label="issuer" mt={0.3}>
               <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                {entry.issuer}&nbsp;
+                {entry.issuer || " "}
               </Typography>
             </Box>
-            <Box display={showOptions ? "flex" : "none"} position="absolute" right={-5}>
-              {entry.issuer === issuerBypass && (
-                <IconButtonResize mr={0.6}>
-                  <PersonIcon />
+            <Box position="absolute" right={-7} display="flex">
+              <Box display={showOptions ? "block" : "none"}>
+                {entry.issuer === issuerBypass && (
+                  <IconButtonResize mr={0.6}>
+                    <PersonIcon />
+                  </IconButtonResize>
+                )}
+                <IconButtonResize onClick={() => setShowQR(!showQR)}>
+                  <QrCode2Icon />
                 </IconButtonResize>
-              )}
-              <IconButtonResize onClick={() => setShowQR(!showQR)}>
-                <QrCode2Icon />
-              </IconButtonResize>
-              <IconButtonResize>
-                <PushPinIcon sx={{ transform: "rotate(40deg)" }} />
-              </IconButtonResize>
+              </Box>
+              <Box display={showOptions || entry.pinned ? "block" : "none"}>
+                <IconButtonResize
+                  onClick={async () => {
+                    entry.index = !entry.pinned ? -1 : entry.index;
+                    entry.pinned = !entry.pinned;
+                    await entry.update();
+                    updateEntriesState("all");
+                  }}
+                >
+                  <PushPinIcon
+                    sx={{
+                      fontSize: !showOptions && entry.pinned && 16,
+                      transform: !entry.pinned && "rotate(40deg)",
+                      color: (theme) => entry.pinned && !showOptions && theme.palette.text.disabled,
+                    }}
+                  />
+                </IconButtonResize>
+              </Box>
             </Box>
           </BoxRelative>
           <Box aria-label="otp-code" display="flex">
@@ -83,10 +106,10 @@ export default function OutlinedCard({ entry, count, discount }: { entry: OTPEnt
           <BoxRelative mb={0.3}>
             <Box aria-label="account" display="flex">
               <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                {entry.account}&nbsp;
+                {entry.account || " "}
               </Typography>
             </Box>
-            <Box display="flex" position="absolute" bottom={5} right={-1}>
+            <Box display="flex" position="absolute" bottom={5} right={0}>
               <CounterProgress
                 size={25}
                 count={discount}

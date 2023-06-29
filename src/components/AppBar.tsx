@@ -60,16 +60,16 @@ export default function ButtonAppBar({
                 color="inherit"
                 aria-label="menu"
                 // onClick={() => setDrawerOpen(!draweOpen)}
-                onClick={() => {
-                  const windowType = "panel";
-                  chrome.windows.create({
-                    // url: chrome.extension.getURL("view/popup.html?popup=true"),
-                    url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
-                    type: windowType,
-                    height: window.innerHeight,
-                    width: window.innerWidth,
-                  });
-                }}
+                // onClick={() => {
+                //   const windowType = "panel";
+                //   chrome.windows.create({
+                //     // url: chrome.extension.getURL("view/popup.html?popup=true"),
+                //     url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
+                //     type: windowType,
+                //     height: window.innerHeight,
+                //     width: window.innerWidth,
+                //   });
+                // }}
               >
                 <MenuIcon />
               </IconButton>
@@ -86,7 +86,6 @@ export default function ButtonAppBar({
                   color="inherit"
                   aria-label="Add entry"
                   onClick={() => {
-                    setOnSaveEdited(!onSaveEdited);
                     setAddEntryMenuOpen(true);
                   }}
                 >
@@ -127,7 +126,11 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <Offset />
-      <AddEntryMenu isAddEntryMenuOpen={isAddEntryMenuOpen} setAddEntryMenuOpen={setAddEntryMenuOpen} />
+      <AddEntryMenu
+        isAddEntryMenuOpen={isAddEntryMenuOpen}
+        setAddEntryMenuOpen={setAddEntryMenuOpen}
+        setEntriesEdited={setEntriesEdited}
+      />
     </>
   );
 }

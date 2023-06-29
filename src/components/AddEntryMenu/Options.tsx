@@ -4,7 +4,6 @@ import LinkIcon from "@mui/icons-material/Link";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import Button from "@mui/material/Button";
 import React from "react";
-import { Link } from "wouter";
 
 interface OptionsProps {
   setManualEntryOptions: React.Dispatch<React.SetStateAction<"" | "TOTP" | "MANUAL">>;
@@ -14,15 +13,7 @@ export default function Options(options: OptionsProps) {
   const { setManualEntryOptions } = options;
   return (
     <>
-      <Button
-        startIcon={<QrCodeScannerIcon />}
-        variant="contained"
-        fullWidth
-        href="/"
-        replace={true}
-        component={Link}
-        onClick={() => captureQRCode()}
-      >
+      <Button startIcon={<QrCodeScannerIcon />} variant="contained" fullWidth onClick={() => captureQRCode()}>
         Scan QR Code
       </Button>
       <Button

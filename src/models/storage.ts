@@ -513,10 +513,6 @@ export class EntryStorage {
         return a.index - b.index;
       });
     }
-
-    Object.values(data).map((entry) => {
-      console.log("get() =>", entry.issuer, entry.index);
-    });
     return data;
   }
 

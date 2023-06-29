@@ -6,17 +6,20 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import React, { useContext, useState } from "react";
-import { Link } from "wouter";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
-  handleOnAddEntryClose?: () => void;
+  handlerGoToHome?: () => void;
 }
 
 export default function ManualTotpEntry(props: AddEntryProps) {
-  const { handlerOnCandel, handleOnAddEntryClose } = props;
+  const { handlerOnCandel, handlerGoToHome } = props;
   const { updateEntriesState } = useContext(EntriesContext);
-  const [totp, setTopt] = useState("otpauth://totp/WOM:14514-55017?secret=XL2P2GOOPTEI4HXL&issuer=WOM");
+  const [totp, setTopt] = useState(
+    `otpauth://totp/WOM:${Math.floor(10000 + Math.random() * 90000)}-${Math.floor(
+      10000 + Math.random() * 90000
+    )}?secret=XL2P2GOOPTEI4HXL&issuer=WOM&period=30`
+  );
   const [entry, setEntry] = useState<Entry>();
   const [open, setOpen] = useState(false);
   const regexTotp = /^otpauth:\/\/[^/]+\/[^:]+:[^/]+$/;
@@ -91,17 +94,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
             </Button>
           </>
         ) : (
-          <Button
-            size="small"
-            variant="contained"
-            fullWidth
-            component={Link}
-            href="/"
-            replace={true}
-            onClick={async () => {
-              handleOnAddEntryClose();
-            }}
-          >
+          <Button size="small" variant="contained" fullWidth onClick={() => handlerGoToHome()}>
             Aceppt
           </Button>
         )}

@@ -4,7 +4,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { OTPEntry } from "@src/models/otp";
-import * as React from "react";
 
 export default function ConfirmRemoveEntry({
   entry,

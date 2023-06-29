@@ -4,7 +4,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { useState } from "react";
+import EntriesContext from "@src/contexts/Entries";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "wouter";
 
 import ManualEntry from "./ManualEntry";
 import ManualTotpEntry from "./ManualTotpEntry";
@@ -18,10 +20,19 @@ export interface AddEntryProps {
 export interface AddEntryMenuProps {
   isAddEntryMenuOpen: boolean;
   setAddEntryMenuOpen: (isAddEntryMenuOpen: boolean) => void;
+  setEntriesEdited: (isEntriesEdited: boolean) => void;
 }
 
-export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen }: AddEntryMenuProps) {
+export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, setEntriesEdited }: AddEntryMenuProps) {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
+  const { onSaveEdited, setOnSaveEdited } = useContext(EntriesContext);
+  const [location, navigate] = useLocation();
+
+  useEffect(() => {
+    if (manualEntryOptions !== "") {
+      setOnSaveEdited(!onSaveEdited);
+    }
+  }, [manualEntryOptions]);
 
   const handleOnAddEntryClose = () => {
     setAddEntryMenuOpen(false);
@@ -32,6 +43,12 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen }
 
   const handleOnAddEntryCancel = () => {
     setManualEntryOptions("");
+  };
+
+  const handlerGoToHome = () => {
+    handleOnAddEntryClose();
+    setEntriesEdited(false);
+    navigate("/", { replace: true }); // `replaceState` is used
   };
 
   return (
@@ -59,7 +76,7 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen }
       <Divider />
       <DialogContent sx={{ px: 1, display: "grid", direction: "column", gap: 2.5 }}>
         {manualEntryOptions === "TOTP" ? (
-          <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} handleOnAddEntryClose={handleOnAddEntryClose} />
+          <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : manualEntryOptions === "MANUAL" ? (
           <ManualEntry handlerOnCandel={handleOnAddEntryCancel} />
         ) : (
