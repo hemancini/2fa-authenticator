@@ -59,6 +59,7 @@ export class OTPEntry implements OTPEntryInterface {
   algorithm: OTPAlgorithm;
   pinned: boolean;
   code = "&bull;&bull;&bull;&bull;&bull;&bull;";
+  site: string;
 
   constructor(
     entry: {
@@ -74,6 +75,7 @@ export class OTPEntry implements OTPEntryInterface {
       digits?: number;
       algorithm?: OTPAlgorithm;
       pinned?: boolean;
+      site?: string;
     },
     encryption?: Encryption
   ) {
@@ -131,6 +133,11 @@ export class OTPEntry implements OTPEntryInterface {
     }
     if (this.type !== OTPType.hotp && this.type !== OTPType.hhex) {
       this.generate();
+    }
+    if (entry.site) {
+      this.site = entry.site;
+    } else {
+      this.site = "";
     }
   }
 

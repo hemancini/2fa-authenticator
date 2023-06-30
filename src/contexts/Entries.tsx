@@ -15,7 +15,7 @@ const Context = createContext({
   setOnSaveEdited: (onSaveEdited: boolean) => {},
 });
 
-export function EntriesContextProvider({ children }: { children: React.ReactNode }) {
+export function EntriesProvider({ children }: { children: React.ReactNode }) {
   const [onSaveEdited, setOnSaveEdited] = useState<undefined | boolean>(undefined);
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);

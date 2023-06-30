@@ -3,7 +3,6 @@ import DragHandleIcon from "@mui/icons-material/DragHandle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Card, CardContent, FormControl } from "@mui/material";
 import Box from "@mui/material/Box";
-import blue from "@mui/material/colors/blue";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
@@ -60,7 +59,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
       <Box sx={{ position: "relative" }}>
         <Card variant="outlined" sx={{ my: 1.7, display: "flex" }}>
           <CardContent sx={{ py: 0.6, pl: 0.6 }}>
-            <FormControl aria-label="issuer" sx={{ display: "flex", width: "22ch" }}>
+            <FormControl aria-label="issuer" sx={{ display: "flex", width: "19ch" }}>
               <BootstrapInput
                 defaultValue={entry.issuer}
                 onChange={(e) => handleUpdateEntry({ hash: entry.hash, issuer: e.target.value })}
@@ -70,7 +69,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               <Typography
                 component="span"
                 sx={{
-                  color: blue[500],
+                  color: (theme) => theme.palette.primary.main,
                   fontWeight: "bold",
                   fontSize: "1.9rem",
                   letterSpacing: 12,
@@ -82,7 +81,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                 ••••••
               </Typography>
             </Box>
-            <FormControl aria-label="account" sx={{ display: "flex", width: "22ch" }}>
+            <FormControl aria-label="account" sx={{ display: "flex", width: "19ch" }}>
               <BootstrapInput
                 defaultValue={entry.account}
                 onChange={(e) => handleUpdateEntry({ hash: entry.hash, account: e.target.value })}

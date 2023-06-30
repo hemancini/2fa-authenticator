@@ -39,8 +39,8 @@ export default function CustomizedDialogs({
   };
 
   return (
-    <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-      <DialogContent sx={{ width: defaultSize, height: defaultSize }}>
+    <BootstrapDialog onClose={handleClose} open={open}>
+      <DialogContent>
         {issuer && secret && account && (
           <QRCodeSVG value={`otpauth://totp/${issuer}@${account}?secret=${secret}`} size={defaultSize} />
         )}

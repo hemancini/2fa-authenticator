@@ -59,7 +59,7 @@ export default function ButtonAppBar({
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                // onClick={() => setDrawerOpen(!draweOpen)}
+                onClick={() => setDrawerOpen(!draweOpen)}
                 // onClick={() => {
                 //   const windowType = "panel";
                 //   chrome.windows.create({
@@ -75,7 +75,15 @@ export default function ButtonAppBar({
               </IconButton>
             )}
           </Box>
-          <Typography textAlign="center" sx={{ fontSize: 17, fontWeight: "bold" }}>
+          <Typography
+            textAlign="center"
+            sx={{
+              fontSize: 17,
+              fontWeight: "bold",
+              // color: (theme) =>
+              //   theme.palette.mode === "dark" ? theme.palette.primary.dark : theme.palette.primary.light,
+            }}
+          >
             Authenticator
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>

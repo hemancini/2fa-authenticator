@@ -4,7 +4,8 @@ import AppBar from "@components/AppBar";
 import Drawer from "@components/Drawer";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
-import { EntriesContextProvider } from "@src/contexts/Entries";
+import { EntriesProvider } from "@src/contexts/Entries";
+import { OptionsProvider } from "@src/contexts/Options";
 import { useState } from "react";
 import { Link, Redirect, Route, Router, Switch } from "wouter";
 
@@ -14,33 +15,35 @@ const Popup = () => {
   const [draweOpen, setDrawerOpen] = useState(false);
 
   return (
-    <EntriesContextProvider>
-      <Router>
-        <header>
-          <AppBar {...{ draweOpen, setDrawerOpen }} />
-          <Drawer {...{ draweOpen, setDrawerOpen }} />
-        </header>
-        <Switch>
-          <Route path="/">
-            <Redirect to={popupHomePage} />
-          </Route>
-          <Route path={popupHomePage}>
-            <Entries />
-          </Route>
-          <Route path="/entries/edit">
-            <EntriesEdit />
-          </Route>
-          <Route path="/about">
-            <Link href="/">
-              <a className="link">home</a>
-            </Link>
-          </Route>
-          <Route path="/:anything*">
-            <b>404:</b> {"Sorry, this page isn't ready yet!"}
-          </Route>
-        </Switch>
-      </Router>
-    </EntriesContextProvider>
+    <OptionsProvider>
+      <EntriesProvider>
+        <Router>
+          <header>
+            <AppBar {...{ draweOpen, setDrawerOpen }} />
+            <Drawer {...{ draweOpen, setDrawerOpen }} />
+          </header>
+          <Switch>
+            <Route path="/">
+              <Redirect to={popupHomePage} />
+            </Route>
+            <Route path={popupHomePage}>
+              <Entries />
+            </Route>
+            <Route path="/entries/edit">
+              <EntriesEdit />
+            </Route>
+            <Route path="/about">
+              <Link href="/">
+                <a className="link">home</a>
+              </Link>
+            </Route>
+            <Route path="/:anything*">
+              <b>404:</b> {"Sorry, this page isn't ready yet!"}
+            </Route>
+          </Switch>
+        </Router>
+      </EntriesProvider>
+    </OptionsProvider>
   );
 };
 

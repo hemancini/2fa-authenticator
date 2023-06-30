@@ -1,11 +1,11 @@
 ## TODO
 
-- [X] **useContext**
+- [X] **popup**
   - [X] get entries
   - [X] edit entries
   - [X] auto refresh
-  - [ ] pin entry
-- [ ] **edit entries**
+  - [X] pin entry
+- [X] **edit entries**
   - [X] drag and drop
   - [X] delete entry
   - [X] edit entry
@@ -15,15 +15,18 @@
   - [ ] manual input
   - [X] otp uri
   - [ ] image file
+  - [ ] show success message
 - [ ] **control errors**
   - [ ] scan QR code
-- [ ] i18n
-  - [ ] spanish
-  - [ ] english
-- [ ] themes
+- [X] i18n
+  - [X] spanish
+  - [X] english
 - [ ] options
+  - [ ] themes
+    - [X] dark mode
   - [ ] autofill
-  - [ ] entrust bypass 
+  - [ ] entrust bypass
+  - [ ] gitlab bypass
 
 ---
 

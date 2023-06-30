@@ -12,6 +12,7 @@ interface OTPEntryInterface {
   digits: number;
   algorithm: number; // OTPAlgorithm
   pinned: boolean;
+  site: string;
   create(): Promise<void>;
   update(): Promise<void>;
   next(): Promise<void>;
@@ -42,4 +43,5 @@ interface OTPStorage {
   digits?: number;
   algorithm?: string;
   pinned?: boolean;
+  site?: string;
 }

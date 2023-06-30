@@ -196,6 +196,10 @@ export class EntryStorage {
       storageItem.algorithm = OTPAlgorithm[entry.algorithm];
     }
 
+    if (entry.site) {
+      storageItem.site = entry.site;
+    }
+
     return storageItem;
   }
 
@@ -352,6 +356,7 @@ export class EntryStorage {
       data[hash].digits = data[hash].digits || 6;
       data[hash].algorithm = data[hash].algorithm || OTPAlgorithm[OTPAlgorithm.SHA1];
       data[hash].pinned = data[hash].pinned || false;
+      data[hash].site = data[hash].site || "";
       const period = data[hash].period;
       if (data[hash].type !== OTPType[OTPType.totp] || (period && (isNaN(period) || period <= 0))) {
         delete data[hash].period;
@@ -505,6 +510,7 @@ export class EntryStorage {
         digits: entryData.digits,
         algorithm: OTPAlgorithm[entryData.algorithm],
         pinned: entryData.pinned,
+        site: entryData.site,
       });
 
       data.push(entry);

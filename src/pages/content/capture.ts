@@ -215,8 +215,10 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
       return new Promise((resolve) => {
         sendMessageToBackground({
           message: {
-            type: "getTotp",
-            data: { text: qrRes as string },
+            // type: "getTotp",
+            // data: { text: qrRes as string },
+            type: "getTotp2",
+            data: { url: qrRes as string, site: window.location.host },
           },
           handleSuccess: (result) => {
             resolve(result);

@@ -91,7 +91,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               <Typography
                 className={discount <= 3 && "parpadea"}
                 sx={{
-                  color: discount <= 3 ? "red" : blue[500],
+                  color: discount <= 3 ? "red" : (theme) => theme.palette.primary.main,
                   fontWeight: "bold",
                   fontSize: "1.9rem",
                   letterSpacing: 4,
