@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { t } from "@src/chrome/i18n";
 import React, { useState } from "react";
 
 export interface AddEntryProps {
@@ -77,10 +78,10 @@ export default function ManualEntry(props: AddEntryProps) {
       </Box>
       <Box mt={1} display="grid" gap={2} gridTemplateColumns="1fr 1fr">
         <Button size="small" variant="outlined" fullWidth onClick={handlerOnCandel}>
-          Cancel
+          {t("cancel")}
         </Button>
         <Button size="small" variant="contained" fullWidth>
-          Add
+          {t("add")}
         </Button>
       </Box>
     </Box>

@@ -4,6 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
@@ -59,7 +60,7 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
       sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1, pb: 0, minWidth: 220 } }}
     >
       <DialogTitle fontSize={18} sx={{ m: 0, mb: 0.5, p: 0, px: 1.4 }}>
-        Add new entry
+        {t("addNewEntry")}
         <IconButton
           aria-label="close"
           onClick={handleOnAddEntryClose}

@@ -1,8 +1,10 @@
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { t } from "@src/chrome/i18n";
 import { OTPEntry } from "@src/models/otp";
 
 export default function ConfirmRemoveEntry({
@@ -24,15 +26,17 @@ export default function ConfirmRemoveEntry({
     >
       <DialogContent sx={{ "&&": { p: 0, m: 0 } }}>
         <DialogContentText sx={{ p: 0, m: 1 }}>
-          Are you sure you want to delete <span style={{ fontStyle: "italic" }}>{entry.account}</span> account?
+          <Alert icon={false} severity="info">
+            <p dangerouslySetInnerHTML={{ __html: t("confirmRemoveDescription", entry.account) }} />
+          </Alert>
         </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: "space-around", mx: 0, gap: 2 }}>
         <Button size="small" variant="outlined" fullWidth onClick={() => setIsConfirmOpen(false)}>
-          Cancel
+          {t("cancel")}
         </Button>
         <Button size="small" variant="contained" autoFocus fullWidth onClick={() => handleRemoveEntry(entry.hash)}>
-          Remove
+          {t("remove")}
         </Button>
       </DialogActions>
     </Dialog>

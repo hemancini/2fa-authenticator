@@ -60,7 +60,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
       <Box sx={{ position: "relative" }}>
         <Card variant="outlined" sx={{ my: 1.7, display: "flex" }}>
           <CardContent sx={{ py: 0.6, pl: 0.6 }}>
-            <FormControl aria-label="issuer" sx={{ display: "flex", width: "20ch" }}>
+            <FormControl aria-label="issuer" sx={{ display: "flex", width: "22ch" }}>
               <BootstrapInput
                 defaultValue={entry.issuer}
                 onChange={(e) => handleUpdateEntry({ hash: entry.hash, issuer: e.target.value })}
@@ -82,14 +82,14 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                 ••••••
               </Typography>
             </Box>
-            <FormControl aria-label="account" sx={{ display: "flex", width: "20ch" }}>
+            <FormControl aria-label="account" sx={{ display: "flex", width: "22ch" }}>
               <BootstrapInput
                 defaultValue={entry.account}
                 onChange={(e) => handleUpdateEntry({ hash: entry.hash, account: e.target.value })}
               />
             </FormControl>
           </CardContent>
-          <Box pl={1} display="flex" justifyContent="center" alignItems="center">
+          <Box display="flex" justifyContent="center" alignItems="center">
             <IconButton aria-label="drag entry" size="large" onPointerDown={(event) => dragControls.start(event)}>
               <DragHandleIcon sx={{ fontSize: 40 }} />
             </IconButton>

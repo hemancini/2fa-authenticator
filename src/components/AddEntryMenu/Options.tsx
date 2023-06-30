@@ -3,6 +3,7 @@ import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import Button from "@mui/material/Button";
+import { t } from "@src/chrome/i18n";
 import React from "react";
 
 interface OptionsProps {
@@ -14,7 +15,7 @@ export default function Options(options: OptionsProps) {
   return (
     <>
       <Button startIcon={<QrCodeScannerIcon />} variant="contained" fullWidth onClick={() => captureQRCode()}>
-        Scan QR Code
+        {t("scanQRCode")}
       </Button>
       <Button
         startIcon={<KeyboardIcon />}
@@ -22,10 +23,10 @@ export default function Options(options: OptionsProps) {
         variant="contained"
         onClick={() => setManualEntryOptions("MANUAL")}
       >
-        Manual Entry
+        {t("manualEntry")}
       </Button>
       <Button startIcon={<LinkIcon />} variant="contained" fullWidth onClick={() => setManualEntryOptions("TOTP")}>
-        Otp auth url
+        {t("totpUrl")}
       </Button>
     </>
   );

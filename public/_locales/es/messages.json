@@ -1,0 +1,41 @@
+{
+  "extensionName": {
+    "message": "TOTP Authenticator"
+  },
+  "extensionDescription": {
+    "message": "Esta extensión proporciona autenticación TOTP para sitios web."
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "accept": {
+    "message": "Aceptar"
+  },
+  "add": {
+    "message": "Añadir"
+  },
+  "remove": {
+    "message": "Eliminar"
+  },
+  "addNewEntry": {
+    "message": "Añadir nueva cuenta"
+  },
+  "scanQRCode": {
+    "message": "Escanear QR"
+  },
+  "manualEntry": {
+    "message": "Entrada manual"
+  },
+  "totpUrl": {
+    "message": "URL TOTP AUTH"
+  },
+  "confirmRemoveDescription": {
+    "message": "Está seguro de que desea eliminar la cuenta <span style=\"font-style: italic;\">$1</span>?"
+  },
+  "addEntrySuccess": {
+    "message": "La nueva cuenta se ha añadido correctamente."
+  },
+  "regexTotpError": {
+    "message": "La url no es válida."
+  }
+}

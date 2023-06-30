@@ -1,7 +1,6 @@
 import * as CryptoJS from "crypto-js";
 
-// import { AlgorithmIndentifier, GostDigest, gostEngine as GostEngine } from "node-gost-crypto";
-import { OTPAlgorithm, OTPType, OTPUtil } from "./otp";
+import { OTPAlgorithm, OTPType } from "./otp";
 
 // Originally based on the JavaScript implementation as provided by Russell
 // Sayers on his Tin Isles blog:
@@ -175,22 +174,6 @@ export class KeyUtilities {
       case OTPAlgorithm.SHA512:
         hmacObj = CryptoJS.HmacSHA512(CryptoJS.enc.Hex.parse(time), CryptoJS.enc.Hex.parse(key));
         break;
-      // case OTPAlgorithm.GOST3411_2012_256:
-      // case OTPAlgorithm.GOST3411_2012_512:
-      //   alg = {
-      //     mode: "HMAC",
-      //     name: "GOST R 34.11",
-      //     version: 2012,
-      //     length: OTPUtil.getOTPAlgorithmSpec(algorithm).length,
-      //   };
-      //   gostCipher = GostEngine.getGostDigest(alg);
-      //   hmacObj = CryptoJS.lib.WordArray.create(
-      //     gostCipher.sign(
-      //       this.cryptoJsWordArrayToUint8Array(CryptoJS.enc.Hex.parse(key)),
-      //       this.cryptoJsWordArrayToUint8Array(CryptoJS.enc.Hex.parse(time))
-      //     )
-      //   );
-      //   break;
       default:
         hmacObj = CryptoJS.HmacSHA1(CryptoJS.enc.Hex.parse(time), CryptoJS.enc.Hex.parse(key));
         break;

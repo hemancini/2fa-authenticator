@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+  <style>
+    .editor-container {
+      height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <textarea id="editor"></textarea>
+  </div>
+
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+      mode: 'javascript',
+      theme: 'default',
+      lineNumbers: true,
+      tabSize: 2,
+    });
+  </script>
+</body>
+</html>

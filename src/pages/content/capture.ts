@@ -1,7 +1,6 @@
 import scanGIF from "@assets/img/scan.gif";
 import { sendMessageToBackground } from "@src/chrome/message";
-// import jsQR from "jsqr";
-import QRCode from "qrcode-reader";
+import jsQR from "jsqr";
 
 if (!document.getElementById("__ga_grayLayout__")) {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -210,45 +209,20 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
       canvas.height = imageData.height;
       canvas.getContext("2d")?.putImageData(imageData, 0, 0);
 
-      const qrReader = new QRCode();
-      qrReader.callback = (
-        error: string,
-        text: {
-          result: string;
-          points: Array<{
-            x: number;
-            y: number;
-            count: number;
-            estimatedModuleSize: number;
-          }>;
-        }
-      ) => {
-        let qrRes = "";
-        if (error) {
-          console.error(error);
-          // const jsQrCode = jsQR(imageData.data, imageData.width, imageData.height);
-          // if (jsQrCode) {
-          //   qrRes = jsQrCode.data;
-          // } else {
-          //   alert(chrome.i18n.getMessage("errorqr"));
-          // }
-        } else {
-          qrRes = text.result;
-        }
+      const jsQrCode = jsQR(imageData.data, imageData.width, imageData.height);
+      const qrRes = jsQrCode.data;
 
-        return new Promise((resolve) => {
-          sendMessageToBackground({
-            message: {
-              type: "getTotp",
-              data: { text: qrRes as string },
-            },
-            handleSuccess: (result) => {
-              resolve(result);
-            },
-          });
+      return new Promise((resolve) => {
+        sendMessageToBackground({
+          message: {
+            type: "getTotp",
+            data: { text: qrRes as string },
+          },
+          handleSuccess: (result) => {
+            resolve(result);
+          },
         });
-      };
-      qrReader.decode(imageData);
+      });
     }
   };
   qr.src = url;
