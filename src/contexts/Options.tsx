@@ -1,38 +1,70 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import * as React from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Options } from "@src/models/options";
+import { createContext, ReactNode, useMemo, useState } from "react";
 
-const OptionsContext = React.createContext({ toggleColorMode: () => { } });
+const OptionsContext = createContext({
+  toggleColorMode: (mode: ThemeMode) => void 0,
+  toggleThemeColor: (color: DefaultColorHexes) => void 0,
+  defaultColor: DEFAULT_COLOR as DefaultColorHexes,
+  defaultMode: DEFAULT_MODE as ThemeMode,
+});
 
-export function OptionsProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = React.useState<"light" | "dark">("light");
-  const colorMode = React.useMemo(
+export function OptionsProvider({ children }: { children: ReactNode }) {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const [options, setOptions] = useState<Options | undefined>(undefined);
+
+  const colorMode = useMemo(
     () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      toggleColorMode: (mode?: ThemeMode) => {
+        setOptions((prevMode: any) => ({
+          ...prevMode,
+          themeMode: mode,
+        }));
+      },
+      toggleThemeColor: (color: any) => {
+        setOptions((prevColor) => ({
+          ...prevColor,
+          themeColor: color,
+        }));
       },
     }),
     []
   );
 
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          primary: { main: "#619f04" },
-          secondary: { main: "#619f04" },
-        },
-      }),
-    [mode]
-  );
+  const theme = useMemo(() => {
+    (async () => {
+      const { themeMode = DEFAULT_MODE, themeColor = DEFAULT_COLOR }: any = await Options.getOptions();
+      if (!options?.themeMode || !options?.themeColor) {
+        setOptions({ themeMode: themeMode, themeColor });
+      } else {
+        await Options.setOptions({ ...options });
+      }
+    })();
+
+    const themeMode: ThemeMode = options?.themeMode;
+    const isDarkMode = themeMode === "dark" || (themeMode === DEFAULT_MODE && prefersDarkMode);
+
+    return createTheme({
+      palette: {
+        mode: isDarkMode ? "dark" : "light",
+        primary: { main: options?.themeColor || DEFAULT_COLOR },
+        secondary: { main: options?.themeColor || DEFAULT_COLOR },
+      },
+    });
+  }, [options]);
 
   return (
-    <OptionsContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+    <OptionsContext.Provider
+      value={{ ...colorMode, defaultColor: options?.themeColor, defaultMode: options?.themeMode }}
+    >
+      {options?.themeMode && options?.themeColor && (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      )}
     </OptionsContext.Provider>
   );
 }

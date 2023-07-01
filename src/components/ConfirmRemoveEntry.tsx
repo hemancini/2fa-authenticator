@@ -26,7 +26,7 @@ export default function ConfirmRemoveEntry({
     >
       <DialogContent sx={{ "&&": { p: 0, m: 0 } }}>
         <DialogContentText sx={{ p: 0, m: 1 }}>
-          <Alert icon={false} severity="info">
+          <Alert icon={false} severity="warning">
             <p dangerouslySetInnerHTML={{ __html: t("confirmRemoveDescription", entry.account) }} />
           </Alert>
         </DialogContentText>

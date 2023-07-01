@@ -66,16 +66,16 @@ export default function ButtonAppBar({
                 color="inherit"
                 aria-label="menu"
                 onClick={() => setDrawerOpen(!draweOpen)}
-                // onClick={() => {
-                //   const windowType = "panel";
-                //   chrome.windows.create({
-                //     // url: chrome.extension.getURL("view/popup.html?popup=true"),
-                //     url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
-                //     type: windowType,
-                //     height: window.innerHeight,
-                //     width: window.innerWidth,
-                //   });
-                // }}
+              // onClick={() => {
+              //   const windowType = "panel";
+              //   chrome.windows.create({
+              //     // url: chrome.extension.getURL("view/popup.html?popup=true"),
+              //     url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
+              //     type: windowType,
+              //     height: window.innerHeight,
+              //     width: window.innerWidth,
+              //   });
+              // }}
               >
                 <MenuIcon />
               </IconButton>
@@ -135,7 +135,10 @@ export default function ButtonAppBar({
                   aria-label="Edit Entries"
                   LinkComponent={Link}
                   href="/entries/edit"
-                  onClick={() => setEntriesEdited(true)}
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    setEntriesEdited(true);
+                  }}
                 >
                   <EditIcon sx={defaultIconSize} />
                 </IconButton>

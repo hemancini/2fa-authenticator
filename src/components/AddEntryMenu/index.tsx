@@ -56,11 +56,20 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
     <Dialog
       open={isAddEntryMenuOpen}
       onClose={handleOnAddEntryClose}
-      sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: "100%" } }}
+      sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: { xs: "100%", md: "30%" }, pb: 0.5 } }}
     >
       <DialogTitle
         fontSize={18}
-        sx={{ m: 1, p: 0, pr: 2, textAlign: "center", color: (theme) => theme.palette.grey[800] }}
+        sx={{
+          m: 1,
+          my: { xs: 1.2, md: 1.5 },
+          p: 0,
+          pr: 2,
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: { md: 20 },
+          color: (theme) => theme.palette.text.secondary,
+        }}
       >
         {t("addNewEntry")}
         <IconButton

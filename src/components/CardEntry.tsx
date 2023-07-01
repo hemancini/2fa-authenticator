@@ -6,7 +6,7 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import { blue } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import EntriesContext from "@src/contexts/Entries";
 import { OTPEntry } from "@src/models/otp";
@@ -89,9 +89,9 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
           <Box aria-label="otp-code" display="flex">
             <CardActionArea onClick={() => navigator.clipboard.writeText(entry.code)}>
               <Typography
-                className={discount <= 3 && "parpadea"}
+                className={discount <= 4 && "parpadea"}
                 sx={{
-                  color: discount <= 3 ? "red" : (theme) => theme.palette.primary.main,
+                  color: discount <= 4 ? red[400] : (theme) => theme.palette.primary.main,
                   fontWeight: "bold",
                   fontSize: "1.9rem",
                   letterSpacing: 4,
@@ -115,7 +115,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                 count={discount}
                 value={progress}
                 sx={{
-                  color: discount <= 5 && "red",
+                  color: discount <= 5 && red[400],
                   scale: "-1 1",
                 }}
               />

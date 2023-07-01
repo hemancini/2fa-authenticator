@@ -22,8 +22,6 @@ export enum OTPAlgorithm {
   SHA1 = 1,
   SHA256,
   SHA512,
-  GOST3411_2012_256,
-  GOST3411_2012_512,
 }
 
 export interface OTPAlgorithmSpec {
@@ -31,19 +29,6 @@ export interface OTPAlgorithmSpec {
 }
 
 let LocalStorage: { [key: string]: any };
-
-export class OTPUtil {
-  static getOTPAlgorithmSpec(otpAlgorithm: OTPAlgorithm): OTPAlgorithmSpec {
-    switch (otpAlgorithm) {
-      case OTPAlgorithm.GOST3411_2012_256:
-        return { length: 256 };
-      case OTPAlgorithm.GOST3411_2012_512:
-        return { length: 512 };
-      default:
-        return { length: 0 };
-    }
-  }
-}
 
 export class OTPEntry implements OTPEntryInterface {
   type: OTPType;

@@ -26,7 +26,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
 
   return (
     <Box mx={0.5}>
-      <Box display="grid" gap={2} mb={2.5}>
+      <Box display="grid" gap={2} mb={2.5} mt={0}>
         {!entry && (
           <TextareaAutosize
             minRows={3}
@@ -46,7 +46,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
           </Alert>
         )}
         {entry && (
-          <Alert severity="success" sx={{ width: "auto" }}>
+          <Alert severity="success" sx={{ width: "auto", mb: 0.8 }}>
             {t("addEntrySuccess")}
           </Alert>
         )}

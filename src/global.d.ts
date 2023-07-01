@@ -48,12 +48,12 @@ declare global {
     error: Error;
   };
   type Message =
-    {
-      type: "error";
-      data: Error;
-    }
     | {
-      type: "error" | "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
-      data: any;
-    };
+        type: "error";
+        data: Error;
+      }
+    | {
+        type: "error" | "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
+        data: any;
+      };
 }
