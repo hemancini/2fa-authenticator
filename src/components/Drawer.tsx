@@ -1,13 +1,9 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MailIcon from "@mui/icons-material/Mail";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -15,9 +11,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled, useTheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+import { t } from "@src/chrome/i18n";
 import OptionsProvider from "@src/contexts/Options";
 import * as React from "react";
-import { Link } from "wouter";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -37,12 +33,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       },
       "& + .MuiSwitch-track": {
         opacity: 1,
-        backgroundColor: theme.palette.mode === "dark" ? "#8796A5" : "#aab4be",
+        backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary.dark : theme.palette.primary.light,
       },
     },
   },
   "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.primary.dark : theme.palette.primary.light,
     width: 32,
     height: 32,
     "&:before": {
@@ -103,14 +99,10 @@ export default function TemporaryDrawer({
       >
         <Divider />
         <ListItem disablePadding>
-          {/* {theme.palette.mode} mode
-          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton> */}
           <FormGroup onChange={toggleColorMode}>
             <FormControlLabel
               control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked={theme.palette.mode === "dark"} />}
-              label={`${theme.palette.mode} mode`}
+              label={`${t("themeMode", theme.palette.mode)}`}
               labelPlacement="start"
             />
           </FormGroup>

@@ -27,10 +27,3 @@ interface GetTotp {
     fromPopup?: boolean;
   };
 }
-
-interface GetTotp2 {
-  type: "getTotp";
-  data: {
-    url: string;
-  };
-}

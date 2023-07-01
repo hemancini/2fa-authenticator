@@ -55,27 +55,29 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
   return (
     <Dialog
       open={isAddEntryMenuOpen}
-      aria-labelledby="customized-dialog-title"
       onClose={handleOnAddEntryClose}
-      sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1, pb: 0, minWidth: 220 } }}
+      sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: "100%" } }}
     >
-      <DialogTitle fontSize={18} sx={{ m: 0, mb: 0.5, p: 0, px: 1.4 }}>
+      <DialogTitle
+        fontSize={18}
+        sx={{ m: 1, p: 0, pr: 2, textAlign: "center", color: (theme) => theme.palette.grey[800] }}
+      >
         {t("addNewEntry")}
         <IconButton
           aria-label="close"
           onClick={handleOnAddEntryClose}
           sx={{
-            top: 1,
-            right: 2,
+            top: 5,
+            right: 1,
             position: "absolute",
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+          <CloseIcon sx={{ fontSize: 20 }} />
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ px: 1, display: "grid", direction: "column", gap: 2.5 }}>
+      <DialogContent sx={{ px: 1, mx: 1, py: 3, display: "grid", direction: "column", gap: 3 }}>
         {manualEntryOptions === "TOTP" ? (
           <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : manualEntryOptions === "MANUAL" ? (

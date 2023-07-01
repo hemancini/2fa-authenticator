@@ -42,21 +42,18 @@ declare module "*.json" {
 }
 
 declare global {
+  type ErrorMessage = {
+    type: "Error";
+    input?: never;
+    error: Error;
+  };
   type Message =
+    {
+      type: "error";
+      data: Error;
+    }
     | {
-        type: "captureQR";
-        data: any;
-      }
-    | {
-        type: "getCapture";
-        data: any;
-      }
-    | {
-        type: "getTotp";
-        data: any;
-      }
-    | {
-        type: "getTotp2";
-        data: any;
-      };
+      type: "error" | "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
+      data: any;
+    };
 }

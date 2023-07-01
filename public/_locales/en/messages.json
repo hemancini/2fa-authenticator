@@ -29,6 +29,9 @@
   "totpUrl": {
     "message": "TOTP AUTH URL"
   },
+  "refreshPage":{
+    "message": "Refresh Page"
+  },
   "confirmRemoveDescription": {
     "message": "Are you sure you want to delete <span style=\"font-style: italic;\">$1</span> account?"
   },
@@ -37,5 +40,20 @@
   },
   "regexTotpError": {
     "message": "Invalid TOTP URL."
+  },
+  "addAccountSuccess": {
+    "message": "New account $1 has been added successfully."
+  },
+  "qrCodeNotFound": {
+    "message": "QR Code not found."
+  },
+  "errorNoActiveTab": {
+    "message": "No active tab found"
+  },
+  "errorNoActiveTabDesc": {
+    "message": "Please restore the focus of the tab and try again."
+  },
+  "themeMode":  {
+    "message": "$1 mode"
   }
 }

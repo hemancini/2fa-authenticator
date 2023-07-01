@@ -22,7 +22,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
     // )}?secret=XL2P2GOOPTEI4HXL&issuer=WOM&period=30`
   );
   const [entry, setEntry] = useState<Entry>();
-  const regexTotp = /^otpauth:\/\/[^/]+\/[^:]+:[^/]+$/;
+  const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
 
   return (
     <Box mx={0.5}>
@@ -65,7 +65,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
               onClick={async () => {
                 return new Promise((resolve) => {
                   sendMessageToBackground({
-                    message: { type: "getTotp2", data: { url: totp } },
+                    message: { type: "getTotp", data: { url: totp } },
                     handleSuccess: (result) => {
                       updateEntriesState("all");
                       setEntry(result);

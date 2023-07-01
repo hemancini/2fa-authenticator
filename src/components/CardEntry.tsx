@@ -52,7 +52,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
           <BoxRelative>
             <Box aria-label="issuer" mt={0.3} maxWidth="80%">
               <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
-                {entry.issuer || " "}
+                {entry.issuer || <span>&nbsp;</span>}
               </Typography>
             </Box>
             <Box position="absolute" right={-7} display="flex">
@@ -106,7 +106,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
           <BoxRelative mb={0.3}>
             <Box aria-label="account" display="flex" maxWidth="80%">
               <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
-                {entry.account || " "}
+                {entry.account || <span>&nbsp;</span>}
               </Typography>
             </Box>
             <Box display="flex" position="absolute" bottom={5} right={0}>

@@ -29,6 +29,9 @@
   "totpUrl": {
     "message": "URL TOTP AUTH"
   },
+  "refreshPage":{
+    "message": "Actualizar página"
+  },
   "confirmRemoveDescription": {
     "message": "Está seguro de que desea eliminar la cuenta <span style=\"font-style: italic;\">$1</span>?"
   },
@@ -37,5 +40,20 @@
   },
   "regexTotpError": {
     "message": "La url no es válida."
+  },
+  "addAccountSuccess": {
+    "message": "La cuenta $1 se ha añadido correctamente."
+  },
+  "qrCodeNotFound": {
+    "message": "No se ha encontrado ningún código QR."
+  },
+  "errorNoActiveTab": {
+    "message": "No hay ninguna pestaña activa"
+  },
+  "errorNoActiveTabDesc": {
+    "message": "Restablezca el foco de la pestaña y vuelva a intentarlo."
+  },
+  "themeMode":  {
+    "message": "modo $1"
   }
 }

@@ -1,22 +1,21 @@
 import scanGIF from "@assets/img/scan.gif";
+import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
+import { OTPEntry } from "@src/models/otp";
 import jsQR from "jsqr";
 
 if (!document.getElementById("__ga_grayLayout__")) {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    switch (message.action) {
+    switch (message.type) {
       case "capture":
         sendResponse("beginCapture");
         showGrayLayout();
         break;
       case "sendCaptureUrl":
-        qrDecode(
-          message.info.url,
-          message.info.captureBoxLeft,
-          message.info.captureBoxTop,
-          message.info.captureBoxWidth,
-          message.info.captureBoxHeight
-        );
+        {
+          const { data } = message;
+          qrDecode(data.url, data.captureBoxLeft, data.captureBoxTop, data.captureBoxWidth, data.captureBoxHeight);
+        }
         break;
       case "errorsecret":
         alert(chrome.i18n.getMessage("errorsecret") + message.secret);
@@ -24,43 +23,11 @@ if (!document.getElementById("__ga_grayLayout__")) {
       case "errorenc":
         alert(chrome.i18n.getMessage("phrase_incorrect"));
         break;
-      case "added":
-        alert(message.account + chrome.i18n.getMessage("added"));
-        break;
-      case "text":
-        alert(message.text);
-        break;
-      case "migrationfail":
-        alert(chrome.i18n.getMessage("migration_fail"));
-        break;
-      case "migrationpartlyfail":
-        alert(chrome.i18n.getMessage("migration_partly_fail"));
-        break;
-      case "migrationsuccess":
-        alert(chrome.i18n.getMessage("updateSuccess"));
-        break;
-      case "pastecode":
-        pasteCode(message.code);
-        break;
-      case "stopCapture": {
-        const captureBox = document.getElementById("__ga_captureBox__");
-        if (captureBox) {
-          captureBox.style.display = "none";
-        }
-
-        const grayLayout = document.getElementById("__ga_grayLayout__");
-        if (grayLayout) {
-          grayLayout.style.display = "none";
-        }
-        break;
-      }
       default:
-        // invalid command, ignore it
+        console.warn("capture.ts: Unknown message action", message.action);
         break;
     }
   });
-} else {
-  console.warn("capture.ts: grayLayout already exists");
 }
 
 sessionStorage.setItem("captureBoxPositionLeft", "0");
@@ -168,7 +135,7 @@ function grayLayoutUp(event: MouseEvent) {
 
   // make sure captureBox and grayLayout is hidden
   setTimeout(() => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       sendMessageToBackground({
         message: {
           type: "getCapture",
@@ -210,17 +177,21 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
       canvas.getContext("2d")?.putImageData(imageData, 0, 0);
 
       const jsQrCode = jsQR(imageData.data, imageData.width, imageData.height);
-      const qrRes = jsQrCode.data;
+      if (!jsQrCode?.data) {
+        alert(t("qrCodeNotFound"));
+        return;
+      }
 
+      const qrRes = jsQrCode.data;
       return new Promise((resolve) => {
         sendMessageToBackground({
           message: {
-            // type: "getTotp",
-            // data: { text: qrRes as string },
-            type: "getTotp2",
+            type: "getTotp",
             data: { url: qrRes as string, site: window.location.host },
           },
-          handleSuccess: (result) => {
+          handleSuccess: (result: OTPEntry) => {
+            const alertResp = t("addAccountSuccess", result.account);
+            alert(alertResp);
             resolve(result);
           },
         });
@@ -228,70 +199,6 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
     }
   };
   qr.src = url;
-}
-
-function pasteCode(code: string) {
-  const _inputBoxes = document.getElementsByTagName("input");
-  const inputBoxes: HTMLInputElement[] = [];
-  for (let i = 0; i < _inputBoxes.length; i++) {
-    if (
-      _inputBoxes[i].type === "text" ||
-      _inputBoxes[i].type === "number" ||
-      _inputBoxes[i].type === "tel" ||
-      _inputBoxes[i].type === "password"
-    ) {
-      inputBoxes.push(_inputBoxes[i]);
-    }
-  }
-  if (!inputBoxes.length) {
-    return;
-  }
-  const identities = ["2fa", "otp", "authenticator", "factor", "code", "totp", "twoFactorCode"];
-  for (const inputBox of inputBoxes) {
-    for (const identity of identities) {
-      if (inputBox.name.toLowerCase().indexOf(identity) >= 0 || inputBox.id.toLowerCase().indexOf(identity) >= 0) {
-        if (!inputBox.value || /^(\d{6}|\d{8})$/.test(inputBox.value)) {
-          inputBox.value = code;
-          fireInputEvents(inputBox);
-        }
-        return;
-      }
-    }
-  }
-
-  const activeInputBox =
-    document.activeElement && document.activeElement.tagName === "INPUT" ? document.activeElement : null;
-  if (activeInputBox) {
-    const inputBox = activeInputBox as HTMLInputElement;
-    if (!inputBox.value || /^(\d{6}|\d{8})$/.test(inputBox.value)) {
-      inputBox.value = code;
-      fireInputEvents(inputBox);
-    }
-    return;
-  }
-
-  for (const inputBox of inputBoxes) {
-    if ((!inputBox.value || /^(\d{6}|\d{8})$/.test(inputBox.value)) && inputBox.type !== "password") {
-      inputBox.value = code;
-      fireInputEvents(inputBox);
-      return;
-    }
-  }
-  return;
-}
-
-function fireInputEvents(inputBox: HTMLInputElement) {
-  const events = [
-    new KeyboardEvent("keydown"),
-    new KeyboardEvent("keyup"),
-    new KeyboardEvent("keypress"),
-    new Event("input", { bubbles: true }),
-    new Event("change", { bubbles: true }),
-  ];
-  for (const event of events) {
-    inputBox.dispatchEvent(event);
-  }
-  return;
 }
 
 window.onkeydown = (event: KeyboardEvent) => {

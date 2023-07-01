@@ -15,14 +15,19 @@ import EntriesContext from "@src/contexts/Entries";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
-export const captureQRCode = async () => {
-  return new Promise((resolve) => {
+import DialogCaptureQRCode from "./DialogCaptureQRCode";
+
+export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
+  return new Promise((resolve, reject) => {
     sendMessageToBackground({
       message: { type: "captureQR", data: null },
       handleSuccess: (result) => {
         if (result === "received") {
           resolve(result);
           window.close();
+        } else {
+          setCaptureQRError((prevState) => !prevState);
+          reject(result);
         }
       },
     });
@@ -47,6 +52,7 @@ export default function ButtonAppBar({
   const [isEntriesEdit, setEntriesEdited] = useState(false);
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
   const { onSaveEdited, setOnSaveEdited } = useContext(EntriesContext);
+  const [captureQRError, setCaptureQRError] = useState<boolean>(undefined);
 
   return (
     <>
@@ -115,7 +121,12 @@ export default function ButtonAppBar({
               </>
             ) : (
               <>
-                <IconButton size="small" color="inherit" aria-label="Scan QR" onClick={() => captureQRCode()}>
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  aria-label="Scan QR"
+                  onClick={() => captureQRCode(setCaptureQRError)}
+                >
                   <QrCodeScannerIcon sx={defaultIconSize} />
                 </IconButton>
                 <IconButton
@@ -134,6 +145,7 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <Offset />
+      <DialogCaptureQRCode open={captureQRError} setOpen={setCaptureQRError} />
       <AddEntryMenu
         isAddEntryMenuOpen={isAddEntryMenuOpen}
         setAddEntryMenuOpen={setAddEntryMenuOpen}
