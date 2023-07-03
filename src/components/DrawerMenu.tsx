@@ -121,12 +121,16 @@ export default function DrawerMenu({
             disablePadding
             onClick={() => {
               const windowType = "panel";
-              chrome.windows.create({
-                url: chrome.runtime.getURL(`${DEFAULT_POPUP_URL}?popup=true`),
-                type: windowType,
-                height: window.innerHeight,
-                width: window.innerWidth,
-              });
+              chrome.windows
+                .create({
+                  url: chrome.runtime.getURL(`${DEFAULT_POPUP_URL}?popup=true`),
+                  type: windowType,
+                  height: window.innerHeight + 40,
+                  width: window.innerWidth,
+                })
+                .then(() => {
+                  window.close();
+                });
             }}
           >
             <ListItemButton dense={true}>
