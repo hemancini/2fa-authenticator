@@ -2,7 +2,7 @@ import LockClockIcon from "@mui/icons-material/LockClock";
 import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
-import DrawerMenu from "@mui/material/Drawer";
+import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -42,7 +42,7 @@ const ListItemButtonRoute = ({
   );
 };
 
-export default function TemporaryDrawer({
+export default function DrawerMenu({
   draweOpen,
   setDrawerOpen,
 }: {
@@ -53,7 +53,7 @@ export default function TemporaryDrawer({
     setDrawerOpen(false);
   };
   return (
-    <DrawerMenu anchor={anchor} open={draweOpen} onClose={() => setDrawerOpen(false)}>
+    <Drawer anchor={anchor} open={draweOpen} onClose={() => setDrawerOpen(false)}>
       <Offset />
       <List>
         <Divider />
@@ -97,6 +97,6 @@ export default function TemporaryDrawer({
           version: {packageJson.version}
         </Typography>
       </List>
-    </DrawerMenu>
+    </Drawer>
   );
 }
