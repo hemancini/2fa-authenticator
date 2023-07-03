@@ -18,7 +18,6 @@ export default function ToggleThemeMode() {
     <ToggleButtonGroup
       fullWidth
       exclusive
-      size="small"
       color="primary"
       value={themeMode}
       aria-label="theme mode"

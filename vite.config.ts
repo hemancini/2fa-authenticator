@@ -54,6 +54,7 @@ export default defineConfig({
     },
   ],
   define: {
+    DEFAULT_POPUP_URL: JSON.stringify(`/${manifest.action.default_popup}`),
     DEFAULT_COLOR: JSON.stringify("#619f04"),
     DEFAULT_MODE: JSON.stringify("system"),
     DEFAULT_COLORS: JSON.stringify([

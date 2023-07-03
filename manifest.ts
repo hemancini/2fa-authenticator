@@ -9,6 +9,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   default_locale: "es",
   version: packageJson.version,
   description: "__MSG_extensionDescription__",
+  homepage_url: "https://github.com/hemancini",
   options_page: "src/pages/options/index.html",
   permissions: ["tabs", "activeTab", "storage", "identity", "scripting"],
   background: {

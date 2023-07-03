@@ -1,15 +1,13 @@
 import "@pages/popup/Popup.css";
 
 import AppBar from "@components/AppBar";
-import DrawerMenu from "@src/components/DrawerMenu";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
+import DrawerMenu from "@src/components/DrawerMenu";
 import { EntriesProvider } from "@src/contexts/Entries";
 import { OptionsProvider } from "@src/contexts/Options";
 import { useState } from "react";
 import { Link, Redirect, Route, Router, Switch } from "wouter";
-
-const popupHomePage = "/src/pages/popup/index.html";
 
 const Popup = () => {
   const [draweOpen, setDrawerOpen] = useState(false);
@@ -18,15 +16,13 @@ const Popup = () => {
     <OptionsProvider>
       <EntriesProvider>
         <Router>
-          <header>
-            <AppBar {...{ draweOpen, setDrawerOpen }} />
-            <DrawerMenu {...{ draweOpen, setDrawerOpen }} />
-          </header>
+          <AppBar {...{ draweOpen, setDrawerOpen }} />
+          <DrawerMenu {...{ draweOpen, setDrawerOpen }} />
           <Switch>
             <Route path="/">
-              <Redirect to={popupHomePage} />
+              <Redirect to={DEFAULT_POPUP_URL} />
             </Route>
-            <Route path={popupHomePage}>
+            <Route path={DEFAULT_POPUP_URL}>
               <Entries />
             </Route>
             <Route path="/entries/edit">

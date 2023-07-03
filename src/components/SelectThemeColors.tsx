@@ -30,7 +30,7 @@ export default function SelectThemeColors() {
   };
 
   return (
-    <Box display="flex" minWidth={185} mt={1.8}>
+    <Box display="flex" minWidth={150} mt={1.8}>
       <FormControl fullWidth sx={{ m: 1 }}>
         <InputLabel>Color</InputLabel>
         <Select

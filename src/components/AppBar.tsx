@@ -8,7 +8,6 @@ import { Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
@@ -16,6 +15,7 @@ import { useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
+import ToolbarOffset from "./ToolbarOffset";
 
 export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
   return new Promise((resolve, reject) => {
@@ -35,13 +35,7 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
   });
 };
 
-const toolbarMinHeight = 45;
 const defaultIconSize = { fontSize: 20 };
-
-const Offset = styled("div")(({ theme }) => {
-  theme.mixins.toolbar.minHeight = toolbarMinHeight;
-  return theme.mixins.toolbar;
-});
 
 export default function ButtonAppBar({
   draweOpen,
@@ -58,7 +52,7 @@ export default function ButtonAppBar({
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
-        <Toolbar disableGutters sx={{ display: "flex", px: 1, minHeight: toolbarMinHeight }}>
+        <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 22 }}>
             {!isEntriesEdit && (
               <IconButton
@@ -67,16 +61,6 @@ export default function ButtonAppBar({
                 color="inherit"
                 aria-label="menu"
                 onClick={() => setDrawerOpen(!draweOpen)}
-              // onClick={() => {
-              //   const windowType = "panel";
-              //   chrome.windows.create({
-              //     // url: chrome.extension.getURL("view/popup.html?popup=true"),
-              //     url: "chrome-extension://nhcbljmllcdhpfbagjcjnhhmpbedhpeg/src/pages/popup/index.html?popup=false",
-              //     type: windowType,
-              //     height: window.innerHeight,
-              //     width: window.innerWidth,
-              //   });
-              // }}
               >
                 <MenuIcon />
               </IconButton>
@@ -87,8 +71,7 @@ export default function ButtonAppBar({
             sx={{
               fontSize: 17,
               fontWeight: "bold",
-              // color: (theme) =>
-              //   theme.palette.mode === "dark" ? theme.palette.primary.dark : theme.palette.primary.light,
+              // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
             }}
           >
             Authenticator
@@ -148,7 +131,7 @@ export default function ButtonAppBar({
           </Box>
         </Toolbar>
       </AppBar>
-      <Offset />
+      <ToolbarOffset />
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
       <AddEntryMenu
         isAddEntryMenuOpen={isAddEntryMenuOpen}

@@ -7,7 +7,7 @@ import { useContext, useMemo } from "react";
 export default function Entries() {
   const { entries, setEntries } = useContext(EntriesContext);
   return (
-    <Container sx={{ py: 0.5, pt: 0.2 }}>
+    <Container component="main" sx={{ py: 0.7 }}>
       <Reorder.Group axis="y" values={entries} onReorder={setEntries}>
         {useMemo(
           () =>
