@@ -1,8 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
+import type { PluginOption } from "vite";
+
 import colorLog from "../log";
 import ManifestParser from "../manifest-parser";
-import type { PluginOption } from "vite";
 
 const { resolve } = path;
 
@@ -22,16 +23,11 @@ export default function makeManifest(
     // Naming change for cache invalidation
     if (config.contentScriptCssKey) {
       manifest.content_scripts.forEach((script) => {
-        script.css = script.css.map((css) =>
-          css.replace("<KEY>", config.contentScriptCssKey)
-        );
+        script.css = script.css.map((css) => css.replace("<KEY>", config.contentScriptCssKey));
       });
     }
 
-    fs.writeFileSync(
-      manifestPath,
-      ManifestParser.convertManifestToString(manifest)
-    );
+    fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));
 
     colorLog(`Manifest file copy complete: ${manifestPath}`, "success");
   }

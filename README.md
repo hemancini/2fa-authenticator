@@ -15,14 +15,14 @@
   - [ ] manual input
   - [X] otp uri
   - [ ] image file
-  - [ ] show success message
+  - [X] show success message
 - [ ] **control errors**
-  - [ ] scan QR code
+  - [X] scan QR code
 - [X] i18n
   - [X] spanish
   - [X] english
 - [ ] options
-  - [ ] themes
+  - [X] themes
     - [X] dark mode
   - [ ] autofill
   - [ ] entrust bypass

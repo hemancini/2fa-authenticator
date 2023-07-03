@@ -2,7 +2,7 @@
 
 import { OTPEntry } from "@src/models/otp";
 import { EntryStorage } from "@src/models/storage";
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 const Context = createContext({
   second: 0,
@@ -46,7 +46,6 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
       (entry) => !entriesEdited.some((entryEdit) => entryEdit.hash === entry.hash)
     );
     if (entriesToRemove.length > 0) {
-      console.log("entriesToRemove:", JSON.stringify(entriesToRemove, null, 2));
       await Promise.all(
         entriesToRemove.map(async (entry) => {
           await EntryStorage.remove(entry.hash);
@@ -96,8 +95,8 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   return (
     <Context.Provider
       value={{
-        entries,
         second,
+        entries,
         setEntries,
         onSaveEdited,
         entriesEdited,

@@ -5,7 +5,7 @@ import { Options } from "@src/models/options";
 import { createContext, ReactNode, useMemo, useState } from "react";
 
 const OptionsContext = createContext({
-  toggleColorMode: (mode: ThemeMode) => void 0,
+  toggleThemeMode: (mode: ThemeMode) => void 0,
   toggleThemeColor: (color: DefaultColorHexes) => void 0,
   defaultColor: DEFAULT_COLOR as DefaultColorHexes,
   defaultMode: DEFAULT_MODE as ThemeMode,
@@ -17,14 +17,14 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
 
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: (mode?: ThemeMode) => {
-        setOptions((prevMode: any) => ({
+      toggleThemeMode: (mode?: ThemeMode) => {
+        setOptions((prevMode: React.SetStateAction<any>) => ({
           ...prevMode,
           themeMode: mode,
         }));
       },
-      toggleThemeColor: (color: any) => {
-        setOptions((prevColor) => ({
+      toggleThemeColor: (color: DefaultColorHexes) => {
+        setOptions((prevColor: React.SetStateAction<any>) => ({
           ...prevColor,
           themeColor: color,
         }));
@@ -47,6 +47,7 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
     const isDarkMode = themeMode === "dark" || (themeMode === DEFAULT_MODE && prefersDarkMode);
 
     return createTheme({
+      // spacing: [5, 7],
       palette: {
         mode: isDarkMode ? "dark" : "light",
         primary: { main: options?.themeColor || DEFAULT_COLOR },

@@ -6,7 +6,7 @@ type DefaultColor = "#619f04";
 type ThemeMode = "dark" | "light" | "system";
 
 type DefaultColors = [
-  { name: "Green"; hex: typeof DefaultColor },
+  { name: "Green"; hex: "#619f04" },
   { name: "Orange"; hex: "#ed6c02" },
   { name: "Purple"; hex: "#9c27b0" },
   { name: "Deep Purple"; hex: "#673ab7" },

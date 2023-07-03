@@ -15,7 +15,7 @@ import EntriesContext from "@src/contexts/Entries";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
-import DialogCaptureQRCode from "./DialogCaptureQRCode";
+import DialogCaptureQR from "./DialogCaptureQR";
 
 export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
   return new Promise((resolve, reject) => {
@@ -25,10 +25,11 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
         if (result === "received") {
           resolve(result);
           window.close();
-        } else {
-          setCaptureQRError((prevState) => !prevState);
-          reject(result);
         }
+      },
+      handleError: (error) => {
+        setCaptureQRError((prevState) => !prevState);
+        reject(error);
       },
     });
   });
@@ -148,7 +149,7 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <Offset />
-      <DialogCaptureQRCode open={captureQRError} setOpen={setCaptureQRError} />
+      <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
       <AddEntryMenu
         isAddEntryMenuOpen={isAddEntryMenuOpen}
         setAddEntryMenuOpen={setAddEntryMenuOpen}

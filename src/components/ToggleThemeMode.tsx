@@ -7,11 +7,11 @@ import OptionsProvider from "@src/contexts/Options";
 import React, { useContext } from "react";
 
 export default function ToggleThemeMode() {
-  const { toggleColorMode, defaultMode } = useContext(OptionsProvider);
+  const { toggleThemeMode, defaultMode } = useContext(OptionsProvider);
   const themeMode: ThemeMode = defaultMode;
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, themeMode: ThemeMode) => {
-    toggleColorMode(themeMode);
+    toggleThemeMode(themeMode);
   };
 
   return (

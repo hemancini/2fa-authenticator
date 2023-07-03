@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { t } from "@src/chrome/i18n";
 import * as React from "react";
 
-export default function AlertDialog({
+export default function DialogCaptureQR({
   open,
   setOpen,
 }: {

@@ -1,33 +1,17 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import { styled } from "@mui/material/styles";
 import { OTPEntry } from "@src/models/otp";
 import { QRCodeSVG } from "qrcode.react";
 import * as React from "react";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
-
-export interface DialogTitleProps {
-  id: string;
-  children?: React.ReactNode;
-  onClose: () => void;
-}
-
-export default function CustomizedDialogs({
+export default function DialogQR({
   open,
   setOpen,
   entry,
 }: {
   open: boolean;
-  entry: OTPEntry;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  entry: OTPEntry;
 }) {
   const defaultSize = 200;
   const issuer = entry.issuer;
@@ -39,12 +23,16 @@ export default function CustomizedDialogs({
   };
 
   return (
-    <BootstrapDialog onClose={handleClose} open={open}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      sx={{ "& .MuiDialogContent-root": { p: 2, pb: 1.2, background: "#ffffff" } }}
+    >
       <DialogContent>
-        {issuer && secret && account && (
+        {issuer && account && secret && (
           <QRCodeSVG value={`otpauth://totp/${issuer}@${account}?secret=${secret}`} size={defaultSize} />
         )}
       </DialogContent>
-    </BootstrapDialog>
+    </Dialog>
   );
 }

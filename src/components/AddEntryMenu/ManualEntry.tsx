@@ -86,4 +86,4 @@ export default function ManualEntry(props: AddEntryProps) {
       </Box>
     </Box>
   );
-};
+}

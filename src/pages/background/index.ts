@@ -1,7 +1,5 @@
-import { t } from "@src/chrome/i18n";
-import { sendMessageToClient } from "@src/chrome/message";
+import { sendErrorMessageToClient, sendMessageToClient } from "@src/chrome/message";
 import { Encryption } from "@src/models/encryption";
-// import { getOTPAuthPerLineFromOPTAuthMigration } from "@src/models/migration";
 import { EntryStorage } from "@src/models/storage";
 import uuid from "uuid/v4";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
@@ -21,14 +19,13 @@ chrome.runtime.onConnect.addListener((port) => {
     console.log("Port disconnected");
   });
   port.onMessage.addListener(async (message: Message) => {
-    console.log("onMessage() => type:", message.type, "- data:", JSON.stringify(message.data));
     try {
       switch (message.type) {
         case "captureQR":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
             if (!tab?.[0]?.id) {
               console.warn("captureQR: No active tab found");
-              return;
+              throw new Error("No active tab found");
             }
             await chrome.scripting.executeScript({
               target: { tabId: tab?.[0].id, allFrames: true },
@@ -38,7 +35,7 @@ chrome.runtime.onConnect.addListener((port) => {
               files: ["/assets/css/contentCapture.chunk.css"],
               target: { tabId: tab?.[0].id },
             });
-            await chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
+            chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
             sendMessageToClient(port, {
               type: message.type,
               data: "received",
@@ -49,20 +46,23 @@ chrome.runtime.onConnect.addListener((port) => {
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
             if (!tab?.[0]?.id) {
               console.warn("getCapture: No active tab found");
-              return;
+              throw new Error("No active tab found");
             }
             const url = await getCapture(tab?.[0]);
-            const messagge = { type: "sendCaptureUrl", data: { ...message.data, url } };
-            chrome.tabs.sendMessage(tab?.[0]?.id, messagge);
+            sendMessageToClient(port, { type: "getCapture", data: { ...message.data, url } });
           });
           break;
         case "getTotp":
           {
             const entry = await getTotp(message.data);
-            sendMessageToClient(port, {
-              type: "getTotp",
-              data: entry,
-            });
+            if (entry instanceof Error) {
+              sendErrorMessageToClient(port, entry);
+            } else {
+              sendMessageToClient(port, {
+                type: "getTotp",
+                data: entry,
+              });
+            }
           }
           break;
         default:
@@ -70,6 +70,7 @@ chrome.runtime.onConnect.addListener((port) => {
       }
     } catch (error) {
       console.warn(error);
+      sendErrorMessageToClient(port, error);
     }
   });
 });
@@ -85,7 +86,7 @@ async function getTotp(message: { url: string; site: string }) {
 
   if (!regexTotp.test(url)) {
     console.warn("getTotp() => bad url", url);
-    return false;
+    return Error("Bad url");
   }
 
   const hash = await uuid();
@@ -120,20 +121,20 @@ async function getTotp(message: { url: string; site: string }) {
     entryData[hash].account = match[1];
     if (!match?.[1]) {
       console.warn("getTotp() => no account", url);
-      return false;
+      return Error("No account");
     }
   }
 
   if (!entryData[hash].secret) {
     console.warn("getTotp() => no secret", url);
-    return false;
+    return Error("No secret");
   }
 
   // If the entries are encrypted and we aren't unlocked, error.
   const encryption = new Encryption(cachedPassphrase);
   if ((await EntryStorage.hasEncryptionKey()) !== encryption.getEncryptionStatus()) {
     console.warn("getTotp() => encryption status mismatch");
-    return false;
+    return Error("Encryption status mismatch");
   }
 
   await EntryStorage.import(encryption, entryData);

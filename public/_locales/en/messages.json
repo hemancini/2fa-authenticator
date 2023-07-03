@@ -1,6 +1,6 @@
 {
   "extensionName": {
-    "message": "TOTP Authenticator"
+    "message": "AAA Authenticator"
   },
   "extensionDescription": {
     "message": "This extension provides TOTP authentication for websites."

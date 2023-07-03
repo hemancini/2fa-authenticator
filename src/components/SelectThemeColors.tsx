@@ -25,7 +25,7 @@ export default function SelectThemeColors() {
   const { toggleThemeColor, defaultColor } = React.useContext(OptionsProvider);
 
   const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {
-    const colorSelected = event.target.value;
+    const colorSelected = event.target.value as DefaultColorHexes;
     toggleThemeColor(colorSelected);
   };
 

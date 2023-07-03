@@ -5,26 +5,13 @@ import { OTPEntry } from "@src/models/otp";
 import jsQR from "jsqr";
 
 if (!document.getElementById("__ga_grayLayout__")) {
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((message: Message) => {
     switch (message.type) {
       case "capture":
-        sendResponse("beginCapture");
         showGrayLayout();
         break;
-      case "sendCaptureUrl":
-        {
-          const { data } = message;
-          qrDecode(data.url, data.captureBoxLeft, data.captureBoxTop, data.captureBoxWidth, data.captureBoxHeight);
-        }
-        break;
-      case "errorsecret":
-        alert(chrome.i18n.getMessage("errorsecret") + message.secret);
-        break;
-      case "errorenc":
-        alert(chrome.i18n.getMessage("phrase_incorrect"));
-        break;
       default:
-        console.warn("capture.ts: Unknown message action", message.action);
+        console.warn("capture.ts: Unknown message type", message.type);
         break;
     }
   });
@@ -146,8 +133,9 @@ function grayLayoutUp(event: MouseEvent) {
             captureBoxHeight,
           },
         },
-        handleSuccess: (result) => {
-          resolve(result);
+        handleSuccess: (data: any) => {
+          qrDecode(data.url, data.captureBoxLeft, data.captureBoxTop, data.captureBoxWidth, data.captureBoxHeight);
+          resolve(data);
         },
       });
     });
@@ -183,7 +171,8 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
       }
 
       const qrRes = jsQrCode.data;
-      return new Promise((resolve) => {
+
+      return new Promise((resolve, reject) => {
         sendMessageToBackground({
           message: {
             type: "getTotp",
@@ -191,8 +180,12 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
           },
           handleSuccess: (result: OTPEntry) => {
             const alertResp = t("addAccountSuccess", result.account);
-            alert(alertResp);
             resolve(result);
+            alert(alertResp);
+          },
+          handleError: (error: Error) => {
+            reject(error);
+            alert(error.name + " - " + error.message);
           },
         });
       });

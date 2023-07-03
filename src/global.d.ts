@@ -43,17 +43,11 @@ declare module "*.json" {
 
 declare global {
   type ErrorMessage = {
-    type: "Error";
-    input?: never;
+    type: "error";
     error: Error;
   };
-  type Message =
-    | {
-        type: "error";
-        data: Error;
-      }
-    | {
-        type: "error" | "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
-        data: any;
-      };
+  type Message = {
+    type: "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
+    data: any;
+  };
 }

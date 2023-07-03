@@ -86,7 +86,16 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ px: 1, mx: 1, py: 3, display: "grid", direction: "column", gap: 3 }}>
+      <DialogContent
+        sx={{
+          py: 3,
+          px: { xs: 1, md: 3 },
+          mx: { xs: 1, md: 3 },
+          display: "grid",
+          direction: "column",
+          gap: 3,
+        }}
+      >
         {manualEntryOptions === "TOTP" ? (
           <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : manualEntryOptions === "MANUAL" ? (

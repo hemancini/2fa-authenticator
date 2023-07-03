@@ -1,7 +1,7 @@
 import "@pages/popup/Popup.css";
 
 import AppBar from "@components/AppBar";
-import Drawer from "@components/Drawer";
+import DrawerMenu from "@src/components/DrawerMenu";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import { EntriesProvider } from "@src/contexts/Entries";
@@ -20,7 +20,7 @@ const Popup = () => {
         <Router>
           <header>
             <AppBar {...{ draweOpen, setDrawerOpen }} />
-            <Drawer {...{ draweOpen, setDrawerOpen }} />
+            <DrawerMenu {...{ draweOpen, setDrawerOpen }} />
           </header>
           <Switch>
             <Route path="/">
