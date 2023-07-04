@@ -2,42 +2,34 @@
 
 import { OTPEntry } from "@src/models/otp";
 import { EntryStorage } from "@src/models/storage";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 const Context = createContext({
   second: 0,
   entries: [],
   entriesEdited: [],
-  onSaveEdited: false,
-  setEntries: (entries: OTPEntry[]) => {},
-  updateEntriesState: (source: string) => {},
-  setEntriesEdited: (entries: OTPEntry[]) => {},
-  setOnSaveEdited: (onSaveEdited: boolean) => {},
+  setEntries: (entries: OTPEntry[]) => { },
+  setEntriesEdited: (entries: OTPEntry[]) => { },
+  handleEntriesEdited: () => { },
+  handleEntriesUpdate: () => { },
 });
 
 export function EntriesProvider({ children }: { children: React.ReactNode }) {
-  const [onSaveEdited, setOnSaveEdited] = useState<undefined | boolean>(undefined);
+  const [second, setSecond] = useState<number>(new Date().getSeconds());
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
 
-  const [second, setSecond] = useState<number>(new Date().getSeconds());
-  const [period, setPeriod] = useState<undefined | number>(undefined);
-
   const updateCodes = () => {
-    if (period === undefined && entries.length > 0) {
-      const minPeriod = entries.reduce((period, entry) => {
-        const añoNacimiento = entry.period;
-        return añoNacimiento < period ? añoNacimiento : period;
-      }, Infinity);
-      setPeriod(minPeriod || 30);
-    }
-
-    const discount = period - (second % period);
-    if (discount === 1 || (isNaN(discount) && /^(60|30|1)$/.test(String(second)))) {
-      setTimeout(() => {
-        updateEntriesState("popup");
-      }, 1000);
-    }
+    const getAllPeriods = entries.map((entry) => entry.period);
+    const periods = [...new Set(getAllPeriods)];
+    periods.map((period) => {
+      const discount = period - (second % period);
+      if (discount === 1) {
+        setTimeout(() => {
+          updateEntriesState("popup");
+        }, 1000);
+      }
+    });
   };
 
   const removeEntries = async (entriesEdited: OTPEntry[]) => {
@@ -65,7 +57,6 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
       setEntries(entries);
       setEntriesEdited(entries);
     }
-    setPeriod(undefined);
     return entries;
   };
 
@@ -81,28 +72,30 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timer);
   }, [second]);
 
-  useEffect(() => {
-    if (onSaveEdited !== undefined) {
-      const entriesSorted = entriesEdited.map((entry, index) => ({ ...entry, index })) as OTPEntry[];
-      (async () => {
-        await EntryStorage.set(entriesSorted);
-        await removeEntries(entriesSorted);
+  const handlers = useMemo(
+    () => ({
+      handleEntriesEdited: () => {
+        const entriesSorted = entriesEdited.map((entry, index) => ({ ...entry, index })) as OTPEntry[];
+        (async () => {
+          await EntryStorage.set(entriesSorted);
+          await removeEntries(entriesSorted);
+          await updateEntriesState("all");
+        })();
+      },
+      handleEntriesUpdate: async () => {
         await updateEntriesState("all");
-      })();
-    }
-  }, [onSaveEdited]);
+      },
+    }),
+    [entriesEdited]
+  );
 
   return (
     <Context.Provider
       value={{
         second,
-        entries,
-        setEntries,
-        onSaveEdited,
-        entriesEdited,
-        setOnSaveEdited,
-        setEntriesEdited,
-        updateEntriesState,
+        ...handlers,
+        ...{ entries, setEntries },
+        ...{ entriesEdited, setEntriesEdited },
       }}
     >
       {children}

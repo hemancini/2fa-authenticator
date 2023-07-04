@@ -68,14 +68,16 @@ const ListItemButtonRoute = ({
   href,
   disabled,
   children,
+  hrefPopup,
 }: {
   href: string;
+  hrefPopup?: string;
   disabled?: boolean;
   children: React.ReactNode;
 }) => {
   const [isActive] = useRoute(href);
   return (
-    <ListItemButton disabled={disabled} component={Link} href={href} selected={isActive} dense={true}>
+    <ListItemButton disabled={disabled} component={Link} href={hrefPopup || href} selected={isActive} dense={true}>
       {children}
     </ListItemButton>
   );
@@ -90,9 +92,28 @@ export default function DrawerMenu({
 }) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.up("sm"));
+
   const handleClose = () => {
     setDrawerOpen(false);
   };
+
+  const handleOpenPopup = () => {
+    const windowType = "panel";
+    chrome.windows
+      .create({
+        url: chrome.runtime.getURL(`${DEFAULT_POPUP_URL}?popup=true`),
+        type: windowType,
+        height: window.innerHeight + 40,
+        width: window.innerWidth,
+      })
+      .then(() => {
+        window.close();
+      });
+  };
+
+  const urlObj = new URL(decodeURIComponent(window.location.href));
+  const isPopup = urlObj.searchParams.get("popup") === "true";
+
   return (
     <Drawer
       anchor={anchor}
@@ -103,41 +124,34 @@ export default function DrawerMenu({
       <ToolbarOffset />
       <List>
         <Divider />
-        {routes.map((route, index) => (
-          <>
-            <ListItem key={index} disablePadding onClick={!route.disabled && handleClose}>
-              <ListItemButtonRoute href={route.path} disabled={route.disabled}>
-                <ListItemIcon sx={{ minWidth: "auto", mr: 2, "& .MuiSvgIcon-root": { fontSize: 22 } }}>
-                  {route.icon}
-                </ListItemIcon>
-                <ListItemText primary={route.name} />
-              </ListItemButtonRoute>
-            </ListItem>
-            <Divider />
-          </>
-        ))}
+        {routes.map((route, index) => {
+          const hrefPopup =
+            isPopup && route.path === DEFAULT_POPUP_URL ? `${DEFAULT_POPUP_URL}?popup=true` : route.path;
+          return (
+            <>
+              <ListItem key={index} disablePadding onClick={!route.disabled && handleClose}>
+                <ListItemButtonRoute
+                  href={route.path}
+                  disabled={route.disabled}
+                  hrefPopup={hrefPopup.includes("?popup=true") && hrefPopup}
+                >
+                  <ListItemIcon sx={{ minWidth: "auto", mr: 2, "& .MuiSvgIcon-root": { fontSize: 22 } }}>
+                    {route.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={route.name} />
+                </ListItemButtonRoute>
+              </ListItem>
+              <Divider />
+            </>
+          );
+        })}
         <>
-          <ListItem
-            disablePadding
-            onClick={() => {
-              const windowType = "panel";
-              chrome.windows
-                .create({
-                  url: chrome.runtime.getURL(`${DEFAULT_POPUP_URL}?popup=true`),
-                  type: windowType,
-                  height: window.innerHeight + 40,
-                  width: window.innerWidth,
-                })
-                .then(() => {
-                  window.close();
-                });
-            }}
-          >
-            <ListItemButton dense={true}>
-              <ListItemIcon sx={{ minWidth: "auto", mr: 2, "& .MuiSvgIcon-root": { fontSize: 22 } }}>
+          <ListItem disablePadding onClick={!isPopup && handleOpenPopup}>
+            <ListItemButton disabled={isPopup} dense={true}>
+              <ListItemIcon sx={{ minWidth: "auto", ml: 0.2, mr: 2, "& .MuiSvgIcon-root": { fontSize: 20 } }}>
                 <OpenInNewIcon />
               </ListItemIcon>
-              <ListItemText primary={"Poup"} />
+              <ListItemText primary={"Popup"} />
             </ListItemButton>
           </ListItem>
           <Divider />

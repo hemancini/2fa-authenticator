@@ -1,7 +1,7 @@
 import * as uuid from "uuid/v4";
 
 import { Encryption } from "./encryption";
-import { CodeState, OTPAlgorithm, OTPEntry, OTPType } from "./otp";
+import { OTPAlgorithm, OTPEntry, OTPType } from "./otp";
 
 let LocalStorage: {
   [key: string]: any;
@@ -78,7 +78,6 @@ export class BrowserStorage {
     }
 
     removeKey(items);
-
     return items;
   }
 
@@ -227,113 +226,22 @@ export class EntryStorage {
   }
 
   private static isOTPStorage(entry: unknown) {
-    if (typeof entry !== "object") {
-      return false;
-    }
-
-    if (!entry || !Object.prototype.hasOwnProperty.hasOwnProperty.call(entry, "secret")) {
-      return false;
-    }
-
-    return true;
+    return entry && Object.prototype.hasOwnProperty.call(entry, "secret");
   }
 
   private static isValidEntry(_data: { [hash: string]: OTPStorage }, hash: string) {
-    if (typeof _data[hash] !== "object") {
+    const data = _data[hash];
+    if (typeof data !== "object") {
       console.log('Key "' + hash + '" is not an object');
       return false;
-    } else {
-      if (!this.isOTPStorage(_data[hash])) {
-        console.log('Key "' + hash + '" is not OTPStorage');
-        return false;
-      }
-      return true;
+    } else if (!this.isOTPStorage(data)) {
+      return false;
     }
+    return true;
   }
 
   static async hasEncryptionKey(): Promise<boolean> {
     return Boolean(await BrowserStorage.getKey());
-  }
-
-  static getExport(data: OTPEntryInterface[], encrypted?: boolean) {
-    try {
-      const exportData: { [hash: string]: OTPStorage } = {};
-      for (const entry of data) {
-        // Skip unable-decrypted data
-        if (entry.code === CodeState.Encrypted) {
-          continue;
-        }
-
-        if (!encrypted) {
-          if (!entry.secret) {
-            // Not unencrypted
-          } else {
-            exportData[entry.hash] = this.getOTPStorageFromEntry(entry as OTPEntry, true);
-          }
-        } else {
-          exportData[entry.hash] = this.getOTPStorageFromEntry(entry as OTPEntry);
-        }
-      }
-      return exportData;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  static async backupGetExport(encryption: Encryption, encrypted?: boolean) {
-    const _data = await BrowserStorage.get();
-    for (const hash of Object.keys(_data)) {
-      if (!this.isValidEntry(_data, hash)) {
-        delete _data[hash];
-        continue;
-      }
-      // remove unnecessary fields
-      if (!(_data[hash].type === OTPType[OTPType.hotp]) && !(_data[hash].type === OTPType[OTPType.hhex])) {
-        delete _data[hash].counter;
-      }
-
-      if (_data[hash].period === 30) {
-        delete _data[hash].period;
-      }
-
-      if (!_data[hash].issuer) {
-        delete _data[hash].issuer;
-      }
-
-      if (!_data[hash].account) {
-        delete _data[hash].account;
-      }
-
-      if (_data[hash].digits === 6) {
-        delete _data[hash].digits;
-      }
-
-      if (_data[hash].algorithm === OTPAlgorithm[OTPAlgorithm.SHA1]) {
-        delete _data[hash].algorithm;
-      }
-
-      delete _data[hash].pinned;
-
-      if (!encrypted) {
-        // decrypt the data to export
-        if (_data[hash].encrypted) {
-          const decryptedSecret = encryption.getDecryptedSecret(_data[hash]);
-          if (decryptedSecret !== _data[hash].secret && decryptedSecret !== null) {
-            _data[hash].secret = decryptedSecret;
-            _data[hash].encrypted = false;
-          }
-        }
-        // we need correct hash
-        if (hash !== _data[hash].hash) {
-          _data[_data[hash].hash] = _data[hash];
-          delete _data[hash];
-        }
-      }
-    }
-    if (encryption.getEncryptionStatus()) {
-      Object.assign(_data, { key: await BrowserStorage.getKey() });
-    }
-    return _data;
   }
 
   static async import(encryption: Encryption, data: { [hash: string]: OTPStorage }) {
@@ -438,9 +346,6 @@ export class EntryStorage {
     const storageItem = this.getOTPStorageFromEntry(entry);
     _data[entry.hash] = storageItem;
     _data = this.ensureUniqueIndex(_data);
-    Object.values(_data).map((entry) => {
-      console.log("update() =>", entry.issuer, entry.account);
-    });
     await BrowserStorage.set(_data);
   }
 
@@ -451,9 +356,6 @@ export class EntryStorage {
       _data[entry.hash] = storageItem;
     });
     _data = this.ensureUniqueIndex(_data);
-    Object.values(_data).map((entry) => {
-      console.log("set() =>", entry.issuer, entry.account);
-    });
     await BrowserStorage.set(_data);
   }
 

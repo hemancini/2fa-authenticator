@@ -6,11 +6,11 @@ import Button from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
 import React from "react";
 
-interface OptionsProps {
+interface AddOptionsProps {
   setManualEntryOptions: React.Dispatch<React.SetStateAction<"" | "TOTP" | "MANUAL">>;
 }
 
-export default function Options(options: OptionsProps) {
+export default function AddOptions(options: AddOptionsProps) {
   const { setManualEntryOptions } = options;
   return (
     <>
@@ -18,9 +18,10 @@ export default function Options(options: OptionsProps) {
         {t("scanQRCode")}
       </Button>
       <Button
-        startIcon={<KeyboardIcon />}
+        disabled
         fullWidth
         variant="contained"
+        startIcon={<KeyboardIcon />}
         onClick={() => setManualEntryOptions("MANUAL")}
       >
         {t("manualEntry")}

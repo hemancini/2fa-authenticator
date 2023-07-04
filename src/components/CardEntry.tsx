@@ -24,7 +24,7 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
 };
 
 export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
-  const { second, updateEntriesState } = useContext(EntriesContext);
+  const { second, handleEntriesUpdate } = useContext(EntriesContext);
 
   const period = entry?.period || 30;
 
@@ -72,7 +72,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                     entry.index = !entry.pinned ? -1 : entry.index;
                     entry.pinned = !entry.pinned;
                     await entry.update();
-                    updateEntriesState("all");
+                    await handleEntriesUpdate();
                   }}
                 >
                   <PushPinIcon

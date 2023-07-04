@@ -16,5 +16,3 @@
 utils/reload/*.js
 utils/reload/injections/*.js
 public/manifest.json
-
-SCR-20230626-58a.png

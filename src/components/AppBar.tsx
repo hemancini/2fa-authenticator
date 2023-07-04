@@ -11,11 +11,13 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
 import ToolbarOffset from "./ToolbarOffset";
+
+const defaultIconSize = { fontSize: 20 };
 
 export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
   return new Promise((resolve, reject) => {
@@ -35,7 +37,24 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
   });
 };
 
-const defaultIconSize = { fontSize: 20 };
+const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateAction<boolean>> }) => {
+  const { handleEntriesEdited } = useContext(EntriesContext);
+  return (
+    <IconButton
+      size="small"
+      color="inherit"
+      aria-label="Edit OK"
+      LinkComponent={Link}
+      href="/"
+      onClick={() => {
+        handleEntriesEdited();
+        setEntriesEdited(false);
+      }}
+    >
+      <DoneIcon sx={defaultIconSize} />
+    </IconButton>
+  );
+};
 
 export default function ButtonAppBar({
   draweOpen,
@@ -46,8 +65,10 @@ export default function ButtonAppBar({
 }) {
   const [isEntriesEdit, setEntriesEdited] = useState(false);
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
-  const { onSaveEdited, setOnSaveEdited } = useContext(EntriesContext);
   const [captureQRError, setCaptureQRError] = useState<boolean>(undefined);
+
+  const urlObj = new URL(decodeURIComponent(window.location.href));
+  const isPopup = urlObj.searchParams.get("popup") === "true";
 
   return (
     <>
@@ -89,55 +110,49 @@ export default function ButtonAppBar({
                 >
                   <AddIcon sx={defaultIconSize} />
                 </IconButton>
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  aria-label="Edit OK"
-                  LinkComponent={Link}
-                  href="/"
-                  onClick={() => {
-                    setOnSaveEdited(!onSaveEdited);
-                    setEntriesEdited(false);
-                  }}
-                >
-                  <DoneIcon sx={defaultIconSize} />
-                </IconButton>
+                <DoneButton setEntriesEdited={setEntriesEdited} />
               </>
             ) : (
-              <>
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  aria-label="Scan QR"
-                  onClick={() => captureQRCode(setCaptureQRError)}
-                >
-                  <QrCodeScannerIcon sx={defaultIconSize} />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  aria-label="Edit Entries"
-                  LinkComponent={Link}
-                  href="/entries/edit"
-                  onClick={() => {
-                    setDrawerOpen(false);
-                    setEntriesEdited(true);
-                  }}
-                >
-                  <EditIcon sx={defaultIconSize} />
-                </IconButton>
-              </>
+              <Box minWidth={30}>
+                {!isPopup && (
+                  <>
+                    <IconButton
+                      size="small"
+                      color="inherit"
+                      aria-label="Scan QR"
+                      onClick={() => captureQRCode(setCaptureQRError)}
+                    >
+                      <QrCodeScannerIcon sx={defaultIconSize} />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      color="inherit"
+                      aria-label="Edit Entries"
+                      LinkComponent={Link}
+                      href="/entries/edit"
+                      onClick={() => {
+                        setDrawerOpen(false);
+                        setEntriesEdited(true);
+                      }}
+                    >
+                      <EditIcon sx={defaultIconSize} />
+                    </IconButton>
+                  </>
+                )}
+              </Box>
             )}
           </Box>
         </Toolbar>
       </AppBar>
       <ToolbarOffset />
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      <AddEntryMenu
-        isAddEntryMenuOpen={isAddEntryMenuOpen}
-        setAddEntryMenuOpen={setAddEntryMenuOpen}
-        setEntriesEdited={setEntriesEdited}
-      />
+      {isEntriesEdit && (
+        <AddEntryMenu
+          isAddEntryMenuOpen={isAddEntryMenuOpen}
+          setAddEntryMenuOpen={setAddEntryMenuOpen}
+          setEntriesEdited={setEntriesEdited}
+        />
+      )}
     </>
   );
 }

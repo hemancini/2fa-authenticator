@@ -14,13 +14,8 @@ export interface AddEntryProps {
 
 export default function ManualTotpEntry(props: AddEntryProps) {
   const { handlerOnCandel, handlerGoToHome } = props;
-  const { updateEntriesState } = useContext(EntriesContext);
-  const [totp, setTopt] = useState(
-    ""
-    // `otpauth://totp/WOM:${Math.floor(10000 + Math.random() * 90000)}-${Math.floor(
-    //   10000 + Math.random() * 90000
-    // )}?secret=XL2P2GOOPTEI4HXL&issuer=WOM&period=30`
-  );
+  const { handleEntriesUpdate } = useContext(EntriesContext);
+  const [totp, setTopt] = useState("");
   const [entry, setEntry] = useState<Entry>();
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
 
@@ -67,7 +62,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
                   sendMessageToBackground({
                     message: { type: "getTotp", data: { url: totp } },
                     handleSuccess: (result) => {
-                      updateEntriesState("all");
+                      handleEntriesUpdate();
                       setEntry(result);
                       resolve(result);
                     },
