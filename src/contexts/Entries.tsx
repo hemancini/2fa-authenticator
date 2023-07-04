@@ -2,7 +2,7 @@
 
 import { OTPEntry } from "@src/models/otp";
 import { EntryStorage } from "@src/models/storage";
-import React, { createContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 const Context = createContext({
   second: 0,
@@ -19,7 +19,7 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
 
-  const updateCodes = () => {
+  const updateCodes = useCallback(() => {
     const getAllPeriods = entries.map((entry) => entry.period);
     const periods = [...new Set(getAllPeriods)];
     periods.map((period) => {
@@ -30,9 +30,9 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
         }, 1000);
       }
     });
-  };
+  }, [entries, second]);
 
-  const removeEntries = async (entriesEdited: OTPEntry[]) => {
+  const removeEntries = useCallback(async (entriesEdited: OTPEntry[]) => {
     const entries = (await EntryStorage.get()) as OTPEntry[];
     const entriesToRemove = entries.filter(
       (entry) => !entriesEdited.some((entryEdit) => entryEdit.hash === entry.hash)
@@ -44,9 +44,9 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
         })
       );
     }
-  };
+  }, []);
 
-  const updateEntriesState = async (typeUpdate?: "popup" | "edit" | "all"): Promise<OTPEntry[]> => {
+  const updateEntriesState = useCallback(async (typeUpdate?: "popup" | "edit" | "all"): Promise<OTPEntry[]> => {
     console.log("updateEntriesState() => typeUpdate:", typeUpdate);
     const entries = await EntryStorage.get();
     if (typeUpdate === "popup") {
@@ -58,7 +58,7 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
       setEntriesEdited(entries);
     }
     return entries;
-  };
+  }, []);
 
   useEffect(() => {
     updateEntriesState("all");
