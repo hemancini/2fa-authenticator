@@ -11,7 +11,10 @@ const manifest: chrome.runtime.ManifestV3 = {
   description: "__MSG_extensionDescription__",
   homepage_url: "https://github.com/hemancini",
   options_page: "src/pages/options/index.html",
-  permissions: ["tabs", "activeTab", "storage", "identity", "scripting"],
+  permissions: ["tabs", "activeTab", "storage", "identity", "scripting", "sidePanel" as any],
+  side_panel: {
+    default_path: "src/pages/sidePanel/index.html",
+  },
   background: {
     service_worker: "src/pages/background/index.js",
     type: "module",

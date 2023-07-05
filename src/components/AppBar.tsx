@@ -1,14 +1,16 @@
 import AddEntryMenu from "@components/AddEntryMenu";
+import Tooltip from "@components/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
@@ -40,19 +42,21 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
 const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateAction<boolean>> }) => {
   const { handleEntriesEdited } = useContext(EntriesContext);
   return (
-    <IconButton
-      size="small"
-      color="inherit"
-      aria-label="Edit OK"
-      LinkComponent={Link}
-      href="/"
-      onClick={() => {
-        handleEntriesEdited();
-        setEntriesEdited(false);
-      }}
-    >
-      <DoneIcon sx={defaultIconSize} />
-    </IconButton>
+    <Tooltip title={t("save")} disableInteractive>
+      <IconButton
+        size="small"
+        color="inherit"
+        aria-label="Edit OK"
+        LinkComponent={Link}
+        href="/"
+        onClick={() => {
+          handleEntriesEdited();
+          setEntriesEdited(false);
+        }}
+      >
+        <DoneIcon sx={defaultIconSize} />
+      </IconButton>
+    </Tooltip>
   );
 };
 
@@ -67,8 +71,10 @@ export default function ButtonAppBar({
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
   const [captureQRError, setCaptureQRError] = useState<boolean>(undefined);
 
-  const urlObj = new URL(decodeURIComponent(window.location.href));
-  const isPopup = urlObj.searchParams.get("popup") === "true";
+  const handleEditEntries = () => {
+    setDrawerOpen(false);
+    setEntriesEdited(true);
+  };
 
   return (
     <>
@@ -76,15 +82,17 @@ export default function ButtonAppBar({
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 22 }}>
             {!isEntriesEdit && (
-              <IconButton
-                size="small"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                onClick={() => setDrawerOpen(!draweOpen)}
-              >
-                <MenuIcon />
-              </IconButton>
+              <Tooltip title="Menu" placement="bottom" disableInteractive>
+                <IconButton
+                  size="small"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={() => setDrawerOpen(!draweOpen)}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Box>
           <Typography
@@ -95,27 +103,29 @@ export default function ButtonAppBar({
               // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
             }}
           >
-            Authenticator
+            {t("extensionName")}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
             {isEntriesEdit ? (
               <>
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  aria-label="Add entry"
-                  onClick={() => {
-                    setAddEntryMenuOpen(true);
-                  }}
-                >
-                  <AddIcon sx={defaultIconSize} />
-                </IconButton>
+                <Tooltip title={t("addNewEntry")} disableInteractive>
+                  <IconButton
+                    size="small"
+                    color="inherit"
+                    aria-label="Add entry"
+                    onClick={() => {
+                      setAddEntryMenuOpen(true);
+                    }}
+                  >
+                    <AddIcon sx={defaultIconSize} />
+                  </IconButton>
+                </Tooltip>
                 <DoneButton setEntriesEdited={setEntriesEdited} />
               </>
             ) : (
               <Box minWidth={30}>
-                {!isPopup && (
-                  <>
+                <>
+                  <Tooltip title={t("scanQRCode")} disableInteractive>
                     <IconButton
                       size="small"
                       color="inherit"
@@ -124,21 +134,20 @@ export default function ButtonAppBar({
                     >
                       <QrCodeScannerIcon sx={defaultIconSize} />
                     </IconButton>
+                  </Tooltip>
+                  <Tooltip title={t("editEntries")} disableInteractive>
                     <IconButton
                       size="small"
                       color="inherit"
                       aria-label="Edit Entries"
                       LinkComponent={Link}
                       href="/entries/edit"
-                      onClick={() => {
-                        setDrawerOpen(false);
-                        setEntriesEdited(true);
-                      }}
+                      onClick={handleEditEntries}
                     >
                       <EditIcon sx={defaultIconSize} />
                     </IconButton>
-                  </>
-                )}
+                  </Tooltip>
+                </>
               </Box>
             )}
           </Box>

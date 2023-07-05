@@ -55,9 +55,11 @@ export default defineConfig({
   ],
   define: {
     DEFAULT_POPUP_URL: JSON.stringify(`/${manifest.action.default_popup}`),
-    DEFAULT_COLOR: JSON.stringify("#619f04"),
+    DEFAULT_SIDE_PANEL_URL: JSON.stringify(`/${manifest.side_panel.default_path}`),
+    DEFAULT_COLOR: JSON.stringify("#fafafa"),
     DEFAULT_MODE: JSON.stringify("system"),
     DEFAULT_COLORS: JSON.stringify([
+      { name: "White", hex: "#fafafa" },
       { name: "Green", hex: "#619f04" },
       { name: "Orange", hex: "#ed6c02" },
       { name: "Purple", hex: "#9c27b0" },
@@ -86,6 +88,7 @@ export default defineConfig({
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
         options: resolve(pagesDir, "options", "index.html"),
+        sidePanel: resolve(pagesDir, "sidePanel", "index.html"),
       },
       watch: {
         include: ["src/**", "vite.config.ts"],

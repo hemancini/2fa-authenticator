@@ -3,6 +3,7 @@ import { ILocalStorage, LocalStorage } from "@src/chrome/localStorage";
 export class Options implements OptionsInterface {
   themeMode: ThemeMode;
   themeColor: DefaultColorHexes;
+  tooltipEnabled: boolean;
 
   private static STORAGE_KEY = "OPTIONS";
   static storage: ILocalStorage = new LocalStorage();

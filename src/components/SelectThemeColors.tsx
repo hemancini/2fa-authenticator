@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import OptionsProvider from "@src/contexts/Options";
+import OptionsContext from "@src/contexts/Options";
 import * as React from "react";
 
 const ITEM_HEIGHT = 48;
@@ -22,7 +22,7 @@ const MenuProps = {
 };
 
 export default function SelectThemeColors() {
-  const { toggleThemeColor, defaultColor } = React.useContext(OptionsProvider);
+  const { toggleThemeColor, defaultColor } = React.useContext(OptionsContext);
 
   const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {
     const colorSelected = event.target.value as DefaultColorHexes;

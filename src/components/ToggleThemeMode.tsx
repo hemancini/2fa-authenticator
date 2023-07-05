@@ -3,11 +3,11 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import OptionsProvider from "@src/contexts/Options";
+import OptionsContext from "@src/contexts/Options";
 import React, { useContext } from "react";
 
 export default function ToggleThemeMode() {
-  const { toggleThemeMode, defaultMode } = useContext(OptionsProvider);
+  const { toggleThemeMode, defaultMode, defaultColor } = useContext(OptionsContext);
   const themeMode: ThemeMode = defaultMode;
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, themeMode: ThemeMode) => {
@@ -18,7 +18,7 @@ export default function ToggleThemeMode() {
     <ToggleButtonGroup
       fullWidth
       exclusive
-      color="primary"
+      color={DEFAULT_COLORS[0].hex === defaultColor ? "standard" : "primary"}
       value={themeMode}
       aria-label="theme mode"
       onChange={handleChange}

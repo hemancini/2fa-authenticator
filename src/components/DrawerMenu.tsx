@@ -4,6 +4,7 @@ import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -12,8 +13,11 @@ import ListItemText from "@mui/material/ListItemText";
 import { useTheme } from "@mui/material/styles";
 import { ThemeOptions } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import OptionsContext from "@src/contexts/Options";
+import { useContext } from "react";
 import { Link, useRoute } from "wouter";
 
 import packageJson from "../../package.json";
@@ -83,6 +87,35 @@ const ListItemButtonRoute = ({
   );
 };
 
+const SwitchTooltip = () => {
+  const { tooltipEnabled, toggleTooltipEnabled } = useContext(OptionsContext);
+  return (
+    <FormControlLabel
+      label="Show tooltip"
+      labelPlacement="start"
+      control={
+        <Switch
+          size="small"
+          checked={tooltipEnabled}
+          onChange={toggleTooltipEnabled}
+          sx={{
+            width: 32, height: 22,
+            "& .MuiSwitch-thumb": { width: 14, height: 14 },
+            "& .MuiSwitch-switchBase.Mui-checked": {
+              transform: "translateX(10px)",
+              color: "primary.main",
+              "& + .MuiSwitch-track": {
+                opacity: 1,
+                backgroundColor: "primary.light",
+              },
+            },
+          }}
+        />
+      }
+    />
+  );
+};
+
 export default function DrawerMenu({
   draweOpen,
   setDrawerOpen,
@@ -111,9 +144,6 @@ export default function DrawerMenu({
       });
   };
 
-  const urlObj = new URL(decodeURIComponent(window.location.href));
-  const isPopup = urlObj.searchParams.get("popup") === "true";
-
   return (
     <Drawer
       anchor={anchor}
@@ -125,8 +155,7 @@ export default function DrawerMenu({
       <List>
         <Divider />
         {routes.map((route, index) => {
-          const hrefPopup =
-            isPopup && route.path === DEFAULT_POPUP_URL ? `${DEFAULT_POPUP_URL}?popup=true` : route.path;
+          const hrefPopup = DEFAULT_POPUP_URL;
           return (
             <>
               <ListItem key={index} disablePadding onClick={!route.disabled && handleClose}>
@@ -146,13 +175,22 @@ export default function DrawerMenu({
           );
         })}
         <>
-          <ListItem disablePadding onClick={!isPopup && handleOpenPopup}>
-            <ListItemButton disabled={isPopup} dense={true}>
+          <ListItem disablePadding onClick={handleOpenPopup}>
+            <ListItemButton dense={true}>
               <ListItemIcon sx={{ minWidth: "auto", ml: 0.2, mr: 2, "& .MuiSvgIcon-root": { fontSize: 20 } }}>
                 <OpenInNewIcon />
               </ListItemIcon>
               <ListItemText primary={"Popup"} />
             </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem
+            disablePadding
+            sx={{
+              "& .MuiTypography-root": { fontSize: 14 },
+            }}
+          >
+            <SwitchTooltip />
           </ListItem>
           <Divider />
         </>

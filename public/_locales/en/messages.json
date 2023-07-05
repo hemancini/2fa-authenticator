@@ -1,6 +1,6 @@
 {
   "extensionName": {
-    "message": "AAA Authenticator"
+    "message": "Authenticator"
   },
   "extensionDescription": {
     "message": "This extension provides TOTP authentication for websites."
@@ -17,8 +17,20 @@
   "remove": {
     "message": "Remove"
   },
+  "save": {
+    "message": "Save"
+  },
+  "editEntries": {
+    "message": "Edit entries"
+  },
   "addNewEntry": {
     "message": "Add new entry"
+  },
+  "removeEntry": {
+    "message": "Remove entry"
+  },
+  "dragEntry": {
+    "message": "Drag"
   },
   "scanQRCode": {
     "message": "Scan QR Code"
@@ -29,7 +41,7 @@
   "totpUrl": {
     "message": "TOTP AUTH URL"
   },
-  "refreshPage":{
+  "refreshPage": {
     "message": "Refresh Page"
   },
   "confirmRemoveDescription": {
@@ -53,7 +65,10 @@
   "errorNoActiveTabDesc": {
     "message": "Please restore the focus of the tab and try again."
   },
-  "themeMode":  {
+  "showTooltip": {
+    "message": "Show tooltip"
+  },
+  "themeMode": {
     "message": "$1 mode"
   }
 }

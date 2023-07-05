@@ -1,4 +1,5 @@
 import ConfirmRemoveEntry from "@components/ConfirmRemoveEntry";
+import Tooltip from "@components/Tooltip";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Card, CardContent, FormControl } from "@mui/material";
@@ -7,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import { OTPEntry } from "@src/models/otp";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
@@ -89,20 +91,24 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
             </FormControl>
           </CardContent>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <IconButton aria-label="drag entry" size="large" onPointerDown={(event) => dragControls.start(event)}>
+            {/* <Tooltip title={t("dragEntry")} disableInteractive disableFocusListener> */}
+            <IconButton size="large" aria-label="drag entry" onPointerDown={(event) => dragControls.start(event)}>
               <DragHandleIcon sx={{ fontSize: 40 }} />
             </IconButton>
+            {/* </Tooltip> */}
           </Box>
         </Card>
         {!entry.pinned && (
           <>
-            <IconButton
-              aria-label="remove entry"
-              onClick={() => setIsConfirmOpen(true)}
-              sx={{ color: "#e57373", width: 22, height: 22, position: "absolute", right: -9, top: -9 }}
-            >
-              <RemoveCircleIcon sx={{ fontSize: 15 }} />
-            </IconButton>
+            <Tooltip title={t("removeEntry")} disableInteractive>
+              <IconButton
+                aria-label="remove entry"
+                onClick={() => setIsConfirmOpen(true)}
+                sx={{ color: "#e57373", width: 22, height: 22, position: "absolute", right: -9, top: -9 }}
+              >
+                <RemoveCircleIcon sx={{ fontSize: 15 }} />
+              </IconButton>
+            </Tooltip>
             <ConfirmRemoveEntry
               entry={entry}
               isConfirmOpen={isConfirmOpen}

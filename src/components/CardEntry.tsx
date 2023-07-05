@@ -9,6 +9,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import EntriesContext from "@src/contexts/Entries";
+import OptionsContext from "@src/contexts/Options";
 import { OTPEntry } from "@src/models/otp";
 import { ReactNode, useContext, useEffect, useState } from "react";
 
@@ -24,10 +25,10 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
 };
 
 export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
+  const { defaultColor } = useContext(OptionsContext);
   const { second, handleEntriesUpdate } = useContext(EntriesContext);
 
   const period = entry?.period || 30;
-
   const count = second % period;
   const discount = period - (second % period);
   const initProgress = 100 - (count * 100) / period;
@@ -91,7 +92,13 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               <Typography
                 className={discount <= 4 && "parpadea"}
                 sx={{
-                  color: discount <= 4 ? red[400] : (theme) => theme.palette.primary.main,
+                  color:
+                    discount <= 4
+                      ? red[400]
+                      : (theme) =>
+                          DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
+                            ? theme.palette.primary.contrastText
+                            : theme.palette.primary.main,
                   fontWeight: "bold",
                   fontSize: "1.9rem",
                   letterSpacing: 4,

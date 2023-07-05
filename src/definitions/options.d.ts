@@ -1,11 +1,12 @@
 // import { PaletteMode } from "@mui/material";
 
-type DefaultColor = "#619f04";
+type DefaultColor = "#fafafa";
 
 // type ThemeMode = PaletteMode | "system";
 type ThemeMode = "dark" | "light" | "system";
 
 type DefaultColors = [
+  { name: "White"; hex: "#fafafa" },
   { name: "Green"; hex: "#619f04" },
   { name: "Orange"; hex: "#ed6c02" },
   { name: "Purple"; hex: "#9c27b0" },
@@ -22,4 +23,5 @@ type DefaultColorHexes = DefaultColors[number]["hex"];
 interface OptionsInterface {
   themeMode: ThemeMode;
   themeColor: DefaultColorHexes;
+  tooltipEnabled: boolean;
 }

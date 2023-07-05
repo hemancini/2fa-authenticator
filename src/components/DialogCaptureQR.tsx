@@ -22,9 +22,9 @@ export default function DialogCaptureQR({
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} sx={{ "& .MuiDialog-paper": { mx: 1.5 } }}>
+    <Dialog open={open} onClose={() => setOpen(false)} sx={{ "& .MuiDialog-paper": { mx: 3 } }}>
       <DialogTitle sx={{ "&&": { p: 1, textAlign: "center" } }}>
-        <Alert severity="warning" icon={false} sx={{ fontWeight: "bold" }}>
+        <Alert severity="warning" icon={false} sx={{ width: "auto", fontWeight: "bold", fontSize: { xs: 13, sm: 15 } }}>
           {t("errorNoActiveTab")}
         </Alert>
       </DialogTitle>
@@ -32,7 +32,10 @@ export default function DialogCaptureQR({
         <Alert
           severity="warning"
           icon={false}
-          sx={{ backgroundColor: (theme) => theme.palette.grey[100], color: (theme) => theme.palette.grey[700] }}
+          sx={{
+            backgroundColor: (theme) => theme.palette.grey[theme.palette.mode === "dark" ? 700 : 100],
+            color: (theme) => theme.palette.text.primary,
+          }}
         >
           {t("errorNoActiveTabDesc")}
         </Alert>

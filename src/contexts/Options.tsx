@@ -7,26 +7,34 @@ import { createContext, ReactNode, useMemo, useState } from "react";
 const OptionsContext = createContext({
   toggleThemeMode: (mode: ThemeMode) => void 0,
   toggleThemeColor: (color: DefaultColorHexes) => void 0,
+  toggleTooltipEnabled: () => void 0,
   defaultColor: DEFAULT_COLOR as DefaultColorHexes,
   defaultMode: DEFAULT_MODE as ThemeMode,
+  tooltipEnabled: true,
 });
 
 export function OptionsProvider({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const [options, setOptions] = useState<Options | undefined>(undefined);
+  const [options, setOptions] = useState<Options>(undefined);
 
-  const colorMode = useMemo(
+  const handlerOptions = useMemo(
     () => ({
       toggleThemeMode: (mode?: ThemeMode) => {
-        setOptions((prevMode: React.SetStateAction<any>) => ({
-          ...prevMode,
+        setOptions((prevOptions: React.SetStateAction<any>) => ({
+          ...prevOptions,
           themeMode: mode,
         }));
       },
       toggleThemeColor: (color: DefaultColorHexes) => {
-        setOptions((prevColor: React.SetStateAction<any>) => ({
-          ...prevColor,
+        setOptions((prevOptions: React.SetStateAction<any>) => ({
+          ...prevOptions,
           themeColor: color,
+        }));
+      },
+      toggleTooltipEnabled: () => {
+        setOptions((prevOptions: React.SetStateAction<any>) => ({
+          ...prevOptions,
+          tooltipEnabled: !prevOptions?.tooltipEnabled,
         }));
       },
     }),
@@ -35,9 +43,12 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
 
   const theme = useMemo(() => {
     (async () => {
-      const { themeMode = DEFAULT_MODE, themeColor = DEFAULT_COLOR }: any = await Options.getOptions();
-      if (!options?.themeMode || !options?.themeColor) {
-        setOptions({ themeMode: themeMode, themeColor });
+      if (!options?.themeMode || !options?.themeColor || options?.tooltipEnabled === undefined) {
+        const initOptions = await Options.getOptions();
+        initOptions.themeColor = initOptions.themeColor || DEFAULT_COLOR;
+        initOptions.themeMode = initOptions.themeMode || DEFAULT_MODE;
+        initOptions.tooltipEnabled = initOptions.tooltipEnabled === true;
+        setOptions(initOptions);
       } else {
         await Options.setOptions({ ...options });
       }
@@ -58,7 +69,12 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
 
   return (
     <OptionsContext.Provider
-      value={{ ...colorMode, defaultColor: options?.themeColor, defaultMode: options?.themeMode }}
+      value={{
+        ...handlerOptions,
+        tooltipEnabled: options?.tooltipEnabled,
+        defaultColor: options?.themeColor,
+        defaultMode: options?.themeMode,
+      }}
     >
       {options?.themeMode && options?.themeColor && (
         <ThemeProvider theme={theme}>

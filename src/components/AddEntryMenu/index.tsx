@@ -1,3 +1,4 @@
+import Tooltip from "@components/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -72,18 +73,20 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
         }}
       >
         {t("addNewEntry")}
-        <IconButton
-          aria-label="close"
-          onClick={handleOnAddEntryClose}
-          sx={{
-            top: 5,
-            right: 1,
-            position: "absolute",
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon sx={{ fontSize: 20 }} />
-        </IconButton>
+        <Tooltip title={t("cancel")} disableInteractive>
+          <IconButton
+            aria-label="close"
+            onClick={handleOnAddEntryClose}
+            sx={{
+              top: 5,
+              right: 1,
+              position: "absolute",
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        </Tooltip>
       </DialogTitle>
       <Divider />
       <DialogContent
