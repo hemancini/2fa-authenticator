@@ -17,7 +17,6 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
-import ToolbarOffset from "./ToolbarOffset";
 
 const defaultIconSize = { fontSize: 20 };
 

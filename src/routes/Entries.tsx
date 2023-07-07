@@ -1,11 +1,12 @@
 import CardEntry from "@components/CardEntry";
+import NotEntriesFound from "@components/NotEntriesFound";
 import EntriesContext from "@src/contexts/Entries";
 import { Reorder } from "framer-motion";
 import { useContext, useMemo } from "react";
 
 export default function Entries() {
   const { entries, setEntries } = useContext(EntriesContext);
-  return (
+  return entries?.length >= 1 ? (
     <Reorder.Group axis="y" values={entries} onReorder={setEntries}>
       {useMemo(
         () =>
@@ -17,5 +18,7 @@ export default function Entries() {
         [entries]
       )}
     </Reorder.Group>
+  ) : (
+    <NotEntriesFound />
   );
 }

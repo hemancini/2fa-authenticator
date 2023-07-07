@@ -47,7 +47,7 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
         const initOptions = await Options.getOptions();
         initOptions.themeColor = initOptions.themeColor || DEFAULT_COLOR;
         initOptions.themeMode = initOptions.themeMode || DEFAULT_MODE;
-        initOptions.tooltipEnabled = initOptions.tooltipEnabled === true;
+        initOptions.tooltipEnabled = initOptions?.tooltipEnabled === undefined || initOptions.tooltipEnabled === true;
         setOptions(initOptions);
       } else {
         await Options.setOptions({ ...options });

@@ -32,6 +32,9 @@
   "dragEntry": {
     "message": "Arrastrar"
   },
+  "notEntriesFound": {
+    "message": "No se han encontrado cuentas"
+  },
   "scanQRCode": {
     "message": "Escanear QR"
   },
@@ -66,9 +69,33 @@
     "message": "Restablezca el foco de la pestaña y vuelva a intentarlo."
   },
   "showTooltip": {
-    "message": "Mostrar información"
+    "message": "Mostrar o ocultar tooltip al pasar el cursor sobre un icono"
+  },
+  "popupMode": {
+    "message": "Modo ventana emergente"
+  },
+  "chooseColor": {
+    "message": "Elige un color"
   },
   "themeMode": {
     "message": "modo $1"
+  },
+  "lightMode": {
+    "message": "Modo claro"
+  },
+  "darkMode": {
+    "message": "Modo oscuro"
+  },
+  "systemMode": {
+    "message": "Modo del sistema"
+  },
+  "entries": {
+    "message": "Cuentas"
+  },
+  "security": {
+    "message": "Seguridad"
+  },
+  "settings": {
+    "message": "Preferencias"
   }
 }

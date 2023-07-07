@@ -3,8 +3,11 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
 import React, { useContext } from "react";
+
+import Tooltip from "../Tooltip";
 
 export default function ToggleThemeMode() {
   const { toggleThemeMode, defaultMode, defaultColor } = useContext(OptionsContext);
@@ -25,13 +28,19 @@ export default function ToggleThemeMode() {
       sx={{ m: 1, mb: 0.5 }}
     >
       <ToggleButton value="light">
-        <LightModeIcon />
+        <Tooltip title={t("lightMode")} disableInteractive>
+          <LightModeIcon />
+        </Tooltip>
       </ToggleButton>
       <ToggleButton value="system">
-        <SettingsBrightnessIcon />
+        <Tooltip title={t("systemMode")} disableInteractive>
+          <SettingsBrightnessIcon />
+        </Tooltip>
       </ToggleButton>
       <ToggleButton value="dark">
-        <DarkModeIcon />
+        <Tooltip title={t("darkMode")} disableInteractive>
+          <DarkModeIcon />
+        </Tooltip>
       </ToggleButton>
     </ToggleButtonGroup>
   );

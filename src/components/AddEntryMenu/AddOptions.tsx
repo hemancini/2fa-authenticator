@@ -14,7 +14,7 @@ const buttonCommonProps: ButtonProps = {
   fullWidth: true,
   variant: "contained",
   disableElevation: true,
-  sx: { justifyContent: "flex-start", textTransform: "none", fontWeight: "bold", },
+  sx: { justifyContent: "flex-start", textTransform: "none", fontWeight: "bold" },
 };
 
 export default function AddOptions(options: AddOptionsProps) {

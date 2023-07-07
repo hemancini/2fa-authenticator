@@ -32,6 +32,9 @@
   "dragEntry": {
     "message": "Drag"
   },
+  "notEntriesFound": {
+    "message": "No entries found"
+  },
   "scanQRCode": {
     "message": "Scan QR Code"
   },
@@ -66,9 +69,33 @@
     "message": "Please restore the focus of the tab and try again."
   },
   "showTooltip": {
-    "message": "Show tooltip"
+    "message": "Show or hide tooltip on icon hover"
+  },
+  "popupMode": {
+    "message": "Popup mode"
+  },
+  "chooseColor": {
+    "message": "Choose a color"
   },
   "themeMode": {
     "message": "$1 mode"
+  },
+  "lightMode": {
+    "message": "Light mode"
+  },
+  "darkMode": {
+    "message": "Dark mode"
+  },
+  "systemMode": {
+    "message": "System mode"
+  },
+  "entries": {
+    "message": "Entries"
+  },
+  "security": {
+    "message": "Security"
+  },
+  "settings": {
+    "message": "Settings"
   }
 }

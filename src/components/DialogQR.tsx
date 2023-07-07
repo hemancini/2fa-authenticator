@@ -13,7 +13,7 @@ export default function DialogQR({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   entry: OTPEntry;
 }) {
-  const defaultSize = 200;
+  const defaultSize = 190;
   const issuer = entry.issuer;
   const secret = entry.secret;
   const account = entry.account;

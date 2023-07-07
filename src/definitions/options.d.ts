@@ -1,6 +1,6 @@
 // import { PaletteMode } from "@mui/material";
 
-type DefaultColor = "#fafafa";
+type DefaultColor = "#619f04";
 
 // type ThemeMode = PaletteMode | "system";
 type ThemeMode = "dark" | "light" | "system";

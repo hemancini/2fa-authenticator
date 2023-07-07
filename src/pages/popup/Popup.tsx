@@ -11,6 +11,7 @@ import ToolbarOffset from "@src/components/ToolbarOffset";
 import { EntriesProvider } from "@src/contexts/Entries";
 import { OptionsProvider } from "@src/contexts/Options";
 import { useState } from "react";
+import React from "react";
 import { Link, Redirect, Route, Router, Switch } from "wouter";
 import makeMatcher from "wouter/matcher";
 
@@ -49,13 +50,13 @@ const Popup = () => {
       <EntriesProvider>
         <Box sx={{ display: "flex" }}>
           {!isSidePanel && !isPopup && (
-            <>
+            <React.Fragment>
               <AppBar {...{ draweOpen, setDrawerOpen }} />
               <DrawerMenu {...{ draweOpen, setDrawerOpen }} />
-            </>
+            </React.Fragment>
           )}
           <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1 }}>
-            <ToolbarOffset />
+            {!isSidePanel && !isPopup && <ToolbarOffset />}
             <Router matcher={multipathMatcher as any}>
               <Switch>
                 <Route path={["/", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>

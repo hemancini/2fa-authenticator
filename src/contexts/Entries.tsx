@@ -8,10 +8,10 @@ const Context = createContext({
   second: 0,
   entries: [],
   entriesEdited: [],
-  setEntries: (entries: OTPEntry[]) => { },
-  setEntriesEdited: (entries: OTPEntry[]) => { },
-  handleEntriesEdited: () => { },
-  handleEntriesUpdate: () => { },
+  setEntries: (entries: OTPEntry[]) => {},
+  setEntriesEdited: (entries: OTPEntry[]) => {},
+  handleEntriesEdited: () => {},
+  handleEntriesUpdate: () => {},
 });
 
 export function EntriesProvider({ children }: { children: React.ReactNode }) {
