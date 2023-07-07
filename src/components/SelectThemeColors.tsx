@@ -30,36 +30,34 @@ export default function SelectThemeColors() {
   };
 
   return (
-    <Box display="flex" minWidth={150} mt={1.8}>
-      <FormControl fullWidth sx={{ m: 1 }}>
-        <InputLabel>Color</InputLabel>
-        <Select
-          label="Color"
-          MenuProps={MenuProps}
-          onChange={handleChange}
-          defaultValue={defaultColor}
-          input={
-            <OutlinedInput
-              label="Color"
-              sx={{
-                "& .MuiSelect-select": {
-                  p: 1,
-                  py: 0.6,
-                },
-              }}
-            />
-          }
-        >
-          {DEFAULT_COLORS.map((color) => (
-            <MenuItem key={color.name} value={color.hex}>
-              <Box display="flex" alignItems="center">
-                <SquareIcon sx={{ borderRadius: 4, mr: 1, color: color.hex }} />
-                <ListItemText primary={color.name} />
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <FormControl sx={{ m: 1 }}>
+      <InputLabel>Color</InputLabel>
+      <Select
+        label="Color"
+        MenuProps={MenuProps}
+        onChange={handleChange}
+        defaultValue={defaultColor}
+        input={
+          <OutlinedInput
+            label="Color"
+            sx={{
+              "& .MuiSelect-select": {
+                p: 1,
+                py: 0.6,
+              },
+            }}
+          />
+        }
+      >
+        {DEFAULT_COLORS.map((color) => (
+          <MenuItem key={color.name} value={color.hex}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SquareIcon sx={{ borderRadius: 4, mr: 1, color: color.hex }} />
+              <ListItemText primary={color.name} />
+            </Box>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

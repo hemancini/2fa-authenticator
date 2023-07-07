@@ -39,7 +39,7 @@
     "message": "Manual Entry"
   },
   "totpUrl": {
-    "message": "TOTP AUTH URL"
+    "message": "TOTP URL"
   },
   "refreshPage": {
     "message": "Refresh Page"

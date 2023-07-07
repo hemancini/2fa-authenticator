@@ -2,7 +2,7 @@ import { captureQRCode } from "@components/AppBar";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import Button from "@mui/material/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
 import React from "react";
 
@@ -10,23 +10,29 @@ interface AddOptionsProps {
   setManualEntryOptions: React.Dispatch<React.SetStateAction<"" | "TOTP" | "MANUAL">>;
 }
 
+const buttonCommonProps: ButtonProps = {
+  fullWidth: true,
+  variant: "contained",
+  disableElevation: true,
+  sx: { justifyContent: "flex-start", textTransform: "none", fontWeight: "bold", },
+};
+
 export default function AddOptions(options: AddOptionsProps) {
   const { setManualEntryOptions } = options;
   return (
     <>
-      <Button startIcon={<QrCodeScannerIcon />} variant="contained" fullWidth onClick={() => captureQRCode()}>
+      <Button {...buttonCommonProps} startIcon={<QrCodeScannerIcon />} onClick={() => captureQRCode()}>
         {t("scanQRCode")}
       </Button>
       <Button
+        {...buttonCommonProps}
         disabled
-        fullWidth
-        variant="contained"
         startIcon={<KeyboardIcon />}
         onClick={() => setManualEntryOptions("MANUAL")}
       >
         {t("manualEntry")}
       </Button>
-      <Button startIcon={<LinkIcon />} variant="contained" fullWidth onClick={() => setManualEntryOptions("TOTP")}>
+      <Button {...buttonCommonProps} startIcon={<LinkIcon />} onClick={() => setManualEntryOptions("TOTP")}>
         {t("totpUrl")}
       </Button>
     </>

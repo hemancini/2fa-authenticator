@@ -63,12 +63,11 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
         fontSize={18}
         sx={{
           m: 1,
-          my: { xs: 1.2, sm: 1.5 },
-          p: 0,
-          pr: 2,
-          textAlign: "center",
+          p: 1.2,
+          py: 0.2,
+          pr: 4,
           fontWeight: "bold",
-          fontSize: { sm: 20 },
+          fontSize: { xs: 14, sm: 18 },
           color: (theme) => theme.palette.text.secondary,
         }}
       >
@@ -78,13 +77,13 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
             aria-label="close"
             onClick={handleOnAddEntryClose}
             sx={{
-              top: 5,
-              right: 1,
+              top: 4,
+              right: 5,
               position: "absolute",
               color: (theme) => theme.palette.grey[500],
             }}
           >
-            <CloseIcon sx={{ fontSize: 20 }} />
+            <CloseIcon sx={{ fontSize: 18 }} />
           </IconButton>
         </Tooltip>
       </DialogTitle>
@@ -92,8 +91,8 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
       <DialogContent
         sx={{
           py: 3,
-          px: { xs: 1, sm: 3 },
-          mx: { xs: 1, sm: 3 },
+          px: 1,
+          mx: 1,
           display: "grid",
           direction: "column",
           gap: 3,

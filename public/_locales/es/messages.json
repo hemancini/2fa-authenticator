@@ -39,7 +39,7 @@
     "message": "Entrada manual"
   },
   "totpUrl": {
-    "message": "URL TOTP AUTH"
+    "message": "URL TOTP"
   },
   "refreshPage": {
     "message": "Actualizar página"

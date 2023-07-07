@@ -60,7 +60,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
     >
       <Box sx={{ position: "relative" }}>
         <Card variant="outlined" sx={{ my: 1.7, display: "flex" }}>
-          <CardContent sx={{ py: 0.6, pl: 0.6 }}>
+          <CardContent sx={{ p: 0.6 }}>
             <FormControl aria-label="issuer" sx={{ display: "flex", width: "19ch" }}>
               <BootstrapInput
                 defaultValue={entry.issuer}
@@ -90,7 +90,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               />
             </FormControl>
           </CardContent>
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box display="flex" justifyContent="center" alignItems="center" width="100%">
             {/* <Tooltip title={t("dragEntry")} disableInteractive disableFocusListener> */}
             <IconButton size="large" aria-label="drag entry" onPointerDown={(event) => dragControls.start(event)}>
               <DragHandleIcon sx={{ fontSize: 40 }} />

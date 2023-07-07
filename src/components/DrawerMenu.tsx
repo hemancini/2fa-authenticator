@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
 import { useContext } from "react";
 import { Link, useRoute } from "wouter";
@@ -26,6 +27,8 @@ import ToggleThemeMode from "./ToggleThemeMode";
 import ToolbarOffset from "./ToolbarOffset";
 
 const anchor = "left";
+const drawerWidth = 130;
+
 const routes = [
   { path: DEFAULT_POPUP_URL, name: "Entries", icon: <LockClockIcon />, disabled: false },
   { path: "/security", name: "Security", icon: <SecurityIcon />, disabled: true },
@@ -91,7 +94,8 @@ const SwitchTooltip = () => {
   const { tooltipEnabled, toggleTooltipEnabled } = useContext(OptionsContext);
   return (
     <FormControlLabel
-      label="Show tooltip"
+      // label={t("showTooltip")}
+      label="Tooltip"
       labelPlacement="start"
       control={
         <Switch
@@ -99,14 +103,15 @@ const SwitchTooltip = () => {
           checked={tooltipEnabled}
           onChange={toggleTooltipEnabled}
           sx={{
-            width: 32, height: 22,
+            width: 32,
+            height: 22,
             "& .MuiSwitch-thumb": { width: 14, height: 14 },
             "& .MuiSwitch-switchBase.Mui-checked": {
               transform: "translateX(10px)",
               color: "primary.main",
               "& + .MuiSwitch-track": {
                 opacity: 1,
-                backgroundColor: "primary.light",
+                backgroundColor: "primary.dark",
               },
             },
           }}
@@ -124,7 +129,7 @@ export default function DrawerMenu({
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleClose = () => {
     setDrawerOpen(false);
@@ -147,9 +152,10 @@ export default function DrawerMenu({
   return (
     <Drawer
       anchor={anchor}
-      open={draweOpen || isSm}
+      open={draweOpen || isUpSm}
       onClose={() => setDrawerOpen(false)}
-      variant={!isSm ? "temporary" : "permanent"}
+      variant={isUpSm ? "permanent" : "temporary"}
+      sx={{ width: (draweOpen || isUpSm) && drawerWidth }}
     >
       <ToolbarOffset />
       <List>
@@ -195,25 +201,25 @@ export default function DrawerMenu({
           <Divider />
         </>
       </List>
-      <ThemeProvider
-        theme={(theme) =>
-          createTheme({
-            ...theme,
-            ...themeCustomization,
-          })
-        }
+      <List
+        disablePadding
+        sx={{
+          mb: 0,
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "end",
+        }}
       >
-        <List
-          disablePadding
-          sx={{
-            mb: 0,
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "end",
-          }}
+        <ThemeProvider
+          theme={(theme) =>
+            createTheme({
+              ...theme,
+              ...themeCustomization,
+            })
+          }
         >
-          <Divider />
+          <Divider sx={{ mb: 1.5 }} />
           <SelectThemeColors />
           <ListItem disablePadding sx={{ justifyContent: "center" }}>
             <ToggleThemeMode />
@@ -229,8 +235,8 @@ export default function DrawerMenu({
           >
             version: {packageJson.version}
           </Typography>
-        </List>
-      </ThemeProvider>
+        </ThemeProvider>
+      </List>
     </Drawer>
   );
 }

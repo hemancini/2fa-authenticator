@@ -48,7 +48,7 @@ const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateA
         color="inherit"
         aria-label="Edit OK"
         LinkComponent={Link}
-        href="/"
+        href={DEFAULT_POPUP_URL}
         onClick={() => {
           handleEntriesEdited();
           setEntriesEdited(false);
@@ -79,8 +79,8 @@ export default function ButtonAppBar({
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
-        <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1 }}>
-          <Box sx={{ display: "flex", flexGrow: 1, width: 22 }}>
+        <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
+          <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
             {!isEntriesEdit && (
               <Tooltip title="Menu" placement="bottom" disableInteractive>
                 <IconButton
@@ -153,7 +153,6 @@ export default function ButtonAppBar({
           </Box>
         </Toolbar>
       </AppBar>
-      <ToolbarOffset />
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
       {isEntriesEdit && (
         <AddEntryMenu
