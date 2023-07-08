@@ -9,9 +9,9 @@
 
 > This project was generated from [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
 
-</div>
+### 2FA Authenticator is a Chrome extension that provides 2FA authentication codes in the browser.
 
-2FA Authenticator is a Chrome extension that provides 2FA authentication codes in the browser.
+</div>
 
 ## Features <a name="features"></a>
 
@@ -79,7 +79,6 @@
   - [ ] autofill
   - [x] entrust bypass
   - [ ] gitlab bypass
-
 
 ## Thanks To
 
