@@ -1,9 +1,9 @@
 {
   "extensionName": {
-    "message": "Authenticator"
+    "message": "2FA Authenticator"
   },
   "extensionDescription": {
-    "message": "Esta extensión proporciona autenticación TOTP para sitios web."
+    "message": "Esta extensión proporciona códigos de autenticación 2FA en el navegador."
   },
   "cancel": {
     "message": "Cancelar"
@@ -106,5 +106,11 @@
   },
   "pin": {
     "message": "Fijar"
+  },
+  "pass": {
+    "message": "Contraseña"
+  },
+  "bypass": {
+    "message": "Bypass"
   }
 }

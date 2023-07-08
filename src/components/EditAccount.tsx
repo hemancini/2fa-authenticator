@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
+import { t } from "@src/chrome/i18n";
 import { decrypData, encrypData } from "@src/models/encryption";
 import { OTPEntry } from "@src/models/otp";
 import React, { useState } from "react";
@@ -25,7 +26,6 @@ export default function EditAccount({
 }) {
   const [user, setUser] = useState(decrypData(entry.user) || "");
   const [pass, setPass] = useState(decrypData(entry.pass) || "");
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -37,12 +37,6 @@ export default function EditAccount({
       setUser(decrypData(entry.user) || "");
       setPass(decrypData(entry.pass) || "");
     }, 200);
-  };
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
   };
 
   const handleChangeUser = (event: React.ChangeEvent<HTMLInputElement>) => setUser(event.target.value);
@@ -73,7 +67,7 @@ export default function EditAccount({
               <TextField
                 fullWidth
                 size="small"
-                label="usuario"
+                label={t("user")}
                 variant="outlined"
                 name="user"
                 defaultValue={entry.user}
@@ -83,30 +77,23 @@ export default function EditAccount({
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth size="small" variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-password">{t("pass")}</InputLabel>
                 <OutlinedInput
                   name="pass"
                   onChange={handleChangePassword}
                   defaultValue={entry.pass}
                   value={pass}
-                  type={showPassword ? "text" : "password"}
-                  // endAdornment={
-                  //   <InputAdornment position="end">
-                  //     <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                  //       {showPassword ? <VisibilityOff /> : <Visibility />}
-                  //     </IconButton>
-                  //   </InputAdornment>
-                  // }
-                  label="Password"
+                  type="password"
+                  label={t("pass")}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between", gap: 2, my: 1 }}>
               <Button fullWidth size="small" variant="outlined" onClick={handleClose}>
-                Cancel
+                {t("cancel")}
               </Button>
               <Button fullWidth size="small" variant="contained" type="submit">
-                submit
+                {t("save")}
               </Button>
             </Grid>
           </Grid>

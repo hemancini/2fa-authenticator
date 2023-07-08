@@ -4,6 +4,7 @@ export class Options implements OptionsInterface {
   themeMode: ThemeMode;
   themeColor: DefaultColorHexes;
   tooltipEnabled: boolean;
+  bypassEnabled: boolean;
 
   private static STORAGE_KEY = "OPTIONS";
   static storage: ILocalStorage = new LocalStorage();

@@ -8,9 +8,11 @@ const OptionsContext = createContext({
   toggleThemeMode: (mode: ThemeMode) => void 0,
   toggleThemeColor: (color: DefaultColorHexes) => void 0,
   toggleTooltipEnabled: () => void 0,
+  toogleBypassEnabled: () => void 0,
   defaultColor: DEFAULT_COLOR as DefaultColorHexes,
   defaultMode: DEFAULT_MODE as ThemeMode,
   tooltipEnabled: true,
+  bypassEnabled: false,
 });
 
 export function OptionsProvider({ children }: { children: ReactNode }) {
@@ -37,17 +39,29 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
           tooltipEnabled: !prevOptions?.tooltipEnabled,
         }));
       },
+      toogleBypassEnabled: () => {
+        setOptions((prevOptions: React.SetStateAction<any>) => ({
+          ...prevOptions,
+          bypassEnabled: !prevOptions?.bypassEnabled,
+        }));
+      },
     }),
     []
   );
 
   const theme = useMemo(() => {
     (async () => {
-      if (!options?.themeMode || !options?.themeColor || options?.tooltipEnabled === undefined) {
+      if (
+        !options?.themeMode ||
+        !options?.themeColor ||
+        options?.tooltipEnabled === undefined ||
+        options?.bypassEnabled === undefined
+      ) {
         const initOptions = await Options.getOptions();
         initOptions.themeColor = initOptions.themeColor || DEFAULT_COLOR;
         initOptions.themeMode = initOptions.themeMode || DEFAULT_MODE;
         initOptions.tooltipEnabled = initOptions?.tooltipEnabled === undefined || initOptions.tooltipEnabled === true;
+        initOptions.bypassEnabled = initOptions?.bypassEnabled !== undefined && initOptions.bypassEnabled === true;
         setOptions(initOptions);
       } else {
         await Options.setOptions({ ...options });
@@ -71,6 +85,7 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
     <OptionsContext.Provider
       value={{
         ...handlerOptions,
+        bypassEnabled: options?.bypassEnabled,
         tooltipEnabled: options?.tooltipEnabled,
         defaultColor: options?.themeColor,
         defaultMode: options?.themeMode,

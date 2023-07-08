@@ -65,7 +65,6 @@ export default function ThemeModeMenu() {
           })
         }
       >
-        <Divider sx={{ mb: 1.5 }} />
         <SelectThemeColors />
         <ListItem disablePadding sx={{ justifyContent: "center" }}>
           <ToggleThemeMode />

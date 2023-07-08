@@ -4,13 +4,16 @@ import { EntryStorage } from "@src/models/storage";
 
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.message === "bypass") {
-    const entries = await EntryStorage.get();
-    const filter = entries.filter(
-      (entry) => entry?.site?.includes(location.host) && entry?.user !== "" && entry?.pass !== ""
-    );
-    const entry = filter?.[0];
-    if (entry?.site?.includes(request?.data)) {
-      autoLoginEntrust(entry);
+    const bypassEnabled = await chrome.storage.local.get(["OPTIONS"]).then((result) => result.OPTIONS?.bypassEnabled);
+    if (bypassEnabled) {
+      const entries = await EntryStorage.get();
+      const filter = entries.filter(
+        (entry) => entry?.site?.includes(location.host) && entry?.user !== "" && entry?.pass !== ""
+      );
+      const entry = filter?.[0];
+      if (entry?.site?.includes(request?.data)) {
+        autoLoginEntrust(entry);
+      }
     }
   }
 });

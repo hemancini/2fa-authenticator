@@ -24,4 +24,5 @@ interface OptionsInterface {
   themeMode: ThemeMode;
   themeColor: DefaultColorHexes;
   tooltipEnabled: boolean;
+  bypassEnabled: boolean;
 }

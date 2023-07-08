@@ -8,7 +8,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
-import * as React from "react";
+import React, { useContext } from "react";
 
 import Tooltip from "../Tooltip";
 
@@ -25,7 +25,7 @@ const MenuProps = {
 };
 
 export default function SelectThemeColors() {
-  const { toggleThemeColor, defaultColor } = React.useContext(OptionsContext);
+  const { toggleThemeColor, defaultColor } = useContext(OptionsContext);
 
   const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {
     const colorSelected = event.target.value as DefaultColorHexes;

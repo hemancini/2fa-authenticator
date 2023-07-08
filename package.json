@@ -1,11 +1,11 @@
 {
-  "name": "chrome-extension-boilerplate-react-vite",
-  "version": "0.0.1",
-  "description": "chrome extension boilerplate",
+  "name": "twofa-authenticator",
+  "version": "1.0.0",
+  "description": "This extension provides 2FA authentication codes in the browser",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite.git"
+    "url": "https://github.com/hemancini/2fa-authenticator.git"
   },
   "scripts": {
     "start": "npm run build:hmr && (run-p wss build:watch)",
