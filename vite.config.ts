@@ -46,8 +46,19 @@ export default defineConfig({
     {
       name: "postbuild",
       closeBundle: async () => {
-        const vite = spawn("vite", ["build", "--config", "vite.config.capture.ts"]);
-        vite.stdout.on("data", (data) => {
+        const buildCapture = spawn("vite", ["build", "--config", "vite.config.capture.ts"]);
+        buildCapture.stderr.on("data", (data) => {
+          console.error(`${data}`.split("\n").join(""));
+        });
+        buildCapture.stdout.on("data", (data) => {
+          console.log(`${data}`.split("\n").join(""));
+        });
+
+        const buildBypass = spawn("vite", ["build", "--config", "vite.config.bypass.ts"]);
+        buildBypass.stderr.on("data", (data) => {
+          console.error(`${data}`.split("\n").join(""));
+        });
+        buildBypass.stdout.on("data", (data) => {
           console.log(`${data}`.split("\n").join(""));
         });
       },
@@ -84,6 +95,7 @@ export default defineConfig({
         content: resolve(pagesDir, "content", "index.ts"),
         capture: resolve(pagesDir, "content", "capture.ts"),
         captureCSS: resolve(pagesDir, "content", "capture.scss"),
+        bypass: resolve(pagesDir, "content", "bypass.ts"),
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),

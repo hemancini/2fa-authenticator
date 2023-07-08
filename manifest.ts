@@ -29,7 +29,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   content_scripts: [
     {
       matches: ["https://*.us.trustedauth.com/*"],
-      // js: ["src/pages/capture/index.js"],
+      js: ["src/pages/bypass/index.js"],
       // KEY for cache invalidation
       css: ["assets/css/contentStyle<KEY>.chunk.css"],
     },

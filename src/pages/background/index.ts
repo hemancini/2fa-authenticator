@@ -4,6 +4,8 @@ import { EntryStorage } from "@src/models/storage";
 import uuid from "uuid/v4";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
+import manifest from "../../../manifest";
+
 reloadOnUpdate("pages/background");
 
 /**
@@ -13,6 +15,7 @@ reloadOnUpdate("pages/background");
 reloadOnUpdate("pages/content/style.scss");
 
 const cachedPassphrase = "";
+const entrustSamlPath = "/#/saml/authentication/";
 
 chrome.runtime.onConnect.addListener((port) => {
   port.onDisconnect.addListener(() => {
@@ -73,6 +76,25 @@ chrome.runtime.onConnect.addListener((port) => {
       sendErrorMessageToClient(port, error);
     }
   });
+});
+
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (changeInfo.status === "complete") {
+    const url = new URL(tab?.url);
+    const href = url?.href;
+
+    const contentScripts = manifest.content_scripts;
+    const matches = contentScripts.map((contentScript) => contentScript.matches);
+    const reduceMatches = matches.reduce((acumulador, array) => acumulador.concat(array), []);
+
+    reduceMatches.map((match) => {
+      const urlMatch = match?.replace("https://*.", "")?.replace("/*", "");
+      const urlWhitPath = urlMatch + entrustSamlPath;
+      if (href?.includes(urlWhitPath)) {
+        chrome.tabs.sendMessage(tab.id as number, { message: "bypass", data: "trustedauth" });
+      }
+    });
+  }
 });
 
 async function getCapture(tab: chrome.tabs.Tab) {
