@@ -1,27 +1,25 @@
 name: Test
-
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [18]
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          cache: 'yarn'
-
-      - uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - run: npm install -g pnpm
-      - run: pnpm install
-      - run: pnpm test
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Test
+        run: pnpm test
