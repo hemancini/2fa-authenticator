@@ -199,6 +199,14 @@ export class EntryStorage {
       storageItem.site = entry.site;
     }
 
+    if (entry.user) {
+      storageItem.user = entry.user;
+    }
+
+    if (entry.pass) {
+      storageItem.pass = entry.pass;
+    }
+
     return storageItem;
   }
 
@@ -265,6 +273,9 @@ export class EntryStorage {
       data[hash].algorithm = data[hash].algorithm || OTPAlgorithm[OTPAlgorithm.SHA1];
       data[hash].pinned = data[hash].pinned || false;
       data[hash].site = data[hash].site || "";
+      data[hash].user = data[hash].user || "";
+      data[hash].pass = data[hash].pass || "";
+
       const period = data[hash].period;
       if (data[hash].type !== OTPType[OTPType.totp] || (period && (isNaN(period) || period <= 0))) {
         delete data[hash].period;
@@ -413,6 +424,8 @@ export class EntryStorage {
         algorithm: OTPAlgorithm[entryData.algorithm],
         pinned: entryData.pinned,
         site: entryData.site,
+        user: entryData.user,
+        pass: entryData.pass,
       });
 
       data.push(entry);

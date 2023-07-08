@@ -97,5 +97,14 @@
   },
   "settings": {
     "message": "Settings"
+  },
+  "user": {
+    "message": "User"
+  },
+  "showQR": {
+    "message": "Show QR code"
+  },
+  "pin": {
+    "message": "PIN"
   }
 }

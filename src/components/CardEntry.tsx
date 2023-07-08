@@ -1,5 +1,6 @@
 import CounterProgress from "@components/CounterProgress";
 import DialogQR from "@components/DialogQR";
+import EditAccount from "@components/EditAccount";
 import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -8,12 +9,16 @@ import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
+import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import OptionsContext from "@src/contexts/Options";
 import { OTPEntry } from "@src/models/otp";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
+
+import Tooltip from "./Tooltip";
 
 const issuerBypass = "WOM";
+const regexEAS = /^[A-Za-z0-9+/=]+$/;
 
 const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   const { children } = props;
@@ -37,6 +42,10 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
   const [progress, setProgress] = useState(initProgress);
   const [showOptions, setShowOptions] = useState(false);
 
+  const [showAccount, setShowAccount] = useState(false);
+
+  const isValidData = regexEAS.test(entry?.user) && regexEAS.test(entry?.pass);
+
   useEffect(() => {
     setProgress((prevProgress) => (count > 0 ? prevProgress - 1 * (100 / period) : 100));
   }, [second]);
@@ -57,14 +66,32 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               </Typography>
             </Box>
             <Box position="absolute" right={-7} display="flex">
-              <Box display={showOptions ? "block" : "none"}>
-                {entry.issuer === issuerBypass && (
-                  <IconButtonResize mr={0.3}>
-                    <PersonIcon />
-                  </IconButtonResize>
+              {entry.issuer === issuerBypass &&
+                useMemo(
+                  () => (
+                    <Box display={showOptions || isValidData ? "block" : "none"}>
+                      <IconButtonResize
+                        onClick={() => setShowAccount(!showAccount)}
+                        mr={!showOptions && isValidData ? 0 : 0.3}
+                      >
+                        <Tooltip title={t("user")} disableInteractive>
+                          <PersonIcon
+                            sx={{
+                              fontSize: !showOptions && isValidData && 16,
+                              color: (theme) => !showOptions && isValidData && theme.palette.text.disabled,
+                            }}
+                          />
+                        </Tooltip>
+                      </IconButtonResize>
+                    </Box>
+                  ),
+                  [entry, showAccount, showOptions, isValidData]
                 )}
+              <Box display={showOptions ? "block" : "none"}>
                 <IconButtonResize onClick={() => setShowQR(!showQR)}>
-                  <QrCode2Icon />
+                  <Tooltip title={t("showQR")} disableInteractive>
+                    <QrCode2Icon />
+                  </Tooltip>
                 </IconButtonResize>
               </Box>
               <Box display={showOptions || entry.pinned ? "block" : "none"}>
@@ -76,13 +103,15 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                     await handleEntriesUpdate();
                   }}
                 >
-                  <PushPinIcon
-                    sx={{
-                      fontSize: !showOptions && entry.pinned && 16,
-                      transform: !entry.pinned && "rotate(40deg)",
-                      color: (theme) => entry.pinned && !showOptions && theme.palette.text.disabled,
-                    }}
-                  />
+                  <Tooltip title={t("pin")} disableInteractive>
+                    <PushPinIcon
+                      sx={{
+                        fontSize: !showOptions && entry.pinned && 16,
+                        transform: !entry.pinned && "rotate(40deg)",
+                        color: (theme) => entry.pinned && !showOptions && theme.palette.text.disabled,
+                      }}
+                    />
+                  </Tooltip>
                 </IconButtonResize>
               </Box>
             </Box>
@@ -131,6 +160,13 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
         </CardContent>
       </Card>
       <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />
+      <EditAccount
+        entry={entry}
+        showOptions={showOptions}
+        isOpen={showAccount}
+        setOpen={setShowAccount}
+        handleEntriesUpdate={handleEntriesUpdate}
+      />
     </>
   );
 }

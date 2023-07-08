@@ -45,6 +45,8 @@ export class OTPEntry implements OTPEntryInterface {
   pinned: boolean;
   code = "&bull;&bull;&bull;&bull;&bull;&bull;";
   site: string;
+  user: string;
+  pass: string;
 
   constructor(
     entry: {
@@ -61,6 +63,8 @@ export class OTPEntry implements OTPEntryInterface {
       algorithm?: OTPAlgorithm;
       pinned?: boolean;
       site?: string;
+      user?: string;
+      pass?: string;
     },
     encryption?: Encryption
   ) {
@@ -123,6 +127,16 @@ export class OTPEntry implements OTPEntryInterface {
       this.site = entry.site;
     } else {
       this.site = "";
+    }
+    if (entry.user) {
+      this.user = entry.user;
+    } else {
+      this.user = "";
+    }
+    if (entry.pass) {
+      this.pass = entry.pass;
+    } else {
+      this.pass = "";
     }
   }
 

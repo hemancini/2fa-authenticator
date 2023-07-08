@@ -97,5 +97,14 @@
   },
   "settings": {
     "message": "Preferencias"
+  },
+  "user": {
+    "message": "Usuario"
+  },
+  "showQR": {
+    "message": "Ver código QR"
+  },
+  "pin": {
+    "message": "Fijar"
   }
 }

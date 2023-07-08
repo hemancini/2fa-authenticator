@@ -51,3 +51,11 @@ export class Encryption implements EncryptionInterface {
     this.password = password;
   }
 }
+
+export const encrypData = (data: string) =>
+  data !== "" ? CryptoJS.AES.encrypt(data, import.meta.env.VITE_APP_KEY || "asdzxcwqe").toString() : data;
+
+export const decrypData = (data: string) =>
+  data !== ""
+    ? CryptoJS.AES.decrypt(data, import.meta.env.VITE_APP_KEY || "asdzxcwqe").toString(CryptoJS.enc.Utf8)
+    : data;

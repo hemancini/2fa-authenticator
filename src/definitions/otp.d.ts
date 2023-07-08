@@ -13,6 +13,8 @@ interface OTPEntryInterface {
   algorithm: number; // OTPAlgorithm
   pinned: boolean;
   site: string;
+  user?: string;
+  pass?: string;
   create(): Promise<void>;
   update(): Promise<void>;
   next(): Promise<void>;
@@ -44,4 +46,6 @@ interface OTPStorage {
   algorithm?: string;
   pinned?: boolean;
   site?: string;
+  user?: string;
+  pass?: string;
 }
