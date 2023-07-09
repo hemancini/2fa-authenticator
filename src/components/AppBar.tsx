@@ -8,8 +8,10 @@ import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
@@ -70,6 +72,9 @@ export default function ButtonAppBar({
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
   const [captureQRError, setCaptureQRError] = useState<boolean>(undefined);
 
+  const theme = useTheme();
+  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+
   const handleEditEntries = () => {
     setDrawerOpen(false);
     setEntriesEdited(true);
@@ -87,6 +92,7 @@ export default function ButtonAppBar({
                   edge="start"
                   color="inherit"
                   aria-label="menu"
+                  disabled={isUpSm}
                   onClick={() => setDrawerOpen(!draweOpen)}
                 >
                   <MenuIcon />

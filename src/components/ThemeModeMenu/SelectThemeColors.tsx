@@ -12,18 +12,6 @@ import React, { useContext } from "react";
 
 import Tooltip from "../Tooltip";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      minWidth: "inherit",
-      maxWidth: "inherit",
-    },
-  },
-};
-
 export default function SelectThemeColors() {
   const { toggleThemeColor, defaultColor } = useContext(OptionsContext);
 
@@ -38,7 +26,15 @@ export default function SelectThemeColors() {
         <InputLabel>Color</InputLabel>
         <Select
           label="Color"
-          MenuProps={MenuProps}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 48 * 4.5 + 8,
+                minWidth: "inherit",
+                maxWidth: "inherit",
+              },
+            },
+          }}
           onChange={handleChange}
           defaultValue={defaultColor}
           input={

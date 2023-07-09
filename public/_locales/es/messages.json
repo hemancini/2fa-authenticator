@@ -69,7 +69,7 @@
     "message": "Restablezca el foco de la pestaña y vuelva a intentarlo."
   },
   "showTooltip": {
-    "message": "Mostrar o ocultar tooltip al pasar el cursor sobre un icono"
+    "message": "Mostrar o ocultar tooltip"
   },
   "popupMode": {
     "message": "Modo ventana emergente"
@@ -111,6 +111,12 @@
     "message": "Contraseña"
   },
   "bypass": {
-    "message": "Bypass"
+    "message": "Habilitar o deshabilitar bypass"
+  },
+  "copied": {
+    "message": "Copiado"
+  },
+  "uploadImage":{
+    "message": "Subir imagen"
   }
 }

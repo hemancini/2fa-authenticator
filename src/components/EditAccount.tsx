@@ -21,7 +21,6 @@ export default function EditAccount({
   entry: OTPEntry;
   isOpen: boolean;
   setOpen: (open: boolean) => void;
-  showOptions?: boolean;
   handleEntriesUpdate: () => void;
 }) {
   const [user, setUser] = useState(decrypData(entry.user) || "");
@@ -77,7 +76,7 @@ export default function EditAccount({
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth size="small" variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">{t("pass")}</InputLabel>
+                <InputLabel>{t("pass")}</InputLabel>
                 <OutlinedInput
                   name="pass"
                   onChange={handleChangePassword}

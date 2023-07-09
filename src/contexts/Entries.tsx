@@ -22,14 +22,16 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   const updateCodes = useCallback(() => {
     const getAllPeriods = entries.map((entry) => entry.period);
     const periods = [...new Set(getAllPeriods)];
-    periods.map((period) => {
+    for (let i = 0; i < periods.length; i++) {
+      const period = periods[i];
       const discount = period - (second % period);
       if (discount === 1) {
         setTimeout(() => {
           updateEntriesState("popup");
         }, 1000);
+        break;
       }
-    });
+    }
   }, [entries, second]);
 
   const removeEntries = useCallback(async (entriesEdited: OTPEntry[]) => {

@@ -25,4 +25,5 @@ interface OptionsInterface {
   themeColor: DefaultColorHexes;
   tooltipEnabled: boolean;
   bypassEnabled: boolean;
+  xraysEnabled: boolean;
 }

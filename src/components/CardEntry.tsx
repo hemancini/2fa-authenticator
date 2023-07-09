@@ -8,6 +8,8 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { Card, CardActionArea, CardContent } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
+import Fade from "@mui/material/Fade";
+import MuiTooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
@@ -30,7 +32,7 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
 };
 
 export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
-  const { defaultColor } = useContext(OptionsContext);
+  const { defaultColor, bypassEnabled } = useContext(OptionsContext);
   const { second, handleEntriesUpdate } = useContext(EntriesContext);
 
   const period = entry?.period || 30;
@@ -43,8 +45,16 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
   const [showOptions, setShowOptions] = useState(false);
 
   const [showAccount, setShowAccount] = useState(false);
+  const [isToolpipCopyOpen, setToolpipCopyOpen] = useState(false);
 
   const isValidData = regexEAS.test(entry?.user) && regexEAS.test(entry?.pass);
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(entry?.code).then(() => {
+      setToolpipCopyOpen(true);
+      setTimeout(() => setToolpipCopyOpen(false), 1000);
+    });
+  };
 
   useEffect(() => {
     setProgress((prevProgress) => (count > 0 ? prevProgress - 1 * (100 / period) : 100));
@@ -66,9 +76,10 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               </Typography>
             </Box>
             <Box position="absolute" right={-7} display="flex">
-              {entry.issuer === issuerBypass &&
-                useMemo(
-                  () => (
+              {useMemo(
+                () =>
+                  bypassEnabled === true &&
+                  entry.issuer === issuerBypass && (
                     <Box display={showOptions || isValidData ? "block" : "none"}>
                       <IconButtonResize
                         onClick={() => setShowAccount(!showAccount)}
@@ -85,8 +96,8 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
                       </IconButtonResize>
                     </Box>
                   ),
-                  [entry, showAccount, showOptions, isValidData]
-                )}
+                [entry, showAccount, showOptions, isValidData, bypassEnabled]
+              )}
               <Box display={showOptions ? "block" : "none"}>
                 <IconButtonResize onClick={() => setShowQR(!showQR)}>
                   <Tooltip title={t("showQR")} disableInteractive>
@@ -117,25 +128,38 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
             </Box>
           </BoxRelative>
           <Box aria-label="otp-code" display="flex">
-            <CardActionArea onClick={() => navigator.clipboard.writeText(entry.code)}>
-              <Typography
-                className={discount <= 4 && "parpadea"}
-                sx={{
-                  color:
-                    discount <= 4
-                      ? red[400]
-                      : (theme) =>
-                          DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
-                            ? theme.palette.primary.contrastText
-                            : theme.palette.primary.main,
-                  fontWeight: "bold",
-                  fontSize: "1.9rem",
-                  letterSpacing: 4,
-                  lineHeight: 1,
-                }}
+            <CardActionArea onClick={handleCopyCode}>
+              <MuiTooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                open={isToolpipCopyOpen}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title={t("copied")}
+                disableInteractive
+                placement="right"
+                arrow
               >
-                {entry.code}
-              </Typography>
+                <Typography
+                  className={discount <= 4 && "parpadea"}
+                  sx={{
+                    color:
+                      discount <= 4
+                        ? red[400]
+                        : (theme) =>
+                            DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
+                              ? theme.palette.primary.contrastText
+                              : theme.palette.primary.main,
+                    fontWeight: "bold",
+                    fontSize: "1.9rem",
+                    letterSpacing: 4,
+                    lineHeight: 1,
+                  }}
+                >
+                  {entry.code}
+                </Typography>
+              </MuiTooltip>
             </CardActionArea>
             <Box sx={{ minWidth: "100%" }} />
           </Box>
@@ -162,7 +186,6 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
       <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />
       <EditAccount
         entry={entry}
-        showOptions={showOptions}
         isOpen={showAccount}
         setOpen={setShowAccount}
         handleEntriesUpdate={handleEntriesUpdate}

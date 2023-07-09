@@ -69,7 +69,7 @@
     "message": "Please restore the focus of the tab and try again."
   },
   "showTooltip": {
-    "message": "Show or hide tooltip on icon hover"
+    "message": "Show or hide tooltip"
   },
   "popupMode": {
     "message": "Popup mode"
@@ -111,6 +111,12 @@
     "message": "Password"
   },
   "bypass": {
-    "message": "Bypass"
+    "message": "Enable o disable bypass"
+  },
+  "copied":{
+    "message": "Copied"
+  },
+  "uploadImage": {
+    "message": "Upload image"
   }
 }

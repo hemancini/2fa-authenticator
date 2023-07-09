@@ -7,6 +7,7 @@ import ManifestParser from "../manifest-parser";
 
 const { resolve } = path;
 
+const isDev = process.env.__DEV__ === "true";
 const distDir = resolve(__dirname, "..", "..", "dist");
 const publicDir = resolve(__dirname, "..", "..", "public");
 
@@ -25,6 +26,10 @@ export default function makeManifest(
       manifest.content_scripts.forEach((script) => {
         script.css = script.css.map((css) => css.replace("<KEY>", config.contentScriptCssKey));
       });
+    }
+
+    if (!isDev) {
+      delete manifest.devtools_page;
     }
 
     fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));

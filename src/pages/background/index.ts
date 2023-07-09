@@ -80,8 +80,7 @@ chrome.runtime.onConnect.addListener((port) => {
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status === "complete") {
-    const url = new URL(tab?.url);
-    const href = url?.href;
+    const url = tab?.url;
 
     const contentScripts = manifest.content_scripts;
     const matches = contentScripts.map((contentScript) => contentScript.matches);
@@ -90,7 +89,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     reduceMatches.map((match) => {
       const urlMatch = match?.replace("https://*.", "")?.replace("/*", "");
       const urlWhitPath = urlMatch + entrustSamlPath;
-      if (href?.includes(urlWhitPath)) {
+      if (url.includes(urlWhitPath)) {
         chrome.tabs.sendMessage(tab.id as number, { message: "bypass", data: "trustedauth" });
       }
     });

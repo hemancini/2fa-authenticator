@@ -61,7 +61,7 @@ export default function SettingNestedList() {
           <ListItem disablePadding sx={{ "& .MuiTypography-root": { fontSize: 14 } }}>
             <Tooltip title={t("bypass")} disableInteractive>
               <ListItemButton dense={true} onClick={toogleBypassEnabled} sx={{ pr: 1 }}>
-                <ListItemText primary={t("bypass")} sx={{ ml: 3 }} />
+                <ListItemText primary="Bypass" sx={{ ml: 3 }} />
                 <Switch
                   size="small"
                   checked={bypassEnabled}

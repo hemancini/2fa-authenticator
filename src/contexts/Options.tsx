@@ -13,6 +13,7 @@ const OptionsContext = createContext({
   defaultMode: DEFAULT_MODE as ThemeMode,
   tooltipEnabled: true,
   bypassEnabled: false,
+  xraysEnabled: false,
 });
 
 export function OptionsProvider({ children }: { children: ReactNode }) {
@@ -55,13 +56,15 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
         !options?.themeMode ||
         !options?.themeColor ||
         options?.tooltipEnabled === undefined ||
-        options?.bypassEnabled === undefined
+        options?.bypassEnabled === undefined ||
+        options?.xraysEnabled === undefined
       ) {
         const initOptions = await Options.getOptions();
         initOptions.themeColor = initOptions.themeColor || DEFAULT_COLOR;
         initOptions.themeMode = initOptions.themeMode || DEFAULT_MODE;
         initOptions.tooltipEnabled = initOptions?.tooltipEnabled === undefined || initOptions.tooltipEnabled === true;
         initOptions.bypassEnabled = initOptions?.bypassEnabled !== undefined && initOptions.bypassEnabled === true;
+        initOptions.xraysEnabled = initOptions?.xraysEnabled !== undefined && initOptions.xraysEnabled === true;
         setOptions(initOptions);
       } else {
         await Options.setOptions({ ...options });
@@ -85,6 +88,7 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
     <OptionsContext.Provider
       value={{
         ...handlerOptions,
+        xraysEnabled: options?.xraysEnabled,
         bypassEnabled: options?.bypassEnabled,
         tooltipEnabled: options?.tooltipEnabled,
         defaultColor: options?.themeColor,

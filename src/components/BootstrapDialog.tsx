@@ -1,9 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
+import MuiDialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
@@ -17,7 +17,7 @@ export interface DialogTitleProps {
 }
 
 export interface EditAccountProps {
-  title?: string;
+  title?: React.ReactNode | string;
   content?: React.ReactNode;
   iconButton?: React.ReactNode;
   dialogTitleEnabled?: boolean;
@@ -27,7 +27,7 @@ export interface EditAccountProps {
   handleClose: () => void;
 }
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(MuiDialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -38,40 +38,33 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 function BootstrapDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props;
-
   return (
     <>
-      <DialogTitle
-        sx={{
-          m: 0,
-          p: 2,
-          py: { xs: 0.5, sm: 1.5 },
-          fontSize: { sx: 18, sm: 24 },
-        }}
-        {...other}
-      >
-        {children}
-        {onClose && (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              top: { xs: 2.5, sm: 8 },
-              right: { xs: 4, sm: 8 },
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon sx={{ fontSize: { xs: 18, sm: 24 } }} />
-          </IconButton>
-        )}
-      </DialogTitle>
-      <Divider />
+      <Box sx={{ m: 1, mb: 0.8, px: 1 }}>
+        <Typography noWrap variant="body2" fontWeight="bold" color="text.primary" {...other}>
+          {children}
+          {onClose && (
+            <IconButton
+              aria-label="close"
+              onClick={onClose}
+              sx={{
+                position: "absolute",
+                top: { xs: 0 },
+                right: { xs: 0 },
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon sx={{ fontSize: { xs: 18, sm: 24 } }} />
+            </IconButton>
+          )}
+        </Typography>
+      </Box>
+      <Divider sx={{ mx: 1 }} />
     </>
   );
 }
 
-export default function EditAccount(props: EditAccountProps) {
+export default function Dialog(props: EditAccountProps) {
   const {
     title,
     content,
