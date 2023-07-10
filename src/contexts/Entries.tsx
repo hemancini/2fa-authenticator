@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
-
-import useCounter from "@src/hooks/useCounter";
-import useRefreshCodes from "@src/hooks/useRefreshCodes";
 import { OTPEntry } from "@src/models/otp";
 import { EntryStorage } from "@src/models/storage";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
@@ -9,15 +5,17 @@ import React, { createContext, useCallback, useEffect, useMemo, useState } from 
 const Context = createContext({
   entries: [],
   entriesEdited: [],
-  setEntries: (entries: OTPEntry[]) => { },
-  setEntriesEdited: (entries: OTPEntry[]) => { },
-  handleEntriesEdited: () => { },
-  handleEntriesUpdate: () => { },
+  isLoading: true,
+  setEntries: (entries: OTPEntry[]) => void 0,
+  setEntriesEdited: (entries: OTPEntry[]) => void 0,
+  handleEntriesEdited: () => void 0,
+  handleEntriesUpdate: () => void 0,
 });
 
 export function EntriesProvider({ children }: { children: React.ReactNode }) {
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const removeEntries = useCallback(async (entriesEdited: OTPEntry[]) => {
     const entries = (await EntryStorage.get()) as OTPEntry[];
@@ -43,6 +41,10 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
     } else if (typeUpdate === "all") {
       setEntries(entries);
       setEntriesEdited(entries);
+    }
+
+    if (isLoading) {
+      setIsLoading(false);
     }
     return entries;
   }, []);
@@ -71,6 +73,7 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   return (
     <Context.Provider
       value={{
+        isLoading,
         ...handlers,
         ...{ entries, setEntries },
         ...{ entriesEdited, setEntriesEdited },

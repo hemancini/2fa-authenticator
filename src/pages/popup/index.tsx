@@ -23,12 +23,22 @@ function init() {
   );
 }
 
-// if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-//   const background = document.body.style.background;
-//   document.body.style.background = "#121212";
-//   setTimeout(() => {
-//     document.body.style.background = background;
-//   }, 500);
-// }
+const initialThemeMode = async () => {
+  const storage = await chrome.storage.local.get();
+  const { OPTIONS = {} } = storage;
+  const { themeMode = "system" } = OPTIONS;
+  if (themeMode === "system" || themeMode === "dark") {
+    const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (darkMode) {
+      const background = document.body.style.background;
+      document.body.style.background = "#121212";
+      setTimeout(() => {
+        document.body.style.background = background;
+      }, 500);
+    }
+  }
+};
+
+(async () => await initialThemeMode())();
 
 init();

@@ -11,8 +11,8 @@ const RefreshCodes = () => {
 };
 
 export default function Entries() {
-  const { entries, setEntries } = useContext(EntriesContext);
-  return entries?.length >= 1 ? (
+  const { entries, setEntries, isLoading } = useContext(EntriesContext);
+  return isLoading || entries?.length >= 1 ? (
     <>
       <RefreshCodes />
       <Reorder.Group axis="y" values={entries} onReorder={setEntries}>

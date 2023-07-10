@@ -29,7 +29,13 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
+export default function OutlinedCard({
+  entry,
+  handleRender,
+}: {
+  entry: OTPEntry;
+  handleRender: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { entriesEdited, setEntriesEdited } = useContext(EntriesContext);
 
@@ -41,6 +47,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
     if (issuer) entriesEdited[index].issuer = issuer;
     if (account) entriesEdited[index].account = account;
     setEntriesEdited(entriesEdited);
+    handleRender((prevState) => !prevState);
   };
 
   const handleRemoveEntry = (hash: string) => {
@@ -48,6 +55,7 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
     entriesEdited.splice(index, 1);
     setEntriesEdited(entriesEdited);
     setIsConfirmOpen(false);
+    handleRender((prevState) => !prevState);
   };
 
   return (
