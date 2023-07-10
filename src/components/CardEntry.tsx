@@ -14,8 +14,9 @@ import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import OptionsContext from "@src/contexts/Options";
+import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/otp";
-import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { ReactNode, useContext, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
 
@@ -31,17 +32,77 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   );
 };
 
-export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
-  const { defaultColor, bypassEnabled } = useContext(OptionsContext);
-  const { second, handleEntriesUpdate } = useContext(EntriesContext);
+const EntryContent = (props: any) => {
+  const { entry, handleCopyCode, isToolpipCopyOpen, defaultColor } = props;
 
   const period = entry?.period || 30;
-  const count = second % period;
-  const discount = period - (second % period);
-  const initProgress = 100 - (count * 100) / period;
+  const { discount, progress } = useCounter({ period });
+
+  return (
+    <>
+      <Box aria-label="otp-code" display="flex">
+        <CardActionArea onClick={handleCopyCode}>
+          <MuiTooltip
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
+            open={isToolpipCopyOpen}
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            title={t("copied")}
+            disableInteractive
+            placement="right"
+            arrow
+          >
+            <Typography
+              className={discount <= 4 && "parpadea"}
+              sx={{
+                color:
+                  discount <= 4
+                    ? red[400]
+                    : (theme) =>
+                        DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
+                          ? theme.palette.primary.contrastText
+                          : theme.palette.primary.main,
+                fontWeight: "bold",
+                fontSize: "1.9rem",
+                letterSpacing: 4,
+                lineHeight: 1,
+              }}
+            >
+              {entry.code}
+            </Typography>
+          </MuiTooltip>
+        </CardActionArea>
+        <Box sx={{ minWidth: "100%" }} />
+      </Box>
+      <BoxRelative mb={0.3}>
+        <Box aria-label="account" display="flex" maxWidth="80%">
+          <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
+            {entry.account || <span>&nbsp;</span>}
+          </Typography>
+        </Box>
+        <Box display="flex" position="absolute" bottom={5} right={0}>
+          <CounterProgress
+            size={25}
+            count={discount}
+            value={progress}
+            sx={{
+              color: discount <= 5 && red[400],
+              scale: "-1 1",
+            }}
+          />
+        </Box>
+      </BoxRelative>
+    </>
+  );
+};
+
+export default function CardEntry({ entry }: { entry: OTPEntry }) {
+  const { defaultColor, bypassEnabled } = useContext(OptionsContext);
+  const { handleEntriesUpdate } = useContext(EntriesContext);
 
   const [showQR, setShowQR] = useState(false);
-  const [progress, setProgress] = useState(initProgress);
   const [showOptions, setShowOptions] = useState(false);
 
   const [showAccount, setShowAccount] = useState(false);
@@ -55,10 +116,6 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
       setTimeout(() => setToolpipCopyOpen(false), 1000);
     });
   };
-
-  useEffect(() => {
-    setProgress((prevProgress) => (count > 0 ? prevProgress - 1 * (100 / period) : 100));
-  }, [second]);
 
   return (
     <>
@@ -127,60 +184,12 @@ export default function OutlinedCard({ entry }: { entry: OTPEntry }) {
               </Box>
             </Box>
           </BoxRelative>
-          <Box aria-label="otp-code" display="flex">
-            <CardActionArea onClick={handleCopyCode}>
-              <MuiTooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}
-                open={isToolpipCopyOpen}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title={t("copied")}
-                disableInteractive
-                placement="right"
-                arrow
-              >
-                <Typography
-                  className={discount <= 4 && "parpadea"}
-                  sx={{
-                    color:
-                      discount <= 4
-                        ? red[400]
-                        : (theme) =>
-                            DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
-                              ? theme.palette.primary.contrastText
-                              : theme.palette.primary.main,
-                    fontWeight: "bold",
-                    fontSize: "1.9rem",
-                    letterSpacing: 4,
-                    lineHeight: 1,
-                  }}
-                >
-                  {entry.code}
-                </Typography>
-              </MuiTooltip>
-            </CardActionArea>
-            <Box sx={{ minWidth: "100%" }} />
-          </Box>
-          <BoxRelative mb={0.3}>
-            <Box aria-label="account" display="flex" maxWidth="80%">
-              <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
-                {entry.account || <span>&nbsp;</span>}
-              </Typography>
-            </Box>
-            <Box display="flex" position="absolute" bottom={5} right={0}>
-              <CounterProgress
-                size={25}
-                count={discount}
-                value={progress}
-                sx={{
-                  color: discount <= 5 && red[400],
-                  scale: "-1 1",
-                }}
-              />
-            </Box>
-          </BoxRelative>
+          <EntryContent
+            entry={entry}
+            defaultColor={defaultColor}
+            handleCopyCode={handleCopyCode}
+            isToolpipCopyOpen={isToolpipCopyOpen}
+          />
         </CardContent>
       </Card>
       <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />

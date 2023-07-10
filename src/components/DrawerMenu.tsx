@@ -21,7 +21,7 @@ const anchor = "left";
 const drawerWidth = 175;
 
 const routes = [
-  { path: DEFAULT_POPUP_URL, name: t("entries"), icon: <LockClockIcon />, disabled: false },
+  { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
   { path: "/security", name: t("security"), icon: <SecurityIcon />, disabled: true },
 ];
 
@@ -53,10 +53,10 @@ const ListItemButtonRoute = ({
 };
 
 export default function DrawerMenu({
-  draweOpen,
+  drawerOpen,
   setDrawerOpen,
 }: {
-  draweOpen: boolean;
+  drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const theme = useTheme();
@@ -69,23 +69,22 @@ export default function DrawerMenu({
   return (
     <Drawer
       anchor={anchor}
-      open={draweOpen || isUpSm}
+      open={drawerOpen || isUpSm}
       onClose={() => setDrawerOpen(false)}
       variant={isUpSm ? "permanent" : "temporary"}
-      sx={{ width: (draweOpen || isUpSm) && drawerWidth }}
+      sx={{ width: (drawerOpen || isUpSm) && drawerWidth }}
     >
       <ToolbarOffset />
       <List>
         <Divider />
         {routes.map((route, index) => {
-          const hrefPopup = DEFAULT_POPUP_URL;
           return (
             <>
               <ListItem key={index} disablePadding onClick={!route.disabled && handleClose}>
                 <ListItemButtonRoute
                   href={route.path}
                   disabled={route.disabled}
-                  hrefPopup={hrefPopup.includes("?popup=true") && hrefPopup}
+                  hrefPopup={DEFAULT_POPUP_URL.includes("?popup=true") && DEFAULT_POPUP_URL}
                 >
                   <ListItemIcon sx={{ minWidth: "auto", mr: 2, "& .MuiSvgIcon-root": { fontSize: 22 } }}>
                     {route.icon}

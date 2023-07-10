@@ -49,7 +49,7 @@ const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateA
         color="inherit"
         aria-label="Edit OK"
         LinkComponent={Link}
-        href={DEFAULT_POPUP_URL}
+        href="/"
         onClick={() => {
           handleEntriesEdited();
           setEntriesEdited(false);
@@ -62,10 +62,10 @@ const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateA
 };
 
 export default function ButtonAppBar({
-  draweOpen,
+  drawerOpen,
   setDrawerOpen,
 }: {
-  draweOpen: boolean;
+  drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [isEntriesEdit, setEntriesEdited] = useState(false);
@@ -93,7 +93,7 @@ export default function ButtonAppBar({
                   color="inherit"
                   aria-label="menu"
                   disabled={isUpSm}
-                  onClick={() => setDrawerOpen(!draweOpen)}
+                  onClick={() => setDrawerOpen(!drawerOpen)}
                 >
                   <MenuIcon />
                 </IconButton>

@@ -1,38 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
+import useCounter from "@src/hooks/useCounter";
+import useRefreshCodes from "@src/hooks/useRefreshCodes";
 import { OTPEntry } from "@src/models/otp";
 import { EntryStorage } from "@src/models/storage";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 const Context = createContext({
-  second: 0,
   entries: [],
   entriesEdited: [],
-  setEntries: (entries: OTPEntry[]) => {},
-  setEntriesEdited: (entries: OTPEntry[]) => {},
-  handleEntriesEdited: () => {},
-  handleEntriesUpdate: () => {},
+  setEntries: (entries: OTPEntry[]) => { },
+  setEntriesEdited: (entries: OTPEntry[]) => { },
+  handleEntriesEdited: () => { },
+  handleEntriesUpdate: () => { },
 });
 
 export function EntriesProvider({ children }: { children: React.ReactNode }) {
-  const [second, setSecond] = useState<number>(new Date().getSeconds());
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
-
-  const updateCodes = useCallback(() => {
-    const getAllPeriods = entries.map((entry) => entry.period);
-    const periods = [...new Set(getAllPeriods)];
-    for (let i = 0; i < periods.length; i++) {
-      const period = periods[i];
-      const discount = period - (second % period);
-      if (discount === 1) {
-        setTimeout(() => {
-          updateEntriesState("popup");
-        }, 1000);
-        break;
-      }
-    }
-  }, [entries, second]);
 
   const removeEntries = useCallback(async (entriesEdited: OTPEntry[]) => {
     const entries = (await EntryStorage.get()) as OTPEntry[];
@@ -66,14 +51,6 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
     updateEntriesState("all");
   }, []);
 
-  useEffect(() => {
-    updateCodes();
-    const timer = setTimeout(() => {
-      setSecond(new Date().getSeconds());
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [second]);
-
   const handlers = useMemo(
     () => ({
       handleEntriesEdited: () => {
@@ -94,7 +71,6 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   return (
     <Context.Provider
       value={{
-        second,
         ...handlers,
         ...{ entries, setEntries },
         ...{ entriesEdited, setEntriesEdited },

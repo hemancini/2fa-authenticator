@@ -23,4 +23,12 @@ function init() {
   );
 }
 
+// if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+//   const background = document.body.style.background;
+//   document.body.style.background = "#121212";
+//   setTimeout(() => {
+//     document.body.style.background = background;
+//   }, 500);
+// }
+
 init();

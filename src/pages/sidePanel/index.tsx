@@ -1,6 +1,8 @@
 import "@pages/popup/index.css";
 
 import Popup from "@pages/popup/Popup";
+import { EntriesProvider } from "@src/contexts/Entries";
+import { OptionsProvider } from "@src/contexts/Options";
 import { createRoot } from "react-dom/client";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
@@ -12,7 +14,13 @@ function init() {
     throw new Error("Can not find #app-container");
   }
   const root = createRoot(appContainer);
-  root.render(<Popup />);
+  root.render(
+    <OptionsProvider>
+      <EntriesProvider>
+        <Popup />
+      </EntriesProvider>
+    </OptionsProvider>
+  );
 }
 
 init();
