@@ -42,8 +42,8 @@ export default function SelectThemeColors() {
               label="Color"
               sx={{
                 "& .MuiSelect-select": {
-                  p: 1,
-                  py: 0.6,
+                  p: 0,
+                  px: 1,
                 },
               }}
             />
