@@ -116,7 +116,19 @@
   "copied": {
     "message": "Copiado"
   },
-  "uploadImage":{
+  "uploadImage": {
     "message": "Subir imagen"
+  },
+  "syncTimeWithGoogle": {
+    "message": "Sincronizar hora con Google"
+  },
+  "exportarData": {
+    "message": "Exportar datos"
+  },
+  "importData": {
+    "message": "Importar datos"
+  },
+  "scale": {
+    "message": "Escala"
   }
 }

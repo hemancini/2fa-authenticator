@@ -113,10 +113,22 @@
   "bypass": {
     "message": "Enable o disable bypass"
   },
-  "copied":{
+  "copied": {
     "message": "Copied"
   },
   "uploadImage": {
     "message": "Upload image"
+  },
+  "syncTimeWithGoogle": {
+    "message": "Sync time with Google"
+  },
+  "exportarData": {
+    "message": "Export data"
+  },
+  "importData": {
+    "message": "Import data"
+  },
+  "scale": {
+    "message": "Scale"
   }
 }

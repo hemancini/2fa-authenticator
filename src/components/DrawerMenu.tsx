@@ -45,7 +45,7 @@ const ListItemButtonRoute = ({
       disabled={disabled}
       selected={isActive}
       href={hrefPopup || href}
-      sx={{ px: 1 }}
+      sx={{ px: 2 }}
     >
       {children}
     </ListItemButton>
@@ -96,7 +96,7 @@ export default function DrawerMenu({
             </>
           );
         })}
-        <OptionsNestedList />
+        {/* <OptionsNestedList /> */}
       </List>
       <ThemeModeMenu />
     </Drawer>

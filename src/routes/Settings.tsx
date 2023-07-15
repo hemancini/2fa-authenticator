@@ -1,9 +1,9 @@
-import BackupEntries from "@components/BackupEntries";
+import Settings from "@components/Settings";
 
-export default function Settings() {
+export default function SettingsRoute() {
   return (
     <>
-      <BackupEntries />
+      <Settings />
     </>
   );
 }
