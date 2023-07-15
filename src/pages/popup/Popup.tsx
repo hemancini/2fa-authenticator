@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
+import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
 import DrawerMenu from "@src/components/DrawerMenu";
 import ToolbarOffset from "@src/components/ToolbarOffset";
@@ -63,6 +64,9 @@ const Popup = () => {
             </Route>
             <Route path="/entries/edit">
               <EntriesEdit />
+            </Route>
+            <Route path="/settings">
+              <Settings />
             </Route>
             <Route path="/:anything*">
               <Redirect to="/" />

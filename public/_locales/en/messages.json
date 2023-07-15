@@ -92,11 +92,11 @@
   "entries": {
     "message": "Entries"
   },
-  "security": {
-    "message": "Security"
-  },
   "settings": {
     "message": "Settings"
+  },
+  "options": {
+    "message": "Options"
   },
   "user": {
     "message": "User"

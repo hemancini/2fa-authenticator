@@ -65,6 +65,7 @@ export default defineConfig({
     },
   ],
   define: {
+    DEFAULT_APP_KEY: JSON.stringify("PAaD&z7XC_-WQE"),
     DEFAULT_POPUP_URL: JSON.stringify(`/${manifest.action.default_popup}`),
     DEFAULT_SIDE_PANEL_URL: JSON.stringify(`/${manifest.side_panel.default_path}`),
     DEFAULT_COLOR: JSON.stringify("#619f04"),

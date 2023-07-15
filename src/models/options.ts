@@ -8,6 +8,7 @@ export class Options implements OptionsInterface {
   xraysEnabled: boolean;
 
   private static STORAGE_KEY = "OPTIONS";
+
   static storage: ILocalStorage = new LocalStorage();
   static async getOptions(): Promise<OptionsInterface> {
     return (await this.storage.load(this.STORAGE_KEY)) as OptionsInterface;

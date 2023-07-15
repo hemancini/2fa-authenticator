@@ -13,7 +13,7 @@ import { t } from "@src/chrome/i18n";
 import React from "react";
 import { Link, useRoute } from "wouter";
 
-import SettingNestedList from "./SettingNestedList";
+import OptionsNestedList from "./OptionsNestedList";
 import ThemeModeMenu from "./ThemeModeMenu";
 import ToolbarOffset from "./ToolbarOffset";
 
@@ -22,7 +22,7 @@ const drawerWidth = 175;
 
 const routes = [
   { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
-  { path: "/security", name: t("security"), icon: <SecurityIcon />, disabled: true },
+  { path: "/settings", name: t("settings"), icon: <SecurityIcon />, disabled: false },
 ];
 
 const ListItemButtonRoute = ({
@@ -96,7 +96,7 @@ export default function DrawerMenu({
             </>
           );
         })}
-        <SettingNestedList />
+        <OptionsNestedList />
       </List>
       <ThemeModeMenu />
     </Drawer>

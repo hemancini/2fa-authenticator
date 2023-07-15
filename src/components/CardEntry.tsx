@@ -88,6 +88,9 @@ const EntryContent = (props: any) => {
             count={discount}
             value={progress}
             sx={{
+              "& .MuiCircularProgress-circle": {
+                transition: `stroke-dashoffset ${period - discount >= 1 ? 1 : 0.4}s ease-in-out`,
+              },
               color: discount <= 5 && red[400],
               scale: "-1 1",
             }}

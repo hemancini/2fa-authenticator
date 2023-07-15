@@ -18,11 +18,11 @@ import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
 import { useContext, useState } from "react";
 
-export default function SettingNestedList() {
+export default function OptionsNestedList() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
-  const { tooltipEnabled, toggleTooltipEnabled, bypassEnabled, toogleBypassEnabled } = useContext(OptionsContext);
+  const { tooltipEnabled, toggleTooltipEnabled } = useContext(OptionsContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -51,37 +51,13 @@ export default function SettingNestedList() {
           <ListItemIcon sx={{ minWidth: "auto", ml: 0.2, mr: 2, "& .MuiSvgIcon-root": { fontSize: 20 } }}>
             <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary={t("settings")} />
+          <ListItemText primary={t("options")} />
           <Box sx={{ pl: 2, display: "flex", justifyContent: "center" }}>{open ? <ExpandLess /> : <ExpandMore />}</Box>
         </ListItemButton>
       </ListItem>
       <Divider />
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem disablePadding sx={{ "& .MuiTypography-root": { fontSize: 14 } }}>
-            <Tooltip title={t("bypass")} disableInteractive>
-              <ListItemButton dense={true} onClick={toogleBypassEnabled} sx={{ pr: 1 }}>
-                <ListItemText primary="Bypass" sx={{ ml: 3 }} />
-                <Switch
-                  size="small"
-                  checked={bypassEnabled}
-                  sx={{
-                    width: 30,
-                    height: 22,
-                    "& .MuiSwitch-thumb": { width: 14, height: 14 },
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      transform: "translateX(10px)",
-                      color: "primary.main",
-                      "& + .MuiSwitch-track": {
-                        opacity: 1,
-                        backgroundColor: "primary.dark",
-                      },
-                    },
-                  }}
-                />
-              </ListItemButton>
-            </Tooltip>
-          </ListItem>
           <Divider sx={{ ml: 2.8 }} />
           <ListItem disablePadding sx={{ "& .MuiTypography-root": { fontSize: 14 } }}>
             <Tooltip title={t("showTooltip")} disableInteractive>

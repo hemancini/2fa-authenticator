@@ -6,7 +6,7 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
   const { count } = props;
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
-      <CircularProgress variant="determinate" {...props} />
+      <CircularProgress variant="determinate" thickness={5} {...props} />
       <Box
         sx={{
           top: 0,
@@ -19,7 +19,12 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
           justifyContent: "center",
         }}
       >
-        <Typography variant="caption" component="div" color="text.secondary" sx={{ lineHeight: 1 }}>
+        <Typography
+          component="div"
+          variant="caption"
+          color="text.secondary"
+          sx={{ lineHeight: 1, fontSize: "0.70rem" }}
+        >
           {count}
         </Typography>
       </Box>

@@ -1,9 +1,9 @@
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { OTPEntry } from "@src/models/otp";
 
@@ -24,14 +24,13 @@ export default function ConfirmRemoveEntry({
       onClose={() => setIsConfirmOpen(false)}
       sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1 } }}
     >
-      <DialogContent sx={{ "&&": { p: 0, m: 0 } }}>
-        <DialogContentText sx={{ p: 0, m: 1 }}>
-          <Alert icon={false} severity="warning">
-            <span dangerouslySetInnerHTML={{ __html: t("confirmRemoveDescription", entry.account) }} />
-          </Alert>
-        </DialogContentText>
+      <DialogContent sx={{ p: 1, py: 1.5 }}>
+        <Typography variant="body2" gutterBottom>
+          <span dangerouslySetInnerHTML={{ __html: t("confirmRemoveDescription", entry.account) }} />
+        </Typography>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: "space-around", mx: 0, gap: 2 }}>
+      <Divider />
+      <DialogActions>
         <Button size="small" variant="outlined" fullWidth onClick={() => setIsConfirmOpen(false)}>
           {t("cancel")}
         </Button>
