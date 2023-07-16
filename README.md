@@ -49,36 +49,6 @@
 - [Rollup](https://rollupjs.org/guide/en/)
 - [Rollup-plugin-chrome-extension](https://www.extend-chrome.dev/rollup-plugin)
 
-## TODO
-
-- [x] **popup**
-  - [x] get entries
-  - [x] edit entries
-  - [x] auto refresh
-  - [x] pin entry
-- [x] **edit entries**
-  - [x] drag and drop
-  - [x] delete entry
-  - [x] edit entry
-  - [x] add entry
-- [ ] **add entry**
-  - [x] scan QR code
-  - [ ] manual input
-  - [x] otp uri
-  - [ ] image file
-  - [x] show success message
-- [ ] **control errors**
-  - [x] scan QR code
-- [x] i18n
-  - [x] spanish
-  - [x] english
-- [ ] options
-  - [x] themes
-    - [x] dark mode
-  - [x] tooltip
-  - [ ] autofill
-  - [x] entrust bypass
-
 ## Thanks To
 
 - [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
