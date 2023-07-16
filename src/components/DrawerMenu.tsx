@@ -1,5 +1,5 @@
 import LockClockIcon from "@mui/icons-material/LockClock";
-import SecurityIcon from "@mui/icons-material/Security";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -13,7 +13,7 @@ import { t } from "@src/chrome/i18n";
 import React from "react";
 import { Link, useRoute } from "wouter";
 
-import OptionsNestedList from "./OptionsNestedList";
+// import OptionsNestedList from "./OptionsNestedList";
 import ThemeModeMenu from "./ThemeModeMenu";
 import ToolbarOffset from "./ToolbarOffset";
 
@@ -22,7 +22,7 @@ const drawerWidth = 175;
 
 const routes = [
   { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
-  { path: "/settings", name: t("settings"), icon: <SecurityIcon />, disabled: false },
+  { path: "/settings", name: t("settings"), icon: <SettingsIcon />, disabled: false },
 ];
 
 const ListItemButtonRoute = ({
@@ -38,15 +38,7 @@ const ListItemButtonRoute = ({
 }) => {
   const [isActive] = useRoute(href);
   return (
-    <ListItemButton
-      dense={true}
-      disableGutters
-      component={Link}
-      disabled={disabled}
-      selected={isActive}
-      href={hrefPopup || href}
-      sx={{ px: 2 }}
-    >
+    <ListItemButton dense={true} component={Link} disabled={disabled} selected={isActive} href={hrefPopup || href}>
       {children}
     </ListItemButton>
   );

@@ -25,25 +25,30 @@ chrome.runtime.onConnect.addListener((port) => {
     try {
       switch (message.type) {
         case "captureQR":
-          await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
-            if (!tab?.[0]?.id) {
-              console.warn("captureQR: No active tab found");
-              throw new Error("No active tab found");
-            }
-            await chrome.scripting.executeScript({
-              target: { tabId: tab?.[0].id, allFrames: true },
-              files: ["/src/pages/capture/index.js"],
-            });
-            await chrome.scripting.insertCSS({
-              files: ["/assets/css/contentCapture.chunk.css"],
-              target: { tabId: tab?.[0].id },
-            });
-            chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
-            sendMessageToClient(port, {
-              type: message.type,
-              data: "received",
-            });
+          await captureQR();
+          sendMessageToClient(port, {
+            type: message.type,
+            data: "received",
           });
+          // await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
+          //   if (!tab?.[0]?.id) {
+          //     console.warn("captureQR: No active tab found");
+          //     throw new Error("No active tab found");
+          //   }
+          //   await chrome.scripting.executeScript({
+          //     target: { tabId: tab?.[0].id, allFrames: true },
+          //     files: ["/src/pages/capture/index.js"],
+          //   });
+          //   await chrome.scripting.insertCSS({
+          //     files: ["/assets/css/contentCapture.chunk.css"],
+          //     target: { tabId: tab?.[0].id },
+          //   });
+          //   chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
+          //   sendMessageToClient(port, {
+          //     type: message.type,
+          //     data: "received",
+          //   });
+          // });
           break;
         case "getCapture":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
@@ -78,9 +83,10 @@ chrome.runtime.onConnect.addListener((port) => {
   });
 });
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete") {
     const url = tab?.url;
+    if (!url) return;
 
     const contentScripts = manifest.content_scripts;
     const matches = contentScripts.map((contentScript) => contentScript.matches);
@@ -95,6 +101,30 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     });
   }
 });
+
+chrome.commands.onCommand.addListener(async (command: string) => {
+  if (command === "scan-qr") {
+    await captureQR();
+  }
+});
+
+async function captureQR() {
+  await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
+    if (!tab?.[0]?.id) {
+      console.warn("captureQR: No active tab found");
+      throw new Error("No active tab found");
+    }
+    await chrome.scripting.executeScript({
+      target: { tabId: tab?.[0].id, allFrames: true },
+      files: ["/src/pages/capture/index.js"],
+    });
+    await chrome.scripting.insertCSS({
+      files: ["/assets/css/contentCapture.chunk.css"],
+      target: { tabId: tab?.[0].id },
+    });
+    chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
+  });
+}
 
 async function getCapture(tab: chrome.tabs.Tab) {
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
