@@ -78,7 +78,6 @@
   - [x] tooltip
   - [ ] autofill
   - [x] entrust bypass
-  - [ ] gitlab bypass
 
 ## Thanks To
 

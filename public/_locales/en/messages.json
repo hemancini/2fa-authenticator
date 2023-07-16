@@ -130,5 +130,8 @@
   },
   "scale": {
     "message": "Scale"
+  },
+  "sourceCode": {
+    "message": "Source code"
   }
 }
