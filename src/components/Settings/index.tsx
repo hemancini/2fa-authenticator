@@ -228,15 +228,6 @@ export default function Settings() {
       </Paper>
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
-          <ListItem disablePadding>
-            <ListItemButton dense={!isUpSm} onClick={handleDownloadJson}>
-              <ListItemIcon>
-                <FileDownloadIcon />
-              </ListItemIcon>
-              <ListItemText primary={t("exportarData")} />
-            </ListItemButton>
-          </ListItem>
-          <Divider />
           <label htmlFor="update-button-file">
             <ListItem disablePadding dense={!isUpSm}>
               <ListItemButton>
@@ -254,6 +245,15 @@ export default function Settings() {
               />
             </ListItem>
           </label>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton dense={!isUpSm} onClick={handleDownloadJson}>
+              <ListItemIcon>
+                <FileDownloadIcon />
+              </ListItemIcon>
+              <ListItemText primary={t("exportarData")} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Paper>
       <Paper variant="outlined" sx={{ my: 1 }}>
