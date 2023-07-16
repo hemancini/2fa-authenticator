@@ -11,7 +11,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   description: "__MSG_extensionDescription__",
   homepage_url: packageJson.repository.url,
   options_page: "src/pages/options/index.html",
-  permissions: ["tabs", "activeTab", "storage", "identity", "scripting", "sidePanel" as any],
+  permissions: ["tabs", "activeTab", "storage", "scripting", "sidePanel" as any],
   side_panel: {
     default_path: "src/pages/sidePanel/index.html",
   },
