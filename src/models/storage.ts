@@ -1,5 +1,3 @@
-import * as uuid from "uuid/v4";
-
 import { Encryption } from "./encryption";
 import { OTPAlgorithm, OTPEntry, OTPType } from "./otp";
 
@@ -326,7 +324,7 @@ export class EntryStorage {
 
       // not a valid / old hash
       if (!/^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}$/.test(hash)) {
-        const _hash = await uuid();
+        const _hash = crypto.randomUUID();
 
         data[_hash] = data[hash];
         data[_hash].hash = _hash;

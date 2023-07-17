@@ -32,7 +32,7 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateEntriesState = useCallback(async (typeUpdate?: "popup" | "edit" | "all"): Promise<OTPEntry[]> => {
-    console.log("updateEntriesState() => typeUpdate:", typeUpdate);
+    // console.log("updateEntriesState() => typeUpdate:", typeUpdate);
     const entries = await EntryStorage.get();
     if (typeUpdate === "popup") {
       setEntries(entries);

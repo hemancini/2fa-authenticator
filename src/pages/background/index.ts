@@ -1,7 +1,6 @@
 import { sendErrorMessageToClient, sendMessageToClient } from "@src/chrome/message";
 import { Encryption } from "@src/models/encryption";
 import { EntryStorage } from "@src/models/storage";
-import uuid from "uuid/v4";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
 import manifest from "../../../manifest";
@@ -140,7 +139,7 @@ async function getTotp(message: { url: string; site: string }) {
     return Error("Bad url");
   }
 
-  const hash = await uuid();
+  const hash = crypto.randomUUID();
   const urlObj = new URL(decodeURIComponent(url));
   const entryData: { [hash: string]: OTPStorage } = {};
   const period = parseInt(urlObj.searchParams.get("period") || "30");

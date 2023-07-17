@@ -1,6 +1,6 @@
 {
   "name": "twofa-authenticator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This extension provides 2FA authentication codes in the browser",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,6 @@
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "uuid": "3.4.0",
     "wouter": "2.11.0"
   },
   "devDependencies": {

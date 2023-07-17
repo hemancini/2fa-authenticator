@@ -1,5 +1,3 @@
-import * as uuid from "uuid/v4";
-
 import { Encryption } from "./encryption";
 import { KeyUtilities } from "./keyUtilities";
 import { EntryStorage } from "./storage";
@@ -93,7 +91,7 @@ export class OTPEntry implements OTPEntryInterface {
     if (entry.hash) {
       this.hash = entry.hash;
     } else {
-      this.hash = uuid(); // UUID
+      this.hash = crypto.randomUUID();
     }
     if (entry.counter) {
       this.counter = entry.counter;
@@ -195,7 +193,7 @@ export class OTPEntry implements OTPEntryInterface {
   }
 
   genUUID() {
-    this.hash = uuid();
+    this.hash = crypto.randomUUID();
   }
 
   generate() {

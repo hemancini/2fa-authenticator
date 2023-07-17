@@ -6,6 +6,9 @@
 ![](https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![](https://badges.aleen42.com/src/vitejs.svg)
 ![GitHub action badge](https://github.com/hemancini/2fa-authenticator/actions/workflows/build-zip.yml/badge.svg)
+<a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
+<img alt="Chrome" src="https://img.shields.io/chrome-web-store/v/pnnmjhghimefjdmdilmlhnojccjgpgeh?color=blue&label=Chrome&style=flat-square&logo=google-chrome&logoColor=white" />
+</a>
 
 > This project was generated from [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
 
@@ -13,7 +16,20 @@
 
 </div>
 
+You no longer need to use your phone to authenticate. This 2FA authenticator extension gives you 2-step verification codes right in your browser.
+
+<img src="docs/captures/ChromeWebStore_BadgeWBorder.svg" alt="Chrome Web Store" width="250"/>
+
 ## Features <a name="features"></a>
+
+- Verification of OTP codes in your browser
+- One click to autofill verification codes
+- Scan QR codes from the page
+- Show QR codes for quick scan
+- Backup your secrets to a file
+- Open source
+
+## Developer features <a name="developer-features"></a>
 
 - [React 18](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -24,7 +40,7 @@
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 - [Chrome Extension Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/)
-- HRR(Hot Rebuild & Refresh/Reload)
+- HRR (Hot Rebuild & Refresh/Reload)
 
 ## Installation <a name="installation"></a>
 
@@ -49,7 +65,7 @@
 - [Rollup](https://rollupjs.org/guide/en/)
 - [Rollup-plugin-chrome-extension](https://www.extend-chrome.dev/rollup-plugin)
 
-## Thanks To
+## Credit <a name="credit"></a>
 
-- [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
-- [Authenticator extension](https://github.com/Authenticator-Extension/Authenticator)
+- Originally forked from [Authenticator extension](https://github.com/Authenticator-Extension/Authenticator)
+- Thanks to [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
