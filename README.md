@@ -18,7 +18,9 @@
 
 You no longer need to use your phone to authenticate. This 2FA authenticator extension gives you 2-step verification codes right in your browser.
 
-<img src="docs/captures/ChromeWebStore_BadgeWBorder.svg" alt="Chrome Web Store" width="250"/>
+<a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
+<img src="docs/img/ChromeWebStore_BadgeWBorder.svg" alt="Chrome Web Store" width="200"/>
+</a>
 
 ## Features <a name="features"></a>
 
