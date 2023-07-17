@@ -44,21 +44,20 @@ You no longer need to use your phone to authenticate. This 2FA authenticator ext
 - [Chrome Extension Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/)
 - HRR (Hot Rebuild & Refresh/Reload)
 
-## Installation <a name="installation"></a>
+## Building <a name="building"></a>
 
 ### Procedures <a name="procedures"></a>
 
 1. Clone this repository.
-2. Change `name` and `description` in package.json => **Auto synchronize with manifest**
-3. Run `pnpm i` (check your node version >= 16.6, recommended >= 18)
-4. Run `pnpm start`
-5. Load Extension on Chrome
+2. Run `pnpm i` (check your node version >= 16.6, recommended >= 18)
+3. Run `pnpm start`
+4. Load Extension on Chrome
    1. Open - Chrome browser
    2. Access - chrome://extensions
    3. Check - Developer mode
    4. Find - Load unpacked extension
    5. Select - `dist` folder in this project (after dev or build)
-6. If you want to build in production, Just run `pnpm run build`.
+5. If you want to build in production, Just run `pnpm run build`.
 
 ## Documents <a name="documents"></a>
 
