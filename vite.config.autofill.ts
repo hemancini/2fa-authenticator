@@ -11,7 +11,7 @@ const root = resolve(__dirname, "src");
 const outDir = resolve(__dirname, "dist");
 const pagesDir = resolve(root, "pages");
 const assetsDir = resolve(root, "assets");
-const captureOutDir = resolve(outDir, "src/pages/capture");
+const autofillOutDir = resolve(outDir, "src/pages/autofill");
 
 const extensionToDelete = ["png", "json", "_locales", "providers"];
 
@@ -35,10 +35,10 @@ export default defineConfig({
     minify: isProduction,
     cssCodeSplit: false,
     emptyOutDir: true,
-    outDir: resolve(captureOutDir),
+    outDir: resolve(autofillOutDir),
     lib: {
-      entry: resolve(pagesDir, "content", "capture.ts"),
-      name: "WebAnsers/capture",
+      entry: resolve(pagesDir, "content", "autofill.ts"),
+      name: "WebAnsers/autofill",
       formats: ["iife"],
     },
     rollupOptions: {
@@ -52,22 +52,20 @@ export default defineConfig({
 
 const postBuild = async () => {
   try {
-    const dirCount = fs.readdirSync(captureOutDir);
+    const dirCount = fs.readdirSync(autofillOutDir);
     dirCount.forEach((dir) => {
       extensionToDelete.forEach((ext) => {
         if (dir.includes(ext)) {
-          if (dir.includes(ext)) {
-            if (/\..+$/.test(dir)) {
-              rmFile(`${captureOutDir}/${dir}`);
-            } else {
-              rmDirRecursive(`${captureOutDir}/${dir}`);
-            }
-            // console.log(`${`${captureOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
+          if (/\..+$/.test(dir)) {
+            rmFile(`${autofillOutDir}/${dir}`);
+          } else {
+            rmDirRecursive(`${autofillOutDir}/${dir}`);
           }
+          // console.log(`${`${autofillOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
         }
       });
     });
   } catch (err) {
-    console.error("Something wrong happened removing the file", err);
+    console.log("Something wrong happened removing the file", err);
   }
 };

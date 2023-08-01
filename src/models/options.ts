@@ -6,6 +6,7 @@ export class Options implements OptionsInterface {
   tooltipEnabled: boolean;
   bypassEnabled: boolean;
   xraysEnabled: boolean;
+  autofillEnabled: boolean;
 
   private static STORAGE_KEY = "OPTIONS";
 

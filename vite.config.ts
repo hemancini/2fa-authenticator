@@ -24,6 +24,11 @@ const isProduction = !isDev;
 // ENABLE HMR IN BACKGROUND SCRIPT
 const enableHmrInBackgroundScript = true;
 
+const devPages = {
+  devtools: resolve(pagesDir, "devtools", "index.html"),
+  panel: resolve(pagesDir, "panel", "index.html"),
+};
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -46,21 +51,9 @@ export default defineConfig({
     {
       name: "postbuild",
       closeBundle: async () => {
-        const buildCapture = spawn("vite", ["build", "--config", "vite.config.capture.ts"]);
-        buildCapture.stderr.on("data", (data) => {
-          console.error(`${data}`.split("\n").join(""));
-        });
-        buildCapture.stdout.on("data", (data) => {
-          console.log(`${data}`.split("\n").join(""));
-        });
-
-        const buildBypass = spawn("vite", ["build", "--config", "vite.config.bypass.ts"]);
-        buildBypass.stderr.on("data", (data) => {
-          console.error(`${data}`.split("\n").join(""));
-        });
-        buildBypass.stdout.on("data", (data) => {
-          console.log(`${data}`.split("\n").join(""));
-        });
+        buildCloseBundle("vite.config.capture.ts");
+        buildCloseBundle("vite.config.bypass.ts");
+        buildCloseBundle("vite.config.autofill.ts");
       },
     },
   ],
@@ -91,16 +84,12 @@ export default defineConfig({
     reportCompressedSize: isProduction,
     rollupOptions: {
       input: {
-        ...(isDev
-          ? {
-              devtools: resolve(pagesDir, "devtools", "index.html"),
-              panel: resolve(pagesDir, "panel", "index.html"),
-            }
-          : {}),
+        ...(isDev ? devPages : {}),
         content: resolve(pagesDir, "content", "index.ts"),
         capture: resolve(pagesDir, "content", "capture.ts"),
         captureCSS: resolve(pagesDir, "content", "capture.scss"),
         bypass: resolve(pagesDir, "content", "bypass.ts"),
+        autofill: resolve(pagesDir, "content", "autofill.ts"),
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
@@ -141,4 +130,14 @@ function regenerateCacheInvalidationKey() {
 
 function generateKey(): string {
   return `${(Date.now() / 100).toFixed()}`;
+}
+
+function buildCloseBundle(viteConfig: "vite.config.capture.ts" | "vite.config.bypass.ts" | "vite.config.autofill.ts") {
+  const build = spawn("vite", ["build", "--config", viteConfig]);
+  build.stderr.on("data", (data) => {
+    console.error(`${data}`.split("\n").join(""));
+  });
+  build.stdout.on("data", (data) => {
+    console.log(`${data}`.split("\n").join(""));
+  });
 }

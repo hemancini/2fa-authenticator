@@ -9,11 +9,13 @@ const OptionsContext = createContext({
   toggleThemeColor: (color: DefaultColorHexes) => void 0,
   toggleTooltipEnabled: () => void 0,
   toogleBypassEnabled: () => void 0,
+  toogleAutofillEnabled: () => void 0,
   defaultColor: DEFAULT_COLOR as DefaultColorHexes,
   defaultMode: DEFAULT_MODE as ThemeMode,
   tooltipEnabled: true,
   bypassEnabled: false,
   xraysEnabled: false,
+  autofillEnabled: false,
 });
 
 export function OptionsProvider({ children }: { children: ReactNode }) {
@@ -46,6 +48,12 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
           bypassEnabled: !prevOptions?.bypassEnabled,
         }));
       },
+      toogleAutofillEnabled: () => {
+        setOptions((prevOptions: React.SetStateAction<any>) => ({
+          ...prevOptions,
+          autofillEnabled: !prevOptions?.autofillEnabled,
+        }));
+      },
     }),
     []
   );
@@ -65,6 +73,8 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
         initOptions.tooltipEnabled = initOptions?.tooltipEnabled === undefined || initOptions.tooltipEnabled === true;
         initOptions.bypassEnabled = initOptions?.bypassEnabled !== undefined && initOptions.bypassEnabled === true;
         initOptions.xraysEnabled = initOptions?.xraysEnabled !== undefined && initOptions.xraysEnabled === true;
+        initOptions.autofillEnabled =
+          initOptions?.autofillEnabled !== undefined && initOptions.autofillEnabled === true;
         setOptions(initOptions);
       } else {
         await Options.setOptions({ ...options });
@@ -93,6 +103,7 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
         tooltipEnabled: options?.tooltipEnabled,
         defaultColor: options?.themeColor,
         defaultMode: options?.themeMode,
+        autofillEnabled: options?.autofillEnabled,
       }}
     >
       {options?.themeMode && options?.themeColor && (

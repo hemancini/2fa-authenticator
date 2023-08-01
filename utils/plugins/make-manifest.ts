@@ -30,6 +30,8 @@ export default function makeManifest(
 
     if (!isDev) {
       delete manifest.devtools_page;
+    } else if (!manifest.name.includes("dev")) {
+      manifest.name = `${manifest.name} (dev)`;
     }
 
     fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));

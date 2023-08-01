@@ -13,10 +13,7 @@ export default function DialogCaptureQR({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const handleClose = () => {
-    // window.close();
-    // setTimeout(() => {s
     setOpen(false);
-    // }, 200);s
   };
 
   return (

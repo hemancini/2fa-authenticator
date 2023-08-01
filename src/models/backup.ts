@@ -20,7 +20,7 @@ export default class Backup {
 
   static async get() {
     const data = await EntryStorage.get();
-    if (!data) throw new Error("No data found");
+    if (!data?.length) throw new Error("No data found", { cause: "notEntriesFound" });
     const dataEncrypted = {
       data: CryptoJS.AES.encrypt(JSON.stringify(data), import.meta.env.VITE_APP_KEY || DEFAULT_APP_KEY).toString(),
     };

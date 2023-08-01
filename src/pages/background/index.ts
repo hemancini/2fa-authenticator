@@ -29,25 +29,6 @@ chrome.runtime.onConnect.addListener((port) => {
             type: message.type,
             data: "received",
           });
-          // await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
-          //   if (!tab?.[0]?.id) {
-          //     console.warn("captureQR: No active tab found");
-          //     throw new Error("No active tab found");
-          //   }
-          //   await chrome.scripting.executeScript({
-          //     target: { tabId: tab?.[0].id, allFrames: true },
-          //     files: ["/src/pages/capture/index.js"],
-          //   });
-          //   await chrome.scripting.insertCSS({
-          //     files: ["/assets/css/contentCapture.chunk.css"],
-          //     target: { tabId: tab?.[0].id },
-          //   });
-          //   chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
-          //   sendMessageToClient(port, {
-          //     type: message.type,
-          //     data: "received",
-          //   });
-          // });
           break;
         case "getCapture":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
@@ -72,6 +53,33 @@ chrome.runtime.onConnect.addListener((port) => {
             }
           }
           break;
+        case "autofill":
+          chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
+            if (!tabs?.[0]?.id) {
+              console.warn("autofill: No active tab found");
+              throw new Error("No active tab found");
+            }
+            chrome.permissions.request(
+              {
+                permissions: ["tabs"],
+                origins: [tabs?.[0]?.url],
+              },
+              async (granted) => {
+                if (granted) {
+                  await chrome.scripting.executeScript({
+                    target: { tabId: tabs?.[0].id, allFrames: true },
+                    files: ["/src/pages/autofill/index.js"],
+                  });
+                  chrome.tabs.sendMessage(tabs?.[0].id, { message: "pastecode", data: message.data });
+                } else {
+                  console.warn("autofill: Granted permission denied");
+                  throw new Error("Granted permission denied");
+                }
+              }
+            );
+          });
+          break;
+
         default:
           console.warn("Unknown message type", message.type);
       }

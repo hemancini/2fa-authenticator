@@ -1,4 +1,5 @@
 import Tooltip from "@components/Tooltip";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -36,22 +37,16 @@ const initialInfoText = "Esta acción agregará y actualizará los datos importa
 const Switch = (props: SwitchProps) => {
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
-  return (
-    <SwitchMui
-      sx={
-        !isUpSm
-          ? {
-              "& .MuiSwitch-track": { width: 25, height: "75%" },
-              "& .MuiSwitch-thumb": { width: 16, height: 16 },
-              "& .MuiSwitch-switchBase.Mui-checked": {
-                transform: "translateX(15px)",
-              },
-            }
-          : {}
-      }
-      {...props}
-    />
-  );
+
+  const stylesDownSm = {
+    "& .MuiSwitch-track": { width: 25, height: "75%" },
+    "& .MuiSwitch-thumb": { width: 16, height: 16 },
+    "& .MuiSwitch-switchBase.Mui-checked": {
+      transform: "translateX(15px)",
+    },
+  };
+
+  return <SwitchMui sx={!isUpSm ? stylesDownSm : {}} {...props} />;
 };
 
 const ListItemIcon = (props: ListItemIconProps) => {
@@ -67,22 +62,33 @@ export default function Settings() {
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
   const [, setLocation] = useLocation();
-  const { tooltipEnabled, toggleTooltipEnabled, toogleBypassEnabled, bypassEnabled } = useContext(OptionsContext);
+  const {
+    tooltipEnabled,
+    toggleTooltipEnabled,
+    toogleBypassEnabled,
+    toogleAutofillEnabled,
+    bypassEnabled,
+    autofillEnabled,
+  } = useContext(OptionsContext);
 
   const handleDownloadJson = async () => {
-    const data = await Backup.get();
-    const jsonData = JSON.stringify(data, null, 2);
-    if (!jsonData) return;
+    try {
+      const data = await Backup.get();
+      const jsonData = JSON.stringify(data, null, 2);
+      if (!jsonData) return;
 
-    const fileName = `${new Date().toISOString().split(".")[0]}.json`;
-    const blob = new Blob([jsonData], { type: "application/json" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
+      const fileName = `${new Date().toISOString().split(".")[0]}.json`;
+      const blob = new Blob([jsonData], { type: "application/json" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
 
-    link.href = url;
-    link.download = fileName;
-    link.click();
-    window.URL.revokeObjectURL(url);
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      showMessage(error.cause ? t(error.cause) : error.message);
+    }
   };
 
   const handleFileUpload = (event) => {
@@ -96,8 +102,7 @@ export default function Settings() {
       };
       reader.readAsText(file);
     } else {
-      setInfoText("Solo se permiten archivos JSON.");
-      setCloseAction(true);
+      showMessage("Solo se permiten archivos JSON.");
     }
     event.target.value = null;
   };
@@ -111,8 +116,7 @@ export default function Settings() {
       handleClose();
       setLocation(DEFAULT_POPUP_URL);
     } catch (error) {
-      setInfoText(error.message);
-      setCloseAction(true);
+      showMessage(error.message);
     }
   };
 
@@ -121,12 +125,9 @@ export default function Settings() {
       try {
         if (!granted) throw new Error("No se otorgaron los permisos necesarios.");
         const message = await syncTimeWithGoogle();
-        setInfoText(message);
+        showMessage(message, true);
       } catch (error) {
-        setInfoText(error.message);
-      } finally {
-        setCloseAction(true);
-        setOpen(true);
+        showMessage(error.message);
       }
     });
   };
@@ -154,6 +155,12 @@ export default function Settings() {
           window.close();
         }
       });
+  };
+
+  const showMessage = (message: string, isInfo?: boolean) => {
+    setCloseAction(!isInfo);
+    setInfoText(message);
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -215,6 +222,19 @@ export default function Settings() {
               </ListItemButton>
             </Tooltip>
           </ListItem>
+          <ListItem disablePadding>
+            <Tooltip title={t("autofillDesc")} disableInteractive>
+              <ListItemButton dense={!isUpSm} onClick={toogleAutofillEnabled}>
+                <ListItemIcon>
+                  <AutoFixHighIcon sx={{ fontSize: 20 }} />
+                </ListItemIcon>
+                <ListItemText primary={t("autofill")} />
+                <div style={{ position: "absolute", display: "flex", justifyContent: "flex-end", width: "93%" }}>
+                  <Switch checked={autofillEnabled} />
+                </div>
+              </ListItemButton>
+            </Tooltip>
+          </ListItem>
           <Divider />
           <ListItem disablePadding>
             <ListItemButton dense={!isUpSm} onClick={handleSyncClock} sx={{ pr: 0 }}>
@@ -224,21 +244,22 @@ export default function Settings() {
               <ListItemText primary={t("syncTimeWithGoogle")} />
             </ListItemButton>
           </ListItem>
+          <Divider />
         </List>
       </Paper>
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
-          <label htmlFor="update-button-file">
+          <label htmlFor="update-file-button">
             <ListItem disablePadding dense={!isUpSm}>
               <ListItemButton>
                 <ListItemIcon>
                   <UploadFileIcon />
                 </ListItemIcon>
-                <ListItemText primary={t("importData")} />
+                <ListItemText primary={t("importAccounts")} />
               </ListItemButton>
               <Input
                 type="file"
-                id="update-button-file"
+                id="update-file-button"
                 style={{ display: "none" }}
                 onChange={handleFileUpload}
                 inputProps={{ accept: "application/JSON" }}
@@ -251,7 +272,7 @@ export default function Settings() {
               <ListItemIcon>
                 <FileDownloadIcon />
               </ListItemIcon>
-              <ListItemText primary={t("exportarData")} />
+              <ListItemText primary={t("exportAccounts")} />
             </ListItemButton>
           </ListItem>
         </List>

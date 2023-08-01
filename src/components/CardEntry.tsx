@@ -12,6 +12,7 @@ import Fade from "@mui/material/Fade";
 import MuiTooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
+import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import OptionsContext from "@src/contexts/Options";
 import useCounter from "@src/hooks/useCounter";
@@ -19,6 +20,13 @@ import { OTPEntry } from "@src/models/otp";
 import { ReactNode, useContext, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
+
+type EntryContentProps = {
+  entry: OTPEntry;
+  handleCopyCode: () => void;
+  isToolpipCopyOpen: boolean;
+  defaultColor: string;
+};
 
 const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;
@@ -32,11 +40,12 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   );
 };
 
-const EntryContent = (props: any) => {
+const EntryContent = (props: EntryContentProps) => {
   const { entry, handleCopyCode, isToolpipCopyOpen, defaultColor } = props;
 
   const period = entry?.period || 30;
   const { discount, progress } = useCounter({ period });
+  const isDark = (theme) => DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark";
 
   return (
     <>
@@ -55,15 +64,12 @@ const EntryContent = (props: any) => {
             arrow
           >
             <Typography
-              className={discount <= 4 && "parpadea"}
+              className={discount <= 4 ? "parpadea" : ""}
               sx={{
                 color:
                   discount <= 4
                     ? red[400]
-                    : (theme) =>
-                        DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark"
-                          ? theme.palette.primary.contrastText
-                          : theme.palette.primary.main,
+                    : (theme) => (isDark(theme) ? theme.palette.primary.contrastText : theme.palette.primary.main),
                 fontWeight: "bold",
                 fontSize: "1.9rem",
                 letterSpacing: 4,
@@ -117,7 +123,19 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
     navigator.clipboard.writeText(entry?.code).then(() => {
       setToolpipCopyOpen(true);
       setTimeout(() => setToolpipCopyOpen(false), 1000);
+      handleAutoFill();
     });
+  };
+
+  const handleAutoFill = () => {
+    const { code } = entry;
+    if (code) {
+      return new Promise((resolve, reject) => {
+        sendMessageToBackground({
+          message: { type: "autofill", data: { code } },
+        });
+      });
+    }
   };
 
   return (

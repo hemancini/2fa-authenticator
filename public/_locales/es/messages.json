@@ -122,16 +122,22 @@
   "syncTimeWithGoogle": {
     "message": "Sincronizar reloj con Google"
   },
-  "exportarData": {
-    "message": "Exportar datos"
+  "exportAccounts": {
+    "message": "Exportar cuentas"
   },
-  "importData": {
-    "message": "Importar datos"
+  "importAccounts": {
+    "message": "Importar cuentas"
   },
   "scale": {
     "message": "Escala"
   },
   "sourceCode": {
     "message": "Código fuente"
+  },
+  "autofill":{
+    "message": "Autocompletar"
+  },
+  "autofillDesc":{
+    "message": "Autocompletar el código de verificación en el campo de entrada."
   }
 }

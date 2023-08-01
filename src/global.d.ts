@@ -47,7 +47,15 @@ declare global {
     error: Error;
   };
   type Message = {
-    type: "getCurrentTab" | "capture" | "captureQR" | "getCapture" | "getTotp";
+    type:
+      | "getCurrentTab"
+      | "capture"
+      | "captureQR"
+      | "getCapture"
+      | "getTotp"
+      | "autofill"
+      | "syncTimeWithGoogle"
+      | "autofill";
     data: any;
   };
 }

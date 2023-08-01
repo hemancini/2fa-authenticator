@@ -38,7 +38,14 @@ const ListItemButtonRoute = ({
 }) => {
   const [isActive] = useRoute(href);
   return (
-    <ListItemButton dense={true} component={Link} disabled={disabled} selected={isActive} href={hrefPopup || href}>
+    <ListItemButton
+      dense={true}
+      component={Link}
+      sx={{ "& .MuiListItemText-root": { mr: 1 } }}
+      disabled={disabled}
+      selected={isActive}
+      href={hrefPopup || href}
+    >
       {children}
     </ListItemButton>
   );
@@ -71,8 +78,8 @@ export default function DrawerMenu({
         <Divider />
         {routes.map((route, index) => {
           return (
-            <>
-              <ListItem key={index} disablePadding onClick={!route.disabled && handleClose}>
+            <div key={index}>
+              <ListItem disablePadding onClick={!route.disabled && handleClose}>
                 <ListItemButtonRoute
                   href={route.path}
                   disabled={route.disabled}
@@ -85,7 +92,7 @@ export default function DrawerMenu({
                 </ListItemButtonRoute>
               </ListItem>
               <Divider />
-            </>
+            </div>
           );
         })}
         {/* <OptionsNestedList /> */}

@@ -20,10 +20,10 @@ chrome.runtime.onMessage.addListener(async (request) => {
 
 const autoLoginEntrust = async (entry: OTPEntry) => {
   let iteration = 0;
-  let intervalOTP: any = undefined;
-  let intervalOptions: any = undefined;
-  let intervalPassword: any = undefined;
-  let intervalOptionsList: any = undefined;
+  let intervalOTP = undefined;
+  let intervalOptions = undefined;
+  let intervalPassword = undefined;
+  let intervalOptionsList = undefined;
   const intervalMilliseconds = 500;
 
   const setUserId = () => {
@@ -44,6 +44,7 @@ const autoLoginEntrust = async (entry: OTPEntry) => {
       iteration = 0;
       clearInterval(intervalUserId);
       console.log("setUserId - iteration > 10");
+      intervalPassword = setInterval(setPassword, intervalMilliseconds);
     }
   };
 
@@ -63,6 +64,7 @@ const autoLoginEntrust = async (entry: OTPEntry) => {
       iteration = 0;
       clearInterval(intervalPassword);
       console.log("setPassword - iteration > 10");
+      intervalOptions = setInterval(selectOptions, intervalMilliseconds);
     }
   };
 
@@ -79,6 +81,7 @@ const autoLoginEntrust = async (entry: OTPEntry) => {
       iteration = 0;
       clearInterval(intervalOptions);
       console.log("selectOptions - iteration > 10");
+      intervalOptionsList = setInterval(selectOptionsList, intervalMilliseconds);
     }
   };
 
@@ -95,6 +98,7 @@ const autoLoginEntrust = async (entry: OTPEntry) => {
       iteration = 0;
       clearInterval(intervalOptionsList);
       console.log("selectOptionsList - iteration > 10");
+      intervalOTP = setInterval(setOTP, intervalMilliseconds);
     }
   };
 

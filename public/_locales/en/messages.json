@@ -122,16 +122,22 @@
   "syncTimeWithGoogle": {
     "message": "Sync time with Google"
   },
-  "exportarData": {
-    "message": "Export data"
+  "exportAccounts": {
+    "message": "Export accounts"
   },
-  "importData": {
-    "message": "Import data"
+  "importAccounts": {
+    "message": "Import accounts"
   },
   "scale": {
     "message": "Scale"
   },
   "sourceCode": {
     "message": "Source code"
+  },
+  "autofill":{
+    "message": "Autofill"
+  },
+  "autofillDesc":{
+    "message": "Autofill the code in the input field"
   }
 }

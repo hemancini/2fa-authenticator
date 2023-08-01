@@ -13,7 +13,7 @@ const pagesDir = resolve(root, "pages");
 const assetsDir = resolve(root, "assets");
 const bypassOutDir = resolve(outDir, "src/pages/bypass");
 
-const extensionToDelete = ["png", "json", "_locales"];
+const extensionToDelete = ["png", "json", "_locales", "providers"];
 
 export default defineConfig({
   resolve: {

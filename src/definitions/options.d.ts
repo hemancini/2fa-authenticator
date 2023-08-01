@@ -26,4 +26,5 @@ interface OptionsInterface {
   tooltipEnabled: boolean;
   bypassEnabled: boolean;
   xraysEnabled: boolean;
+  autofillEnabled: boolean;
 }

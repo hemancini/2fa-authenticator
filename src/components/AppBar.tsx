@@ -70,7 +70,9 @@ export default function ButtonAppBar({
 }) {
   const [isEntriesEdit, setEntriesEdited] = useState(false);
   const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
-  const [captureQRError, setCaptureQRError] = useState<boolean>(undefined);
+  const [captureQRError, setCaptureQRError] = useState<boolean>(false);
+
+  const isDev = import.meta.env.VITE_IS_DEV === "true";
 
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
@@ -87,16 +89,18 @@ export default function ButtonAppBar({
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
             {!isEntriesEdit && (
               <Tooltip title="Menu" placement="bottom" disableInteractive>
-                <IconButton
-                  size="small"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  disabled={isUpSm}
-                  onClick={() => setDrawerOpen(!drawerOpen)}
-                >
-                  <MenuIcon />
-                </IconButton>
+                <span>
+                  <IconButton
+                    size="small"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    disabled={isUpSm}
+                    onClick={() => setDrawerOpen(!drawerOpen)}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </span>
               </Tooltip>
             )}
           </Box>
@@ -104,11 +108,12 @@ export default function ButtonAppBar({
             textAlign="center"
             sx={{
               fontSize: 17,
-              fontWeight: "bold",
+              fontWeight: !isDev && "bold",
               // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
             }}
           >
             {t("extensionName")}
+            {isDev && " dev"}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
             {isEntriesEdit ? (
