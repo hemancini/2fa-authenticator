@@ -1,4 +1,3 @@
-import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { ThemeOptions } from "@mui/material/styles";
@@ -6,8 +5,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
 import packageJson from "../../../package.json";
-import SelectThemeColors from "./SelectThemeColors";
 import ToggleThemeMode from "./ToggleThemeMode";
+import ToogleThemeColors from "./ToogleThemeColors";
 
 const themeCustomization: ThemeOptions = {
   spacing: 5,
@@ -65,7 +64,7 @@ export default function ThemeModeMenu() {
           })
         }
       >
-        <SelectThemeColors />
+        <ToogleThemeColors />
         <ListItem disablePadding sx={{ justifyContent: "center" }}>
           <ToggleThemeMode />
         </ListItem>

@@ -8,11 +8,11 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import Tooltip from "../Tooltip";
 
-export default function SelectThemeColors() {
+export default function ToogleThemeColors() {
   const { toggleThemeColor, defaultColor } = useContext(OptionsContext);
 
   const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {

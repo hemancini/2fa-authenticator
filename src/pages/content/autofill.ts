@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener(async (request) => {
     if (autofillEnabled) {
       pasteCode(code);
     }
+    console.log("autofillEnabled enabled", autofillEnabled);
   }
 });
 
@@ -23,13 +24,18 @@ function pasteCode(code: string) {
       inputBoxes.push(_inputBoxes[i]);
     }
   }
+
   if (!inputBoxes.length) {
+    console.log("No input boxes found");
     return;
   }
-  const identities = ["2fa", "otp", "authenticator", "factor", "code", "totp", "twoFactorCode"];
+
+  const identities = ["mfaCode", "2fa", "otp", "authenticator", "factor", "code", "totp", "twoFactorCode"];
   for (const inputBox of inputBoxes) {
     for (const identity of identities) {
-      if (inputBox.name.toLowerCase().indexOf(identity) >= 0 || inputBox.id.toLowerCase().indexOf(identity) >= 0) {
+      const inputBoxName = inputBox.name.toLowerCase();
+      const inputBoxId = inputBox.id.toLowerCase();
+      if (inputBoxName.indexOf(identity) >= 0 || inputBoxId === identity) {
         if (!inputBox.value || /^(\d{6}|\d{8})$/.test(inputBox.value)) {
           inputBox.value = code;
           fireInputEvents(inputBox);
