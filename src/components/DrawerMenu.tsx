@@ -14,7 +14,7 @@ import React from "react";
 import { Link, useRoute } from "wouter";
 
 // import OptionsNestedList from "./OptionsNestedList";
-import ThemeModeMenu from "./ThemeModeMenu";
+import ThemeModeSelect from "./ThemeModeSelect";
 import ToolbarOffset from "./ToolbarOffset";
 
 const anchor = "left";
@@ -97,7 +97,7 @@ export default function DrawerMenu({
         })}
         {/* <OptionsNestedList /> */}
       </List>
-      <ThemeModeMenu />
+      <ThemeModeSelect />
     </Drawer>
   );
 }

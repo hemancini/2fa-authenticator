@@ -8,7 +8,7 @@
     "url": "https://github.com/hemancini/2fa-authenticator.git"
   },
   "scripts": {
-    "start": "npm run build:hmr && (run-p wss build:watch)",
+    "dev": "npm run build:hmr && (run-p wss build:watch)",
     "build": "tsc --noEmit && vite build",
     "build:watch": "cross-env __DEV__=true vite build --watch --mode dev",
     "build:hmr": "rollup --config utils/reload/rollup.config.ts",

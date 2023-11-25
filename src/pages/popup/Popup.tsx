@@ -1,14 +1,14 @@
 import "@pages/popup/Popup.css";
 
 import AppBar from "@components/AppBar";
+import DrawerMenu from "@components/DrawerMenu";
+import ToolbarOffset from "@components/ToolbarOffset";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
-import DrawerMenu from "@src/components/DrawerMenu";
-import ToolbarOffset from "@src/components/ToolbarOffset";
 import OptionsContext from "@src/contexts/Options";
 import { useContext, useState } from "react";
 import React from "react";

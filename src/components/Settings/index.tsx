@@ -222,6 +222,7 @@ export default function Settings() {
               </ListItemButton>
             </Tooltip>
           </ListItem>
+          <Divider />
           <ListItem disablePadding>
             <Tooltip title={t("autofillDesc")} disableInteractive>
               <ListItemButton dense={!isUpSm} onClick={toogleAutofillEnabled}>
@@ -244,7 +245,6 @@ export default function Settings() {
               <ListItemText primary={t("syncTimeWithGoogle")} />
             </ListItemButton>
           </ListItem>
-          <Divider />
         </List>
       </Paper>
       <Paper variant="outlined" sx={{ my: 1 }}>
