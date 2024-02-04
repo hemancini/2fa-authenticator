@@ -13,6 +13,7 @@ import { useLocation } from "wouter";
 import Options from "./AddOptions";
 import ManualEntry from "./ManualEntry";
 import ManualTotpEntry from "./ManualTotpEntry";
+import { useModalStore } from "@src/stores/useModalStore";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -20,15 +21,14 @@ export interface AddEntryProps {
 }
 
 export interface AddEntryMenuProps {
-  isAddEntryMenuOpen: boolean;
-  setAddEntryMenuOpen: (isAddEntryMenuOpen: boolean) => void;
   setEntriesEdited: (isEntriesEdited: boolean) => void;
 }
 
-export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, setEntriesEdited }: AddEntryMenuProps) {
+export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
   const { handleEntriesEdited } = useContext(EntriesContext);
   const [location, navigate] = useLocation();
+  const { modals, toggleModal } = useModalStore();
 
   useEffect(() => {
     if (manualEntryOptions !== "") {
@@ -37,7 +37,7 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
   }, [manualEntryOptions]);
 
   const handleOnAddEntryClose = () => {
-    setAddEntryMenuOpen(false);
+    toggleModal("add-entry-modal");
     setTimeout(() => {
       setManualEntryOptions("");
     }, 500);
@@ -55,7 +55,7 @@ export default function AddEntryMenu({ isAddEntryMenuOpen, setAddEntryMenuOpen, 
 
   return (
     <Dialog
-      open={isAddEntryMenuOpen}
+      open={modals["add-entry-modal"]}
       onClose={handleOnAddEntryClose}
       sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: { xs: "100%", sm: "30%" }, pb: 0.5 } }}
     >

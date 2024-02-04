@@ -122,11 +122,11 @@
   "syncTimeWithGoogle": {
     "message": "Sincronizar reloj con Google"
   },
-  "exportAccounts": {
-    "message": "Exportar cuentas"
+  "exportBackup": {
+    "message": "Exportar copia de seguridad"
   },
-  "importAccounts": {
-    "message": "Importar cuentas"
+  "importBackup": {
+    "message": "Importar copia de seguridad"
   },
   "scale": {
     "message": "Escala"

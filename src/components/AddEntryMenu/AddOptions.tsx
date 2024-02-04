@@ -1,6 +1,7 @@
 import { captureQRCode } from "@components/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ImageIcon from "@mui/icons-material/Image";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -129,7 +130,6 @@ export default function AddOptions(options: AddOptionsProps) {
       </React.Fragment>
       <Button
         {...buttonCommonProps}
-        disabled
         startIcon={<KeyboardIcon />}
         onClick={() => setManualEntryOptions("MANUAL")}
       >
@@ -137,6 +137,9 @@ export default function AddOptions(options: AddOptionsProps) {
       </Button>
       <Button {...buttonCommonProps} startIcon={<LinkIcon />} onClick={() => setManualEntryOptions("TOTP")}>
         {t("totpUrl")}
+      </Button>
+      <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} onClick={() => alert(t("importBackup"))} disabled>
+        {t("importBackup")}
       </Button>
     </>
   );

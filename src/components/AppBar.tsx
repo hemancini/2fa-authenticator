@@ -19,6 +19,7 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
+import { useModalStore } from "@src/stores/useModalStore";
 
 const defaultIconSize = { fontSize: 20 };
 
@@ -69,8 +70,8 @@ export default function ButtonAppBar({
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [isEntriesEdit, setEntriesEdited] = useState(false);
-  const [isAddEntryMenuOpen, setAddEntryMenuOpen] = useState(false);
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
+  const { modals, toggleModal } = useModalStore();
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
@@ -124,7 +125,7 @@ export default function ButtonAppBar({
                     color="inherit"
                     aria-label="Add entry"
                     onClick={() => {
-                      setAddEntryMenuOpen(true);
+                      toggleModal("add-entry-modal");
                     }}
                   >
                     <AddIcon sx={defaultIconSize} />
@@ -164,10 +165,8 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {isEntriesEdit && (
+      {(isEntriesEdit || modals["add-entry-modal"]) && (
         <AddEntryMenu
-          isAddEntryMenuOpen={isAddEntryMenuOpen}
-          setAddEntryMenuOpen={setAddEntryMenuOpen}
           setEntriesEdited={setEntriesEdited}
         />
       )}

@@ -236,7 +236,11 @@ export default function Settings() {
               </ListItemButton>
             </Tooltip>
           </ListItem>
-          <Divider />
+        </List>
+      </Paper>
+
+      <Paper variant="outlined" sx={{ my: 1 }}>
+        <List sx={{ p: 0 }}>
           <ListItem disablePadding>
             <ListItemButton dense={!isUpSm} onClick={handleSyncClock} sx={{ pr: 0 }}>
               <ListItemIcon>
@@ -247,6 +251,7 @@ export default function Settings() {
           </ListItem>
         </List>
       </Paper>
+
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
           <label htmlFor="update-file-button">
@@ -255,7 +260,7 @@ export default function Settings() {
                 <ListItemIcon>
                   <UploadFileIcon />
                 </ListItemIcon>
-                <ListItemText primary={t("importAccounts")} />
+                <ListItemText primary={t("importBackup")} />
               </ListItemButton>
               <Input
                 type="file"
@@ -272,7 +277,7 @@ export default function Settings() {
               <ListItemIcon>
                 <FileDownloadIcon />
               </ListItemIcon>
-              <ListItemText primary={t("exportAccounts")} />
+              <ListItemText primary={t("exportBackup")} />
             </ListItemButton>
           </ListItem>
         </List>
