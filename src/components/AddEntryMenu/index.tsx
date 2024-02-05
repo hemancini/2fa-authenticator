@@ -55,7 +55,7 @@ export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
 
   return (
     <Dialog
-      open={modals["add-entry-modal"]}
+      open={modals["add-entry-modal"] || false}
       onClose={handleOnAddEntryClose}
       sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: { xs: "100%", sm: "30%" }, pb: 0.5 } }}
     >
@@ -101,7 +101,7 @@ export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
         {manualEntryOptions === "TOTP" ? (
           <ManualTotpEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : manualEntryOptions === "MANUAL" ? (
-          <ManualEntry handlerOnCandel={handleOnAddEntryCancel} />
+          <ManualEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : (
           <Options setManualEntryOptions={setManualEntryOptions} />
         )}

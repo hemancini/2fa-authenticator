@@ -22,7 +22,7 @@ export default function OptionsNestedList() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
-  const { tooltipEnabled, toggleTooltipEnabled, bypassEnabled, toogleBypassEnabled } = useContext(OptionsContext);
+  const { tooltipEnabled, toggleTooltipEnabled, bypassEnabled, toggleBypassEnabled } = useContext(OptionsContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -60,7 +60,7 @@ export default function OptionsNestedList() {
         <List component="div" disablePadding>
           <ListItem disablePadding sx={{ "& .MuiTypography-root": { fontSize: 14 } }}>
             <Tooltip title={t("bypass")} disableInteractive>
-              <ListItemButton dense={true} onClick={toogleBypassEnabled} sx={{ pr: 1 }}>
+              <ListItemButton dense={true} onClick={toggleBypassEnabled} sx={{ pr: 1 }}>
                 <ListItemText primary="Bypass" sx={{ ml: 3 }} />
                 <Switch
                   size="small"

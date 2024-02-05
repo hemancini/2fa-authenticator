@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type useModalStoreProps = {
+type ModalStoreProps = {
     modals: {
         modal1: boolean;
         modal2: boolean;
@@ -8,7 +8,7 @@ type useModalStoreProps = {
     toggleModal: (modalName: string) => void;
 };
 
-export const useModalStore = create<useModalStoreProps>(
+export const useModalStore = create<ModalStoreProps>()(
     (set) => ({
         modals: {
             modal1: false,

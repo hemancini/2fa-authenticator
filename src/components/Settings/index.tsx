@@ -65,8 +65,8 @@ export default function Settings() {
   const {
     tooltipEnabled,
     toggleTooltipEnabled,
-    toogleBypassEnabled,
-    toogleAutofillEnabled,
+    toggleBypassEnabled,
+    toggleAutofillEnabled,
     bypassEnabled,
     autofillEnabled,
   } = useContext(OptionsContext);
@@ -211,7 +211,7 @@ export default function Settings() {
           <Divider />
           <ListItem disablePadding>
             <Tooltip title={t("bypass")} disableInteractive>
-              <ListItemButton dense={!isUpSm} onClick={toogleBypassEnabled}>
+              <ListItemButton dense={!isUpSm} onClick={toggleBypassEnabled}>
                 <ListItemIcon>
                   <img src="/providers/2yguh43k12y4g12u4.webp" alt="icon" width={24} height={24} />
                 </ListItemIcon>
@@ -225,7 +225,7 @@ export default function Settings() {
           <Divider />
           <ListItem disablePadding>
             <Tooltip title={t("autofillDesc")} disableInteractive>
-              <ListItemButton dense={!isUpSm} onClick={toogleAutofillEnabled}>
+              <ListItemButton dense={!isUpSm} onClick={toggleAutofillEnabled}>
                 <ListItemIcon>
                   <AutoFixHighIcon sx={{ fontSize: 20 }} />
                 </ListItemIcon>

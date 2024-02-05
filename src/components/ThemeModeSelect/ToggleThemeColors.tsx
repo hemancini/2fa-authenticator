@@ -12,7 +12,7 @@ import { useContext } from "react";
 
 import Tooltip from "../Tooltip";
 
-export default function ToogleThemeColors() {
+export default function toggleThemeColors() {
   const { toggleThemeColor, defaultColor } = useContext(OptionsContext);
 
   const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {

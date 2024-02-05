@@ -18,6 +18,8 @@ export default function DialogQR({
   const secret = entry.secret;
   const account = entry.account;
 
+  const authURL = `otpauth://totp/${issuer}@${account}?secret=${secret}`;
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -30,7 +32,7 @@ export default function DialogQR({
     >
       <DialogContent>
         {issuer && account && secret && (
-          <QRCodeSVG value={`otpauth://totp/${issuer}@${account}?secret=${secret}`} size={defaultSize} />
+          <QRCodeSVG value={authURL} size={defaultSize} />
         )}
       </DialogContent>
     </Dialog>

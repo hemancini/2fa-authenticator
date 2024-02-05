@@ -43,6 +43,7 @@ You no longer need to use your phone to authenticate. This 2FA authenticator ext
 - [Prettier](https://prettier.io/)
 - [Chrome Extension Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/)
 - HRR (Hot Rebuild & Refresh/Reload)
+- [Zustand](https://github.com/pmndrs/zustand)
 
 ## Building <a name="building"></a>
 

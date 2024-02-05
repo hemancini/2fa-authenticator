@@ -19,6 +19,19 @@ export default function ManualTotpEntry(props: AddEntryProps) {
   const [entry, setEntry] = useState<Entry>();
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
 
+  const handleSubmited = async () => {
+    return new Promise((resolve) => {
+      sendMessageToBackground({
+        message: { type: "getTotp", data: { url: totp } },
+        handleSuccess: (result) => {
+          handleEntriesUpdate();
+          setEntry(result);
+          resolve(result);
+        },
+      });
+    });
+  }
+
   return (
     <Box mx={0.5}>
       <Box display="grid" gap={2} mb={2.5} mt={0}>
@@ -57,18 +70,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
               variant="contained"
               fullWidth
               disabled={!regexTotp.test(totp)}
-              onClick={async () => {
-                return new Promise((resolve) => {
-                  sendMessageToBackground({
-                    message: { type: "getTotp", data: { url: totp } },
-                    handleSuccess: (result) => {
-                      handleEntriesUpdate();
-                      setEntry(result);
-                      resolve(result);
-                    },
-                  });
-                });
-              }}
+              onClick={handleSubmited}
             >
               {t("add")}
             </Button>

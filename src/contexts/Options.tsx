@@ -8,8 +8,8 @@ const OptionsContext = createContext({
   toggleThemeMode: (mode: ThemeMode) => void 0,
   toggleThemeColor: (color: DefaultColorHexes) => void 0,
   toggleTooltipEnabled: () => void 0,
-  toogleBypassEnabled: () => void 0,
-  toogleAutofillEnabled: () => void 0,
+  toggleBypassEnabled: () => void 0,
+  toggleAutofillEnabled: () => void 0,
   defaultColor: DEFAULT_COLOR as DefaultColorHexes,
   defaultMode: DEFAULT_MODE as ThemeMode,
   tooltipEnabled: true,
@@ -42,13 +42,13 @@ export function OptionsProvider({ children }: { children: ReactNode }) {
           tooltipEnabled: !prevOptions?.tooltipEnabled,
         }));
       },
-      toogleBypassEnabled: () => {
+      toggleBypassEnabled: () => {
         setOptions((prevOptions: React.SetStateAction<any>) => ({
           ...prevOptions,
           bypassEnabled: !prevOptions?.bypassEnabled,
         }));
       },
-      toogleAutofillEnabled: () => {
+      toggleAutofillEnabled: () => {
         setOptions((prevOptions: React.SetStateAction<any>) => ({
           ...prevOptions,
           autofillEnabled: !prevOptions?.autofillEnabled,

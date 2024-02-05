@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 import packageJson from "../../../package.json";
 import ToggleThemeMode from "./ToggleThemeMode";
-import ToogleThemeColors from "./ToogleThemeColors";
+import ToggleThemeColors from "./ToggleThemeColors";
 
 const themeCustomization: ThemeOptions = {
   spacing: 5,
@@ -64,7 +64,7 @@ export default function ThemeModeMenu() {
           })
         }
       >
-        <ToogleThemeColors />
+        <ToggleThemeColors />
         <ListItem disablePadding sx={{ justifyContent: "center" }}>
           <ToggleThemeMode />
         </ListItem>
