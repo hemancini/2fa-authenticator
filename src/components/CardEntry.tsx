@@ -20,12 +20,12 @@ import { OTPEntry } from "@src/models/otp";
 import { ReactNode, useContext, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
 
 type EntryContentProps = {
   entry: OTPEntry;
   handleCopyCode: () => void;
   isToolpipCopyOpen: boolean;
-  defaultColor: string;
 };
 
 const issuerBypass = "WOM";
@@ -41,11 +41,12 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
 };
 
 const EntryContent = (props: EntryContentProps) => {
-  const { entry, handleCopyCode, isToolpipCopyOpen, defaultColor } = props;
+  const { entry, handleCopyCode, isToolpipCopyOpen } = props;
+  const { themeColor } = useOptionsStore((state) => ({ themeColor: state.themeColor }));
 
   const period = entry?.period || 30;
   const { discount, progress } = useCounter({ period });
-  const isDark = (theme) => DEFAULT_COLORS[0].hex === defaultColor && theme.palette.mode !== "dark";
+  const isDark = (theme) => DEFAULT_COLORS[0].hex === themeColor && theme.palette.mode !== "dark";
 
   return (
     <>
@@ -108,7 +109,7 @@ const EntryContent = (props: EntryContentProps) => {
 };
 
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
-  const { defaultColor, bypassEnabled } = useContext(OptionsContext);
+  const { bypassEnabled } = useContext(OptionsContext);
   const { handleEntriesUpdate } = useContext(EntriesContext);
 
   const [showQR, setShowQR] = useState(false);
@@ -207,7 +208,6 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           </BoxRelative>
           <EntryContent
             entry={entry}
-            defaultColor={defaultColor}
             handleCopyCode={handleCopyCode}
             isToolpipCopyOpen={isToolpipCopyOpen}
           />

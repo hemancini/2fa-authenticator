@@ -1,20 +1,22 @@
 import "@pages/popup/Popup.css";
 
-import AppBar from "@components/AppBar";
-import DrawerMenu from "@components/DrawerMenu";
-import ToolbarOffset from "@components/ToolbarOffset";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+
+import DrawerMenu from "@components/DrawerMenu";
+import ToolbarOffset from "@components/ToolbarOffset";
+import AppBar from "@components/AppBar";
+import React, { useCallback, useContext, useState } from "react";
+
+import { Redirect, Route, Router, Switch } from "wouter";
+import makeMatcher from "wouter/matcher";
+import { navigate, useLocationProperty } from "wouter/use-location";
+
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
 import OptionsContext from "@src/contexts/Options";
-import { useContext, useState } from "react";
-import React from "react";
-import { Redirect, Route, Router, Switch } from "wouter";
-import makeMatcher from "wouter/matcher";
-import { navigate, useLocationProperty } from "wouter/use-location";
 
 const hashLocation = () => window.location.hash.replace(/^#/, "") || "/";
 const hashNavigate = (to) => navigate("#" + to);
@@ -25,6 +27,7 @@ const useHashLocation = () => {
 };
 
 const defaultMatcher = makeMatcher();
+
 const multipathMatcher = (patterns, path) => {
   for (const pattern of [patterns].flat()) {
     const [match, params] = defaultMatcher(pattern, path);
@@ -33,7 +36,7 @@ const multipathMatcher = (patterns, path) => {
   return [false, null];
 };
 
-const Popup = () => {
+export default function Popup() {
   const { xraysEnabled } = useContext(OptionsContext);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -77,4 +80,3 @@ const Popup = () => {
   );
 };
 
-export default Popup;

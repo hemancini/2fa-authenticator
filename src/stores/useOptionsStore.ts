@@ -4,18 +4,18 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 interface OptionsStore {
     themeMode: ThemeMode;
     toggleThemeMode: (mode: ThemeMode) => void;
-    themeColor: string;
-    toggleThemeColor: (color: string) => void;
+    themeColor: DefaultColorHexes;
+    toggleThemeColor: (color: DefaultColorHexes) => void;
 };
 
 export const useOptionsStore = create<OptionsStore>()(
     persist(
         (set) => ({
-            themeMode: 'system',
+            themeMode: DEFAULT_MODE,
             toggleThemeMode: (mode) => {
                 set({ themeMode: mode });
             },
-            themeColor: 'green',
+            themeColor: DEFAULT_COLOR,
             toggleThemeColor: (color) => {
                 set({ themeColor: color });
             },

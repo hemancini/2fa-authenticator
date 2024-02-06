@@ -14,3 +14,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+:root {
+  --background-dark: #121212;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--background-dark);
+  }
+}

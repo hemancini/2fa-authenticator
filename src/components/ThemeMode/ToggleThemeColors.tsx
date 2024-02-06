@@ -7,24 +7,24 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
-import OptionsContext from "@src/contexts/Options";
-import { useContext } from "react";
 
+import { useOptionsStore } from '@src/stores/useOptionsStore';
 import Tooltip from "../Tooltip";
 
-export default function toggleThemeColors() {
-  const { toggleThemeColor, defaultColor } = useContext(OptionsContext);
+export default function ToggleThemeColors() {
+  const { themeColor, toggleThemeColor } = useOptionsStore();
 
-  const handleChange = (event: SelectChangeEvent<typeof defaultColor>) => {
+  const handleChange = (event: SelectChangeEvent<typeof themeColor>) => {
     const colorSelected = event.target.value as DefaultColorHexes;
     toggleThemeColor(colorSelected);
   };
 
   return (
     <Tooltip title={t("chooseColor")} disableInteractive>
-      <FormControl sx={{ m: 1 }}>
+      <FormControl sx={{ mx: 1 }}>
         <InputLabel>Color</InputLabel>
         <Select
+          size="small"
           label="Color"
           MenuProps={{
             PaperProps: {
@@ -36,7 +36,7 @@ export default function toggleThemeColors() {
             },
           }}
           onChange={handleChange}
-          defaultValue={defaultColor}
+          defaultValue={themeColor}
           input={
             <OutlinedInput
               label="Color"
@@ -50,8 +50,11 @@ export default function toggleThemeColors() {
           }
         >
           {DEFAULT_COLORS.map((color) => (
-            <MenuItem key={color.name} value={color.hex}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+            <MenuItem key={color.name} value={color.hex} dense>
+              <Box sx={{
+                display: "flex",
+                alignItems: "center",
+              }}>
                 <SquareIcon sx={{ borderRadius: 4, mr: 1, color: color.hex }} />
                 <ListItemText primary={color.name} />
               </Box>
