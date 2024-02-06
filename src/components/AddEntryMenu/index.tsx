@@ -7,13 +7,13 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
+import { useModalStore } from "@src/stores/useModalStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 import Options from "./AddOptions";
 import ManualEntry from "./ManualEntry";
 import ManualTotpEntry from "./ManualTotpEntry";
-import { useModalStore } from "@src/stores/useModalStore";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;

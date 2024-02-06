@@ -1,22 +1,19 @@
 import "@pages/popup/Popup.css";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-
+import AppBar from "@components/AppBar";
 import DrawerMenu from "@components/DrawerMenu";
 import ToolbarOffset from "@components/ToolbarOffset";
-import AppBar from "@components/AppBar";
-import React, { useCallback, useContext, useState } from "react";
-
-import { Redirect, Route, Router, Switch } from "wouter";
-import makeMatcher from "wouter/matcher";
-import { navigate, useLocationProperty } from "wouter/use-location";
-
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
-import OptionsContext from "@src/contexts/Options";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
+import React, { useCallback, useContext, useState } from "react";
+import { Redirect, Route, Router, Switch } from "wouter";
+import makeMatcher from "wouter/matcher";
+import { navigate, useLocationProperty } from "wouter/use-location";
 
 const hashLocation = () => window.location.hash.replace(/^#/, "") || "/";
 const hashNavigate = (to) => navigate("#" + to);
@@ -37,7 +34,7 @@ const multipathMatcher = (patterns, path) => {
 };
 
 export default function Popup() {
-  const { xraysEnabled } = useContext(OptionsContext);
+  const { xraysEnabled } = useOptionsStore();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isSidePanel = window.location.href.includes(DEFAULT_SIDE_PANEL_URL);

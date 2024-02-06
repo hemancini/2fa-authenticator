@@ -2,30 +2,44 @@ import "@pages/panel/Panel.css";
 
 import React, { useEffect } from "react";
 
+const getOptionsStorage = async () => {
+  const chromeStorageKey = "2fa-options";
+  const storage = await chrome.storage.local.get([chromeStorageKey]);
+  return storage[chromeStorageKey]?.state;
+}
+
+const setOptionsStorage = async (data: any) => {
+  const chromeStorageKey = "2fa-options";
+  await chrome.storage.local.set({ [chromeStorageKey]: { state: data } });
+}
+
 const Debug = () => {
   const [entries, setEntries] = React.useState<any>();
   const [options, setOptions] = React.useState<any>();
   const [xraysEnabled, setXraysEnabled] = React.useState<boolean>(false);
 
   const handleXraysEnbledChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data = options;
-    data.xraysEnabled = event.target.checked;
-    await chrome.storage.local.set({ OPTIONS: data }).then(() => {
-      setOptions(data);
-      setXraysEnabled(data.xraysEnabled);
+    const _options = await getOptionsStorage();
+    const optionsDraft = { ..._options, xraysEnabled: !xraysEnabled };
+    await setOptionsStorage(optionsDraft).then(() => {
+      setOptions(optionsDraft);
+      setXraysEnabled(!xraysEnabled);
     });
   };
 
   useEffect(() => {
     (async () => {
       const storage = await chrome.storage.local.get();
-      const { OPTIONS } = storage;
       delete storage["LocalStorage"];
+      delete storage["2fa-options"];
       delete storage["OPTIONS"];
-
       setEntries(storage);
-      setOptions(OPTIONS);
-      setXraysEnabled(OPTIONS.xraysEnabled);
+
+      const _options = await getOptionsStorage();
+      setOptions(_options);
+
+      const { xraysEnabled } = _options;
+      setXraysEnabled(xraysEnabled);
     })();
   }, []);
 
@@ -46,7 +60,7 @@ const Debug = () => {
   );
 };
 
-const Panel: React.FC = () => {
+export default function Panel() {
   return (
     <div className="container">
       <h1>Dev Tools Panel</h1>
@@ -54,5 +68,3 @@ const Panel: React.FC = () => {
     </div>
   );
 };
-
-export default Panel;

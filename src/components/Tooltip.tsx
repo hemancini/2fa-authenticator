@@ -1,10 +1,9 @@
 import MuiTooltip, { TooltipProps } from "@mui/material/Tooltip";
-import OptionsContext from "@src/contexts/Options";
-import { ReactNode, useContext } from "react";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
 
-export default function Tooltip(props: TooltipProps & { children: ReactNode }) {
+export default function Tooltip(props: TooltipProps & { children: JSX.Element }) {
   const { title, children } = props;
-  const { tooltipEnabled } = useContext(OptionsContext);
+  const { tooltipEnabled } = useOptionsStore();
 
   return (
     <MuiTooltip {...props} title={tooltipEnabled ? title : ""}>

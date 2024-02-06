@@ -7,8 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
-
 import { useOptionsStore } from '@src/stores/useOptionsStore';
+
 import Tooltip from "../Tooltip";
 
 export default function ToggleThemeColors() {
@@ -21,7 +21,7 @@ export default function ToggleThemeColors() {
 
   return (
     <Tooltip title={t("chooseColor")} disableInteractive>
-      <FormControl sx={{ mx: 1 }}>
+      <FormControl sx={{ mx: 1 }} fullWidth>
         <InputLabel>Color</InputLabel>
         <Select
           size="small"

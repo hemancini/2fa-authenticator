@@ -1,12 +1,27 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist, PersistStorage } from 'zustand/middleware';
+
+const chromeStorageKey = "2fa-options";
 
 interface OptionsStore {
     themeMode: ThemeMode;
     toggleThemeMode: (mode: ThemeMode) => void;
     themeColor: DefaultColorHexes;
     toggleThemeColor: (color: DefaultColorHexes) => void;
+    tooltipEnabled: boolean;
+    toggleTooltipEnabled: () => void;
+    bypassEnabled: boolean;
+    toggleBypassEnabled: () => void;
+    autofillEnabled: boolean;
+    toggleAutofillEnabled: () => void;
+    xraysEnabled: boolean;
 };
+
+const chromePersistStorage: PersistStorage<OptionsStore> = {
+    getItem: async (name) => await chrome.storage.local.get([name]).then((result) => result[name]),
+    setItem: (name, value) => chrome.storage.local.set({ [name]: value }),
+    removeItem: (name) => chrome.storage.local.remove([name]),
+}
 
 export const useOptionsStore = create<OptionsStore>()(
     persist(
@@ -19,10 +34,23 @@ export const useOptionsStore = create<OptionsStore>()(
             toggleThemeColor: (color) => {
                 set({ themeColor: color });
             },
+            tooltipEnabled: true,
+            toggleTooltipEnabled: () => {
+                set((state) => ({ tooltipEnabled: !state.tooltipEnabled }));
+            },
+            bypassEnabled: false,
+            toggleBypassEnabled: () => {
+                set((state) => ({ bypassEnabled: !state.bypassEnabled }));
+            },
+            autofillEnabled: true,
+            toggleAutofillEnabled: () => {
+                set((state) => ({ autofillEnabled: !state.autofillEnabled }));
+            },
+            xraysEnabled: false,
         }),
         {
-            name: '2fa-options', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+            name: chromeStorageKey, // name of the item in the storage (must be unique)
+            storage: chromePersistStorage, // (optional) by default, 'localStorage' is used
         }
     )
 );

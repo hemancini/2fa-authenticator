@@ -14,13 +14,12 @@ import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
-import OptionsContext from "@src/contexts/Options";
 import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/otp";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
 import { ReactNode, useContext, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
 
 type EntryContentProps = {
   entry: OTPEntry;
@@ -109,7 +108,7 @@ const EntryContent = (props: EntryContentProps) => {
 };
 
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
-  const { bypassEnabled } = useContext(OptionsContext);
+  const { bypassEnabled } = useOptionsStore();
   const { handleEntriesUpdate } = useContext(EntriesContext);
 
   const [showQR, setShowQR] = useState(false);

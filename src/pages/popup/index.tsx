@@ -1,12 +1,10 @@
 import "@pages/popup/index.css";
 
+import ThemeProvider from '@components/ThemeProvider';
 import Popup from "@pages/popup/Popup";
+import { EntriesProvider } from "@src/contexts/Entries";
 import { createRoot } from "react-dom/client";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
-
-import ThemeProvider from '@components/ThemeProvider';
-import { EntriesProvider } from "@src/contexts/Entries";
-import { OptionsProvider } from "@src/contexts/Options";
 
 refreshOnUpdate("pages/popup");
 
@@ -17,11 +15,9 @@ function init() {
   const root = createRoot(appContainer);
   root.render(
     <ThemeProvider>
-      <OptionsProvider>
-        <EntriesProvider>
-          <Popup />
-        </EntriesProvider>
-      </OptionsProvider>
+      <EntriesProvider>
+        <Popup />
+      </EntriesProvider>
     </ThemeProvider>
   );
 }

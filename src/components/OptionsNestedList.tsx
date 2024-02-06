@@ -15,14 +15,14 @@ import { useTheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
-import OptionsContext from "@src/contexts/Options";
-import { useContext, useState } from "react";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useState } from "react";
 
 export default function OptionsNestedList() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
-  const { tooltipEnabled, toggleTooltipEnabled, bypassEnabled, toggleBypassEnabled } = useContext(OptionsContext);
+  const { tooltipEnabled, toggleTooltipEnabled, bypassEnabled, toggleBypassEnabled } = useOptionsStore();
 
   const handleClick = () => {
     setOpen(!open);

@@ -1,7 +1,7 @@
-import KeyIcon from "@mui/icons-material/Key";
 import AddIcon from "@mui/icons-material/Add";
-import { t } from "@src/chrome/i18n";
+import KeyIcon from "@mui/icons-material/Key";
 import Button from "@mui/material/Button";
+import { t } from "@src/chrome/i18n";
 import { useModalStore } from "@src/stores/useModalStore";
 
 export default function NotEntriesFound() {

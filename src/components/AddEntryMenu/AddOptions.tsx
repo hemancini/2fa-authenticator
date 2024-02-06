@@ -1,10 +1,10 @@
 import { captureQRCode } from "@components/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ImageIcon from "@mui/icons-material/Image";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Box from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";

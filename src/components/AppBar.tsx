@@ -15,11 +15,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
+import { useModalStore } from "@src/stores/useModalStore";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
-import { useModalStore } from "@src/stores/useModalStore";
 
 const defaultIconSize = { fontSize: 20 };
 

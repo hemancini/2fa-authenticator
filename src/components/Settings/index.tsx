@@ -24,9 +24,9 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
-import OptionsContext from "@src/contexts/Options";
 import Backup from "@src/models/backup";
 import { syncTimeWithGoogle } from "@src/models/options";
+import { useOptionsStore } from '@src/stores/useOptionsStore';
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
@@ -69,7 +69,7 @@ export default function Settings() {
     toggleAutofillEnabled,
     bypassEnabled,
     autofillEnabled,
-  } = useContext(OptionsContext);
+  } = useOptionsStore();
 
   const handleDownloadJson = async () => {
     try {
