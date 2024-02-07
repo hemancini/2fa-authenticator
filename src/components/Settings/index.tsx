@@ -26,13 +26,13 @@ import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import Backup from "@src/models/backup";
 import { syncTimeWithGoogle } from "@src/models/options";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 import packageJson from "../../../package.json";
 
-const initialInfoText = "Esta acción agregará y actualizará los datos importados a los existentes.";
+const initialInfoText = "Esta acción agrega las nuevas entradas y reemplaza las existentes.";
 
 const Switch = (props: SwitchProps) => {
   const theme = useTheme();

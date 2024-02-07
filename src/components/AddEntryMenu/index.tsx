@@ -11,9 +11,9 @@ import { useModalStore } from "@src/stores/useModalStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
-import Options from "./AddOptions";
 import ManualEntry from "./ManualEntry";
 import ManualTotpEntry from "./ManualTotpEntry";
+import OptionsButtonList from "./OptionsButtonList";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -27,7 +27,7 @@ export interface AddEntryMenuProps {
 export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
   const { handleEntriesEdited } = useContext(EntriesContext);
-  const [location, navigate] = useLocation();
+  const [, navigate] = useLocation();
   const { modals, toggleModal } = useModalStore();
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
         ) : manualEntryOptions === "MANUAL" ? (
           <ManualEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : (
-          <Options setManualEntryOptions={setManualEntryOptions} />
+          <OptionsButtonList setManualEntryOptions={setManualEntryOptions} />
         )}
       </DialogContent>
     </Dialog>
