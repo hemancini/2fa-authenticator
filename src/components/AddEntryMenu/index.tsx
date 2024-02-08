@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
-import { useModalStore } from "@src/stores/useModalStore";
+import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
@@ -24,11 +24,12 @@ export interface AddEntryMenuProps {
   setEntriesEdited: (isEntriesEdited: boolean) => void;
 }
 
-export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
+export default function AddEntryMenu() {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
   const { handleEntriesEdited } = useContext(EntriesContext);
   const [, navigate] = useLocation();
-  const { modals, toggleModal } = useModalStore();
+  const { toggleAction } = useActionStore();
+  const { modal, toggleModal } = useModalStore();
 
   useEffect(() => {
     if (manualEntryOptions !== "") {
@@ -49,13 +50,13 @@ export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
 
   const handlerGoToHome = () => {
     handleOnAddEntryClose();
-    setEntriesEdited(false);
+    toggleAction("entries-edit-state");
     navigate("/", { replace: true }); // `replaceState` is used
   };
 
   return (
     <Dialog
-      open={modals["add-entry-modal"] || false}
+      open={modal["add-entry-modal"] || false}
       onClose={handleOnAddEntryClose}
       sx={{
         mx: 3,

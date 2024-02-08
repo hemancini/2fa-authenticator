@@ -15,8 +15,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
-import { useModalStore } from "@src/stores/useModalStore";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "./DialogCaptureQR";
@@ -41,7 +41,8 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
   });
 };
 
-const DoneButton = ({ setEntriesEdit: setEntriesEdit }: { setEntriesEdit: Dispatch<SetStateAction<boolean>> }) => {
+const DoneButton = () => {
+  const { toggleAction } = useActionStore();
   const { handleEntriesEdited } = useContext(EntriesContext);
   return (
     <Tooltip title={t("save")} disableInteractive>
@@ -53,7 +54,7 @@ const DoneButton = ({ setEntriesEdit: setEntriesEdit }: { setEntriesEdit: Dispat
         href="/"
         onClick={() => {
           handleEntriesEdited();
-          setEntriesEdit(false);
+          toggleAction("entries-edit-state");
         }}
       >
         <DoneIcon sx={defaultIconSize} />
@@ -69,9 +70,9 @@ export default function ButtonAppBar({
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isEntriesEdit, setEntriesEdit] = useState(false);
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
-  const { modals, toggleModal } = useModalStore();
+  const { modal, toggleModal } = useModalStore();
+  const { actionState, toggleAction } = useActionStore();
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
@@ -80,7 +81,7 @@ export default function ButtonAppBar({
 
   const handleEditEntries = () => {
     setDrawerOpen(false);
-    setEntriesEdit(true);
+    toggleAction("entries-edit-state");
   };
 
   return (
@@ -88,7 +89,7 @@ export default function ButtonAppBar({
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
-            {!isEntriesEdit && (
+            {!actionState["entries-edit-state"] && (
               <Tooltip title="Menu" placement="bottom" disableInteractive>
                 <span>
                   <IconButton
@@ -117,7 +118,7 @@ export default function ButtonAppBar({
             {isDev && " dev"}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
-            {isEntriesEdit ? (
+            {actionState["entries-edit-state"] ? (
               <>
                 <Tooltip title={t("addNewEntry")} disableInteractive>
                   <IconButton
@@ -131,7 +132,7 @@ export default function ButtonAppBar({
                     <AddIcon sx={defaultIconSize} />
                   </IconButton>
                 </Tooltip>
-                <DoneButton setEntriesEdit={setEntriesEdit} />
+                <DoneButton />
               </>
             ) : (
               <Box minWidth={30}>
@@ -165,7 +166,7 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(isEntriesEdit || modals["add-entry-modal"]) && <AddEntryMenu setEntriesEdited={setEntriesEdit} />}
+      {(actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );
 }

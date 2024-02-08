@@ -18,10 +18,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import BackupData from "@src/models/backup";
+import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect } from "react";
 import { useLocation } from "wouter";
 import { create } from "zustand";
-import { useModalStore } from "@src/stores/useModalStore";
 
 type BackupStoreProps = {
   isOpen: boolean;
@@ -98,7 +98,8 @@ export const ImportBackupListItem = (props: { returnRaw?: boolean }) => {
   const [, setLocation] = useLocation();
   const { handleEntriesUpdate } = useContext(EntriesContext);
   const { showMessage } = useBackupStore();
-  const { modals, toggleModal } = useModalStore();
+  const { modal, toggleModal } = useModalStore();
+  const { actionState, toggleAction } = useActionStore();
 
   const { isOpen, setOpen, infoText, setInfoText, isCloseAccion, setCloseAction, jsonData, setJsonData } =
     useBackupStore();
@@ -115,20 +116,26 @@ export const ImportBackupListItem = (props: { returnRaw?: boolean }) => {
     }, 200);
   };
 
+  const handleCloseBackgroupModal = () => {
+    const addEntryModalKey = "add-entry-modal";
+    const entriesEditActionKey = "entries-edit-state";
+
+    if (modal[addEntryModalKey]) {
+      toggleModal(addEntryModalKey);
+    }
+    if (actionState[entriesEditActionKey]) {
+      toggleAction(entriesEditActionKey);
+    }
+  };
+
   const hendleImportData = async () => {
     if (!jsonData) return;
     try {
       const data = JSON.parse(jsonData);
       await BackupData.set(data);
       handleEntriesUpdate();
+      handleCloseBackgroupModal();
       handleCloseModal();
-
-      // add-entry-modal
-      const addEntryModalKey = "add-entry-modal";
-      if (modals[addEntryModalKey]) {
-        toggleModal(addEntryModalKey);
-      }
-
       setLocation(DEFAULT_POPUP_URL);
     } catch (error) {
       showMessage(error.message);
