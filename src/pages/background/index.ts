@@ -37,7 +37,10 @@ chrome.runtime.onConnect.addListener((port) => {
               throw new Error("No active tab found");
             }
             const url = await getCapture(tab?.[0]);
-            sendMessageToClient(port, { type: "getCapture", data: { ...message.data, url } });
+            sendMessageToClient(port, {
+              type: "getCapture",
+              data: { ...message.data, url },
+            });
           });
           break;
         case "getTotp":
@@ -70,7 +73,10 @@ chrome.runtime.onConnect.addListener((port) => {
                     target: { tabId: tabs?.[0].id, allFrames: true },
                     files: ["/src/pages/autofill/index.js"],
                   });
-                  chrome.tabs.sendMessage(tabs?.[0].id, { message: "pastecode", data: message.data });
+                  chrome.tabs.sendMessage(tabs?.[0].id, {
+                    message: "pastecode",
+                    data: message.data,
+                  });
                 } else {
                   console.warn("autofill: Granted permission denied");
                   throw new Error("Granted permission denied");
@@ -103,7 +109,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       const urlMatch = match?.replace("https://*.", "")?.replace("/*", "");
       const urlWhitPath = urlMatch + entrustSamlPath;
       if (url.includes(urlWhitPath)) {
-        chrome.tabs.sendMessage(tab.id as number, { message: "bypass", data: "trustedauth" });
+        chrome.tabs.sendMessage(tab.id as number, {
+          message: "bypass",
+          data: "trustedauth",
+        });
       }
     });
   }
@@ -134,7 +143,9 @@ async function captureQR() {
 }
 
 async function getCapture(tab: chrome.tabs.Tab) {
-  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+    format: "png",
+  });
   return dataUrl;
 }
 

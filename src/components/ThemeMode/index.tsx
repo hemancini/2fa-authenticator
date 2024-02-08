@@ -20,7 +20,7 @@ const Version = () => {
       version: {packageJson.version}
     </Typography>
   );
-}
+};
 
 export default function ThemeModeMenu() {
   return (

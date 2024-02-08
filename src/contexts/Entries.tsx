@@ -56,7 +56,10 @@ export function EntriesProvider({ children }: { children: React.ReactNode }) {
   const handlers = useMemo(
     () => ({
       handleEntriesEdited: () => {
-        const entriesSorted = entriesEdited.map((entry, index) => ({ ...entry, index })) as OTPEntry[];
+        const entriesSorted = entriesEdited.map((entry, index) => ({
+          ...entry,
+          index,
+        })) as OTPEntry[];
         (async () => {
           await EntryStorage.set(entriesSorted);
           await removeEntries(entriesSorted);

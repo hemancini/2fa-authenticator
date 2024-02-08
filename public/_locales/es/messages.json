@@ -128,16 +128,22 @@
   "importBackup": {
     "message": "Importar copia de seguridad"
   },
+  "importBackupInfo": {
+    "message": "Esta acción agrega las nuevas entradas y reemplaza las existentes."
+  },
+  "import": {
+    "message": "Importar"
+  },
   "scale": {
     "message": "Escala"
   },
   "sourceCode": {
     "message": "Código fuente"
   },
-  "autofill":{
+  "autofill": {
     "message": "Autocompletar"
   },
-  "autofillDesc":{
+  "autofillDesc": {
     "message": "Autocompletar el código de verificación en el campo de entrada."
   }
 }

@@ -26,7 +26,11 @@ export default function ConfirmRemoveEntry({
     >
       <DialogContent sx={{ p: 1, py: 1.5 }}>
         <Typography variant="body2" gutterBottom>
-          <span dangerouslySetInnerHTML={{ __html: t("confirmRemoveDescription", entry.account) }} />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: t("confirmRemoveDescription", entry.account),
+            }}
+          />
         </Typography>
       </DialogContent>
       <Divider />

@@ -6,7 +6,7 @@ import { t } from "@src/chrome/i18n";
 import React from "react";
 
 import AddQrButton from "./AddQrButton";
-import ImportEntries from "./ImportEntries";
+import { ImportBackupListItem } from "../Settings/Backup";
 
 interface AddOptionsProps {
   setManualEntryOptions: React.Dispatch<React.SetStateAction<"" | "TOTP" | "MANUAL">>;
@@ -16,7 +16,11 @@ const buttonCommonProps: ButtonProps = {
   fullWidth: true,
   variant: "contained",
   disableElevation: true,
-  sx: { justifyContent: "flex-start", textTransform: "none", fontWeight: "bold" },
+  sx: {
+    justifyContent: "flex-start",
+    textTransform: "none",
+    fontWeight: "bold",
+  },
 };
 
 export default function AddOptions(options: AddOptionsProps) {
@@ -31,8 +35,8 @@ export default function AddOptions(options: AddOptionsProps) {
       <Button {...buttonCommonProps} startIcon={<LinkIcon />} onClick={() => setManualEntryOptions("TOTP")}>
         {t("totpUrl")}
       </Button>
-      <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} onClick={() => alert(t("importBackup"))}>
-        {t("importBackup")}
+      <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} {...{ component: "label" }}>
+        <ImportBackupListItem returnRaw />
       </Button>
     </>
   );

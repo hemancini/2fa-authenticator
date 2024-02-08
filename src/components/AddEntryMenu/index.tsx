@@ -57,7 +57,10 @@ export default function AddEntryMenu({ setEntriesEdited }: AddEntryMenuProps) {
     <Dialog
       open={modals["add-entry-modal"] || false}
       onClose={handleOnAddEntryClose}
-      sx={{ mx: 3, "& .MuiDialog-paper": { minWidth: { xs: "100%", sm: "30%" }, pb: 0.5 } }}
+      sx={{
+        mx: 3,
+        "& .MuiDialog-paper": { minWidth: { xs: "100%", sm: "30%" }, pb: 0.5 },
+      }}
     >
       <DialogTitle
         fontSize={18}

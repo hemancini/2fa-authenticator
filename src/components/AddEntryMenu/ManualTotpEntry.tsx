@@ -30,7 +30,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
         },
       });
     });
-  }
+  };
 
   return (
     <Box mx={0.5}>

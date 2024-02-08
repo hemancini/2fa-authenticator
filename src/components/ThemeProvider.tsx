@@ -1,9 +1,9 @@
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
+import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 import { esES } from "@mui/material/locale";
-import { createTheme, StyledEngineProvider } from '@mui/material/styles';
+import { createTheme, StyledEngineProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useOptionsStore } from '@src/stores/useOptionsStore'
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import { useCallback } from "react";
 
 export function theme() {
@@ -16,20 +16,20 @@ export function theme() {
         mode: themeMode === "system" ? (prefersDarkMode ? "dark" : "light") : themeMode,
         primary: { main: themeColor },
         secondary: { main: themeColor },
-      }
+      },
     },
     esES
-  )
-};
+  );
+}
 
 export default function ThemeProvider({ children }: { children: JSX.Element }) {
   const useTheme = useCallback(() => theme(), [theme]);
   return (
-    <EmotionThemeProvider theme={useTheme()} >
+    <EmotionThemeProvider theme={useTheme()}>
       <StyledEngineProvider injectFirst>
         <CssBaseline />
         {children}
       </StyledEngineProvider>
     </EmotionThemeProvider>
-  )
+  );
 }

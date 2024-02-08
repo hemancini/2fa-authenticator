@@ -72,7 +72,12 @@ export default function OutlinedCard({
             <FormControl aria-label="issuer" sx={{ display: "flex", width: "19ch" }}>
               <BootstrapInput
                 defaultValue={entry.issuer}
-                onChange={(e) => handleUpdateEntry({ hash: entry.hash, issuer: e.target.value })}
+                onChange={(e) =>
+                  handleUpdateEntry({
+                    hash: entry.hash,
+                    issuer: e.target.value,
+                  })
+                }
               />
             </FormControl>
             <Box aria-label="otp-code" display="flex" sx={{ ml: 1 }}>
@@ -94,7 +99,12 @@ export default function OutlinedCard({
             <FormControl aria-label="account" sx={{ display: "flex", width: "19ch" }}>
               <BootstrapInput
                 defaultValue={entry.account}
-                onChange={(e) => handleUpdateEntry({ hash: entry.hash, account: e.target.value })}
+                onChange={(e) =>
+                  handleUpdateEntry({
+                    hash: entry.hash,
+                    account: e.target.value,
+                  })
+                }
               />
             </FormControl>
           </CardContent>
@@ -112,7 +122,14 @@ export default function OutlinedCard({
               <IconButton
                 aria-label="remove entry"
                 onClick={() => setIsConfirmOpen(true)}
-                sx={{ color: "#e57373", width: 22, height: 22, position: "absolute", right: -9, top: -9 }}
+                sx={{
+                  color: "#e57373",
+                  width: 22,
+                  height: 22,
+                  position: "absolute",
+                  right: -9,
+                  top: -9,
+                }}
               >
                 <RemoveCircleIcon sx={{ fontSize: 15 }} />
               </IconButton>

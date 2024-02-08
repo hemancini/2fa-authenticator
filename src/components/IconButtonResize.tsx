@@ -2,7 +2,9 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { ReactNode } from "react";
 
 export default function IconButtonResize(
-  props: IconButtonProps & { children: ReactNode } & { iconSize?: number } & { mr?: number }
+  props: IconButtonProps & { children: ReactNode } & { iconSize?: number } & {
+    mr?: number;
+  }
 ) {
   const { children, iconSize = 29, mr } = props;
   return (

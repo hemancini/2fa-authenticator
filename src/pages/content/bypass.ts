@@ -5,11 +5,15 @@ import { EntryStorage } from "@src/models/storage";
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.message === "bypass") {
     const chromeStorageKey = "2fa-options";
-    const bypassEnabled = await chrome.storage.local.get([chromeStorageKey]).then((result) => result[chromeStorageKey]?.state?.bypassEnabled);
+    const bypassEnabled = await chrome.storage.local
+      .get([chromeStorageKey])
+      .then((result) => result[chromeStorageKey]?.state?.bypassEnabled);
     /** @deprecated This constant is deprecate. Use `chromeStorageKey` new instead. */
     const chromeStorageKeyDeprecated = "OPTIONS";
     /** @deprecated This constant is deprecate. Use `bypassEnabled` new instead. */
-    const bypassEnabledDeprecated = await chrome.storage.local.get([chromeStorageKeyDeprecated]).then((result) => result[chromeStorageKeyDeprecated]?.bypassEnabled);
+    const bypassEnabledDeprecated = await chrome.storage.local
+      .get([chromeStorageKeyDeprecated])
+      .then((result) => result[chromeStorageKeyDeprecated]?.bypassEnabled);
     if (bypassEnabled || bypassEnabledDeprecated) {
       const entries = await EntryStorage.get();
       const filter = entries.filter(

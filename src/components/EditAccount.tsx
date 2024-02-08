@@ -87,7 +87,16 @@ export default function EditAccount({
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between", gap: 2, my: 1 }}>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 2,
+                my: 1,
+              }}
+            >
               <Button fullWidth size="small" variant="outlined" onClick={handleClose}>
                 {t("cancel")}
               </Button>

@@ -22,7 +22,12 @@ const drawerWidth = 175;
 
 const routes = [
   { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
-  { path: "/settings", name: t("settings"), icon: <SettingsIcon />, disabled: false },
+  {
+    path: "/settings",
+    name: t("settings"),
+    icon: <SettingsIcon />,
+    disabled: false,
+  },
 ];
 
 const ListItemButtonRoute = ({
@@ -85,7 +90,13 @@ export default function DrawerMenu({
                   disabled={route.disabled}
                   hrefPopup={DEFAULT_POPUP_URL.includes("?popup=true") && DEFAULT_POPUP_URL}
                 >
-                  <ListItemIcon sx={{ minWidth: "auto", mr: 2, "& .MuiSvgIcon-root": { fontSize: 22 } }}>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "auto",
+                      mr: 2,
+                      "& .MuiSvgIcon-root": { fontSize: 22 },
+                    }}
+                  >
                     {route.icon}
                   </ListItemIcon>
                   <ListItemText primary={route.name} />

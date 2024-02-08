@@ -11,7 +11,13 @@ export default function NotEntriesFound() {
       <KeyIcon color="disabled" style={{ marginTop: 50, fontSize: 80, transform: "rotate(45deg)" }} />
       <p>{t("notEntriesFound")}</p>
       <div style={{ marginTop: 20 }}>
-        <Button variant="outlined" startIcon={<AddIcon />} onClick={() => { toggleModal("add-entry-modal") }}>
+        <Button
+          variant="outlined"
+          startIcon={<AddIcon />}
+          onClick={() => {
+            toggleModal("add-entry-modal");
+          }}
+        >
           {t("addNewEntry")}
         </Button>
       </div>

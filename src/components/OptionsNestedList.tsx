@@ -15,7 +15,7 @@ import { useTheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import { useState } from "react";
 
 export default function OptionsNestedList() {
@@ -48,7 +48,14 @@ export default function OptionsNestedList() {
     <>
       <ListItem disablePadding>
         <ListItemButton dense={true} disableGutters selected={open} onClick={handleClick} sx={{ px: 1 }}>
-          <ListItemIcon sx={{ minWidth: "auto", ml: 0.2, mr: 2, "& .MuiSvgIcon-root": { fontSize: 20 } }}>
+          <ListItemIcon
+            sx={{
+              minWidth: "auto",
+              ml: 0.2,
+              mr: 2,
+              "& .MuiSvgIcon-root": { fontSize: 20 },
+            }}
+          >
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary={t("options")} />

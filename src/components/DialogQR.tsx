@@ -28,13 +28,11 @@ export default function DialogQR({
     <Dialog
       open={open}
       onClose={handleClose}
-      sx={{ "& .MuiDialogContent-root": { p: 2, pb: 1.2, background: "#ffffff" } }}
+      sx={{
+        "& .MuiDialogContent-root": { p: 2, pb: 1.2, background: "#ffffff" },
+      }}
     >
-      <DialogContent>
-        {issuer && account && secret && (
-          <QRCodeSVG value={authURL} size={defaultSize} />
-        )}
-      </DialogContent>
+      <DialogContent>{issuer && account && secret && <QRCodeSVG value={authURL} size={defaultSize} />}</DialogContent>
     </Dialog>
   );
 }

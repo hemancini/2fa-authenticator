@@ -6,12 +6,12 @@ const getOptionsStorage = async () => {
   const chromeStorageKey = "2fa-options";
   const storage = await chrome.storage.local.get([chromeStorageKey]);
   return storage[chromeStorageKey]?.state;
-}
+};
 
 const setOptionsStorage = async (data: any) => {
   const chromeStorageKey = "2fa-options";
   await chrome.storage.local.set({ [chromeStorageKey]: { state: data } });
-}
+};
 
 const Debug = () => {
   const [entries, setEntries] = React.useState<any>();
@@ -67,4 +67,4 @@ export default function Panel() {
       <Debug />
     </div>
   );
-};
+}

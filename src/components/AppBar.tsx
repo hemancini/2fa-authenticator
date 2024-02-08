@@ -41,7 +41,7 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
   });
 };
 
-const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateAction<boolean>> }) => {
+const DoneButton = ({ setEntriesEdit: setEntriesEdit }: { setEntriesEdit: Dispatch<SetStateAction<boolean>> }) => {
   const { handleEntriesEdited } = useContext(EntriesContext);
   return (
     <Tooltip title={t("save")} disableInteractive>
@@ -53,7 +53,7 @@ const DoneButton = ({ setEntriesEdited }: { setEntriesEdited: Dispatch<SetStateA
         href="/"
         onClick={() => {
           handleEntriesEdited();
-          setEntriesEdited(false);
+          setEntriesEdit(false);
         }}
       >
         <DoneIcon sx={defaultIconSize} />
@@ -69,7 +69,7 @@ export default function ButtonAppBar({
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isEntriesEdit, setEntriesEdited] = useState(false);
+  const [isEntriesEdit, setEntriesEdit] = useState(false);
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
   const { modals, toggleModal } = useModalStore();
 
@@ -80,7 +80,7 @@ export default function ButtonAppBar({
 
   const handleEditEntries = () => {
     setDrawerOpen(false);
-    setEntriesEdited(true);
+    setEntriesEdit(true);
   };
 
   return (
@@ -131,7 +131,7 @@ export default function ButtonAppBar({
                     <AddIcon sx={defaultIconSize} />
                   </IconButton>
                 </Tooltip>
-                <DoneButton setEntriesEdited={setEntriesEdited} />
+                <DoneButton setEntriesEdit={setEntriesEdit} />
               </>
             ) : (
               <Box minWidth={30}>
@@ -165,11 +165,7 @@ export default function ButtonAppBar({
         </Toolbar>
       </AppBar>
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(isEntriesEdit || modals["add-entry-modal"]) && (
-        <AddEntryMenu
-          setEntriesEdited={setEntriesEdited}
-        />
-      )}
+      {(isEntriesEdit || modals["add-entry-modal"]) && <AddEntryMenu setEntriesEdited={setEntriesEdit} />}
     </>
   );
 }

@@ -9,7 +9,7 @@ import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import React, { useCallback, useContext, useState } from "react";
 import { Redirect, Route, Router, Switch } from "wouter";
 import makeMatcher from "wouter/matcher";
@@ -48,7 +48,12 @@ export default function Popup() {
 
   return (
     <Router base={window.location.pathname} matcher={multipathMatcher as any} hook={useHashLocation as any}>
-      <Box sx={{ display: "flex", "& *": xraysEnabled ? { border: "0.5px solid black" } : {} }}>
+      <Box
+        sx={{
+          display: "flex",
+          "& *": xraysEnabled ? { border: "0.5px solid black" } : {},
+        }}
+      >
         {!isSidePanel && !isPopup && (
           <React.Fragment>
             <AppBar {...{ drawerOpen, setDrawerOpen }} />
@@ -75,5 +80,4 @@ export default function Popup() {
       </Box>
     </Router>
   );
-};
-
+}

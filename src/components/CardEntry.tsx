@@ -16,7 +16,7 @@ import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/otp";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import { ReactNode, useContext, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
@@ -41,7 +41,9 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
 
 const EntryContent = (props: EntryContentProps) => {
   const { entry, handleCopyCode, isToolpipCopyOpen } = props;
-  const { themeColor } = useOptionsStore((state) => ({ themeColor: state.themeColor }));
+  const { themeColor } = useOptionsStore((state) => ({
+    themeColor: state.themeColor,
+  }));
 
   const period = entry?.period || 30;
   const { discount, progress } = useCounter({ period });
@@ -205,11 +207,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
               </Box>
             </Box>
           </BoxRelative>
-          <EntryContent
-            entry={entry}
-            handleCopyCode={handleCopyCode}
-            isToolpipCopyOpen={isToolpipCopyOpen}
-          />
+          <EntryContent entry={entry} handleCopyCode={handleCopyCode} isToolpipCopyOpen={isToolpipCopyOpen} />
         </CardContent>
       </Card>
       <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />

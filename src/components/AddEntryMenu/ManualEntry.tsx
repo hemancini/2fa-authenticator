@@ -15,7 +15,7 @@ import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import React, { useContext, useState } from "react";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -56,7 +56,11 @@ export default function ManualEntry(props: AddEntryProps) {
 
   const handleSubmited = async (data: any) => {
     const dragData = { ...dataEntry, ...data };
-    const authURL = `otpauth://${dragData.type}/${dragData.issuer}${dragData.account ? '@' + dragData.account : ''}?secret=${dragData.secret}&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${dragData.digits}&period=${dragData.period}`;
+    const authURL = `otpauth://${dragData.type}/${dragData.issuer}${
+      dragData.account ? "@" + dragData.account : ""
+    }?secret=${dragData.secret}&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${
+      dragData.digits
+    }&period=${dragData.period}`;
 
     return new Promise((resolve) => {
       sendMessageToBackground({
@@ -68,43 +72,87 @@ export default function ManualEntry(props: AddEntryProps) {
         },
       });
     });
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit(handleSubmited)} autoComplete="off" >
+    <form onSubmit={handleSubmit(handleSubmited)} autoComplete="off">
       <Box mx={0.5} display="grid" gap={2} mb={2.5}>
         {!isAdded ? (
           <>
-            <TextField label="account" size="small" inputProps={{ minLength: 3, maxLength: 24 }}{...register('account', { required: true })} {...{ error: errors.account !== undefined }} />
-            <TextField label="secret" size="small" inputProps={{ minLength: 8, maxLength: 80 }}{...register('secret', { required: true })}  {...{ error: errors.secret !== undefined }} />
-            <TextField label="issuer" size="small" inputProps={{ minLength: 3, maxLength: 24 }} {...register('issuer', { required: true })} {...{ error: errors.issuer !== undefined }} />
+            <TextField
+              label="account"
+              size="small"
+              inputProps={{ minLength: 3, maxLength: 24 }}
+              {...register("account", { required: true })}
+              {...{ error: errors.account !== undefined }}
+            />
+            <TextField
+              label="secret"
+              size="small"
+              inputProps={{ minLength: 8, maxLength: 80 }}
+              {...register("secret", { required: true })}
+              {...{ error: errors.secret !== undefined }}
+            />
+            <TextField
+              label="issuer"
+              size="small"
+              inputProps={{ minLength: 3, maxLength: 24 }}
+              {...register("issuer", { required: true })}
+              {...{ error: errors.issuer !== undefined }}
+            />
             <FormGroup>
               <FormControlLabel
                 label="Advance"
                 onChange={handleAdvanceChange}
-                sx={{ "&& span": { p: 0, pl: 1 }, "&& .MuiFormControlLabel-label": { pl: 0 } }}
+                sx={{
+                  "&& span": { p: 0, pl: 1 },
+                  "&& .MuiFormControlLabel-label": { pl: 0 },
+                }}
                 control={<Checkbox icon={<ArrowRightIcon />} checkedIcon={<ArrowDropDownIcon />} />}
               />
             </FormGroup>
             {isAdvance && (
               <>
-                <TextField label="period" size="small" type="number" defaultValue={30} inputProps={{ min: 10, max: 60 }} {...register('period', { required: true })} {...{ error: errors.period !== undefined }} />
+                <TextField
+                  label="period"
+                  size="small"
+                  type="number"
+                  defaultValue={30}
+                  inputProps={{ min: 10, max: 60 }}
+                  {...register("period", { required: true })}
+                  {...{ error: errors.period !== undefined }}
+                />
                 <FormControl size="small" fullWidth>
                   <InputLabel>digits</InputLabel>
-                  <Select label="digits" defaultValue={6} {...register('digits', { required: true })} {...{ error: errors.digits !== undefined }}>
+                  <Select
+                    label="digits"
+                    defaultValue={6}
+                    {...register("digits", { required: true })}
+                    {...{ error: errors.digits !== undefined }}
+                  >
                     <MenuItem value={6}>6</MenuItem>
                     <MenuItem value={8}>8</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl size="small" fullWidth>
                   <InputLabel>type</InputLabel>
-                  <Select label="type" defaultValue="totp" {...register('type', { required: true })} {...{ error: errors.type !== undefined }}>
+                  <Select
+                    label="type"
+                    defaultValue="totp"
+                    {...register("type", { required: true })}
+                    {...{ error: errors.type !== undefined }}
+                  >
                     <MenuItem value="totp">TOTP</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl size="small" fullWidth>
                   <InputLabel>algorithm</InputLabel>
-                  <Select defaultValue="SHA1" label="algorithm"  {...register('algorithm', { required: true })} {...{ error: errors.algorithm !== undefined }}>
+                  <Select
+                    defaultValue="SHA1"
+                    label="algorithm"
+                    {...register("algorithm", { required: true })}
+                    {...{ error: errors.algorithm !== undefined }}
+                  >
                     <MenuItem value={"SHA1"}>SHA-1</MenuItem>
                     <MenuItem value={"SHA256"}>SHA-256</MenuItem>
                   </Select>

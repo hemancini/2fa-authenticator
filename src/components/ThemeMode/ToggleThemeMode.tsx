@@ -4,7 +4,7 @@ import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { t } from "@src/chrome/i18n";
-import { useOptionsStore } from '@src/stores/useOptionsStore';
+import { useOptionsStore } from "@src/stores/useOptionsStore";
 import React from "react";
 
 import Tooltip from "../Tooltip";
@@ -30,7 +30,7 @@ export default function ToggleThemeMode() {
       sx={{
         m: 1,
         mb: 0.5,
-        '& .MuiToggleButton-root': {
+        "& .MuiToggleButton-root": {
           py: 0.3,
           px: 0.7,
         },

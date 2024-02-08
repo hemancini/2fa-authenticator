@@ -1,6 +1,6 @@
 import "@pages/popup/index.css";
 
-import ThemeProvider from '@components/ThemeProvider';
+import ThemeProvider from "@components/ThemeProvider";
 import Popup from "@pages/popup/Popup";
 import { EntriesProvider } from "@src/contexts/Entries";
 import { createRoot } from "react-dom/client";
