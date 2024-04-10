@@ -33,7 +33,7 @@
     "message": "Drag"
   },
   "notEntriesFound": {
-    "message": "No entries found"
+    "message": "Entries not found"
   },
   "scanQRCode": {
     "message": "Scan QR Code"
@@ -140,10 +140,10 @@
   "sourceCode": {
     "message": "Source code"
   },
-  "autofill":{
+  "autofill": {
     "message": "Autofill"
   },
-  "autofillDesc":{
+  "autofillDesc": {
     "message": "Autofill the code in the input field"
   }
 }

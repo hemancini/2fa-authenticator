@@ -26,7 +26,7 @@ export interface OTPAlgorithmSpec {
   length: number;
 }
 
-let LocalStorage: { [key: string]: any };
+let LocalStorage: { [key: string]: OTPStorage };
 
 export class OTPEntry implements OTPEntryInterface {
   type: OTPType;
@@ -197,7 +197,7 @@ export class OTPEntry implements OTPEntryInterface {
   }
 
   generate() {
-    const offset = LocalStorage ? LocalStorage.offset : 0;
+    const offset = (LocalStorage ? LocalStorage.offset : 0) as number;
     if (!LocalStorage) {
       // browser storage is async, so we need to wait for it to load
       // and re-generate the code
