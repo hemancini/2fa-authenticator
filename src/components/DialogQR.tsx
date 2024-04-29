@@ -18,7 +18,7 @@ export default function DialogQR({
   const secret = entry.secret;
   const account = entry.account;
 
-  const authURL = `otpauth://totp/${issuer}@${account}?secret=${secret}`;
+  const authURL = `otpauth://totp/${account}?secret=${secret}&issuer=${issuer}`;
 
   const handleClose = () => {
     setOpen(false);
