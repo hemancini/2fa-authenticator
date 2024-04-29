@@ -5,7 +5,7 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
 import React from "react";
 
-import { ImportBackupListItem } from "../Settings/Backup";
+import { ImportBackupListItem } from "../Options/Backup";
 import AddQrButton from "./AddQrButton";
 
 interface AddOptionsProps {

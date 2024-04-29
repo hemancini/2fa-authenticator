@@ -1,5 +1,4 @@
 import CustonSwitch from "@components/CustonSwitch";
-import BackupDialog, { useBackupStore } from "@components/Settings/Backup";
 import Tooltip from "@components/Tooltip";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
@@ -16,6 +15,7 @@ import Paper from "@mui/material/Paper";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
+import BackupDialog, { useBackupStore } from "@src/components/Options/Backup";
 import { syncTimeWithGoogle } from "@src/models/options";
 import { useOptionsStore } from "@src/stores/useOptionsStore";
 
@@ -25,7 +25,7 @@ export const ListItemIcon = (props: ListItemIconProps) => (
   <ListItemIconMui sx={{ minWidth: "auto", ml: 0.2, mr: 2 }} {...props} />
 );
 
-export default function Settings() {
+export default function Options() {
   const { showMessage } = useBackupStore();
 
   const {

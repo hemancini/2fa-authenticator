@@ -7,10 +7,10 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
-import Settings from "@routes/Settings";
 import { t } from "@src/chrome/i18n";
+import Options from "@src/routes/Options";
 import { useOptionsStore } from "@src/stores/useOptionsStore";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, Route, Router, Switch } from "wouter";
 import makeMatcher from "wouter/matcher";
 import { navigate, useLocationProperty } from "wouter/use-location";
@@ -69,8 +69,8 @@ export default function Popup() {
             <Route path="/entries/edit">
               <EntriesEdit />
             </Route>
-            <Route path="/settings">
-              <Settings />
+            <Route path="/options">
+              <Options />
             </Route>
             <Route path="/:anything*">
               <Redirect to="/" />

@@ -23,8 +23,8 @@ const drawerWidth = 175;
 const routes = [
   { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
   {
-    path: "/settings",
-    name: t("settings"),
+    path: "/options",
+    name: t("options"),
     icon: <SettingsIcon />,
     disabled: false,
   },

@@ -1,4 +1,3 @@
-import { ListItemIcon } from "@components/Settings";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Button from "@mui/material/Button";
@@ -16,6 +15,7 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
+import { ListItemIcon } from "@src/components/Options";
 import EntriesContext from "@src/contexts/Entries";
 import BackupData from "@src/models/backup";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
