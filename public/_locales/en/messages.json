@@ -98,6 +98,9 @@
   "options": {
     "message": "Options"
   },
+  "moreOptions": {
+    "message": "More options"
+  },
   "user": {
     "message": "User"
   },

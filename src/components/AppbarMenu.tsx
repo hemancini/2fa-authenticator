@@ -1,3 +1,4 @@
+import Tooltip from "@components/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -31,9 +32,11 @@ export default function BasicMenu() {
 
   return (
     <div>
-      <IconButton size="small" color="inherit" onClick={handleClick} disabled={location !== "/"}>
-        <MoreVertIcon />
-      </IconButton>
+      <Tooltip title={t("moreOptions")} placement="bottom">
+        <IconButton size="small" color="inherit" onClick={handleClick} disabled={location !== "/"}>
+          <MoreVertIcon />
+        </IconButton>
+      </Tooltip>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuList dense={true} sx={{ py: 0 }}>
           <MenuItem
