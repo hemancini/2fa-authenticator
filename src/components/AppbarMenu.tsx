@@ -1,0 +1,83 @@
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import { t } from "@src/chrome/i18n";
+import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useOptionsStore } from "@src/stores/useOptionsStore";
+import React, { useState } from "react";
+import { useLocation } from "wouter";
+
+export default function BasicMenu() {
+  const [location, setLocation] = useLocation();
+  const { toggleModal } = useModalStore();
+  const { toggleAction } = useActionStore();
+  const { isVisibleCodes, setVisibleCodes } = useOptionsStore();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <IconButton size="small" color="inherit" onClick={handleClick} disabled={location !== "/"}>
+        <MoreVertIcon />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        <MenuList dense={true} sx={{ py: 0 }}>
+          <MenuItem
+            dense={true}
+            onClick={() => {
+              toggleModal("add-entry-modal");
+              handleClose();
+            }}
+            sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}
+          >
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            {t("addEntry")}
+          </MenuItem>
+          <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
+          <MenuItem
+            dense={true}
+            onClick={() => {
+              toggleAction("entries-edit-state");
+              setLocation("/entries/edit");
+              handleClose();
+            }}
+            sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}
+          >
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            {t("editEntries")}
+          </MenuItem>
+          <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
+          <MenuItem
+            dense={true}
+            onClick={() => {
+              setVisibleCodes(!isVisibleCodes);
+              handleClose();
+            }}
+            sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}
+          >
+            <ListItemIcon>{isVisibleCodes ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
+            {t("visibleToken")}
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </div>
+  );
+}

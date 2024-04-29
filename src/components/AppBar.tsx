@@ -2,7 +2,6 @@ import AddEntryMenu from "@components/AddEntryMenu";
 import Tooltip from "@components/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
-import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AppBar from "@mui/material/AppBar";
@@ -19,6 +18,7 @@ import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
+import AppbarMenu from "./AppbarMenu";
 import DialogCaptureQR from "./DialogCaptureQR";
 
 const defaultIconSize = { fontSize: 20 };
@@ -72,17 +72,12 @@ export default function ButtonAppBar({
 }) {
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
   const { modal, toggleModal } = useModalStore();
-  const { actionState, toggleAction } = useActionStore();
+  const { actionState } = useActionStore();
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
-
-  const handleEditEntries = () => {
-    setDrawerOpen(false);
-    toggleAction("entries-edit-state");
-  };
 
   return (
     <>
@@ -109,7 +104,7 @@ export default function ButtonAppBar({
           <Typography
             textAlign="center"
             sx={{
-              fontSize: 17,
+              fontSize: 16,
               fontWeight: !isDev && "bold",
               // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
             }}
@@ -125,9 +120,7 @@ export default function ButtonAppBar({
                     size="small"
                     color="inherit"
                     aria-label="Add entry"
-                    onClick={() => {
-                      toggleModal("add-entry-modal");
-                    }}
+                    onClick={() => toggleModal("add-entry-modal")}
                   >
                     <AddIcon sx={defaultIconSize} />
                   </IconButton>
@@ -135,7 +128,7 @@ export default function ButtonAppBar({
                 <DoneButton />
               </>
             ) : (
-              <Box minWidth={30}>
+              <Box minWidth={30} sx={{ display: "flex" }}>
                 <>
                   <Tooltip title={t("scanQRCode")} disableInteractive>
                     <IconButton
@@ -147,18 +140,7 @@ export default function ButtonAppBar({
                       <QrCodeScannerIcon sx={defaultIconSize} />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title={t("editEntries")} disableInteractive>
-                    <IconButton
-                      size="small"
-                      color="inherit"
-                      aria-label="Edit Entries"
-                      LinkComponent={Link}
-                      href="/entries/edit"
-                      onClick={handleEditEntries}
-                    >
-                      <EditIcon sx={defaultIconSize} />
-                    </IconButton>
-                  </Tooltip>
+                  <AppbarMenu />
                 </>
               </Box>
             )}

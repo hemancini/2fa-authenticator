@@ -5,7 +5,9 @@ import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
-import { Card, CardActionArea, CardContent } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Card, CardActionArea, CardContent, Theme } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import Fade from "@mui/material/Fade";
@@ -17,7 +19,7 @@ import EntriesContext from "@src/contexts/Entries";
 import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/otp";
 import { useOptionsStore } from "@src/stores/useOptionsStore";
-import { ReactNode, useContext, useMemo, useState } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";
 
@@ -25,6 +27,7 @@ type EntryContentProps = {
   entry: OTPEntry;
   handleCopyCode: () => void;
   isToolpipCopyOpen: boolean;
+  isVisibleCode?: boolean;
 };
 
 const issuerBypass = "WOM";
@@ -39,78 +42,10 @@ const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   );
 };
 
-const EntryContent = (props: EntryContentProps) => {
-  const { entry, handleCopyCode, isToolpipCopyOpen } = props;
-  const { themeColor } = useOptionsStore((state) => ({
-    themeColor: state.themeColor,
-  }));
-
-  const period = entry?.period || 30;
-  const { discount, progress } = useCounter({ period });
-  const isDark = (theme) => DEFAULT_COLORS[0].hex === themeColor && theme.palette.mode !== "dark";
-
-  return (
-    <>
-      <Box aria-label="otp-code" display="flex">
-        <CardActionArea onClick={handleCopyCode}>
-          <MuiTooltip
-            TransitionComponent={Fade}
-            TransitionProps={{ timeout: 600 }}
-            open={isToolpipCopyOpen}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            title={t("copied")}
-            disableInteractive
-            placement="right"
-            arrow
-          >
-            <Typography
-              className={discount <= 4 ? "parpadea" : ""}
-              sx={{
-                color:
-                  discount <= 4
-                    ? red[400]
-                    : (theme) => (isDark(theme) ? theme.palette.primary.contrastText : theme.palette.primary.main),
-                fontWeight: "bold",
-                fontSize: "1.9rem",
-                letterSpacing: 4,
-                lineHeight: 1,
-              }}
-            >
-              {entry.code}
-            </Typography>
-          </MuiTooltip>
-        </CardActionArea>
-        <Box sx={{ minWidth: "100%" }} />
-      </Box>
-      <BoxRelative mb={0.3}>
-        <Box aria-label="account" display="flex" maxWidth="80%">
-          <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
-            {entry.account || <span>&nbsp;</span>}
-          </Typography>
-        </Box>
-        <Box display="flex" position="absolute" bottom={5} right={0}>
-          <CounterProgress
-            size={25}
-            count={discount}
-            value={progress}
-            sx={{
-              "& .MuiCircularProgress-circle": {
-                transition: `stroke-dashoffset ${period - discount >= 1 ? 1 : 0.4}s ease-in-out`,
-              },
-              color: discount <= 5 && red[400],
-              scale: "-1 1",
-            }}
-          />
-        </Box>
-      </BoxRelative>
-    </>
-  );
-};
-
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
-  const { bypassEnabled } = useOptionsStore();
+  const { bypassEnabled, isVisibleCodes } = useOptionsStore();
+  const [isVisible, setVisible] = useState(isVisibleCodes);
+
   const { handleEntriesUpdate } = useContext(EntriesContext);
 
   const [showQR, setShowQR] = useState(false);
@@ -139,6 +74,10 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
       });
     }
   };
+
+  useEffect(() => {
+    setVisible(isVisibleCodes);
+  }, [isVisibleCodes]);
 
   return (
     <>
@@ -179,6 +118,13 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
                 [entry, showAccount, showOptions, isValidData, bypassEnabled]
               )}
               <Box display={showOptions ? "block" : "none"}>
+                <IconButtonResize onClick={() => setVisible(!isVisible)}>
+                  <Tooltip title={"show token"} disableInteractive>
+                    {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </Tooltip>
+                </IconButtonResize>
+              </Box>
+              <Box display={showOptions ? "block" : "none"}>
                 <IconButtonResize onClick={() => setShowQR(!showQR)}>
                   <Tooltip title={t("showQR")} disableInteractive>
                     <QrCode2Icon />
@@ -207,7 +153,12 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
               </Box>
             </Box>
           </BoxRelative>
-          <EntryContent entry={entry} handleCopyCode={handleCopyCode} isToolpipCopyOpen={isToolpipCopyOpen} />
+          <EntryContent
+            entry={entry}
+            isVisibleCode={isVisible}
+            handleCopyCode={handleCopyCode}
+            isToolpipCopyOpen={isToolpipCopyOpen}
+          />
         </CardContent>
       </Card>
       <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />
@@ -220,3 +171,74 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
     </>
   );
 }
+
+const EntryContent = (props: EntryContentProps) => {
+  const { entry, handleCopyCode, isToolpipCopyOpen, isVisibleCode } = props;
+  const { themeColor } = useOptionsStore((state) => ({
+    themeColor: state.themeColor,
+  }));
+
+  const period = entry?.period || 30;
+  const { discount, progress } = useCounter({ period });
+  const isDark = (theme: Theme) => DEFAULT_COLORS[0].hex === themeColor && theme.palette.mode !== "dark";
+
+  return (
+    <>
+      <Box aria-label="otp-code" display="flex">
+        <CardActionArea onClick={handleCopyCode}>
+          <MuiTooltip
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
+            open={isToolpipCopyOpen}
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            title={t("copied")}
+            disableInteractive
+            placement="right"
+            arrow
+          >
+            <Typography
+              className={discount <= 4 ? "parpadea" : ""}
+              sx={{
+                color:
+                  discount <= 4
+                    ? red[400]
+                    : (theme) => (isDark(theme) ? theme.palette.primary.contrastText : theme.palette.primary.main),
+                fontWeight: "bold",
+                fontSize: "1.9rem",
+                letterSpacing: isVisibleCode ? 4 : 12,
+                lineHeight: 1,
+                pl: !isVisibleCode && 0.5,
+              }}
+            >
+              {isVisibleCode ? entry.code : "••••••"}
+            </Typography>
+          </MuiTooltip>
+        </CardActionArea>
+        <Box sx={{ minWidth: "100%" }} />
+      </Box>
+      <BoxRelative mb={0.3}>
+        <Box aria-label="account" display="flex" maxWidth="80%">
+          <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
+            {entry.account || <span>&nbsp;</span>}
+          </Typography>
+        </Box>
+        <Box display="flex" position="absolute" bottom={5} right={0}>
+          <CounterProgress
+            size={25}
+            count={discount}
+            value={progress}
+            sx={{
+              "& .MuiCircularProgress-circle": {
+                transition: `stroke-dashoffset ${period - discount >= 1 ? 1 : 0.4}s ease-in-out`,
+              },
+              color: discount <= 5 && red[400],
+              scale: "-1 1",
+            }}
+          />
+        </Box>
+      </BoxRelative>
+    </>
+  );
+};

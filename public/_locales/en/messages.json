@@ -23,6 +23,9 @@
   "editEntries": {
     "message": "Edit entries"
   },
+  "addEntry": {
+    "message": "Add entry"
+  },
   "addNewEntry": {
     "message": "Add new entry"
   },
@@ -145,5 +148,8 @@
   },
   "autofillDesc": {
     "message": "Autofill the code in the input field"
+  },
+  "visibleToken": {
+    "message": "Visible token"
   }
 }

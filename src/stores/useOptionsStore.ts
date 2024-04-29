@@ -15,6 +15,8 @@ interface OptionsStore {
   autofillEnabled: boolean;
   toggleAutofillEnabled: () => void;
   xraysEnabled: boolean;
+  isVisibleCodes: boolean;
+  setVisibleCodes: (isVisible: boolean) => void;
 }
 
 const chromePersistStorage: PersistStorage<OptionsStore> = {
@@ -47,6 +49,10 @@ export const useOptionsStore = create<OptionsStore>()(
         set((state) => ({ autofillEnabled: !state.autofillEnabled }));
       },
       xraysEnabled: false,
+      isVisibleCodes: false,
+      setVisibleCodes: (isVisibleCodes) => {
+        set({ isVisibleCodes });
+      },
     }),
     {
       name: chromeStorageKey, // name of the item in the storage (must be unique)
