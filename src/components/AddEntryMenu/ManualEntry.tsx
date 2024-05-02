@@ -54,7 +54,7 @@ export default function ManualEntry(props: AddEntryProps) {
     setAdvance(event.target.checked);
   };
 
-  const handleSubmited = async (data: any) => {
+  const handleSubmited = async (data: FormData) => {
     const dragData = { ...dataEntry, ...data };
     const authURL = `otpauth://${dragData.type}/${dragData.issuer}${
       dragData.account ? "@" + dragData.account : ""
@@ -80,11 +80,11 @@ export default function ManualEntry(props: AddEntryProps) {
         {!isAdded ? (
           <>
             <TextField
-              label="account"
+              label="issuer"
               size="small"
               inputProps={{ minLength: 3, maxLength: 24 }}
-              {...register("account", { required: true })}
-              {...{ error: errors.account !== undefined }}
+              {...register("issuer", { required: true })}
+              {...{ error: errors.issuer !== undefined }}
             />
             <TextField
               label="secret"
@@ -94,11 +94,11 @@ export default function ManualEntry(props: AddEntryProps) {
               {...{ error: errors.secret !== undefined }}
             />
             <TextField
-              label="issuer"
+              label="account"
               size="small"
               inputProps={{ minLength: 3, maxLength: 24 }}
-              {...register("issuer", { required: true })}
-              {...{ error: errors.issuer !== undefined }}
+              {...register("account", { required: true })}
+              {...{ error: errors.account !== undefined }}
             />
             <FormGroup>
               <FormControlLabel
