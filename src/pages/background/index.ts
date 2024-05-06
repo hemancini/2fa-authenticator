@@ -210,4 +210,4 @@ async function getTotp(message: { url: string; site: string }) {
   return entryData[hash];
 }
 
-console.log("background loaded");
+// console.log("background loaded");
