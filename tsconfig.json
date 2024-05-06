@@ -17,12 +17,12 @@
     "forceConsistentCasingInFileNames": true,
     "typeRoots": ["./src/global.d.ts"],
     "paths": {
-      "@src/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@routes/*": ["src/routes/*"],
-      "@components/*": ["src/components/*"],
       "@definitions/*": ["src/types/*"],
+      "@src/*": ["src/*"],
       "virtual:reload-on-update-in-background-script": ["./src/global.d.ts"],
       "virtual:reload-on-update-in-view": ["./src/global.d.ts"]
     }
