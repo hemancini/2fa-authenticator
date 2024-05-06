@@ -119,7 +119,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
                 [entry, showAccount, showOptions, isValidData, bypassEnabled]
               )}
               <Box display={showOptions ? "block" : "none"}>
-                <IconButtonResize onClick={() => setVisible(!isVisible)}>
+                <IconButtonResize onClick={() => setVisible(!isVisible)} style={{ display: "none" }}>
                   <Tooltip title={t("showToken")} disableInteractive>
                     {isVisible ? (
                       <VisibilityIcon sx={{ fontSize: defaultEyesIconSize }} />
