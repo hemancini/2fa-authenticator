@@ -107,6 +107,9 @@
   "showQR": {
     "message": "Show QR code"
   },
+  "showToken": {
+    "message": "Show token"
+  },
   "pin": {
     "message": "PIN"
   },
@@ -119,8 +122,8 @@
   "copied": {
     "message": "Copied"
   },
-  "uploadImage": {
-    "message": "Upload image"
+  "uploadQrImage": {
+    "message": "Upload QR image"
   },
   "syncTimeWithGoogle": {
     "message": "Sync time with Google"

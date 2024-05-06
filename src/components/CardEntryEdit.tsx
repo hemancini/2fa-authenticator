@@ -29,7 +29,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function OutlinedCard({
+export default function CardEntryEdit({
   entry,
   handleRender,
 }: {
@@ -118,22 +118,22 @@ export default function OutlinedCard({
         </Card>
         {!entry.pinned && (
           <>
-            <Tooltip title={t("removeEntry")} disableInteractive>
-              <IconButton
-                aria-label="remove entry"
-                onClick={() => setIsConfirmOpen(true)}
-                sx={{
-                  color: "#e57373",
-                  width: 22,
-                  height: 22,
-                  position: "absolute",
-                  right: -9,
-                  top: -9,
-                }}
-              >
+            <IconButton
+              aria-label="remove entry"
+              onClick={() => setIsConfirmOpen(true)}
+              sx={{
+                color: "#e57373",
+                width: 22,
+                height: 22,
+                position: "absolute",
+                right: -9,
+                top: -9,
+              }}
+            >
+              <Tooltip title={t("removeEntry")} disableInteractive>
                 <RemoveCircleIcon sx={{ fontSize: 15 }} />
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
             <ConfirmRemoveEntry
               entry={entry}
               isConfirmOpen={isConfirmOpen}

@@ -1,4 +1,4 @@
-import { captureQRCode } from "@components/AppBar";
+import { captureQRCode } from "@components/widgets/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ImageIcon from "@mui/icons-material/Image";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -17,100 +17,116 @@ import React, { useRef, useState } from "react";
 
 const addQrOptionList = [
   { id: "scan", text: t("scanQRCode"), icon: <QrCodeScannerIcon /> },
-  { id: "upload", text: t("uploadImage"), icon: <ImageIcon />, disabled: true },
+  { id: "upload", text: t("uploadQrImage"), icon: <ImageIcon />, disabled: false },
 ];
 
-export default function AddQrButton({ buttonCommonProps = {} }: { buttonCommonProps?: ButtonProps }) {
+export default function AddQrButton(props: {
+  buttonCommonProps?: ButtonProps;
+  isImageUploaded: boolean;
+  handleShowUploadImage: () => void;
+}) {
+  const { buttonCommonProps, handleShowUploadImage, isImageUploaded } = props;
   const [isQrButtonOpen, setQrButtonOpen] = useState(false);
   const [qrOptionIndex, setQrOptionIndex] = useState(0);
+
   const qrButtonRef = useRef<HTMLDivElement>(null);
 
-  const handleClick = () => {
-    console.info(`You clicked ${addQrOptionList[qrOptionIndex].id}`);
+  const handleToggleClick = () => {
     if (addQrOptionList[qrOptionIndex].id === "scan") {
       captureQRCode();
     }
-  };
-
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
-    setQrOptionIndex(index);
-    setQrButtonOpen(false);
+    if (addQrOptionList[qrOptionIndex].id === "upload") {
+      handleShowUploadImage();
+    }
   };
 
   const handleToggle = () => {
     setQrButtonOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event: Event) => {
+  const handlePopperClose = (event: Event) => {
     if (qrButtonRef.current && qrButtonRef.current.contains(event.target as HTMLElement)) {
       return;
     }
     setQrButtonOpen(false);
   };
 
+  const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
+    setQrOptionIndex(index);
+    setQrButtonOpen(false);
+
+    // change the state of the parent component
+    const isUploadImage = index === 1;
+    isUploadImage && handleShowUploadImage();
+  };
+
   return (
-    <React.Fragment>
-      <ButtonGroup variant="contained" ref={qrButtonRef} disableElevation>
-        <Button {...buttonCommonProps} startIcon={addQrOptionList[qrOptionIndex].icon} onClick={handleClick}>
-          {addQrOptionList[qrOptionIndex].text}
-        </Button>
-        <Button {...buttonCommonProps} size="small" fullWidth={false} onClick={handleToggle}>
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
-      <Popper
-        sx={{ zIndex: 1 }}
-        open={isQrButtonOpen}
-        anchorEl={qrButtonRef.current}
-        role={undefined}
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === "bottom" ? "center top" : "center bottom",
-            }}
-          >
-            <Paper sx={{ minWidth: qrButtonRef.current?.offsetWidth }}>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList autoFocusItem disablePadding>
-                  {addQrOptionList.map(
-                    (option, index) =>
-                      index !== qrOptionIndex && (
-                        <MenuItem
-                          key={index}
-                          disableGutters
-                          disabled={option.disabled}
-                          selected={index === qrOptionIndex}
-                          onClick={(event) => handleMenuItemClick(event, index)}
-                          sx={{ px: 1, pl: 1.5 }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              gap: 1,
-                              "& .MuiTypography-root": {
-                                fontSize: 14,
-                              },
-                              "& .MuiSvgIcon-root": {
-                                fontSize: 20,
-                              },
-                            }}
+    !isImageUploaded && (
+      <React.Fragment>
+        <ButtonGroup variant="contained" ref={qrButtonRef} disableElevation>
+          <Button {...buttonCommonProps} startIcon={addQrOptionList[qrOptionIndex].icon} onClick={handleToggleClick}>
+            <Box component="span" sx={{ display: "flex" }}>
+              {addQrOptionList[qrOptionIndex].text}
+            </Box>
+          </Button>
+          <Button {...buttonCommonProps} size="small" fullWidth={false} onClick={handleToggle}>
+            <ArrowDropDownIcon />
+          </Button>
+        </ButtonGroup>
+        <Popper
+          sx={{ zIndex: 1 }}
+          open={isQrButtonOpen}
+          anchorEl={qrButtonRef.current}
+          role={undefined}
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin: placement === "bottom" ? "center top" : "center bottom",
+              }}
+            >
+              <Paper sx={{ minWidth: qrButtonRef.current?.offsetWidth }}>
+                <ClickAwayListener onClickAway={handlePopperClose}>
+                  <MenuList autoFocusItem disablePadding>
+                    {addQrOptionList.map(
+                      (option, index) =>
+                        index !== qrOptionIndex && (
+                          <MenuItem
+                            key={index}
+                            disableGutters
+                            disabled={option.disabled}
+                            selected={index === qrOptionIndex}
+                            onClick={(event) => handleMenuItemClick(event, index)}
+                            sx={{ px: 1, pl: 1.5 }}
                           >
-                            {option.icon}
-                            <ListItemText primary={option.text} />
-                          </Box>
-                        </MenuItem>
-                      )
-                  )}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </React.Fragment>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                gap: 1,
+                                "& .MuiTypography-root": {
+                                  fontSize: 14,
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  fontSize: 20,
+                                },
+                              }}
+                            >
+                              {option.icon}
+                              <ListItemText primary={option.text} />
+                            </Box>
+                          </MenuItem>
+                        )
+                    )}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </React.Fragment>
+    )
   );
 }

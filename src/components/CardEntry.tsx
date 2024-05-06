@@ -32,6 +32,7 @@ type EntryContentProps = {
 
 const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;
+const defaultEyesIconSize = 20;
 
 const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
   const { children } = props;
@@ -119,12 +120,14 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
               )}
               <Box display={showOptions ? "block" : "none"}>
                 <IconButtonResize onClick={() => setVisible(!isVisible)}>
-                  <Tooltip title={"show token"} disableInteractive>
-                    {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  <Tooltip title={t("showToken")} disableInteractive>
+                    {isVisible ? (
+                      <VisibilityIcon sx={{ fontSize: defaultEyesIconSize }} />
+                    ) : (
+                      <VisibilityOffIcon sx={{ fontSize: defaultEyesIconSize }} />
+                    )}
                   </Tooltip>
                 </IconButtonResize>
-              </Box>
-              <Box display={showOptions ? "block" : "none"}>
                 <IconButtonResize onClick={() => setShowQR(!showQR)}>
                   <Tooltip title={t("showQR")} disableInteractive>
                     <QrCode2Icon />

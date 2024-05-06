@@ -14,8 +14,8 @@ import React from "react";
 import { Link, useRoute } from "wouter";
 
 // import OptionsNestedList from "./OptionsNestedList";
-import ThemeModeSelect from "./ThemeMode";
-import ToolbarOffset from "./ToolbarOffset";
+import ThemeModeSelect from "../ThemeMode";
+import ToolbarOffset from "../ToolbarOffset";
 
 const anchor = "left";
 const drawerWidth = 175;

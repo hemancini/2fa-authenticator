@@ -56,11 +56,9 @@ export default function ManualEntry(props: AddEntryProps) {
 
   const handleSubmited = async (data: FormData) => {
     const dragData = { ...dataEntry, ...data };
-    const authURL = `otpauth://${dragData.type}/${dragData.issuer}${
-      dragData.account ? "@" + dragData.account : ""
-    }?secret=${dragData.secret}&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${
-      dragData.digits
-    }&period=${dragData.period}`;
+    const authURL = `otpauth://totp/${dragData.issuer}${dragData.account ? `:${dragData.account}` : ""}?secret=${
+      dragData.secret
+    }&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${dragData.digits}&period=${dragData.period}`;
 
     return new Promise((resolve) => {
       sendMessageToBackground({

@@ -1,0 +1,3 @@
+otpauth://totp/Amazon%20Web%20Services:2fa@424597563648?secret=TVQXBHVIFPOQCVIZQU0GSU5OM7QJJKBX34FVKSN634HY2LAMEWTKMA32LUU7L&issuer=Amazon%20Web%20Services
+otpauth://totp/gitlab.com:gitlab.com_juan.perez%40boxycargos.cl?secret=WTFDYCGYTWIKJXUEOZDUZETJO637FFGB&issuer=gitlab.com
+otpauth://totp/GitHub:boxycargos?secret=XZCLYN1T2HMDFCLG&issuer=GitHub

@@ -1,9 +1,9 @@
 import AddEntryMenu from "@components/AddEntryMenu";
 import Tooltip from "@components/Tooltip";
-import AddIcon from "@mui/icons-material/Add";
-import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import SaveIcon from "@mui/icons-material/Save";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -18,8 +18,8 @@ import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
+import DialogCaptureQR from "../DialogCaptureQR";
 import AppbarMenu from "./AppbarMenu";
-import DialogCaptureQR from "./DialogCaptureQR";
 
 const defaultIconSize = { fontSize: 20 };
 
@@ -41,28 +41,6 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
   });
 };
 
-const DoneButton = () => {
-  const { toggleAction } = useActionStore();
-  const { handleEntriesEdited } = useContext(EntriesContext);
-  return (
-    <Tooltip title={t("save")} disableInteractive>
-      <IconButton
-        size="small"
-        color="inherit"
-        aria-label="Edit OK"
-        LinkComponent={Link}
-        href="/"
-        onClick={() => {
-          handleEntriesEdited();
-          toggleAction("entries-edit-state");
-        }}
-      >
-        <DoneIcon sx={defaultIconSize} />
-      </IconButton>
-    </Tooltip>
-  );
-};
-
 export default function ButtonAppBar({
   drawerOpen,
   setDrawerOpen,
@@ -71,7 +49,7 @@ export default function ButtonAppBar({
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
-  const { modal, toggleModal } = useModalStore();
+  const { modal } = useModalStore();
   const { actionState } = useActionStore();
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
@@ -84,21 +62,21 @@ export default function ButtonAppBar({
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
-            {!actionState["entries-edit-state"] && (
-              <Tooltip title="Menu" placement="bottom" disableInteractive>
-                <span>
-                  <IconButton
-                    size="small"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    disabled={isUpSm}
-                    onClick={() => setDrawerOpen(!drawerOpen)}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
+            {actionState["entries-edit-state"] ? (
+              <CancelButton />
+            ) : (
+              <IconButton
+                size="small"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                disabled={isUpSm}
+                onClick={() => setDrawerOpen(!drawerOpen)}
+              >
+                <Tooltip title="Menu" placement="bottom" disableInteractive>
+                  <MenuIcon />
+                </Tooltip>
+              </IconButton>
             )}
           </Box>
           <Typography
@@ -110,38 +88,24 @@ export default function ButtonAppBar({
             }}
           >
             {t("extensionName")}
-            {isDev && " dev"}
+            {/* {isDev && " dev"} */}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
             {actionState["entries-edit-state"] ? (
-              <>
-                <Tooltip title={t("addNewEntry")} disableInteractive>
-                  <IconButton
-                    size="small"
-                    color="inherit"
-                    aria-label="Add entry"
-                    onClick={() => toggleModal("add-entry-modal")}
-                  >
-                    <AddIcon sx={defaultIconSize} />
-                  </IconButton>
-                </Tooltip>
-                <DoneButton />
-              </>
+              <SaveButton />
             ) : (
               <Box minWidth={30} sx={{ display: "flex" }}>
-                <>
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  aria-label="Scan QR"
+                  onClick={() => captureQRCode(setCaptureQRError)}
+                >
                   <Tooltip title={t("scanQRCode")} disableInteractive>
-                    <IconButton
-                      size="small"
-                      color="inherit"
-                      aria-label="Scan QR"
-                      onClick={() => captureQRCode(setCaptureQRError)}
-                    >
-                      <QrCodeScannerIcon sx={defaultIconSize} />
-                    </IconButton>
+                    <QrCodeScannerIcon sx={defaultIconSize} />
                   </Tooltip>
-                  <AppbarMenu />
-                </>
+                </IconButton>
+                <AppbarMenu />
               </Box>
             )}
           </Box>
@@ -152,3 +116,47 @@ export default function ButtonAppBar({
     </>
   );
 }
+
+const SaveButton = (): JSX.Element => {
+  const { toggleAction } = useActionStore();
+  const { handleEntriesEdited } = useContext(EntriesContext);
+  return (
+    <IconButton
+      size="small"
+      color="inherit"
+      aria-label={t("save")}
+      LinkComponent={Link}
+      href="/"
+      onClick={() => {
+        handleEntriesEdited();
+        toggleAction("entries-edit-state");
+      }}
+    >
+      <Tooltip title={t("save")} disableInteractive>
+        <SaveIcon sx={defaultIconSize} />
+      </Tooltip>
+    </IconButton>
+  );
+};
+
+const CancelButton = (): JSX.Element => {
+  const { toggleAction } = useActionStore();
+  const { handleEntriesUpdate } = useContext(EntriesContext);
+  return (
+    <IconButton
+      size="small"
+      color="inherit"
+      aria-label={t("cancel")}
+      onClick={() => {
+        toggleAction("entries-edit-state");
+        handleEntriesUpdate();
+      }}
+      LinkComponent={Link}
+      href="/"
+    >
+      <Tooltip title={t("cancel")} disableInteractive>
+        <CancelIcon sx={defaultIconSize} />
+      </Tooltip>
+    </IconButton>
+  );
+};

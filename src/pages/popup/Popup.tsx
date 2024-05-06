@@ -1,8 +1,8 @@
 import "@pages/popup/Popup.css";
 
-import AppBar from "@components/AppBar";
-import DrawerMenu from "@components/DrawerMenu";
 import ToolbarOffset from "@components/ToolbarOffset";
+import AppBar from "@components/widgets/AppBar";
+import DrawerMenu from "@components/widgets/DrawerMenu";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";

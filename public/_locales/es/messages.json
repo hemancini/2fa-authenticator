@@ -107,6 +107,9 @@
   "showQR": {
     "message": "Ver código QR"
   },
+  "showToken": {
+    "message": "Mostrar token"
+  },
   "pin": {
     "message": "Fijar"
   },
@@ -119,8 +122,8 @@
   "copied": {
     "message": "Copiado"
   },
-  "uploadImage": {
-    "message": "Subir imagen"
+  "uploadQrImage": {
+    "message": "Subir imagen QR"
   },
   "syncTimeWithGoogle": {
     "message": "Sincronizar reloj con Google"

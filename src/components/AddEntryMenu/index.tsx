@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
-import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
@@ -28,7 +28,6 @@ export default function AddEntryMenu() {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
   const { handleEntriesEdited } = useContext(EntriesContext);
   const [, navigate] = useLocation();
-  const { toggleAction } = useActionStore();
   const { modal, toggleModal } = useModalStore();
 
   useEffect(() => {
@@ -50,7 +49,6 @@ export default function AddEntryMenu() {
 
   const handlerGoToHome = () => {
     handleOnAddEntryClose();
-    toggleAction("entries-edit-state");
     navigate("/", { replace: true }); // `replaceState` is used
   };
 
@@ -76,20 +74,20 @@ export default function AddEntryMenu() {
         }}
       >
         {t("addNewEntry")}
-        <Tooltip title={t("cancel")} disableInteractive>
-          <IconButton
-            aria-label="close"
-            onClick={handleOnAddEntryClose}
-            sx={{
-              top: 4,
-              right: 5,
-              position: "absolute",
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
+        <IconButton
+          aria-label="close"
+          onClick={handleOnAddEntryClose}
+          sx={{
+            top: 4,
+            right: 5,
+            position: "absolute",
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Tooltip title={t("cancel")} disableInteractive>
             <CloseIcon sx={{ fontSize: 18 }} />
-          </IconButton>
-        </Tooltip>
+          </Tooltip>
+        </IconButton>
       </DialogTitle>
       <Divider />
       <DialogContent
@@ -107,7 +105,7 @@ export default function AddEntryMenu() {
         ) : manualEntryOptions === "MANUAL" ? (
           <ManualEntry handlerOnCandel={handleOnAddEntryCancel} handlerGoToHome={handlerGoToHome} />
         ) : (
-          <OptionsButtonList setManualEntryOptions={setManualEntryOptions} />
+          <OptionsButtonList handleCloseModal={handlerGoToHome} setManualEntryOptions={setManualEntryOptions} />
         )}
       </DialogContent>
     </Dialog>

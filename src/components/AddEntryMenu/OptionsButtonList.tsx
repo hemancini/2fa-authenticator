@@ -3,12 +3,14 @@ import LinkIcon from "@mui/icons-material/Link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
-import React from "react";
+import UploadImage from "@src/components/UploadImage";
+import React, { useState } from "react";
 
 import { ImportBackupListItem } from "../Options/Backup";
 import AddQrButton from "./AddQrButton";
 
 interface AddOptionsProps {
+  handleCloseModal: () => void;
   setManualEntryOptions: React.Dispatch<React.SetStateAction<"" | "TOTP" | "MANUAL">>;
 }
 
@@ -20,24 +22,50 @@ const buttonCommonProps: ButtonProps = {
     justifyContent: "flex-start",
     textTransform: "none",
     fontWeight: "bold",
+    paddingRight: 0,
   },
 };
 
-export default function AddOptions(options: AddOptionsProps) {
-  const { setManualEntryOptions } = options;
+export default function AddOptions(props: AddOptionsProps) {
+  const { handleCloseModal, setManualEntryOptions } = props;
+  const [isUploadImage, setUploadImage] = useState(false);
+  const [isImageUploaded, setImageUploaded] = useState(false);
+
+  const handleCancelButton = () => {
+    setUploadImage(false);
+    setImageUploaded(false);
+  };
+
+  const handleShowUploadImage = () => {
+    setUploadImage(true);
+  };
 
   return (
     <>
-      <AddQrButton buttonCommonProps={buttonCommonProps} />
-      <Button {...buttonCommonProps} startIcon={<KeyboardIcon />} onClick={() => setManualEntryOptions("MANUAL")}>
-        {t("manualEntry")}
-      </Button>
-      <Button {...buttonCommonProps} startIcon={<LinkIcon />} onClick={() => setManualEntryOptions("TOTP")}>
-        {t("totpUrl")}
-      </Button>
-      <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} {...{ component: "label" }}>
-        <ImportBackupListItem returnRaw />
-      </Button>
+      <AddQrButton
+        buttonCommonProps={buttonCommonProps}
+        handleShowUploadImage={handleShowUploadImage}
+        isImageUploaded={isImageUploaded}
+      />
+      {!isUploadImage ? (
+        <>
+          <Button {...buttonCommonProps} startIcon={<LinkIcon />} onClick={() => setManualEntryOptions("TOTP")}>
+            {t("totpUrl")}
+          </Button>
+          <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} {...{ component: "label" }}>
+            <ImportBackupListItem returnRaw />
+          </Button>
+          <Button {...buttonCommonProps} startIcon={<KeyboardIcon />} onClick={() => setManualEntryOptions("MANUAL")}>
+            {t("manualEntry")}
+          </Button>
+        </>
+      ) : (
+        <UploadImage
+          handleCloseModal={handleCloseModal}
+          setImageUploaded={setImageUploaded}
+          setUploadImageOption={handleCancelButton}
+        />
+      )}
     </>
   );
 }
