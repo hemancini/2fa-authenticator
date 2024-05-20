@@ -2,23 +2,18 @@ import fs from "fs";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 
-import { rmDirRecursive, rmFile } from "./utils/plugins/rm-dir-recursive";
+import { assetsDir, autofillOutDir, pagesDir, rootDir } from "../paths";
+import { rmDirRecursive, rmFile } from "../plugins/rm-dir-recursive";
 
 const isDev = process.env.__DEV__ === "true";
 const isProduction = !isDev;
-
-const root = resolve(__dirname, "src");
-const outDir = resolve(__dirname, "dist");
-const pagesDir = resolve(root, "pages");
-const assetsDir = resolve(root, "assets");
-const autofillOutDir = resolve(outDir, "src/pages/autofill");
 
 const extensionToDelete = ["png", "json", "_locales", "providers"];
 
 export default defineConfig({
   resolve: {
     alias: {
-      "@src": root,
+      "@src": rootDir,
       "@pages": pagesDir,
       "@assets": assetsDir,
     },

@@ -5,18 +5,19 @@ import path, { resolve } from "path";
 import { defineConfig } from "vite";
 
 import manifest from "./manifest";
+import {
+  assetsDir,
+  componentsDir,
+  definitionsDir,
+  outDir,
+  pagesDir,
+  publicDir,
+  rootDir,
+  routesDir,
+} from "./utils/paths";
 import addHmr from "./utils/plugins/add-hmr";
 import customDynamicImport from "./utils/plugins/custom-dynamic-import";
 import makeManifest from "./utils/plugins/make-manifest";
-
-const root = resolve(__dirname, "src");
-const pagesDir = resolve(root, "pages");
-const assetsDir = resolve(root, "assets");
-const routesDir = resolve(root, "routes");
-const componentsDir = resolve(root, "components");
-const definitionsDir = resolve(root, "definitions");
-const outDir = resolve(__dirname, "dist");
-const publicDir = resolve(__dirname, "public");
 
 const isDev = process.env.__DEV__ === "true";
 const isProduction = !isDev;
@@ -32,7 +33,7 @@ const devPages = {
 export default defineConfig({
   resolve: {
     alias: {
-      "@src": root,
+      "@src": rootDir,
       "@assets": assetsDir,
       "@pages": pagesDir,
       "@routes": routesDir,
@@ -51,9 +52,9 @@ export default defineConfig({
     {
       name: "postbuild",
       closeBundle: async () => {
-        buildCloseBundle("vite.config.capture.ts");
-        buildCloseBundle("vite.config.bypass.ts");
-        buildCloseBundle("vite.config.autofill.ts");
+        buildCloseBundle("utils/config/capture.ts");
+        buildCloseBundle("utils/config/bypass.ts");
+        buildCloseBundle("utils/config/autofill.ts");
       },
     },
   ],
@@ -133,7 +134,9 @@ function generateKey(): string {
   return `${(Date.now() / 100).toFixed()}`;
 }
 
-function buildCloseBundle(viteConfig: "vite.config.capture.ts" | "vite.config.bypass.ts" | "vite.config.autofill.ts") {
+function buildCloseBundle(
+  viteConfig: "utils/config/capture.ts" | "utils/config/bypass.ts" | "utils/config/autofill.ts"
+) {
   const build = spawn("vite", ["build", "--config", viteConfig]);
   build.stderr.on("data", (data) => {
     console.error(`${data}`.split("\n").join(""));
