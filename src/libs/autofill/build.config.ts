@@ -1,9 +1,8 @@
 import fs from "fs";
-import { resolve } from "path";
 import { defineConfig } from "vite";
 
-import { assetsDir, bypassOutDir, pagesDir, rootDir } from "../paths";
-import { rmDirRecursive, rmFile } from "../plugins/rm-dir-recursive";
+import { assetsDir, autofillDir, autofillOutDir, pagesDir, rootDir } from "../../../utils/paths";
+import { rmDirRecursive, rmFile } from "../../../utils/plugins/rm-dir-recursive";
 
 const isDev = process.env.__DEV__ === "true";
 const isProduction = !isDev;
@@ -30,10 +29,10 @@ export default defineConfig({
     minify: isProduction,
     cssCodeSplit: false,
     emptyOutDir: true,
-    outDir: resolve(bypassOutDir),
+    outDir: autofillOutDir,
     lib: {
-      entry: resolve(pagesDir, "content", "bypass.ts"),
-      name: "WebAnsers/bypass",
+      entry: autofillDir,
+      name: "WebAnsers/autofill",
       formats: ["iife"],
     },
     rollupOptions: {
@@ -47,16 +46,16 @@ export default defineConfig({
 
 const postBuild = async () => {
   try {
-    const dirCount = fs.readdirSync(bypassOutDir);
+    const dirCount = fs.readdirSync(autofillOutDir);
     dirCount.forEach((dir) => {
       extensionToDelete.forEach((ext) => {
         if (dir.includes(ext)) {
           if (/\..+$/.test(dir)) {
-            rmFile(`${bypassOutDir}/${dir}`);
+            rmFile(`${autofillOutDir}/${dir}`);
           } else {
-            rmDirRecursive(`${bypassOutDir}/${dir}`);
+            rmDirRecursive(`${autofillOutDir}/${dir}`);
           }
-          // console.log(`${`${bypassOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
+          // console.log(`${`${autofillOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
         }
       });
     });

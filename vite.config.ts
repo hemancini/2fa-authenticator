@@ -7,6 +7,8 @@ import { defineConfig } from "vite";
 import manifest from "./manifest";
 import {
   assetsDir,
+  autofillDir,
+  bypassDir,
   componentsDir,
   definitionsDir,
   outDir,
@@ -52,9 +54,9 @@ export default defineConfig({
     {
       name: "postbuild",
       closeBundle: async () => {
-        buildCloseBundle("utils/config/capture.ts");
-        buildCloseBundle("utils/config/bypass.ts");
-        buildCloseBundle("utils/config/autofill.ts");
+        buildCloseBundle("src/libs/autofill/build.config.ts");
+        buildCloseBundle("src/libs/bypass/build.config.ts");
+        buildCloseBundle("src/libs/capture/build.config.ts");
       },
     },
   ],
@@ -88,15 +90,12 @@ export default defineConfig({
       input: {
         ...(isDev ? devPages : {}),
         content: resolve(pagesDir, "content", "index.ts"),
-        capture: resolve(pagesDir, "content", "capture.ts"),
-        captureCSS: resolve(pagesDir, "content", "capture.scss"),
-        bypass: resolve(pagesDir, "content", "bypass.ts"),
-        autofill: resolve(pagesDir, "content", "autofill.ts"),
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
         options: resolve(pagesDir, "options", "index.html"),
         sidePanel: resolve(pagesDir, "sidePanel", "index.html"),
+        captureCSS: resolve(rootDir, "libs", "capture", "style.scss"),
       },
       watch: {
         include: ["src/**", "vite.config.ts"],
@@ -135,7 +134,10 @@ function generateKey(): string {
 }
 
 function buildCloseBundle(
-  viteConfig: "utils/config/capture.ts" | "utils/config/bypass.ts" | "utils/config/autofill.ts"
+  viteConfig:
+    | "src/libs/capture/build.config.ts"
+    | "src/libs/bypass/build.config.ts"
+    | "src/libs/autofill/build.config.ts"
 ) {
   const build = spawn("vite", ["build", "--config", viteConfig]);
   build.stderr.on("data", (data) => {

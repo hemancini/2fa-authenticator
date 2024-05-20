@@ -71,7 +71,7 @@ chrome.runtime.onConnect.addListener((port) => {
                 if (granted) {
                   await chrome.scripting.executeScript({
                     target: { tabId: tabs?.[0].id, allFrames: true },
-                    files: ["/src/pages/autofill/index.js"],
+                    files: ["/src/libs/autofill/index.js"],
                   });
                   chrome.tabs.sendMessage(tabs?.[0].id, {
                     message: "pastecode",
@@ -130,13 +130,13 @@ async function captureQR() {
       console.warn("captureQR: No active tab found");
       throw new Error("No active tab found");
     }
+    await chrome.scripting.insertCSS({
+      files: ["/assets/css/captureStyle.chunk.css"],
+      target: { tabId: tab?.[0].id },
+    });
     await chrome.scripting.executeScript({
       target: { tabId: tab?.[0].id, allFrames: true },
-      files: ["/src/pages/capture/index.js"],
-    });
-    await chrome.scripting.insertCSS({
-      files: ["/assets/css/contentCapture.chunk.css"],
-      target: { tabId: tab?.[0].id },
+      files: ["/src/libs/capture/index.js"],
     });
     chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
   });

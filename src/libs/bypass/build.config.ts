@@ -1,9 +1,8 @@
 import fs from "fs";
-import { resolve } from "path";
 import { defineConfig } from "vite";
 
-import { assetsDir, captureOutDir, pagesDir, rootDir } from "../paths";
-import { rmDirRecursive, rmFile } from "../plugins/rm-dir-recursive";
+import { assetsDir, bypassDir, bypassOutDir, pagesDir, rootDir } from "../../../utils/paths";
+import { rmDirRecursive, rmFile } from "../../../utils/plugins/rm-dir-recursive";
 
 const isDev = process.env.__DEV__ === "true";
 const isProduction = !isDev;
@@ -30,10 +29,10 @@ export default defineConfig({
     minify: isProduction,
     cssCodeSplit: false,
     emptyOutDir: true,
-    outDir: resolve(captureOutDir),
+    outDir: bypassOutDir,
     lib: {
-      entry: resolve(pagesDir, "content", "capture.ts"),
-      name: "WebAnsers/capture",
+      entry: bypassDir,
+      name: "WebAnsers/bypass",
       formats: ["iife"],
     },
     rollupOptions: {
@@ -47,22 +46,20 @@ export default defineConfig({
 
 const postBuild = async () => {
   try {
-    const dirCount = fs.readdirSync(captureOutDir);
+    const dirCount = fs.readdirSync(bypassOutDir);
     dirCount.forEach((dir) => {
       extensionToDelete.forEach((ext) => {
         if (dir.includes(ext)) {
-          if (dir.includes(ext)) {
-            if (/\..+$/.test(dir)) {
-              rmFile(`${captureOutDir}/${dir}`);
-            } else {
-              rmDirRecursive(`${captureOutDir}/${dir}`);
-            }
-            // console.log(`${`${captureOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
+          if (/\..+$/.test(dir)) {
+            rmFile(`${bypassOutDir}/${dir}`);
+          } else {
+            rmDirRecursive(`${bypassOutDir}/${dir}`);
           }
+          // console.log(`${`${bypassOutDir}/${dir}`.split(__dirname + "/")[1]} removed`);
         }
       });
     });
   } catch (err) {
-    console.error("Something wrong happened removing the file", err);
+    console.log("Something wrong happened removing the file", err);
   }
 };
