@@ -209,10 +209,9 @@ const EntryContent = (props: EntryContentProps) => {
                     ? red[400]
                     : (theme) => (isDark(theme) ? theme.palette.primary.contrastText : theme.palette.primary.main),
                 fontWeight: "bold",
-                fontSize: "1.9rem",
-                letterSpacing: isVisibleCode ? 4 : 12,
-                lineHeight: 1,
-                pl: !isVisibleCode && 0.5,
+                fontSize: isVisibleCode ? "1.9rem" : "3rem",
+                letterSpacing: isVisibleCode ? 4 : 4.5,
+                lineHeight: isVisibleCode ? 1 : 0.63,
               }}
             >
               {isVisibleCode ? entry.code : "••••••"}
