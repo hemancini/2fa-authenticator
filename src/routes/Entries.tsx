@@ -15,7 +15,12 @@ export default function Entries() {
   return isLoading || entries?.length >= 1 ? (
     <>
       <RefreshCodes />
-      <Reorder.Group axis="y" values={entries} onReorder={setEntries}>
+      <Reorder.Group
+        axis="y"
+        values={entries}
+        onReorder={setEntries}
+        style={{ paddingTop: 15, display: "flex", flexDirection: "column", gap: 13 }}
+      >
         {entries?.map((entry) => (
           <Reorder.Item value={entry} dragListener={false} key={entry.hash} id={entry.hash}>
             <CardEntry entry={entry} />

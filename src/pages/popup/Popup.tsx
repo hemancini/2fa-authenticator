@@ -60,7 +60,7 @@ export default function Popup() {
             <DrawerMenu {...{ drawerOpen, setDrawerOpen }} />
           </React.Fragment>
         )}
-        <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1 }}>
+        <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
           <Switch>
             <Route path={["/", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>

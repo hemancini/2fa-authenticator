@@ -84,9 +84,19 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
     <>
       <Card
         variant="outlined"
+        component="section"
         onMouseOver={() => setShowOptions(true)}
         onMouseOut={() => setShowOptions(false)}
-        sx={{ my: 1.7 }}
+        sx={{
+          position: "relative",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.03)",
+          },
+        }}
+      // {...{
+      //   sx: { borderRadius: 0 },
+      //   variant: "elevation",
+      // }}
       >
         <CardContent sx={{ py: 0.3, px: 1.2, "&:last-child": { pb: 0.3 } }}>
           <BoxRelative>
@@ -187,8 +197,8 @@ const EntryContent = (props: EntryContentProps) => {
 
   return (
     <>
-      <Box aria-label="otp-code" display="flex">
-        <CardActionArea onClick={handleCopyCode}>
+      <Box aria-label="otp-code" display="flex" sx={{ minHeight: 31 }}>
+        <CardActionArea onClick={handleCopyCode} sx={{ borderRadius: 2 }}>
           <MuiTooltip
             TransitionComponent={Fade}
             TransitionProps={{ timeout: 600 }}
@@ -210,8 +220,8 @@ const EntryContent = (props: EntryContentProps) => {
                     : (theme) => (isDark(theme) ? theme.palette.primary.contrastText : theme.palette.primary.main),
                 fontWeight: "bold",
                 fontSize: isVisibleCode ? "1.9rem" : "3rem",
-                letterSpacing: isVisibleCode ? 4 : 4.5,
-                lineHeight: isVisibleCode ? 1 : 0.63,
+                letterSpacing: 4,
+                lineHeight: isVisibleCode ? 1 : 0.6,
               }}
             >
               {isVisibleCode ? entry.code : "••••••"}
@@ -220,7 +230,7 @@ const EntryContent = (props: EntryContentProps) => {
         </CardActionArea>
         <Box sx={{ minWidth: "100%" }} />
       </Box>
-      <BoxRelative mb={0.3}>
+      <BoxRelative>
         <Box aria-label="account" display="flex" maxWidth="80%">
           <Typography noWrap sx={{ fontSize: 14 }} color="text.secondary">
             {entry.account || <span>&nbsp;</span>}
