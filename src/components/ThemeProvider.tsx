@@ -3,7 +3,7 @@ import { CssBaseline } from "@mui/material";
 import { esES } from "@mui/material/locale";
 import { createTheme, StyledEngineProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import { useCallback } from "react";
 
 export function theme() {

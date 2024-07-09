@@ -4,7 +4,7 @@ import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { t } from "@src/chrome/i18n";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import React from "react";
 
 import Tooltip from "../Tooltip";

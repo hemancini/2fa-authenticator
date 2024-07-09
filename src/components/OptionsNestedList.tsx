@@ -15,7 +15,7 @@ import { useTheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import { useState } from "react";
 
 export default function OptionsNestedList() {

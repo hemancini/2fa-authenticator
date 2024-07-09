@@ -18,7 +18,7 @@ import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
 import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/otp";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 import Tooltip from "./Tooltip";

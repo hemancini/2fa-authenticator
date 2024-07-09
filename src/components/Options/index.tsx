@@ -17,7 +17,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import BackupDialog, { useBackupStore } from "@src/components/Options/Backup";
 import { syncTimeWithGoogle } from "@src/models/options";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 
 import packageJson from "../../../package.json";
 

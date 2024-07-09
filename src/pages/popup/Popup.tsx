@@ -9,7 +9,7 @@ import Entries from "@routes/Entries";
 import EntriesEdit from "@routes/EntriesEdit";
 import { t } from "@src/chrome/i18n";
 import Options from "@src/routes/Options";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
 import { Redirect, Route, Router, Switch } from "wouter";
 import makeMatcher from "wouter/matcher";

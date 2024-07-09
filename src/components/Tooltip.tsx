@@ -1,5 +1,5 @@
 import MuiTooltip, { TooltipProps } from "@mui/material/Tooltip";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 
 export default function Tooltip(props: TooltipProps & { children: JSX.Element }) {
   const { title, children } = props;

@@ -13,7 +13,7 @@ import MenuList from "@mui/material/MenuList";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useContext, useState } from "react";
 import { useLocation } from "wouter";
 
