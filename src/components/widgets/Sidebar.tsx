@@ -1,3 +1,7 @@
+import NewVersion from "@components/NewVersion";
+// import OptionsNestedList from "@components/OptionsNestedList";
+import ThemeModeSelect from "@components/ThemeMode";
+import ToolbarOffset from "@components/ToolbarOffset";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
@@ -12,10 +16,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import React from "react";
 import { Link, useRoute } from "wouter";
-
-// import OptionsNestedList from "./OptionsNestedList";
-import ThemeModeSelect from "../ThemeMode";
-import ToolbarOffset from "../ToolbarOffset";
 
 const anchor = "left";
 const drawerWidth = 175;
@@ -56,7 +56,7 @@ const ListItemButtonRoute = ({
   );
 };
 
-export default function DrawerMenu({
+export default function Siderbar({
   drawerOpen,
   setDrawerOpen,
 }: {
@@ -108,6 +108,8 @@ export default function DrawerMenu({
         })}
         {/* <OptionsNestedList /> */}
       </List>
+      <NewVersion />
+      <Divider />
       <ThemeModeSelect />
     </Drawer>
   );

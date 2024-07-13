@@ -2,10 +2,11 @@ import "@pages/popup/Popup.css";
 
 import ToolbarOffset from "@components/ToolbarOffset";
 import AppBar from "@components/widgets/AppBar";
-import DrawerMenu from "@components/widgets/DrawerMenu";
+import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
+import Entries_v2 from "@routes/Entries-v2";
 import EntriesEdit from "@routes/EntriesEdit";
 import { t } from "@src/chrome/i18n";
 import Options from "@src/routes/Options";
@@ -34,7 +35,7 @@ const multipathMatcher = (patterns, path) => {
 };
 
 export default function Popup() {
-  const { xraysEnabled } = useOptionsStore();
+  const { xraysEnabled, isNewVersion } = useOptionsStore();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isSidePanel = window.location.href.includes(DEFAULT_SIDE_PANEL_URL);
@@ -57,14 +58,14 @@ export default function Popup() {
         {!isSidePanel && !isPopup && (
           <React.Fragment>
             <AppBar {...{ drawerOpen, setDrawerOpen }} />
-            <DrawerMenu {...{ drawerOpen, setDrawerOpen }} />
+            <Siderbar {...{ drawerOpen, setDrawerOpen }} />
           </React.Fragment>
         )}
         <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
           <Switch>
             <Route path={["/", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>
-              <Entries />
+              {isNewVersion ? <Entries_v2 /> : <Entries />}
             </Route>
             <Route path="/entries/edit">
               <EntriesEdit />

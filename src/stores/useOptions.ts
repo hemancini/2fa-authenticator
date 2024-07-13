@@ -17,6 +17,8 @@ interface OptionsStore {
   xraysEnabled: boolean;
   isVisibleCodes: boolean;
   setVisibleCodes: (isVisible: boolean) => void;
+  isNewVersion: boolean;
+  toggleNewVersion: () => void;
 }
 
 const chromePersistStorage: PersistStorage<OptionsStore> = {
@@ -52,6 +54,10 @@ export const useOptionsStore = create<OptionsStore>()(
       isVisibleCodes: false,
       setVisibleCodes: (isVisibleCodes) => {
         set({ isVisibleCodes });
+      },
+      isNewVersion: false,
+      toggleNewVersion: () => {
+        set((state) => ({ isNewVersion: !state.isNewVersion }));
       },
     }),
     {

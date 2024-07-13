@@ -1,23 +1,20 @@
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import { OTPEntry } from "@src/models/otp";
+import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
+import type { OTPEntry } from "@src/models/otp";
+import type { OTPEntry as OTPEntryV2 } from "@src/otp/type";
 import { QRCodeSVG } from "qrcode.react";
 import * as React from "react";
 
 export default function DialogQR({
+  entry,
   open,
   setOpen,
-  entry,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  entry: OTPEntry;
+  entry: OTPEntry | OTPEntryV2;
 }) {
   const defaultSize = 190;
-  const issuer = entry.issuer;
-  const secret = entry.secret;
-  const account = entry.account;
-
+  const { issuer = "", secret, account = "" } = entry || {};
   const authURL = `otpauth://totp/${account}?secret=${secret}&issuer=${issuer}`;
 
   const handleClose = () => {
@@ -32,7 +29,24 @@ export default function DialogQR({
         "& .MuiDialogContent-root": { p: 2, pb: 1.2, background: "#ffffff" },
       }}
     >
-      <DialogContent>{issuer && account && secret && <QRCodeSVG value={authURL} size={defaultSize} />}</DialogContent>
+      <Typography
+        title={issuer}
+        color="text.secondary"
+        sx={{
+          mx: 2,
+          mt: 0.5,
+          fontSize: 16,
+          maxWidth: 180,
+          textAlign: "center",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {issuer} - {account}
+      </Typography>
+      <Divider />
+      <DialogContent>{secret && <QRCodeSVG value={authURL} size={defaultSize} />}</DialogContent>
     </Dialog>
   );
 }

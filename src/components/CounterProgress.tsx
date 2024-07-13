@@ -1,9 +1,11 @@
 import Box from "@mui/material/Box";
 import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import { useOptionsStore } from "@src/stores/useOptions";
 
 export default function CounterProgress(props: CircularProgressProps & { value: number } & { count: number }) {
   const { count } = props;
+  const { isNewVersion } = useOptionsStore();
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
       <CircularProgress variant="determinate" thickness={5} {...props} />
@@ -20,10 +22,10 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
         }}
       >
         <Typography
-          component="div"
+          component="span"
           variant="caption"
           color="text.secondary"
-          sx={{ lineHeight: 1, fontSize: "0.70rem" }}
+          sx={{ lineHeight: 1, fontSize: isNewVersion ? "1rem" : "0.70rem" }}
         >
           {count}
         </Typography>

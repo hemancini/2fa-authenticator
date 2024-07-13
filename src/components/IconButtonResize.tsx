@@ -8,7 +8,7 @@ export default function IconButtonResize(
 ) {
   const { children, iconSize = 29, mr } = props;
   return (
-    <IconButton {...props} sx={{ height: iconSize, width: iconSize, mr }}>
+    <IconButton sx={{ height: iconSize, width: iconSize, mr }} {...props}>
       {children}
     </IconButton>
   );
