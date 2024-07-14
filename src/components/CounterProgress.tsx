@@ -25,7 +25,11 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
           component="span"
           variant="caption"
           color="text.secondary"
-          sx={{ lineHeight: 1, fontSize: isNewVersion ? "1rem" : "0.70rem" }}
+          sx={{
+            lineHeight: 1,
+            fontSize: isNewVersion ? "0.90rem" : "0.70rem",
+            fontWeight: isNewVersion ? "bold" : "normal",
+          }}
         >
           {count}
         </Typography>

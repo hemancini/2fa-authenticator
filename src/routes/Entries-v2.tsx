@@ -1,6 +1,7 @@
 import EntryCard from "@components/EntryCard";
 import NotEntriesFound from "@components/NotEntriesFound";
 import EntriesContext from "@src/contexts/Entries";
+import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { EntryState, OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import { Reorder } from "framer-motion";
@@ -11,6 +12,7 @@ export default function Entries() {
   const { entries, framerReorder } = useEntries() as EntryState;
   const entriesList = Array.from(entries.values());
   const hasEntries = entries.size > 0;
+  const [isEditing] = useUrlHashState("#/edit");
 
   useEffect(() => {
     if (entries.size === 0) {
@@ -26,10 +28,10 @@ export default function Entries() {
       axis="y"
       values={entriesList}
       onReorder={framerReorder}
-      style={{ paddingTop: 15, display: "flex", flexDirection: "column", gap: 13 }}
+      style={{ paddingTop: 15, display: "flex", flexDirection: "column", gap: 12 }}
     >
       {entriesList?.map((entry) => (
-        <Reorder.Item key={entry.hash} value={entry} id={entry.hash}>
+        <Reorder.Item key={entry.hash} value={entry} id={entry.hash} dragListener={isEditing}>
           <EntryCard entry={entry} />
         </Reorder.Item>
       ))}

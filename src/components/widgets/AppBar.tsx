@@ -14,12 +14,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/Entries";
+import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useOptionsStore } from "@src/stores/useOptions";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
 import DialogCaptureQR from "../DialogCaptureQR";
-import AppbarMenu from "./AppbarMenu";
+import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
 
@@ -51,6 +53,7 @@ export default function ButtonAppBar({
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
   const { modal } = useModalStore();
   const { actionState } = useActionStore();
+  const [isEditing] = useUrlHashState("#/edit");
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
@@ -62,7 +65,7 @@ export default function ButtonAppBar({
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
-            {actionState["entries-edit-state"] ? (
+            {isEditing || actionState["entries-edit-state"] ? (
               <CancelButton />
             ) : (
               <IconButton
@@ -91,7 +94,7 @@ export default function ButtonAppBar({
             {/* {isDev && " dev"} */}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
-            {actionState["entries-edit-state"] ? (
+            {isEditing || actionState["entries-edit-state"] ? (
               <SaveButton />
             ) : (
               <Box minWidth={30} sx={{ display: "flex" }}>
@@ -105,14 +108,14 @@ export default function ButtonAppBar({
                     <QrCodeScannerIcon sx={defaultIconSize} />
                   </Tooltip>
                 </IconButton>
-                <AppbarMenu />
+                <MoreOptions />
               </Box>
             )}
           </Box>
         </Toolbar>
       </AppBar>
       <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
+      {(isEditing || actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );
 }
@@ -120,6 +123,8 @@ export default function ButtonAppBar({
 const SaveButton = (): JSX.Element => {
   const { toggleAction } = useActionStore();
   const { handleEntriesEdited } = useContext(EntriesContext);
+  const { isNewVersion } = useOptionsStore();
+  const [_, toggleEditing] = useUrlHashState("#/edit");
   return (
     <IconButton
       size="small"
@@ -129,7 +134,11 @@ const SaveButton = (): JSX.Element => {
       href="/"
       onClick={() => {
         handleEntriesEdited();
-        toggleAction("entries-edit-state");
+        if (isNewVersion) {
+          toggleEditing();
+        } else {
+          toggleAction("entries-edit-state");
+        }
       }}
     >
       <Tooltip title={t("save")} disableInteractive>
@@ -142,14 +151,20 @@ const SaveButton = (): JSX.Element => {
 const CancelButton = (): JSX.Element => {
   const { toggleAction } = useActionStore();
   const { handleEntriesUpdate } = useContext(EntriesContext);
+  const { isNewVersion } = useOptionsStore();
+  const [, toggleEditing] = useUrlHashState("#/edit");
   return (
     <IconButton
       size="small"
       color="inherit"
       aria-label={t("cancel")}
       onClick={() => {
-        toggleAction("entries-edit-state");
         handleEntriesUpdate();
+        if (isNewVersion) {
+          toggleEditing();
+        } else {
+          toggleAction("entries-edit-state");
+        }
       }}
       LinkComponent={Link}
       href="/"

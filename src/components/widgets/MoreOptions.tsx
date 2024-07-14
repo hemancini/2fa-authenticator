@@ -12,16 +12,18 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/Entries";
+import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useContext, useState } from "react";
 import { useLocation } from "wouter";
 
-export default function BasicMenu() {
+export default function MoreOptions() {
   const [location, setLocation] = useLocation();
+  const [, toggleEditing] = useUrlHashState("#/edit");
   const { toggleModal } = useModalStore();
   const { toggleAction } = useActionStore();
-  const { isVisibleCodes, setVisibleCodes } = useOptionsStore();
+  const { isVisibleCodes, setVisibleCodes, isNewVersion } = useOptionsStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { entries } = useContext(EntriesContext);
   const emptyEntries = entries?.length === 0;
@@ -64,8 +66,12 @@ export default function BasicMenu() {
               dense={true}
               disabled={emptyEntries}
               onClick={() => {
-                toggleAction("entries-edit-state");
-                setLocation("/entries/edit");
+                if (isNewVersion) {
+                  toggleEditing();
+                } else {
+                  toggleAction("entries-edit-state");
+                  setLocation("/entries/edit");
+                }
                 handleClose();
               }}
               sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}

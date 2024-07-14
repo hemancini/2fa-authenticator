@@ -79,7 +79,7 @@ export default function Siderbar({
       sx={{ width: (drawerOpen || isUpSm) && drawerWidth }}
     >
       <ToolbarOffset />
-      <List>
+      <List disablePadding sx={{ pt: 1 }}>
         <Divider />
         {routes.map((route, index) => {
           return (

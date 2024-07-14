@@ -40,7 +40,7 @@ export default function CountDownCircle({ entry: { hash, period } }: { entry: OT
 
   return (
     <CounterProgress
-      size={30}
+      size={28}
       count={remainingTime}
       value={(remainingTime * 100) / period}
       sx={{
