@@ -1,3 +1,4 @@
+import Tooltip from "@components/Tooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -36,7 +37,7 @@ const BootstrapDialog = styled(MuiDialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props: DialogTitleProps) {
+function CustomDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props;
   return (
     <>
@@ -44,18 +45,20 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
         <Typography noWrap variant="body2" fontWeight="bold" color="text.primary" {...other}>
           {children}
           {onClose && (
-            <IconButton
-              aria-label="close"
-              onClick={onClose}
-              sx={{
-                position: "absolute",
-                top: { xs: 0 },
-                right: { xs: 0 },
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <CloseIcon sx={{ fontSize: { xs: 18, sm: 24 } }} />
-            </IconButton>
+            <Tooltip title={t("close")} disableInteractive>
+              <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={{
+                  position: "absolute",
+                  top: { xs: 0 },
+                  right: { xs: 0 },
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon sx={{ fontSize: { xs: 18, sm: 24 } }} />
+              </IconButton>
+            </Tooltip>
           )}
         </Typography>
       </Box>
@@ -85,7 +88,7 @@ export default function Dialog(props: EditAccountProps) {
       {iconButton && iconButtonOnClick}
       <BootstrapDialog onClose={handleClose} open={isOpen}>
         {dialogTitleEnabled && (
-          <BootstrapDialogTitle onClose={handleClose}>{title ? title : "Dialog title"}</BootstrapDialogTitle>
+          <CustomDialogTitle onClose={handleClose}>{title ? title : "Dialog title"}</CustomDialogTitle>
         )}
         <DialogContent>{content ? content : <Typography>Bootstrap dialog content</Typography>}</DialogContent>
         {dialogActionsEnabled && (

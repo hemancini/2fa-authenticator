@@ -20,6 +20,9 @@
   "save": {
     "message": "Guardar"
   },
+  "close": {
+    "message": "Cerrar"
+  },
   "editEntries": {
     "message": "Editar cuentas"
   },

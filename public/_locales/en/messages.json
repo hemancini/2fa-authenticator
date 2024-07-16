@@ -20,6 +20,9 @@
   "save": {
     "message": "Save"
   },
+  "close": {
+    "message": "Close"
+  },
   "editEntries": {
     "message": "Edit entries"
   },

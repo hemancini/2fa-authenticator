@@ -1,3 +1,4 @@
+import CustomDialog from "@components/CustomDialog";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -9,8 +10,6 @@ import { t } from "@src/chrome/i18n";
 import { decrypData, encrypData } from "@src/models/encryption";
 import { OTPEntry } from "@src/models/otp";
 import React, { useState } from "react";
-
-import BootstrapDialog from "../BootstrapDialog";
 
 export default function EditAccount({
   entry,
@@ -54,7 +53,7 @@ export default function EditAccount({
   };
 
   return (
-    <BootstrapDialog
+    <CustomDialog
       title={entry?.issuer || entry?.account}
       isOpen={isOpen}
       handleOpen={handleOpen}

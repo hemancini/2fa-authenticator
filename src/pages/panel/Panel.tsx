@@ -1,5 +1,7 @@
 import "@pages/panel/Panel.css";
 
+import type { EntryState, OTPEntry } from "@src/otp/type";
+import { useEntries } from "@src/stores/useEntries";
 import React, { useEffect } from "react";
 
 const getOptionsStorage = async () => {
@@ -14,6 +16,8 @@ const setOptionsStorage = async (data: any) => {
 };
 
 const Debug = () => {
+  const { entries: entries_v2 } = useEntries() as EntryState;
+
   const [entries, setEntries] = React.useState<any>();
   const [options, setOptions] = React.useState<any>();
   const [xraysEnabled, setXraysEnabled] = React.useState<boolean>(false);
@@ -52,6 +56,8 @@ const Debug = () => {
           X-rays
         </label>
       </div>
+      <p>entries v2</p>
+      <pre>{JSON.stringify(Array.from(entries_v2)?.flat(Infinity), null, 4)}</pre>
       <p>entries</p>
       <pre>{JSON.stringify(entries, null, 4)}</pre>
       <p>options</p>

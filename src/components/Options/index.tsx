@@ -1,4 +1,4 @@
-import CustonSwitch from "@components/CustonSwitch";
+import CustomSwitch from "@components/CustomSwitch";
 import Tooltip from "@components/Tooltip";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
@@ -87,7 +87,7 @@ export default function Options() {
                     width: "93%",
                   }}
                 >
-                  <CustonSwitch checked={tooltipEnabled} />
+                  <CustomSwitch checked={tooltipEnabled} />
                 </div>
               </ListItemButton>
             </Tooltip>
@@ -108,7 +108,7 @@ export default function Options() {
                     width: "93%",
                   }}
                 >
-                  <CustonSwitch checked={bypassEnabled} />
+                  <CustomSwitch checked={bypassEnabled} />
                 </div>
               </ListItemButton>
             </Tooltip>
@@ -129,7 +129,7 @@ export default function Options() {
                     width: "93%",
                   }}
                 >
-                  <CustonSwitch checked={autofillEnabled} />
+                  <CustomSwitch checked={autofillEnabled} />
                 </div>
               </ListItemButton>
             </Tooltip>

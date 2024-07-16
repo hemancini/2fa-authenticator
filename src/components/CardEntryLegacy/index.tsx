@@ -1,4 +1,4 @@
-import EditAccount from "@components/account/Edit";
+import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import CounterProgress from "@components/CardEntry/CounterProgress";
 import ShowQR from "@components/dialogs/ShowQR";
 import IconButtonResize from "@components/IconButtonResize";
@@ -166,7 +166,7 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
         </CardContent>
       </Card>
       <ShowQR entry={entry} open={showQR} setOpen={setShowQR} />
-      <EditAccount
+      <AccountBypassLegacy
         entry={entry}
         isOpen={showAccount}
         setOpen={setShowAccount}

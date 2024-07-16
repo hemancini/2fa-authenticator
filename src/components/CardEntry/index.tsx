@@ -1,3 +1,4 @@
+import AccountBypassDialog from "@components/dialogs/AccountBypass";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
 import ShowQR from "@components/dialogs/ShowQR";
 import Tooltip from "@components/Tooltip";
@@ -17,9 +18,9 @@ import OtpCode from "./OtpCode";
 import CardUtils from "./Utils";
 
 export default function EntryCard({ entry }: { entry: OTPEntry }) {
-  const { bypassEnabled, isVisibleCodes } = useOptionsStore();
+  const { isVisibleCodes } = useOptionsStore();
   const [isEditing] = useUrlHashState("#/edit");
-  const { hash, issuer, account } = entry;
+  const { issuer, account } = entry;
 
   const [showQR, setShowQR] = useState(false);
   const [showUtils, setShowUtils] = useState(false);
@@ -57,7 +58,7 @@ export default function EntryCard({ entry }: { entry: OTPEntry }) {
       >
         <CustomTypography>{issuer}</CustomTypography>
         {!isEditing && (
-          <CardUtils {...{ showQR, setShowQR, showCardUtils: showUtils, isVisibleCode, setVisibleCode }} />
+          <CardUtils {...{ entry, showQR, setShowQR, showCardUtils: showUtils, isVisibleCode, setVisibleCode }} />
         )}
         <Box sx={{ display: "flex", gap: 4 }}>
           <OtpCode entry={entry} isVisible={!isEditing && isVisibleCode} />
@@ -68,6 +69,7 @@ export default function EntryCard({ entry }: { entry: OTPEntry }) {
           {!isEditing && <CountDownCircleTimer entry={entry} />}
         </Box>
       </Card>
+      <AccountBypassDialog entry={entry} />
       {isEditing && (
         <ConfirmRemoveEntry
           entry={entry}

@@ -15,6 +15,8 @@ interface Entry {
   algorithm: OTPAlgorithm;
   encrypted?: boolean;
   site?: string;
+  user?: string;
+  pass?: string;
 }
 
 interface OTPEntry extends Entry {
