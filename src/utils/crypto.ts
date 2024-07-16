@@ -21,3 +21,11 @@ export function decrypt(value: string) {
     return "";
   }
 }
+
+export const encrypData = (data: string) =>
+  data !== "" ? CryptoJS.AES.encrypt(data, import.meta.env.VITE_APP_KEY || DEFAULT_APP_KEY).toString() : data;
+
+export const decrypData = (data: string) =>
+  data !== ""
+    ? CryptoJS.AES.decrypt(data, import.meta.env.VITE_APP_KEY || DEFAULT_APP_KEY).toString(CryptoJS.enc.Utf8)
+    : data;

@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
 
-import { OTPEntry } from "./otp";
-import { EntryStorage } from "./storage";
+import type { OTPEntry } from "./legacy/otp";
+import { EntryStorage } from "./legacy/storage";
 
 type BackupData = {
   data: string;

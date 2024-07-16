@@ -7,8 +7,8 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import { t } from "@src/chrome/i18n";
-import { decrypData, encrypData } from "@src/models/encryption";
-import { OTPEntry } from "@src/models/otp";
+import { OTPEntry } from "@src/models/legacy/otp";
+import { decrypData, encrypData } from "@src/utils/crypto";
 import React, { useState } from "react";
 
 export default function EditAccount({

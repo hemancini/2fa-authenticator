@@ -1,5 +1,5 @@
-import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import CounterProgress from "@components/CardEntry/CounterProgress";
+import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import ShowQR from "@components/dialogs/ShowQR";
 import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
@@ -15,9 +15,9 @@ import MuiTooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
+import EntriesContext from "@src/contexts/legacy/Entries";
 import useCounter from "@src/hooks/useCounter";
-import EntriesContext from "@src/legacy/contexts/Entries";
-import { OTPEntry } from "@src/models/otp";
+import { OTPEntry } from "@src/models/legacy/otp";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 

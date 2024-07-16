@@ -1,5 +1,5 @@
 import CardEntryEdit from "@components/CardEntryLegacy/CardEntryEdit";
-import EntriesContext from "@src/legacy/contexts/Entries";
+import EntriesContext from "@src/contexts/legacy/Entries";
 import { Reorder } from "framer-motion";
 import { useContext, useState } from "react";
 

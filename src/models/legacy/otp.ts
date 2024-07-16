@@ -1,4 +1,4 @@
-import { Encryption } from "./encryption";
+import { Encryption } from "./crypto";
 import { KeyUtilities } from "./keyUtilities";
 import { EntryStorage } from "./storage";
 

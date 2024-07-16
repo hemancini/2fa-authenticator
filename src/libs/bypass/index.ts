@@ -1,6 +1,6 @@
-import { decrypData } from "@src/models/encryption";
-import { OTPEntry } from "@src/models/otp";
-import { EntryStorage } from "@src/models/storage";
+import type { OTPEntry } from "@src/models/legacy/otp";
+import { EntryStorage } from "@src/models/legacy/storage";
+import { decrypData } from "@src/utils/crypto";
 
 chrome.runtime.onMessage.addListener(async (request) => {
   if (request.message === "bypass") {

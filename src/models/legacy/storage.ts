@@ -1,4 +1,4 @@
-import { Encryption } from "./encryption";
+import { Encryption } from "./crypto";
 import { OTPAlgorithm, OTPEntry, OTPType } from "./otp";
 
 let LocalStorage: {

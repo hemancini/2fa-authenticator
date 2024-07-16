@@ -2,7 +2,7 @@ import Tooltip from "@components/Tooltip";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Button, Dialog, DialogActions, DialogContent, Divider, IconButton, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry as OTPEntryLegacy } from "@src/models/otp";
+import type { OTPEntry as OTPEntryLegacy } from "@src/models/legacy/otp";
 import type { OTPEntry } from "@src/otp/type";
 
 type ConfirmRemoveEntryProps = {

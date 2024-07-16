@@ -1,7 +1,7 @@
 import scanGIF from "@assets/img/scan.gif";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import { OTPEntry } from "@src/models/otp";
+import { OTPEntry } from "@src/models/legacy/otp";
 import jsQR from "jsqr";
 
 if (!document.getElementById("__ga_grayLayout__")) {

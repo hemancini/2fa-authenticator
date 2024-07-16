@@ -2,7 +2,7 @@ import "@pages/popup/index.css";
 
 import ThemeProvider from "@components/ThemeProvider";
 import Popup from "@pages/popup/Popup";
-import { EntriesProviderLegacy } from "@src/legacy/contexts/Entries";
+import { EntriesProviderLegacy } from "@src/contexts/legacy/Entries";
 import { createRoot } from "react-dom/client";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 

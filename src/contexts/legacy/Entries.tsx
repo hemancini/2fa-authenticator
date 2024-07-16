@@ -1,5 +1,5 @@
-import { OTPEntry } from "@src/models/otp";
-import { EntryStorage } from "@src/models/storage";
+import { OTPEntry } from "@src/models/legacy/otp";
+import { EntryStorage } from "@src/models/legacy/storage";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 const Context = createContext({

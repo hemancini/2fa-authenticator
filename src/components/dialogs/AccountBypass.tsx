@@ -4,10 +4,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Box, Button, FormControl, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { decrypData, encrypData } from "@src/models/encryption";
 import type { EntryState, OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import { useOptionsStore } from "@src/stores/useOptions";
+import { decrypData, encrypData } from "@src/utils/crypto";
 
 const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;

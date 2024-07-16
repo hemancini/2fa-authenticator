@@ -63,6 +63,9 @@ importers:
       '@types/chrome':
         specifier: 0.0.239
         version: 0.0.239
+      '@types/crypto-js':
+        specifier: ^4.2.2
+        version: 4.2.2
       '@types/jest':
         specifier: 29.0.3
         version: 29.0.3
@@ -762,6 +765,9 @@ packages:
 
   '@types/chrome@0.0.239':
     resolution: {integrity: sha512-s/v0pAdpjqfYdwYPDIRiIQDyXfaLi5u+OyHW2NexhqoTm/KZVqKqS1isK11DVu/iUrAUULtbfKtzLKt3+kHgXQ==}
+
+  '@types/crypto-js@4.2.2':
+    resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
 
   '@types/eslint-scope@3.7.4':
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
@@ -4034,6 +4040,8 @@ snapshots:
     dependencies:
       '@types/filesystem': 0.0.32
       '@types/har-format': 1.2.11
+
+  '@types/crypto-js@4.2.2': {}
 
   '@types/eslint-scope@3.7.4':
     dependencies:

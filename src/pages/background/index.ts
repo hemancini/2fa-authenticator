@@ -1,6 +1,6 @@
 import { sendErrorMessageToClient, sendMessageToClient } from "@src/chrome/message";
-import { Encryption } from "@src/models/encryption";
-import { EntryStorage } from "@src/models/storage";
+import { Encryption } from "@src/models/legacy/crypto";
+import { EntryStorage } from "@src/models/legacy/storage";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
 import manifest from "../../../manifest";

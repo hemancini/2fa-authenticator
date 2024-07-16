@@ -24,8 +24,8 @@ export async function syncTimeWithGoogle() {
   const date = req.headers.get("date");
   if (!date) throw new Error("updateFailure");
 
-  const serverTime = new Date(date).getTime();
   const clientTime = new Date().getTime();
+  const serverTime = new Date(date).getTime();
   const offset = Math.round((serverTime - clientTime) / 1000);
 
   if (Math.abs(offset) <= 300) {
