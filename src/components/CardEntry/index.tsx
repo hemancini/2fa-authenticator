@@ -46,6 +46,7 @@ export default function EntryCard({ entry }: { entry: OTPEntry }) {
           px: 0.5,
           py: 0.5,
           display: "flex",
+          position: "relative",
           flexDirection: "column",
           transition: "all 0.3s ease",
           "&:hover": { filter: "brightness(0.96)" },

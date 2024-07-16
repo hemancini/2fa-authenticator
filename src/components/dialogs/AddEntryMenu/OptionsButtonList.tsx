@@ -1,12 +1,12 @@
+import { ImportBackupListItem } from "@components/Options/Backup";
+import UploadImage from "@components/UploadImage";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
-import UploadImage from "@src/components/UploadImage";
 import React, { useState } from "react";
 
-import { ImportBackupListItem } from "../Options/Backup";
 import AddQrButton from "./AddQrButton";
 
 interface AddOptionsProps {
