@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import jsQR from "jsqr";
 import { useContext, useState } from "react";
 

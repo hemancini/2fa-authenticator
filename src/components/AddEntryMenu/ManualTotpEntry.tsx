@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import { useContext, useState } from "react";
 
 export interface AddEntryProps {

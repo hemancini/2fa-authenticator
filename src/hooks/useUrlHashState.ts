@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 
+type UseUrlHashResp = [state: boolean, toggleState: () => void];
+
 interface UrlHashStateStore {
   hashState: Record<string, boolean>;
   setHashState: (hash: string, value: boolean) => void;
@@ -11,8 +13,6 @@ const useUrlHashStateStore = create<UrlHashStateStore>((set) => ({
   setHashState: (hash: string, value: boolean) =>
     set((state) => ({ hashState: { ...state.hashState, [hash]: value } })),
 }));
-
-type UseUrlHashResp = [state: boolean, toggleState: () => void];
 
 export default function useUrlHashState(hash: string): UseUrlHashResp {
   const { hashState, setHashState } = useUrlHashStateStore();

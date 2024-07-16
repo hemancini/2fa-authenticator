@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import { useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";

@@ -1,7 +1,7 @@
 import EntryCard from "@components/CardEntry";
 import NotEntriesFound from "@components/NotEntriesFound";
-import EntriesContext from "@src/contexts/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import type { EntryState, OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import { Reorder } from "framer-motion";

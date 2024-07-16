@@ -1,4 +1,4 @@
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import { useCallback, useContext, useEffect, useState } from "react";
 
 export default function useRefreshCodes(): void {

@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { ListItemIcon } from "@src/components/Options";
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import BackupData from "@src/models/backup";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect } from "react";

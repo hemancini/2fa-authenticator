@@ -1,7 +1,7 @@
 import CardEntryLegacy from "@components/CardEntryLegacy";
 import NotEntriesFound from "@components/NotEntriesFound";
-import EntriesContext from "@src/contexts/Entries";
 import useRefreshCodes from "@src/hooks/useRefreshCodes";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import { Reorder } from "framer-motion";
 import { useContext } from "react";
 

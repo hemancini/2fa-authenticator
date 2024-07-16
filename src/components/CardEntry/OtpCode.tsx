@@ -1,5 +1,6 @@
 import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
+import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { OTPEntry } from "@src/otp/type";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { useState } from "react";
 export default function OtpCode({ entry: { hash }, isVisible }: { entry: OTPEntry; isVisible: boolean }) {
   const { otpCodes, getOTPCode } = useOTPCodes();
   const [isToolpipCopyOpen, setToolpipCopyOpen] = useState(false);
+  const [isEditing] = useUrlHashState("#/edit");
 
   let optCode = otpCodes.get(hash)?.otpCode;
   if (!optCode) optCode = getOTPCode(hash);
@@ -20,7 +22,7 @@ export default function OtpCode({ entry: { hash }, isVisible }: { entry: OTPEntr
   };
 
   return (
-    <CardActionArea onClick={handleCopyCode} sx={{ borderRadius: 2, width: "auto" }}>
+    <CardActionArea disabled={isEditing} onClick={handleCopyCode} sx={{ borderRadius: 2, width: "auto" }}>
       <MuiTooltip
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 600 }}

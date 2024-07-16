@@ -12,7 +12,7 @@ const Context = createContext({
   handleEntriesUpdate: () => void 0,
 });
 
-export function EntriesProvider({ children }: { children: React.ReactNode }) {
+export function EntriesProviderLegacy({ children }: { children: React.ReactNode }) {
   const [entriesEdited, setEntriesEdited] = useState<OTPEntry[]>([]);
   const [entries, setEntries] = useState<OTPEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);

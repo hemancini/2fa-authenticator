@@ -13,7 +13,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
