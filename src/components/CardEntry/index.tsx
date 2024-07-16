@@ -17,7 +17,7 @@ import CountDownCircleTimer from "./CountdownCircleTimer";
 import OtpCode from "./OtpCode";
 import CardUtils from "./Utils";
 
-export default function EntryCard({ entry }: { entry: OTPEntry }) {
+export default function CardEntry({ entry }: { entry: OTPEntry }) {
   const { isVisibleCodes } = useOptionsStore();
   const [isEditing] = useUrlHashState("#/edit");
   const { issuer, account } = entry;

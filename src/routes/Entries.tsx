@@ -44,12 +44,22 @@ export default function Entries() {
 const migrateV1ToV2 = (entries: any[]) => {
   if (entries.length === 0) return new Map<string, OTPEntry>();
   return new Map(
-    [...entries.values()].map((entry) => [
-      entry.hash,
+    [...entries.values()].map((entry) => {
       {
-        ...entry,
-        algorithm: entry.algorithm === 1 ? "SHA1" : "SHA256",
-      },
-    ])
+        delete entry.code;
+        delete entry.index;
+        delete entry.pinned;
+        delete entry.counter;
+        delete entry.encSecret;
+        return [
+          entry.hash,
+          {
+            ...entry,
+            type: entry.type === 1 ? "totp" : "hotp",
+            algorithm: entry.algorithm === 1 ? "SHA1" : "SHA256",
+          },
+        ];
+      }
+    })
   );
 };
