@@ -20,7 +20,7 @@ import { useOptionsStore } from "@src/stores/useOptions";
 import { useContext, useState } from "react";
 import { Link } from "wouter";
 
-import DialogCaptureQR from "../DialogCaptureQR";
+import CaptureQR from "../dialogs/CaptureQR";
 import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
@@ -114,7 +114,7 @@ export default function ButtonAppBar({
           </Box>
         </Toolbar>
       </AppBar>
-      <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
+      <CaptureQR open={captureQRError} setOpen={setCaptureQRError} />
       {(isEditing || actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );

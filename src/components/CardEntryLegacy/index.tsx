@@ -1,6 +1,6 @@
-import CounterProgress from "@components/CounterProgress";
-import DialogQR from "@components/DialogQR";
-import EditAccount from "@components/EditAccount";
+import EditAccount from "@components/account/Edit";
+import CounterProgress from "@components/CardEntry/CounterProgress";
+import DialogQR from "@components/dialogs/DialogQR";
 import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -21,7 +21,7 @@ import { OTPEntry } from "@src/models/otp";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
-import Tooltip from "./Tooltip";
+import Tooltip from "../Tooltip";
 
 type EntryContentProps = {
   entry: OTPEntry;
@@ -33,15 +33,6 @@ type EntryContentProps = {
 const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;
 const defaultEyesIconSize = 20;
-
-const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
-  const { children } = props;
-  return (
-    <Box py={0.2} pl={0.2} display="flex" position="relative" {...props}>
-      {children}
-    </Box>
-  );
-};
 
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
   const { bypassEnabled, isVisibleCodes } = useOptionsStore();
@@ -252,5 +243,14 @@ const EntryContent = (props: EntryContentProps) => {
         </Box>
       </BoxRelative>
     </>
+  );
+};
+
+const BoxRelative = (props: BoxProps & { children: ReactNode }) => {
+  const { children } = props;
+  return (
+    <Box py={0.2} pl={0.2} display="flex" position="relative" {...props}>
+      {children}
+    </Box>
   );
 };

@@ -11,7 +11,7 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
       <CircularProgress variant="determinate" thickness={5} {...props} />
       <Box
         sx={{
-          top: 0,
+          top: 0.25,
           left: 0,
           right: 0,
           bottom: 0,

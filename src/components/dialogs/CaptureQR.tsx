@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { t } from "@src/chrome/i18n";
 import * as React from "react";
 
-export default function DialogCaptureQR({
+export default function CaptureQR({
   open,
   setOpen,
 }: {

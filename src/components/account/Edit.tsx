@@ -10,7 +10,7 @@ import { decrypData, encrypData } from "@src/models/encryption";
 import { OTPEntry } from "@src/models/otp";
 import React, { useState } from "react";
 
-import BootstrapDialog from "./BootstrapDialog";
+import BootstrapDialog from "../BootstrapDialog";
 
 export default function EditAccount({
   entry,

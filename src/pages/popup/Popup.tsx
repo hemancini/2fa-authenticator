@@ -6,8 +6,8 @@ import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Entries from "@routes/Entries";
-import Entries_v2 from "@routes/Entries-v2";
-import EntriesEdit from "@routes/EntriesEdit";
+import EntriesLegacy from "@routes/EntriesLegacy";
+import EntriesLegacyEdit from "@routes/EntriesLegacyEdit";
 import { t } from "@src/chrome/i18n";
 import Options from "@src/routes/Options";
 import { useOptionsStore } from "@src/stores/useOptions";
@@ -65,10 +65,10 @@ export default function Popup() {
           {!isSidePanel && !isPopup && <ToolbarOffset />}
           <Switch>
             <Route path={["/", "/edit", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>
-              {isNewVersion ? <Entries_v2 /> : <Entries />}
+              {isNewVersion ? <Entries /> : <EntriesLegacy />}
             </Route>
             <Route path="/entries/edit">
-              <EntriesEdit />
+              <EntriesLegacyEdit />
             </Route>
             <Route path="/options">
               <Options />

@@ -1,4 +1,4 @@
-import CounterProgress from "@components/CounterProgress";
+import CounterProgress from "@components/CardEntry/CounterProgress";
 import { red } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import type { OTPEntry } from "@src/otp/type";
