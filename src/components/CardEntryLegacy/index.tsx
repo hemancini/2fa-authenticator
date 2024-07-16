@@ -1,6 +1,6 @@
 import EditAccount from "@components/account/Edit";
 import CounterProgress from "@components/CardEntry/CounterProgress";
-import DialogQR from "@components/dialogs/DialogQR";
+import ShowQR from "@components/dialogs/ShowQR";
 import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -34,7 +34,7 @@ const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;
 const defaultEyesIconSize = 20;
 
-export default function CardEntry({ entry }: { entry: OTPEntry }) {
+export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
   const { bypassEnabled, isVisibleCodes } = useOptionsStore();
   const [isVisible, setVisible] = useState(isVisibleCodes);
 
@@ -165,7 +165,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           />
         </CardContent>
       </Card>
-      <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />
+      <ShowQR entry={entry} open={showQR} setOpen={setShowQR} />
       <EditAccount
         entry={entry}
         isOpen={showAccount}

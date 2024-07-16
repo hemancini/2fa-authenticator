@@ -1,9 +1,12 @@
-import DialogQR from "@components/dialogs/DialogQR";
+import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
+import ShowQR from "@components/dialogs/ShowQR";
+import Tooltip from "@components/Tooltip";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { Box, Card, InputBase } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
+import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { OTPEntry } from "@src/otp/type";
 import { useOptionsStore } from "@src/stores/useOptions";
@@ -21,24 +24,32 @@ export default function EntryCard({ entry }: { entry: OTPEntry }) {
   const [showQR, setShowQR] = useState(false);
   const [showUtils, setShowUtils] = useState(false);
   const [isVisibleCode, setVisibleCode] = useState(isVisibleCodes);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
     setVisibleCode(isVisibleCodes);
   }, [isVisibleCodes]);
 
+  const handleRemoveEntry = (hash: string) => {
+    // const index = entriesEdited.findIndex((entry) => entry.hash === hash);
+    // entriesEdited.splice(index, 1);
+    // setEntriesEdited(entriesEdited);
+    // setIsConfirmOpen(false);
+    // handleRender((prevState) => !prevState);
+  };
+
   return (
-    <>
+    <Box sx={{ position: "relative" }}>
       <Card
         variant="outlined"
         sx={{
           px: 0.5,
           py: 0.5,
-          // borderRadius: 0,
-          position: "relative",
-          transition: "all 0.3s ease",
-          "&:hover": { filter: "brightness(0.96)" },
           display: "flex",
           flexDirection: "column",
+          transition: "all 0.3s ease",
+          "&:hover": { filter: "brightness(0.96)" },
+          // borderRadius: 0,
         }}
         onMouseOver={() => setShowUtils(true)}
         onMouseOut={() => setShowUtils(false)}
@@ -56,8 +67,16 @@ export default function EntryCard({ entry }: { entry: OTPEntry }) {
           {!isEditing && <CountDownCircleTimer entry={entry} />}
         </Box>
       </Card>
-      <DialogQR entry={entry} open={showQR} setOpen={setShowQR} />
-    </>
+      {isEditing && (
+        <ConfirmRemoveEntry
+          entry={entry}
+          isConfirmOpen={isConfirmOpen}
+          setIsConfirmOpen={setIsConfirmOpen}
+          handleRemoveEntry={handleRemoveEntry}
+        />
+      )}
+      <ShowQR entry={entry} open={showQR} setOpen={setShowQR} />
+    </Box>
   );
 }
 
@@ -116,7 +135,9 @@ const DragButton = () => {
       }}
     >
       <IconButton size="large" sx={{ position: "absolute" }}>
-        <DragHandleIcon sx={{ fontSize: 40 }} />
+        <Tooltip title={t("dragEntry")} disableInteractive disableFocusListener>
+          <DragHandleIcon sx={{ fontSize: 40 }} />
+        </Tooltip>
       </IconButton>
     </Box>
   );

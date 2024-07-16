@@ -117,30 +117,12 @@ export default function CardEntryEdit({
           </Box>
         </Card>
         {!entry.pinned && (
-          <>
-            <IconButton
-              aria-label="remove entry"
-              onClick={() => setIsConfirmOpen(true)}
-              sx={{
-                color: "#e57373",
-                width: 22,
-                height: 22,
-                position: "absolute",
-                right: -9,
-                top: -9,
-              }}
-            >
-              <Tooltip title={t("removeEntry")} disableInteractive>
-                <RemoveCircleIcon sx={{ fontSize: 15 }} />
-              </Tooltip>
-            </IconButton>
-            <ConfirmRemoveEntry
-              entry={entry}
-              isConfirmOpen={isConfirmOpen}
-              setIsConfirmOpen={setIsConfirmOpen}
-              handleRemoveEntry={handleRemoveEntry}
-            />
-          </>
+          <ConfirmRemoveEntry
+            entry={entry}
+            isConfirmOpen={isConfirmOpen}
+            setIsConfirmOpen={setIsConfirmOpen}
+            handleRemoveEntry={handleRemoveEntry}
+          />
         )}
       </Box>
     </Reorder.Item>

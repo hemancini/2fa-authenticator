@@ -1,17 +1,17 @@
 import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
-import type { OTPEntry } from "@src/models/otp";
-import type { OTPEntry as OTPEntryV2 } from "@src/otp/type";
+import type { OTPEntry as OTPEntryLegacy } from "@src/models/otp";
+import type { OTPEntry } from "@src/otp/type";
 import { QRCodeSVG } from "qrcode.react";
 import * as React from "react";
 
-export default function DialogQR({
+export default function ShowQR({
   entry,
   open,
   setOpen,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  entry: OTPEntry | OTPEntryV2;
+  entry: OTPEntry | OTPEntryLegacy;
 }) {
   const defaultSize = 190;
   const { issuer = "", secret, account = "" } = entry || {};

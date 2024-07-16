@@ -1,8 +1,10 @@
+import Tooltip from "@components/Tooltip";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import { t } from "@src/chrome/i18n";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 type CardUtilsProps = {
@@ -22,11 +24,11 @@ export default function CardUtils({
 }: CardUtilsProps) {
   return (
     showCardUtils && (
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0, right: 2, position: "absolute" }}>
-        <CustomIconButton onClick={() => setVisibleCode(!isVisibleCode)}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0.2, right: 4, position: "absolute" }}>
+        <CustomIconButton title={t("showToken")} onClick={() => setVisibleCode(!isVisibleCode)}>
           {isVisibleCode ? <VisibilityIcon /> : <VisibilityOffIcon />}
         </CustomIconButton>
-        <CustomIconButton onClick={() => setShowQR(!showQR)}>
+        <CustomIconButton title={t("showQR")} onClick={() => setShowQR(!showQR)}>
           <QrCode2Icon />
         </CustomIconButton>
       </Box>
@@ -37,12 +39,17 @@ export default function CardUtils({
 export function CustomIconButton({
   children,
   iconSize = 29,
-  mr,
+  title = "",
+  disableInteractive = true,
   ...props
-}: IconButtonProps & { children: ReactNode } & { iconSize?: number } & { mr?: number }) {
+}: IconButtonProps & { children: ReactNode } & { iconSize?: number } & { title: string } & {
+  disableInteractive?: boolean;
+}) {
   return (
-    <IconButton sx={{ height: iconSize, width: iconSize, mr }} {...props}>
-      {children}
-    </IconButton>
+    <Tooltip title={title} disableInteractive={disableInteractive}>
+      <IconButton sx={{ height: iconSize, width: iconSize }} {...props}>
+        {children}
+      </IconButton>
+    </Tooltip>
   );
 }
