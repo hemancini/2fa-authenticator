@@ -7,7 +7,7 @@ import { t } from "@src/chrome/i18n";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React from "react";
 
-import Tooltip from "../Tooltip";
+import Tooltip from "../CustomTooltip";
 
 export default function ToggleThemeMode() {
   const { themeMode, toggleThemeMode } = useOptionsStore();

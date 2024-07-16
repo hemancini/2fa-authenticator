@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
 import { useOptionsStore } from "@src/stores/useOptions";
 
-import Tooltip from "../Tooltip";
+import Tooltip from "../CustomTooltip";
 
 export default function ToggleThemeColors() {
   const { themeColor, toggleThemeColor } = useOptionsStore();

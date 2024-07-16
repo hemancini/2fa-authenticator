@@ -1,4 +1,5 @@
 import CounterProgress from "@components/CardEntry/CounterProgress";
+import Tooltip from "@components/CustomTooltip";
 import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import ShowQR from "@components/dialogs/ShowQR";
 import IconButtonResize from "@components/IconButtonResize";
@@ -20,8 +21,6 @@ import useCounter from "@src/hooks/useCounter";
 import { OTPEntry } from "@src/models/legacy/otp";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
-
-import Tooltip from "../Tooltip";
 
 type EntryContentProps = {
   entry: OTPEntry;
@@ -84,10 +83,10 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
             backgroundColor: "rgba(0, 0, 0, 0.03)",
           },
         }}
-      // {...{
-      //   sx: { borderRadius: 0 },
-      //   variant: "elevation",
-      // }}
+        // {...{
+        //   sx: { borderRadius: 0 },
+        //   variant: "elevation",
+        // }}
       >
         <CardContent sx={{ py: 0.3, px: 1.2, "&:last-child": { pb: 0.3 } }}>
           <BoxRelative>

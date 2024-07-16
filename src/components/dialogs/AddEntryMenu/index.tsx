@@ -1,4 +1,4 @@
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";

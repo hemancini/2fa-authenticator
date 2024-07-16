@@ -1,4 +1,4 @@
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -28,14 +28,44 @@ export interface EditAccountProps {
   handleClose: () => void;
 }
 
-const BootstrapDialog = styled(MuiDialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
+export default function Dialog(props: EditAccountProps) {
+  const {
+    title,
+    content,
+    iconButton,
+    isOpen,
+    handleOpen,
+    handleClose,
+    dialogTitleEnabled = true,
+    dialogActionsEnabled = false,
+  } = props;
+
+  const iconButtonOnClick = React.cloneElement((iconButton as React.ReactElement) || <></>, {
+    onClick: handleOpen,
+  });
+
+  return (
+    <>
+      {iconButton && iconButtonOnClick}
+      <CustomDialog onClose={handleClose} open={isOpen}>
+        {dialogTitleEnabled && (
+          <CustomDialogTitle onClose={handleClose}>{title ? title : "Dialog title"}</CustomDialogTitle>
+        )}
+        <DialogContent>{content ? content : <Typography>Bootstrap dialog content</Typography>}</DialogContent>
+        {dialogActionsEnabled && (
+          <>
+            <Divider />
+            <DialogActions>
+              <Button autoFocus disableElevation variant="contained" size="small" onClick={handleClose}>
+                {t("accept")}
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </CustomDialog>
+    </>
+  );
+}
 
 function CustomDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props;
@@ -67,41 +97,11 @@ function CustomDialogTitle(props: DialogTitleProps) {
   );
 }
 
-export default function Dialog(props: EditAccountProps) {
-  const {
-    title,
-    content,
-    iconButton,
-    isOpen,
-    handleOpen,
-    handleClose,
-    dialogTitleEnabled = true,
-    dialogActionsEnabled = false,
-  } = props;
-
-  const iconButtonOnClick = React.cloneElement((iconButton as React.ReactElement) || <></>, {
-    onClick: handleOpen,
-  });
-
-  return (
-    <>
-      {iconButton && iconButtonOnClick}
-      <BootstrapDialog onClose={handleClose} open={isOpen}>
-        {dialogTitleEnabled && (
-          <CustomDialogTitle onClose={handleClose}>{title ? title : "Dialog title"}</CustomDialogTitle>
-        )}
-        <DialogContent>{content ? content : <Typography>Bootstrap dialog content</Typography>}</DialogContent>
-        {dialogActionsEnabled && (
-          <>
-            <Divider />
-            <DialogActions>
-              <Button autoFocus disableElevation variant="contained" size="small" onClick={handleClose}>
-                {t("accept")}
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </BootstrapDialog>
-    </>
-  );
-}
+const CustomDialog = styled(MuiDialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));

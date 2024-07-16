@@ -1,5 +1,5 @@
+import Tooltip from "@components/CustomTooltip";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
-import Tooltip from "@components/Tooltip";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Card, CardContent, FormControl } from "@mui/material";

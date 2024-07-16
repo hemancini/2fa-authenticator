@@ -1,4 +1,4 @@
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";

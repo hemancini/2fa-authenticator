@@ -1,7 +1,7 @@
+import Tooltip from "@components/CustomTooltip";
 import AccountBypassDialog from "@components/dialogs/AccountBypass";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
 import ShowQR from "@components/dialogs/ShowQR";
-import Tooltip from "@components/Tooltip";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { Box, Card, InputBase } from "@mui/material";
 import IconButton from "@mui/material/IconButton";

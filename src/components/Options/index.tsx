@@ -1,5 +1,5 @@
 import CustomSwitch from "@components/CustomSwitch";
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
 import GoogleIcon from "@mui/icons-material/Google";

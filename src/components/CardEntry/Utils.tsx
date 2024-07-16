@@ -1,5 +1,5 @@
+import Tooltip from "@components/CustomTooltip";
 import { AccountBypassButton } from "@components/dialogs/AccountBypass";
-import Tooltip from "@components/Tooltip";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";

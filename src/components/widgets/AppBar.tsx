@@ -1,5 +1,5 @@
+import Tooltip from "@components/CustomTooltip";
 import AddEntryMenu from "@components/dialogs/AddEntryMenu";
-import Tooltip from "@components/Tooltip";
 import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";

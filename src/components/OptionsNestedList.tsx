@@ -1,4 +1,4 @@
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
