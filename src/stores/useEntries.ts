@@ -1,9 +1,8 @@
+import type { EntryState, OTPEntry } from "@src/otp/type";
+import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import { create } from "zustand";
 import { persist, type PersistStorage } from "zustand/middleware";
-
-import type { EntryState, OTPEntry } from "../otp/type";
-import { decrypt, encrypt } from "../utils/crypto";
 
 const { isEncrypted = true } = import.meta.env;
 

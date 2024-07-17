@@ -15,33 +15,18 @@ import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
+import type { EntryState } from "@src/otp/type";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useEntries } from "@src/stores/useEntries";
+import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useOptionsStore } from "@src/stores/useOptions";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "wouter";
 
 import CaptureQR from "../dialogs/CaptureQR";
 import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
-
-export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
-  return new Promise((resolve, reject) => {
-    sendMessageToBackground({
-      message: { type: "captureQR", data: null },
-      handleSuccess: (result) => {
-        if (result === "received") {
-          resolve(result);
-          window.close();
-        }
-      },
-      handleError: (error) => {
-        setCaptureQRError((prevState) => !prevState);
-        reject(error);
-      },
-    });
-  });
-};
 
 export default function ButtonAppBar({
   drawerOpen,
@@ -120,11 +105,47 @@ export default function ButtonAppBar({
   );
 }
 
+export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
+  return new Promise((resolve, reject) => {
+    sendMessageToBackground({
+      message: { type: "captureQR", data: null },
+      handleSuccess: (result) => {
+        if (result === "received") {
+          resolve(result);
+          window.close();
+        }
+      },
+      handleError: (error) => {
+        setCaptureQRError((prevState) => !prevState);
+        reject(error);
+      },
+    });
+  });
+};
+
 const SaveButton = (): JSX.Element => {
+  const { handleEntriesEdited } = useContext(EntriesContext); // deprecated
+  const { removes, resetRemoves, entriesEdited, resetEntriesEdited } = useEntriesUtils();
+  const { removeEntry, upsertEntry } = useEntries() as EntryState;
+  const [, toggleEditing] = useUrlHashState("#/edit");
   const { toggleAction } = useActionStore();
-  const { handleEntriesEdited } = useContext(EntriesContext);
   const { isNewVersion } = useOptionsStore();
-  const [_, toggleEditing] = useUrlHashState("#/edit");
+
+  const onComplete = () => {
+    toggleEditing();
+    resetRemoves();
+    resetEntriesEdited();
+  };
+
+  const handleSave = () => {
+    removes?.forEach((hash) => removeEntry(hash));
+    entriesEdited?.forEach((entry) => upsertEntry(entry));
+  };
+
+  useEffect(() => {
+    window.addEventListener("popstate", onComplete);
+  });
+
   return (
     <IconButton
       size="small"
@@ -133,10 +154,11 @@ const SaveButton = (): JSX.Element => {
       LinkComponent={Link}
       href="/"
       onClick={() => {
-        handleEntriesEdited();
         if (isNewVersion) {
+          handleSave();
           toggleEditing();
         } else {
+          handleEntriesEdited();
           toggleAction("entries-edit-state");
         }
       }}

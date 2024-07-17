@@ -15,7 +15,7 @@ const colors = {
   Green: {
     main: "#619f04",
     light: "#8bc34a",
-    dark: "#4caf50",
+    dark: "#578f03",
   },
   Orange: {
     main: "#ed6c02",

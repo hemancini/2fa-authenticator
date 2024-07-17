@@ -1,21 +1,19 @@
+import CountDownCircleTimer from "@components/CardEntry/CountdownCircleTimer";
+import OtpCode from "@components/CardEntry/OtpCode";
+import CardUtils from "@components/CardEntry/Utils";
 import Tooltip from "@components/CustomTooltip";
 import AccountBypassDialog from "@components/dialogs/AccountBypass";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
 import ShowQR from "@components/dialogs/ShowQR";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import { Box, Card, InputBase } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import { Box, Card, IconButton, InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Typography, { TypographyProps } from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { OTPEntry } from "@src/otp/type";
+import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { useEffect, useState } from "react";
-
-import CountDownCircleTimer from "./CountdownCircleTimer";
-import OtpCode from "./OtpCode";
-import CardUtils from "./Utils";
 
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
   const { isVisibleCodes } = useOptionsStore();
@@ -56,7 +54,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
         onMouseOver={() => setShowUtils(true)}
         onMouseOut={() => setShowUtils(false)}
       >
-        <CustomTypography>{issuer}</CustomTypography>
+        <CustomTypography entry={entry} type={"issuer"} text={issuer} />
         {!isEditing && (
           <CardUtils {...{ entry, showQR, setShowQR, showCardUtils: showUtils, isVisibleCode, setVisibleCode }} />
         )}
@@ -64,7 +62,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           <OtpCode entry={entry} isVisible={!isEditing && isVisibleCode} />
           {isEditing && <DragButton />}
         </Box>
-        <CustomTypography>{account}</CustomTypography>
+        <CustomTypography entry={entry} type={"account"} text={account} />
         <Box sx={{ display: "flex", position: "absolute", bottom: 6, right: 8 }}>
           {!isEditing && <CountDownCircleTimer entry={entry} />}
         </Box>
@@ -83,15 +81,30 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
   );
 }
 
-const CustomTypography = ({ children, ...props }: TypographyProps) => {
+type CustomTypographyProps = {
+  text: string | number;
+  entry: OTPEntry;
+  type: "issuer" | "account";
+};
+
+const CustomTypography = ({ text, entry, type }: CustomTypographyProps) => {
   const [isEditing] = useUrlHashState("#/edit");
+  const { upsertEntryEdited } = useEntriesUtils();
+
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (!["issuer", "account"].includes(name)) return;
+    const newEntry = { ...entry, [name]: value };
+    upsertEntryEdited(newEntry);
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", height: 25 }}>
       {isEditing ? (
-        <EditButton defaultValue={children as string} />
+        <EditInputButton name={type} defaultValue={text as string} onChange={handleChangeValue} autoComplete="off" />
       ) : (
         <Typography
-          title={children as string}
+          title={text as string}
           color="text.secondary"
           sx={{
             ml: 0.7,
@@ -101,16 +114,15 @@ const CustomTypography = ({ children, ...props }: TypographyProps) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
-          {...props}
         >
-          {children}
+          {text}
         </Typography>
       )}
     </Box>
   );
 };
 
-const EditButton = styled(InputBase)(({ theme }) => ({
+const EditInputButton = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
     fontSize: 14,
     width: "auto",

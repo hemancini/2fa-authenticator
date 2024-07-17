@@ -70,7 +70,7 @@ export default function MoreOptions() {
                   toggleEditing();
                 } else {
                   toggleAction("entries-edit-state");
-                  setLocation("/entries/edit");
+                  setLocation("/legacy/edit");
                 }
                 handleClose();
               }}

@@ -31,7 +31,7 @@ export default function Entries() {
       style={{ paddingTop: 15, display: "flex", flexDirection: "column", gap: 12 }}
     >
       {entriesList?.map((entry) => (
-        <Reorder.Item key={entry.hash} value={entry} id={entry.hash} dragListener={isEditing}>
+        <Reorder.Item key={entry.hash} value={entry} dragListener={isEditing}>
           <EntryCard entry={entry} />
         </Reorder.Item>
       ))}

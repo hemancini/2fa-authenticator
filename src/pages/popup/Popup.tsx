@@ -13,20 +13,20 @@ import Options from "@src/routes/Options";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
 import { Redirect, Route, Router, Switch } from "wouter";
-import makeMatcher from "wouter/matcher";
+import makeMatcher, { MatcherFn } from "wouter/matcher";
 import { navigate, useLocationProperty } from "wouter/use-location";
 
 const hashLocation = () => window.location.hash.replace(/^#/, "") || "/";
 const hashNavigate = (to) => navigate("#" + to);
 
-const useHashLocation = () => {
+const useHashLocation = (): [string, (to: string) => void] => {
   const location = useLocationProperty(hashLocation);
   return [location, hashNavigate];
 };
 
 const defaultMatcher = makeMatcher();
 
-const multipathMatcher = (patterns, path) => {
+const multipathMatcher: MatcherFn = (patterns, path) => {
   for (const pattern of [patterns].flat()) {
     const [match, params] = defaultMatcher(pattern, path);
     if (match) return [match, params];
@@ -48,7 +48,7 @@ export default function Popup() {
   }
 
   return (
-    <Router base={window.location.pathname} matcher={multipathMatcher as any} hook={useHashLocation as any}>
+    <Router base={window.location.pathname} matcher={multipathMatcher} hook={useHashLocation}>
       <Box
         sx={{
           display: "flex",
@@ -67,7 +67,7 @@ export default function Popup() {
             <Route path={["/", "/edit", "/account/bypass", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>
               {isNewVersion ? <Entries /> : <EntriesLegacy />}
             </Route>
-            <Route path="/entries/edit">
+            <Route path="/legacy/edit">
               <EntriesLegacyEdit />
             </Route>
             <Route path="/options">
