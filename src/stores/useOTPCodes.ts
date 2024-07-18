@@ -1,8 +1,7 @@
 import { generateOTP } from "@src/otp/entry";
-import type { EntryState, OTPCodesStore, OTPCodeType } from "@src/otp/type";
+import type { OTPCodesStore, OTPCodeType } from "@src/otp/type";
+import { useEntries } from "@src/stores/useEntries";
 import { create } from "zustand";
-
-import { useEntries } from "./useEntries";
 
 const getOTPCode = (hash: string) => {
   const { entries } = useEntries.getState();
