@@ -1,5 +1,6 @@
+import type { OTPEntry as OTPEntryLegacy } from "../models/legacy/otp";
 import { OTPEntry } from "../otp/entry";
-import type { OTPPeriod, OTPType } from "../otp/type";
+import type { OTPEntry as OTPEntryType, OTPPeriod, OTPType } from "../otp/type";
 
 interface OtpAuth {
   type: string;
@@ -69,3 +70,26 @@ export function newEntryFromUrl(url: string): OTPEntry {
 
   return newEntry;
 }
+
+export const migrateV1ToV2 = (entries: OTPEntryLegacy[]) => {
+  if (entries.length === 0) return new Map<string, OTPEntry>();
+  return new Map(
+    [...entries.values()].map((entry) => {
+      {
+        delete entry.code;
+        delete entry.index;
+        delete entry.pinned;
+        delete entry.counter;
+        delete entry.encSecret;
+        return [
+          entry.hash,
+          {
+            ...entry,
+            type: entry.type === 1 ? "totp" : "hotp",
+            algorithm: entry.algorithm === 1 ? "SHA1" : "SHA256",
+          } as OTPEntryType,
+        ];
+      }
+    })
+  );
+};

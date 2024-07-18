@@ -1,8 +1,8 @@
 import { CounterProgress } from "@components/CardEntry/Countdown";
+import CustomIconButton from "@components/CustomIconButton";
 import Tooltip from "@components/CustomTooltip";
 import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import ShowQR from "@components/dialogs/ShowQR";
-import IconButtonResize from "@components/IconButtonResize";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
@@ -98,7 +98,7 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
                   bypassEnabled === true &&
                   entry.issuer === issuerBypass && (
                     <Box display={showOptions || isValidData ? "block" : "none"}>
-                      <IconButtonResize
+                      <CustomIconButton
                         onClick={() => setShowAccount(!showAccount)}
                         mr={!showOptions && isValidData ? 0 : 0.3}
                       >
@@ -110,13 +110,13 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
                             }}
                           />
                         </Tooltip>
-                      </IconButtonResize>
+                      </CustomIconButton>
                     </Box>
                   ),
                 [entry, showAccount, showOptions, isValidData, bypassEnabled]
               )}
               <Box display={showOptions ? "block" : "none"}>
-                <IconButtonResize onClick={() => setVisible(!isVisible)} style={{ display: "none" }}>
+                <CustomIconButton onClick={() => setVisible(!isVisible)} style={{ display: "none" }}>
                   <Tooltip title={t("showToken")} disableInteractive>
                     {isVisible ? (
                       <VisibilityIcon sx={{ fontSize: defaultEyesIconSize }} />
@@ -124,15 +124,15 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
                       <VisibilityOffIcon sx={{ fontSize: defaultEyesIconSize }} />
                     )}
                   </Tooltip>
-                </IconButtonResize>
-                <IconButtonResize onClick={() => setShowQR(!showQR)}>
+                </CustomIconButton>
+                <CustomIconButton onClick={() => setShowQR(!showQR)}>
                   <Tooltip title={t("showQR")} disableInteractive>
                     <QrCode2Icon />
                   </Tooltip>
-                </IconButtonResize>
+                </CustomIconButton>
               </Box>
               <Box display={showOptions || entry.pinned ? "block" : "none"}>
-                <IconButtonResize
+                <CustomIconButton
                   onClick={async () => {
                     entry.index = !entry.pinned ? -1 : entry.index;
                     entry.pinned = !entry.pinned;
@@ -149,7 +149,7 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
                       }}
                     />
                   </Tooltip>
-                </IconButtonResize>
+                </CustomIconButton>
               </Box>
             </Box>
           </BoxRelative>

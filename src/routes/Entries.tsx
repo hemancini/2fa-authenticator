@@ -2,14 +2,14 @@ import EntryCard from "@components/CardEntry";
 import NotEntriesFound from "@components/NotEntriesFound";
 import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import type { OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
+import { migrateV1ToV2 } from "@src/utils/entry";
 import { Reorder } from "framer-motion";
 import { useContext, useEffect } from "react";
 
 export default function Entries() {
-  const { entries: entries_v1 } = useContext(EntriesContext);
+  const { entries: entriesLegacy } = useContext(EntriesContext);
   const { entries, framerReorder, setEntries } = useEntries();
   const entriesList = Array.from(entries.values());
   const hasEntries = entries.size > 0;
@@ -18,12 +18,12 @@ export default function Entries() {
 
   useEffect(() => {
     if (entries.size === 0) {
-      const entriesMigrated = migrateV1ToV2(entries_v1);
+      const entriesMigrated = migrateV1ToV2(entriesLegacy);
       setEntries(entriesMigrated);
     } else {
       console.log("Entries already migrated");
     }
-  }, [entries_v1]);
+  }, [entriesLegacy]);
 
   return hasEntries ? (
     <Reorder.Group
@@ -45,26 +45,3 @@ export default function Entries() {
     <NotEntriesFound />
   );
 }
-
-const migrateV1ToV2 = (entries: any[]) => {
-  if (entries.length === 0) return new Map<string, OTPEntry>();
-  return new Map(
-    [...entries.values()].map((entry) => {
-      {
-        delete entry.code;
-        delete entry.index;
-        delete entry.pinned;
-        delete entry.counter;
-        delete entry.encSecret;
-        return [
-          entry.hash,
-          {
-            ...entry,
-            type: entry.type === 1 ? "totp" : "hotp",
-            algorithm: entry.algorithm === 1 ? "SHA1" : "SHA256",
-          },
-        ];
-      }
-    })
-  );
-};
