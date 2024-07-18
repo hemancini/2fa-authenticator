@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
+import { useEntries } from "@src/stores/useEntries";
+import { newEntryFromUrl } from "@src/utils/entry";
 import jsQR from "jsqr";
 import { useContext, useState } from "react";
 
@@ -19,6 +21,7 @@ export default function UploadImage(props: {
   const [image, setImage] = useState(null);
   const [qrCode, setQrCode] = useState("");
   const [imageDetails, setImageDetails] = useState("");
+  const { addEntry } = useEntries();
 
   const { handleEntriesUpdate } = useContext(EntriesContext);
   const handleImageChange = (event: { target: { files: FileList } }) => {
@@ -62,7 +65,18 @@ export default function UploadImage(props: {
     }
   };
 
-  const handleAddEntry = async () => {
+  const handleAddEntry = () => {
+    const newEntry = newEntryFromUrl(qrCode);
+    addEntry(newEntry);
+
+    // setImageUploaded(false);
+    // handleCloseModal();
+  };
+
+  /**
+   * @deprecated since version 1.3.0
+   */
+  const handleAddEntryLegacy = async () => {
     const totpRegex = /^otpauth:\/\/totp\//;
     if (qrCode.match(totpRegex)) {
       // return new Promise(() => {
@@ -107,7 +121,15 @@ export default function UploadImage(props: {
         <Button size="small" variant="outlined" fullWidth onClick={() => setUploadImageOption(false)}>
           {t("cancel")}
         </Button>
-        <Button size="small" variant="contained" fullWidth onClick={handleAddEntry}>
+        <Button
+          fullWidth
+          size="small"
+          variant="contained"
+          onClick={() => {
+            handleAddEntry();
+            handleAddEntryLegacy();
+          }}
+        >
           {t("add")}
         </Button>
       </Box>

@@ -4,6 +4,9 @@ interface CounterProps {
   period?: number;
 }
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export default function useCounter(props?: CounterProps) {
   const period = props?.period || 30;
   const initSecond = new Date().getSeconds();

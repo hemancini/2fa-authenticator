@@ -5,6 +5,9 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
+import type { OTPEntry } from "@src/otp/type";
+import { useEntries } from "@src/stores/useEntries";
+import { newEntryFromUrl } from "@src/utils/entry";
 import { useContext, useState } from "react";
 
 export interface AddEntryProps {
@@ -13,12 +16,22 @@ export interface AddEntryProps {
 }
 
 export default function ManualTotpEntry(props: AddEntryProps) {
+  const { addEntry } = useEntries();
   const { handlerOnCandel, handlerGoToHome } = props;
   const { handleEntriesUpdate } = useContext(EntriesContext);
   const [totp, setTopt] = useState("");
-  const [entry, setEntry] = useState<Entry>();
+  const [entry, setEntry] = useState<OTPEntry>();
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
 
+  const handleAddEntry = async () => {
+    const newEntry = newEntryFromUrl(totp);
+    addEntry(newEntry);
+    setEntry(newEntry);
+  };
+
+  /**
+   * @deprecated since version 1.3.0
+   */
   const handleSubmited = async () => {
     return new Promise((resolve) => {
       sendMessageToBackground({
@@ -70,7 +83,10 @@ export default function ManualTotpEntry(props: AddEntryProps) {
               variant="contained"
               fullWidth
               disabled={!regexTotp.test(totp)}
-              onClick={handleSubmited}
+              onClick={() => {
+                handleAddEntry();
+                handleSubmited();
+              }}
             >
               {t("add")}
             </Button>

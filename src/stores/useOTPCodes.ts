@@ -1,11 +1,11 @@
+import { generateOTP } from "@src/otp/entry";
+import type { EntryState, OTPCodesStore, OTPCodeType } from "@src/otp/type";
 import { create } from "zustand";
 
-import { generateOTP } from "../otp/entry";
-import type { EntryState, OTPCodesStore, OTPCodeType } from "../otp/type";
 import { useEntries } from "./useEntries";
 
 const getOTPCode = (hash: string) => {
-  const { entries } = useEntries.getState() as EntryState;
+  const { entries } = useEntries.getState();
   const entry = entries.get(hash);
   if (!entry) return "••••••";
   const optCode = generateOTP(entry);

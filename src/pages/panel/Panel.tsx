@@ -1,6 +1,5 @@
 import "@pages/panel/Panel.css";
 
-import type { EntryState, OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import React, { useEffect } from "react";
 
@@ -16,7 +15,7 @@ const setOptionsStorage = async (data: any) => {
 };
 
 const Debug = () => {
-  const { entries: entries_v2 } = useEntries() as EntryState;
+  const { entries: entries_v2 } = useEntries();
 
   const [entries, setEntries] = React.useState<any>();
   const [options, setOptions] = React.useState<any>();

@@ -19,12 +19,14 @@ const storage: PersistStorage<EntryState> = {
 };
 
 export const useEntries = create(
-  persist(
+  persist<EntryState>(
     (set) => ({
       entries: new Map<string, OTPEntry>(),
+      setEntries: (entries: Map<string, OTPEntry>) => set({ entries }),
       addEntry: (entry: OTPEntry) =>
         set((state: EntryState) => {
-          state.entries.set(entry.hash, entry);
+          // state.entries.set(entry.hash, entry);
+          state.entries = new Map([[entry.hash, entry], ...Array.from(state.entries)]);
           return { entries: state.entries };
         }),
       removeEntry: (hash: string) =>

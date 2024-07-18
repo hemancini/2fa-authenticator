@@ -23,9 +23,9 @@ const addQrOptionList = [
 export default function AddQrButton(props: {
   buttonCommonProps?: ButtonProps;
   isImageUploaded: boolean;
-  handleShowUploadImage: () => void;
+  showUploadImage: (show: boolean) => void;
 }) {
-  const { buttonCommonProps, handleShowUploadImage, isImageUploaded } = props;
+  const { buttonCommonProps, showUploadImage, isImageUploaded } = props;
   const [isQrButtonOpen, setQrButtonOpen] = useState(false);
   const [qrOptionIndex, setQrOptionIndex] = useState(0);
 
@@ -36,7 +36,7 @@ export default function AddQrButton(props: {
       captureQRCode();
     }
     if (addQrOptionList[qrOptionIndex].id === "upload") {
-      handleShowUploadImage();
+      showUploadImage(true);
     }
   };
 
@@ -57,7 +57,7 @@ export default function AddQrButton(props: {
 
     // change the state of the parent component
     const isUploadImage = index === 1;
-    isUploadImage && handleShowUploadImage();
+    showUploadImage(isUploadImage);
   };
 
   return (

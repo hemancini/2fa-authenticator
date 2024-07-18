@@ -1,6 +1,9 @@
 import EntriesContext from "@src/contexts/legacy/Entries";
 import { useCallback, useContext, useEffect, useState } from "react";
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export default function useRefreshCodes(): void {
   const { entries, handleEntriesUpdate } = useContext(EntriesContext);
   const [periods, setPeriods] = useState<number[]>([]);

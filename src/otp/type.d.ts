@@ -25,6 +25,7 @@ interface OTPEntry extends Entry {
 
 interface EntryState {
   entries: Map<string, OTPEntry>;
+  setEntries: (entries: Map<string, OTPEntry>) => void;
   addEntry: (entry: OTPEntry) => void;
   removeEntry: (hash: string) => void;
   upsertEntry: (entry: OTPEntry) => void;

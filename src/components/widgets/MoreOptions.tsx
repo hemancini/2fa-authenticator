@@ -14,6 +14,7 @@ import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useEntries } from "@src/stores/useEntries";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useContext, useState } from "react";
 import { useLocation } from "wouter";
@@ -25,8 +26,10 @@ export default function MoreOptions() {
   const { toggleAction } = useActionStore();
   const { isVisibleCodes, setVisibleCodes, isNewVersion } = useOptionsStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { entries } = useContext(EntriesContext);
-  const emptyEntries = entries?.length === 0;
+  const { entries: entriesLegacy } = useContext(EntriesContext);
+  const { entries } = useEntries();
+  const emptyEntries = entries.size === 0;
+  const emptyEntriesLegacy = entriesLegacy?.length === 0;
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,7 +67,7 @@ export default function MoreOptions() {
             <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
             <MenuItem
               dense={true}
-              disabled={emptyEntries}
+              disabled={isNewVersion ? emptyEntries : emptyEntriesLegacy}
               onClick={() => {
                 if (isNewVersion) {
                   toggleEditing();
@@ -84,7 +87,7 @@ export default function MoreOptions() {
             <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
             <MenuItem
               dense={true}
-              disabled={emptyEntries}
+              disabled={isNewVersion ? emptyEntries : emptyEntriesLegacy}
               onClick={() => {
                 setVisibleCodes(!isVisibleCodes);
                 handleClose();

@@ -1,21 +1,26 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
+import {
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
+import { OTPEntry } from "@src/otp/entry";
+import type { OTPAlgorithm, OTPDigits, OTPPeriod } from "@src/otp/type";
+import { useEntries } from "@src/stores/useEntries";
 import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -29,8 +34,8 @@ export interface AddEntryMenuProps {
 }
 
 const dataEntry = {
-  secret: "",
   issuer: "",
+  secret: "",
   account: "",
   period: "30",
   digits: "6",
@@ -40,6 +45,7 @@ const dataEntry = {
 
 export default function ManualEntry(props: AddEntryProps) {
   const { handlerOnCandel, handlerGoToHome } = props;
+  const { addEntry } = useEntries();
   const [isAdded, setAdded] = useState(false);
   const [isAdvance, setAdvance] = useState(false);
   const { handleEntriesUpdate } = useContext(EntriesContext);
@@ -54,11 +60,25 @@ export default function ManualEntry(props: AddEntryProps) {
     setAdvance(event.target.checked);
   };
 
-  const handleSubmited = async (data: FormData) => {
+  const handleAddEntry = async (data: FieldValues) => {
+    const newEntry = new OTPEntry({
+      ...dataEntry,
+      ...data,
+      type: "totp",
+      period: parseInt(data.period) as OTPPeriod,
+      digits: parseInt(data.digits) as OTPDigits,
+      algorithm: data.algorithm as OTPAlgorithm,
+    });
+    addEntry(newEntry);
+    setAdded(true);
+  };
+
+  /**
+   * @deprecated since version 1.3.0
+   */
+  const handleSubmited = async (data: FieldValues) => {
     const dragData = { ...dataEntry, ...data };
-    const authURL = `otpauth://totp/${dragData.issuer}${dragData.account ? `:${dragData.account}` : ""}?secret=${
-      dragData.secret
-    }&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${dragData.digits}&period=${dragData.period}`;
+    const authURL = `otpauth://totp/${dragData.account}?secret=${dragData.secret}&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${dragData.digits}&period=${dragData.period}`;
 
     return new Promise((resolve) => {
       sendMessageToBackground({
@@ -73,7 +93,13 @@ export default function ManualEntry(props: AddEntryProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleSubmited)} autoComplete="off">
+    <form
+      autoComplete="off"
+      onSubmit={handleSubmit((data) => {
+        handleAddEntry(data);
+        handleSubmited(data);
+      })}
+    >
       <Box mx={0.5} display="grid" gap={2} mb={2.5}>
         {!isAdded ? (
           <>

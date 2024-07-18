@@ -1,13 +1,12 @@
+import AddQrButton from "@components/dialogs/AddEntryMenu/AddQrButton";
+import UploadImage from "@components/dialogs/AddEntryMenu/UploadImage";
 import { ImportBackupListItem } from "@components/Options/Backup";
-import UploadImage from "@components/UploadImage";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
 import React, { useState } from "react";
-
-import AddQrButton from "./AddQrButton";
 
 interface AddOptionsProps {
   handleCloseModal: () => void;
@@ -36,16 +35,16 @@ export default function AddOptions(props: AddOptionsProps) {
     setImageUploaded(false);
   };
 
-  const handleShowUploadImage = () => {
-    setUploadImage(true);
+  const showUploadImage = (show: boolean | ((prevState: boolean) => boolean)) => {
+    setUploadImage(show);
   };
 
   return (
     <>
       <AddQrButton
-        buttonCommonProps={buttonCommonProps}
-        handleShowUploadImage={handleShowUploadImage}
+        showUploadImage={showUploadImage}
         isImageUploaded={isImageUploaded}
+        buttonCommonProps={buttonCommonProps}
       />
       {!isUploadImage ? (
         <>

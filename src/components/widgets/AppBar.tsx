@@ -15,7 +15,6 @@ import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import type { EntryState } from "@src/otp/type";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
@@ -129,7 +128,7 @@ const SaveButton = (): JSX.Element => {
 
   const { isNewVersion } = useOptionsStore();
   const { removes, resetRemoves, entriesEdited, resetEntriesEdited } = useEntriesUtils();
-  const { removeEntry, upsertEntry } = useEntries() as EntryState;
+  const { removeEntry, upsertEntry } = useEntries();
   const [, toggleEditing] = useUrlHashState("#/edit");
 
   const onComplete = () => {
