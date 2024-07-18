@@ -1,11 +1,13 @@
 import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
+import useCountdown from "@src/hooks/useCountdown";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { OTPEntry } from "@src/otp/type";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
 import { useState } from "react";
 
-export default function OtpCode({ entry: { hash }, isVisible }: { entry: OTPEntry; isVisible: boolean }) {
+export default function OtpCode({ entry, isVisible }: { entry: OTPEntry; isVisible: boolean }) {
+  const { hash } = entry;
   const { otpCodes, getOTPCode } = useOTPCodes();
   const [isToolpipCopyOpen, setToolpipCopyOpen] = useState(false);
   const [isEditing] = useUrlHashState("#/edit");
@@ -22,37 +24,45 @@ export default function OtpCode({ entry: { hash }, isVisible }: { entry: OTPEntr
   };
 
   return (
-    <CardActionArea disabled={isEditing} onClick={handleCopyCode} sx={{ borderRadius: 2, width: "auto" }}>
-      <MuiTooltip
-        TransitionComponent={Fade}
-        TransitionProps={{ timeout: 600 }}
-        open={isToolpipCopyOpen}
-        disableFocusListener
-        disableHoverListener
-        disableTouchListener
-        title={t("copied")}
-        disableInteractive
-        placement="right"
-        arrow
-      >
-        <Typography
-          component={"h5"}
-          data-hash={hash}
-          sx={{
-            ml: 0.5,
-            height: 31,
-            display: "flex",
-            alignItems: "center",
-            letterSpacing: 4,
-            fontWeight: "bold",
-            color: "primary.main",
-            fontSize: isVisible ? "1.9rem" : "3rem",
-            lineHeight: isVisible ? 1 : 0.6,
-          }}
-        >
-          {isVisible ? optCode : "••••••"}
-        </Typography>
-      </MuiTooltip>
-    </CardActionArea>
+    <MuiTooltip
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 600 }}
+      open={isToolpipCopyOpen}
+      disableFocusListener
+      disableHoverListener
+      disableTouchListener
+      title={t("copied")}
+      disableInteractive
+      placement="right"
+      arrow
+    >
+      <CardActionArea disabled={isEditing} onClick={handleCopyCode} sx={{ borderRadius: 2, width: "auto" }}>
+        <CustomTypography entry={entry} isVisible={isVisible} optCode={optCode} />
+      </CardActionArea>
+    </MuiTooltip>
   );
 }
+
+const CustomTypography = ({ entry, isVisible, optCode }: { entry: OTPEntry; isVisible: boolean; optCode: string }) => {
+  const { currentColor, remainingTime } = useCountdown({ entry });
+  const isParpadeando = remainingTime <= 5;
+  return (
+    <Typography
+      component={"h5"}
+      sx={{
+        ml: 0.5,
+        height: 31,
+        display: "flex",
+        alignItems: "center",
+        letterSpacing: 4,
+        fontWeight: "bold",
+        color: currentColor,
+        fontSize: isVisible ? "1.9rem" : "3rem",
+        lineHeight: isVisible ? 1 : 0.6,
+      }}
+      className={isParpadeando ? "parpadea" : ""}
+    >
+      {isVisible ? optCode : "••••••"}
+    </Typography>
+  );
+};

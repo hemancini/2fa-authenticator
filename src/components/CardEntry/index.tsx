@@ -1,4 +1,4 @@
-import CountDownCircleTimer from "@components/CardEntry/CountdownCircleTimer";
+import Countdown from "@components/CardEntry/Countdown";
 import OtpCode from "@components/CardEntry/OtpCode";
 import CardUtils from "@components/CardEntry/Utils";
 import Tooltip from "@components/CustomTooltip";
@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
   const { isVisibleCodes } = useOptionsStore();
   const [isEditing] = useUrlHashState("#/edit");
-  const { issuer, account } = entry;
 
   const [showQR, setShowQR] = useState(false);
   const [showUtils, setShowUtils] = useState(false);
@@ -28,14 +27,6 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
   useEffect(() => {
     setVisibleCode(isVisibleCodes);
   }, [isVisibleCodes]);
-
-  const handleRemoveEntry = (hash: string) => {
-    // const index = entriesEdited.findIndex((entry) => entry.hash === hash);
-    // entriesEdited.splice(index, 1);
-    // setEntriesEdited(entriesEdited);
-    // setIsConfirmOpen(false);
-    // handleRender((prevState) => !prevState);
-  };
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -47,14 +38,13 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           display: "flex",
           position: "relative",
           flexDirection: "column",
-          transition: "all 0.3s ease",
           "&:hover": { filter: "brightness(0.96)" },
           // borderRadius: 0,
         }}
         onMouseOver={() => setShowUtils(true)}
         onMouseOut={() => setShowUtils(false)}
       >
-        <CustomTypography entry={entry} type={"issuer"} text={issuer} />
+        <CustomTypography entry={entry} property="issuer" />
         {!isEditing && (
           <CardUtils {...{ entry, showQR, setShowQR, showCardUtils: showUtils, isVisibleCode, setVisibleCode }} />
         )}
@@ -62,19 +52,14 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           <OtpCode entry={entry} isVisible={!isEditing && isVisibleCode} />
           {isEditing && <DragButton />}
         </Box>
-        <CustomTypography entry={entry} type={"account"} text={account} />
+        <CustomTypography entry={entry} property="account" />
         <Box sx={{ display: "flex", position: "absolute", bottom: 6, right: 8 }}>
-          {!isEditing && <CountDownCircleTimer entry={entry} />}
+          {!isEditing && <Countdown entry={entry} />}
         </Box>
       </Card>
       <AccountBypassDialog entry={entry} />
       {isEditing && (
-        <ConfirmRemoveEntry
-          entry={entry}
-          isConfirmOpen={isConfirmOpen}
-          setIsConfirmOpen={setIsConfirmOpen}
-          handleRemoveEntry={handleRemoveEntry}
-        />
+        <ConfirmRemoveEntry entry={entry} isConfirmOpen={isConfirmOpen} setIsConfirmOpen={setIsConfirmOpen} />
       )}
       <ShowQR entry={entry} open={showQR} setOpen={setShowQR} />
     </Box>
@@ -82,12 +67,13 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
 }
 
 type CustomTypographyProps = {
-  text: string | number;
   entry: OTPEntry;
-  type: "issuer" | "account";
+  property: "issuer" | "account";
 };
 
-const CustomTypography = ({ text, entry, type }: CustomTypographyProps) => {
+const CustomTypography = ({ entry, property }: CustomTypographyProps) => {
+  const textValue = entry[property];
+
   const [isEditing] = useUrlHashState("#/edit");
   const { upsertEntryEdited } = useEntriesUtils();
 
@@ -101,10 +87,15 @@ const CustomTypography = ({ text, entry, type }: CustomTypographyProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center", height: 25 }}>
       {isEditing ? (
-        <EditInputButton name={type} defaultValue={text as string} onChange={handleChangeValue} autoComplete="off" />
+        <EditInputButton
+          name={property}
+          autoComplete="off"
+          onChange={handleChangeValue}
+          defaultValue={textValue as string}
+        />
       ) : (
         <Typography
-          title={text as string}
+          title={textValue as string}
           color="text.secondary"
           sx={{
             ml: 0.7,
@@ -115,7 +106,7 @@ const CustomTypography = ({ text, entry, type }: CustomTypographyProps) => {
             textOverflow: "ellipsis",
           }}
         >
-          {text}
+          {textValue}
         </Typography>
       )}
     </Box>

@@ -2,13 +2,37 @@ import { OTPEntry } from "@src/models/legacy/otp";
 import { EntryStorage } from "@src/models/legacy/storage";
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
+/**
+ * @deprecated since version 1.3.0
+ */
 const Context = createContext({
+  /**
+   * @deprecated since version 1.3.0
+   */
   entries: [],
+  /**
+   * @deprecated since version 1.3.0
+   */
   entriesEdited: [],
+  /**
+   * @deprecated since version 1.3.0
+   */
   isLoading: true,
+  /**
+   * @deprecated since version 1.3.0
+   */
   setEntries: (entries: OTPEntry[]) => void 0,
+  /**
+   * @deprecated since version 1.3.0
+   */
   setEntriesEdited: (entries: OTPEntry[]) => void 0,
+  /**
+   * @deprecated since version 1.3.0
+   */
   handleEntriesEdited: () => void 0,
+  /**
+   * @deprecated since version 1.3.0
+   */
   handleEntriesUpdate: () => void 0,
 });
 

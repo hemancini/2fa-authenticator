@@ -68,7 +68,7 @@ export function theme() {
   return createTheme(
     {
       palette: {
-        mode: themeMode === "system" ? (prefersDarkMode ? "dark" : "light") : themeMode,
+        mode: themeMode === "system" ? (prefersDarkMode ? "dark" : "light") : themeMode ?? "light",
         primary: { ...color },
         secondary: { ...color },
       },

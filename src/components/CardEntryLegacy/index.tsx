@@ -1,4 +1,4 @@
-import CounterProgress from "@components/CardEntry/CounterProgress";
+import { CounterProgress } from "@components/CardEntry/Countdown";
 import Tooltip from "@components/CustomTooltip";
 import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import ShowQR from "@components/dialogs/ShowQR";
@@ -8,12 +8,9 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Card, CardActionArea, CardContent, Theme } from "@mui/material";
+import { Card, CardActionArea, CardContent, Fade, Theme, Tooltip as MuiTooltip, Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
-import Fade from "@mui/material/Fade";
-import MuiTooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import EntriesContext from "@src/contexts/legacy/Entries";
@@ -83,10 +80,10 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
             backgroundColor: "rgba(0, 0, 0, 0.03)",
           },
         }}
-        // {...{
-        //   sx: { borderRadius: 0 },
-        //   variant: "elevation",
-        // }}
+      // {...{
+      //   sx: { borderRadius: 0 },
+      //   variant: "elevation",
+      // }}
       >
         <CardContent sx={{ py: 0.3, px: 1.2, "&:last-child": { pb: 0.3 } }}>
           <BoxRelative>

@@ -1,9 +1,29 @@
 import Box from "@mui/material/Box";
 import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import useCountdown from "@src/hooks/useCountdown";
+import type { OTPEntry } from "@src/otp/type";
 import { useOptionsStore } from "@src/stores/useOptions";
 
-export default function CounterProgress(props: CircularProgressProps & { value: number } & { count: number }) {
+export default function CountdownCircle({ entry }: { entry: OTPEntry }) {
+  const { remainingTime, progress, currentColor, elapsedTime } = useCountdown({ entry });
+  return (
+    <CounterProgress
+      size={28}
+      value={progress}
+      count={remainingTime}
+      sx={{
+        "& .MuiCircularProgress-circle": {
+          transition: `stroke-dashoffset ${elapsedTime >= 1 ? 1 : 0.4}s ease-in-out`,
+        },
+        color: currentColor,
+        scale: "-1 1",
+      }}
+    />
+  );
+}
+
+export const CounterProgress = (props: CircularProgressProps & { count: number }) => {
   const { count } = props;
   const { isNewVersion } = useOptionsStore();
   return (
@@ -36,4 +56,4 @@ export default function CounterProgress(props: CircularProgressProps & { value: 
       </Box>
     </Box>
   );
-}
+};

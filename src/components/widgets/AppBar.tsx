@@ -28,7 +28,7 @@ import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
 
-export default function ButtonAppBar({
+export default function CustomAppBar({
   drawerOpen,
   setDrawerOpen,
 }: {
@@ -124,12 +124,13 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
 };
 
 const SaveButton = (): JSX.Element => {
-  const { handleEntriesEdited } = useContext(EntriesContext); // deprecated
+  const { handleEntriesEdited } = useContext(EntriesContext);
+  const { toggleAction } = useActionStore();
+
+  const { isNewVersion } = useOptionsStore();
   const { removes, resetRemoves, entriesEdited, resetEntriesEdited } = useEntriesUtils();
   const { removeEntry, upsertEntry } = useEntries() as EntryState;
   const [, toggleEditing] = useUrlHashState("#/edit");
-  const { toggleAction } = useActionStore();
-  const { isNewVersion } = useOptionsStore();
 
   const onComplete = () => {
     toggleEditing();
@@ -171,10 +172,12 @@ const SaveButton = (): JSX.Element => {
 };
 
 const CancelButton = (): JSX.Element => {
-  const { toggleAction } = useActionStore();
   const { handleEntriesUpdate } = useContext(EntriesContext);
+  const { toggleAction } = useActionStore();
   const { isNewVersion } = useOptionsStore();
   const [, toggleEditing] = useUrlHashState("#/edit");
+  const { resetRemoves, resetEntriesEdited } = useEntriesUtils();
+
   return (
     <IconButton
       size="small"
@@ -183,6 +186,8 @@ const CancelButton = (): JSX.Element => {
       onClick={() => {
         handleEntriesUpdate();
         if (isNewVersion) {
+          resetRemoves();
+          resetEntriesEdited();
           toggleEditing();
         } else {
           toggleAction("entries-edit-state");

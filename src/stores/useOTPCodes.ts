@@ -7,7 +7,7 @@ import { useEntries } from "./useEntries";
 const getOTPCode = (hash: string) => {
   const { entries } = useEntries.getState() as EntryState;
   const entry = entries.get(hash);
-  if (!entry) return "XXXXXX";
+  if (!entry) return "••••••";
   const optCode = generateOTP(entry);
   return optCode;
 };

@@ -4,12 +4,16 @@ import { Button, Dialog, DialogActions, DialogContent, Divider, IconButton, Typo
 import { t } from "@src/chrome/i18n";
 import type { OTPEntry as OTPEntryLegacy } from "@src/models/legacy/otp";
 import type { OTPEntry } from "@src/otp/type";
+import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 
 type ConfirmRemoveEntryProps = {
   entry: OTPEntry | OTPEntryLegacy;
   isConfirmOpen: boolean;
   setIsConfirmOpen: (open: boolean) => void;
-  handleRemoveEntry: (hash: string) => void;
+  /**
+   * @deprecated since version 1.3.0
+   */
+  handleRemoveEntry?: (hash: string) => void;
 };
 
 export default function ConfirmRemoveEntry({
@@ -19,6 +23,7 @@ export default function ConfirmRemoveEntry({
   handleRemoveEntry,
 }: ConfirmRemoveEntryProps) {
   const { hash, account } = entry;
+  const { addRemove } = useEntriesUtils();
   return (
     <>
       <IconButton
@@ -56,7 +61,16 @@ export default function ConfirmRemoveEntry({
           <Button size="small" variant="outlined" fullWidth onClick={() => setIsConfirmOpen(false)}>
             {t("cancel")}
           </Button>
-          <Button size="small" variant="contained" autoFocus fullWidth onClick={() => handleRemoveEntry(hash)}>
+          <Button
+            size="small"
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              handleRemoveEntry?.(hash);
+              addRemove(hash);
+            }}
+            autoFocus
+          >
             {t("remove")}
           </Button>
         </DialogActions>

@@ -4,6 +4,7 @@ import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import type { EntryState, OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
+import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { Reorder } from "framer-motion";
 import { useContext, useEffect } from "react";
 
@@ -13,6 +14,7 @@ export default function Entries() {
   const entriesList = Array.from(entries.values());
   const hasEntries = entries.size > 0;
   const [isEditing] = useUrlHashState("#/edit");
+  const { removes } = useEntriesUtils();
 
   useEffect(() => {
     if (entries.size === 0) {
@@ -30,11 +32,14 @@ export default function Entries() {
       onReorder={framerReorder}
       style={{ paddingTop: 15, display: "flex", flexDirection: "column", gap: 12 }}
     >
-      {entriesList?.map((entry) => (
-        <Reorder.Item key={entry.hash} value={entry} dragListener={isEditing}>
-          <EntryCard entry={entry} />
-        </Reorder.Item>
-      ))}
+      {entriesList?.map(
+        (entry) =>
+          !removes.includes(entry.hash) && (
+            <Reorder.Item key={entry.hash} id={entry.hash} value={entry} dragListener={isEditing}>
+              <EntryCard entry={entry} />
+            </Reorder.Item>
+          )
+      )}
     </Reorder.Group>
   ) : (
     <NotEntriesFound />
