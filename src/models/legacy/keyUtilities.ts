@@ -8,6 +8,9 @@ import { OTPAlgorithm, OTPType } from "./otp";
 
 // Rewrite with TypeScript by Sneezry https://github.com/Sneezry
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export class KeyUtilities {
   private static dec2hex(s: number): string {
     return (s < 15.5 ? "0" : "") + Math.round(s).toString(16);

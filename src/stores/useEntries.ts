@@ -6,7 +6,7 @@ import { persist, type PersistStorage } from "zustand/middleware";
 
 const { isEncrypted = true } = import.meta.env;
 
-const storage: PersistStorage<EntryState> = {
+export const storage: PersistStorage<EntryState> = {
   getItem: (name) => {
     const str = localStorage.getItem(name);
     if (!str) return null;

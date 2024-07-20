@@ -1,5 +1,8 @@
 import CryptoJS from "crypto-js";
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export class Encryption implements EncryptionInterface {
   private password: string;
 

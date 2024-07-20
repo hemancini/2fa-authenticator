@@ -138,6 +138,9 @@ export class BrowserStorage {
   }
 }
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export class EntryStorage {
   private static getOTPStorageFromEntry(entry: OTPEntry, unencrypted?: boolean): OTPStorage {
     let secret: string;

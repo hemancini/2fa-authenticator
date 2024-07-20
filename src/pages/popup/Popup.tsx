@@ -64,9 +64,7 @@ export default function Popup() {
         <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
           <Switch>
-            <Route path={["/", "/edit", "/account/bypass", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>
-              {isNewVersion ? <Entries /> : <EntriesLegacy />}
-            </Route>
+            <Route path="/">{isNewVersion ? <Entries /> : <EntriesLegacy />}</Route>
             <Route path="/legacy/edit">
               <EntriesLegacyEdit />
             </Route>

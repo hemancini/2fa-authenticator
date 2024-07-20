@@ -64,6 +64,7 @@ function grayLayoutDown(event: MouseEvent) {
 
   sessionStorage.setItem("captureBoxPositionLeft", event.clientX.toString());
   sessionStorage.setItem("captureBoxPositionTop", event.clientY.toString());
+
   captureBox.style.left = event.clientX + "px";
   captureBox.style.top = event.clientY + "px";
   captureBox.style.width = "1px";
@@ -91,6 +92,7 @@ function grayLayoutMove(event: MouseEvent) {
   const captureBoxTop = Math.min(Number(sessionStorage.getItem("captureBoxPositionTop")), event.clientY);
   const captureBoxWidth = Math.abs(Number(sessionStorage.getItem("captureBoxPositionLeft")) - event.clientX) - 1;
   const captureBoxHeight = Math.abs(Number(sessionStorage.getItem("captureBoxPositionTop")) - event.clientY) - 1;
+
   captureBox.style.left = captureBoxLeft + "px";
   captureBox.style.top = captureBoxTop + "px";
   captureBox.style.width = captureBoxWidth + "px";

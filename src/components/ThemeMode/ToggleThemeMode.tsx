@@ -13,6 +13,7 @@ export default function ToggleThemeMode() {
   const { themeMode, toggleThemeMode } = useOptionsStore();
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, themeMode: ThemeMode) => {
+    if (!themeMode) return;
     toggleThemeMode(themeMode);
   };
 

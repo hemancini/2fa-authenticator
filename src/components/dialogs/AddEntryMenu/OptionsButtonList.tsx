@@ -1,6 +1,6 @@
 import AddQrButton from "@components/dialogs/AddEntryMenu/AddQrButton";
 import UploadImage from "@components/dialogs/AddEntryMenu/UploadImage";
-import { ImportBackupListItem } from "@components/Options/Backup";
+import { ListItemImportBackup } from "@components/Options/Backup";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -52,7 +52,7 @@ export default function AddOptions(props: AddOptionsProps) {
             {t("totpUrl")}
           </Button>
           <Button {...buttonCommonProps} startIcon={<UploadFileIcon />} {...{ component: "label" }}>
-            <ImportBackupListItem returnRaw />
+            <ListItemImportBackup returnRaw />
           </Button>
           <Button {...buttonCommonProps} startIcon={<KeyboardIcon />} onClick={() => setManualEntryOptions("MANUAL")}>
             {t("manualEntry")}

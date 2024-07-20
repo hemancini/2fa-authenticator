@@ -1,69 +1,42 @@
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Divider from "@mui/material/Divider";
-import Input from "@mui/material/Input";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Paper from "@mui/material/Paper";
+import { Button, Dialog, DialogActions, DialogContent, Divider, Input } from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemText, Paper, Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { ListItemIcon } from "@src/components/Options";
 import EntriesContext from "@src/contexts/legacy/Entries";
-import BackupData from "@src/models/backup";
+import BackupData from "@src/models/legacy/backup";
+import { useBackupStore } from "@src/stores/useBackupStore";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useEntries } from "@src/stores/useEntries";
+import { useOptionsStore } from "@src/stores/useOptions";
+import { decryptBackup, exportBackup } from "@src/utils/backup";
 import { useContext, useEffect } from "react";
 import { useLocation } from "wouter";
-import { create } from "zustand";
-
-type BackupStoreProps = {
-  isOpen: boolean;
-  setOpen: (value: boolean) => void;
-  jsonData: string | null;
-  setJsonData: (value: string) => void;
-  infoText: string;
-  setInfoText: (value: string) => void;
-  isCloseAccion: boolean;
-  setCloseAction: (value: boolean) => void;
-  showMessage: (message: string, isInfo?: boolean) => void;
-};
-
-export const useBackupStore = create<BackupStoreProps>((set) => ({
-  isOpen: false,
-  setOpen: (value) => set({ isOpen: value }),
-  jsonData: null,
-  setJsonData: (value) => set({ jsonData: value }),
-  infoText: t("importBackupInfo"),
-  setInfoText: (value) => set({ infoText: value }),
-  isCloseAccion: false,
-  setCloseAction: (value) => set({ isCloseAccion: value }),
-  showMessage: (message, isInfo = false) => {
-    set({ infoText: message, isCloseAccion: isInfo, isOpen: true });
-  },
-}));
 
 export default function Backup() {
   const { showMessage } = useBackupStore();
+  const { isNewVersion } = useOptionsStore();
 
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleDownloadJson = async () => {
-    try {
-      const data = await BackupData.get();
-      const jsonData = JSON.stringify(data, null, 2);
+    /**
+     * @deprecated since version 1.3.0
+     */
+    const exportBackupLegacy = async () => {
+      const dataLegacy = await BackupData.get();
+      const jsonData = JSON.stringify(dataLegacy, null, 2);
       if (!jsonData) return;
+      return new Blob([jsonData], { type: "application/json" });
+    };
 
+    try {
+      const dataBlob = isNewVersion ? await exportBackup() : await exportBackupLegacy();
       const fileName = `${new Date().toISOString().split(".")[0]}.json`;
-      const blob = new Blob([jsonData], { type: "application/json" });
-      const url = window.URL.createObjectURL(blob);
+      const url = window.URL.createObjectURL(dataBlob);
       const link = document.createElement("a");
 
       link.href = url;
@@ -78,8 +51,6 @@ export default function Backup() {
   return (
     <Paper variant="outlined" sx={{ my: 1 }}>
       <List sx={{ p: 0 }}>
-        <ImportBackupListItem />
-        <Divider />
         <ListItem disablePadding>
           <ListItemButton dense={!isUpSm} onClick={handleDownloadJson}>
             <ListItemIcon>
@@ -88,18 +59,23 @@ export default function Backup() {
             <ListItemText primary={t("exportBackup")} />
           </ListItemButton>
         </ListItem>
+        <Divider />
+        <ListItemImportBackup />
       </List>
     </Paper>
   );
 }
 
-export const ImportBackupListItem = (props: { returnRaw?: boolean }) => {
+export const ListItemImportBackup = (props: { returnRaw?: boolean }) => {
   const { returnRaw = false } = props;
   const [, setLocation] = useLocation();
   const { handleEntriesUpdate } = useContext(EntriesContext);
   const { showMessage } = useBackupStore();
   const { modal, toggleModal } = useModalStore();
   const { actionState, toggleAction } = useActionStore();
+  const { isNewVersion } = useOptionsStore();
+
+  const { setEntries } = useEntries();
 
   const { isOpen, setOpen, infoText, setInfoText, isCloseAccion, setCloseAction, jsonData, setJsonData } =
     useBackupStore();
@@ -128,11 +104,17 @@ export const ImportBackupListItem = (props: { returnRaw?: boolean }) => {
     }
   };
 
+  const importBackup = async (data: { data: string }) => {
+    const entries = await decryptBackup(data);
+    if (entries.size === 0) throw new Error("No data found", { cause: "notEntriesFound" });
+    setEntries(entries);
+  };
+
   const hendleImportData = async () => {
     if (!jsonData) return;
     try {
       const data = JSON.parse(jsonData);
-      await BackupData.set(data);
+      isNewVersion ? await importBackup(data) : await BackupData.set(data);
       handleEntriesUpdate();
       handleCloseBackgroupModal();
       handleCloseModal();

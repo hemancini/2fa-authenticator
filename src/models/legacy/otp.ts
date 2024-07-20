@@ -28,6 +28,9 @@ export interface OTPAlgorithmSpec {
 
 let LocalStorage: { [key: string]: OTPStorage };
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export class OTPEntry implements OTPEntryInterface {
   type: OTPType;
   index: number;
