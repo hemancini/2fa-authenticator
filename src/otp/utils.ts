@@ -135,7 +135,6 @@ export function getNewEntry(url: string): OTPEntry {
     type: type as OTPType,
     digits: digits,
     algorithm: algorithm,
-    site: "example.com",
   });
 
   return newEntry;

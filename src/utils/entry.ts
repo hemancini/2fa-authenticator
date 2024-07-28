@@ -67,7 +67,6 @@ export function newEntryFromUrl(url: string): TOTPEntry {
     type: type as OTPType,
     digits: digits,
     algorithm: algorithm,
-    site: "",
   });
 
   return newEntry;
@@ -114,7 +113,6 @@ export async function getRandomEntry(): Promise<OTPEntry> {
     type: "totp",
     digits: 6,
     algorithm: "SHA1",
-    site: "example.com",
   });
 
   return newEntry;

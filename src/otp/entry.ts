@@ -19,7 +19,7 @@ export class OTPEntry implements Entry {
   encrypted: boolean;
   site?: string;
 
-  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false, site }: Entry) {
+  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false }: Entry) {
     this.issuer = issuer;
     this.account = account;
     this.secret = secret;
@@ -28,9 +28,9 @@ export class OTPEntry implements Entry {
     this.digits = digits;
     this.algorithm = algorithm;
     this.encrypted = encrypted;
-    this.site = site;
     this.hash = this.generateHash();
 
+    if (!this.site) this.site = window.location.hostname ?? "";
     if (!this.algorithm) this.algorithm = "SHA1";
     if (!this.period) this.period = 30;
     if (!this.digits) this.digits = 6;

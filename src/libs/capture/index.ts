@@ -202,22 +202,6 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
             reject(error);
             alert(error.name + " - " + error.message);
           });
-
-        // sendMessageToBackground({
-        //   message: {
-        //     type: "getTotp",
-        //     data: { url: qrData, site: window.location.host },
-        //   },
-        //   handleSuccess: (result: OTPEntry) => {
-        //     const alertResp = t("addAccountSuccess", result.account);
-        //     resolve(result);
-        //     alert(alertResp);
-        //   },
-        //   handleError: (error: Error) => {
-        //     reject(error);
-        //     alert(error.name + " - " + error.message);
-        //   },
-        // });
       });
     }
   };
