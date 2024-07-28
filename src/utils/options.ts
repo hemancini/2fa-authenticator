@@ -1,6 +1,6 @@
 const chromeStorageKey = "2fa-options";
 
-export const getOptionsStorage = async () => {
+export const getOptionsStorage = async (): Promise<OptionsInterface> => {
   return await chrome.storage.local.get([chromeStorageKey]).then((result) => result[chromeStorageKey]?.state);
 };
 
