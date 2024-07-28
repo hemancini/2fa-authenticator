@@ -1,18 +1,8 @@
 import "@pages/panel/Panel.css";
 
 import { useEntries } from "@src/stores/useEntries";
+import { getOptionsStorage, setOptionsStorage } from "@src/utils/options";
 import React, { useEffect } from "react";
-
-const getOptionsStorage = async () => {
-  const chromeStorageKey = "2fa-options";
-  const storage = await chrome.storage.local.get([chromeStorageKey]);
-  return storage[chromeStorageKey]?.state;
-};
-
-const setOptionsStorage = async (data: any) => {
-  const chromeStorageKey = "2fa-options";
-  await chrome.storage.local.set({ [chromeStorageKey]: { state: data } });
-};
 
 const Debug = () => {
   const { entries: entries_v2 } = useEntries();

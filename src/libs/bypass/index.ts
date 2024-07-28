@@ -1,13 +1,11 @@
 import type { OTPEntry } from "@src/models/legacy/otp";
 import { EntryStorage } from "@src/models/legacy/storage";
 import { decrypData } from "@src/utils/crypto";
+import { getOptionsStorage } from "@src/utils/options";
 
 chrome.runtime.onMessage.addListener(async (request) => {
+  const { bypassEnabled } = await getOptionsStorage();
   if (request.message === "bypass") {
-    const chromeStorageKey = "2fa-options";
-    const bypassEnabled = await chrome.storage.local
-      .get([chromeStorageKey])
-      .then((result) => result[chromeStorageKey]?.state?.bypassEnabled);
     /** @deprecated This constant is deprecate. Use `chromeStorageKey` new instead. */
     const chromeStorageKeyDeprecated = "OPTIONS";
     /** @deprecated This constant is deprecate. Use `bypassEnabled` new instead. */

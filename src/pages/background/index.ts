@@ -147,6 +147,9 @@ async function getCapture(tab: chrome.tabs.Tab) {
   return dataUrl;
 }
 
+/**
+ * @deprecated since version 1.3.0
+ */
 async function getTotp(message: { url: string; site: string }) {
   const { url, site } = message;
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;

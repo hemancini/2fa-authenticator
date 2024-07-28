@@ -1,10 +1,9 @@
+import { getOptionsStorage } from "@src/utils/options";
+
 chrome.runtime.onMessage.addListener(async (request) => {
+  const { autofillEnabled } = await getOptionsStorage();
   if (request.message === "pastecode") {
     const { code } = request.data;
-    const chromeStorageKey = "2fa-options";
-    const autofillEnabled = await chrome.storage.local
-      .get([chromeStorageKey])
-      .then((result) => result[chromeStorageKey]?.state?.autofillEnabled);
     /** @deprecated This constant is deprecate. Use `chromeStorageKey` new instead. */
     const chromeStorageKeyDeprecated = "OPTIONS";
     /** @deprecated This constant is deprecate. Use `autofillEnabled` new instead. */
