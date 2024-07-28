@@ -1,6 +1,3 @@
-import { OTPEntry } from "./entry";
-import { OTPPeriod, OTPType } from "./type";
-
 export function dec2hex(s: number): string {
   return (s < 15.5 ? "0" : "") + Math.round(s).toString(16);
 }
@@ -74,68 +71,4 @@ export function base26(num: number) {
     output = new Array(len - output.length + 1).join(chars[0]) + output;
   }
   return output;
-}
-
-interface OtpAuth {
-  type: string;
-  label: string;
-  params: Record<string, string>;
-}
-
-export function decomposeOtpAuthUrl(url: string) {
-  if (!url) {
-    throw new Error("La URL es requerida.");
-  }
-
-  const replaceIssuer = true;
-  const modifiedUrl = replaceIssuer ? url.replace(/(?<=\/)[^/]+:/, "") : url;
-  // console.log(url, modifiedUrl);
-  const parsedUrl = new URL(modifiedUrl);
-
-  if (parsedUrl.protocol !== "otpauth:") {
-    throw new Error("La URL no es una URL otpauth válida.");
-  }
-
-  const pathSegments = parsedUrl.pathname.split("/").filter(Boolean);
-  if (pathSegments.length < 2) {
-    throw new Error("La URL otpauth no tiene el formato esperado.");
-  }
-
-  const [type, ...resto] = pathSegments;
-  const label = resto.join("/");
-
-  const otpauth: OtpAuth = { type, label, params: {} };
-
-  if (parsedUrl.search) {
-    const params = new URLSearchParams(parsedUrl.search);
-    params.forEach((value, key) => {
-      otpauth.params[key] = value;
-    });
-  }
-
-  return otpauth;
-}
-
-export function getNewEntry(url: string): OTPEntry {
-  const descompose = decomposeOtpAuthUrl(url);
-  const {
-    type,
-    label: email,
-    params: { secret, issuer, period = 30 },
-  } = descompose;
-
-  const { digits = 6, algorithm = "SHA1" } = {};
-  // period: (Math.floor(Math.random() * (39 - 10 + 1)) + 10) as OTPPeriod,
-
-  const newEntry = new OTPEntry({
-    issuer: issuer,
-    account: email,
-    secret: secret,
-    period: period as OTPPeriod,
-    type: type as OTPType,
-    digits: digits,
-    algorithm: algorithm,
-  });
-
-  return newEntry;
 }

@@ -10,39 +10,6 @@ interface OtpAuth {
   params: Record<string, string>;
 }
 
-export function decomposeOtpAuthUrl(url: string) {
-  if (!url) {
-    throw new Error("La URL es requerida.");
-  }
-
-  const replaceIssuer = true;
-  const modifiedUrl = replaceIssuer ? url.replace(/(?<=\/)[^/]+:/, "") : url;
-  const parsedUrl = new URL(modifiedUrl);
-
-  if (parsedUrl.protocol !== "otpauth:") {
-    throw new Error("La URL no es una URL otpauth válida.");
-  }
-
-  const pathSegments = parsedUrl.pathname.split("/").filter(Boolean);
-  if (pathSegments.length < 2) {
-    throw new Error("La URL otpauth no tiene el formato esperado.");
-  }
-
-  const [type, ...resto] = pathSegments;
-  const label = resto.join("/");
-
-  const otpauth: OtpAuth = { type, label, params: {} };
-
-  if (parsedUrl.search) {
-    const params = new URLSearchParams(parsedUrl.search);
-    params.forEach((value, key) => {
-      otpauth.params[key] = value;
-    });
-  }
-
-  return otpauth;
-}
-
 export function newEntryFromUrl(url: string): TOTPEntry {
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
   if (!regexTotp.test(url)) {
@@ -130,6 +97,39 @@ export async function addFromBackground(entry: TOTPEntry) {
     draftParse.state.entries = new Map([[entry.hash, entry]]);
     await chrome.storage.local.set({ [ENTRIES_STOTAGE_KEY]: superjson.stringify(draftParse) });
   }
+}
+
+function decomposeOtpAuthUrl(url: string) {
+  if (!url) {
+    throw new Error("La URL es requerida.");
+  }
+
+  const replaceIssuer = true;
+  const modifiedUrl = replaceIssuer ? url.replace(/(?<=\/)[^/]+:/, "") : url;
+  const parsedUrl = new URL(modifiedUrl);
+
+  if (parsedUrl.protocol !== "otpauth:") {
+    throw new Error("La URL no es una URL otpauth válida.");
+  }
+
+  const pathSegments = parsedUrl.pathname.split("/").filter(Boolean);
+  if (pathSegments.length < 2) {
+    throw new Error("La URL otpauth no tiene el formato esperado.");
+  }
+
+  const [type, ...resto] = pathSegments;
+  const label = resto.join("/");
+
+  const otpauth: OtpAuth = { type, label, params: {} };
+
+  if (parsedUrl.search) {
+    const params = new URLSearchParams(parsedUrl.search);
+    params.forEach((value, key) => {
+      otpauth.params[key] = value;
+    });
+  }
+
+  return otpauth;
 }
 
 const draftStorage = {

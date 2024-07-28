@@ -1,8 +1,7 @@
 import scanGIF from "@assets/img/scan.gif";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import { getNewEntry } from "@src/otp/utils";
-import { addFromBackground } from "@src/utils/entry";
+import { addFromBackground, newEntryFromUrl } from "@src/utils/entry";
 import jsQR from "jsqr";
 
 type MessageData = {
@@ -191,7 +190,7 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
       // console.log("qrData:", qrData);
 
       return new Promise((resolve, reject) => {
-        const entry = getNewEntry(qrData);
+        const entry = newEntryFromUrl(qrData);
         addFromBackground(entry)
           .then(() => {
             const alertResp = t("addAccountSuccess", entry.account);

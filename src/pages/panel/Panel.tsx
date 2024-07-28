@@ -11,7 +11,7 @@ const Debug = () => {
   const [options, setOptions] = React.useState<any>();
   const [xraysEnabled, setXraysEnabled] = React.useState<boolean>(false);
 
-  const handleXraysEnbledChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleXraysEnbledChange = async () => {
     const _options = await getOptionsStorage();
     const optionsDraft = { ..._options, xraysEnabled: !xraysEnabled };
     await setOptionsStorage(optionsDraft).then(() => {
