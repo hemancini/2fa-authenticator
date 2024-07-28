@@ -11,9 +11,10 @@ import { useModalStore } from "@src/stores/useDynamicStore";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
-import ManualEntry from "./ManualEntry";
-import ManualTotpEntry from "./ManualTotpEntry";
-import OptionsButtonList from "./OptionsButtonList";
+import ManualEntry from "./AddEntryButtons/ManualEntry";
+import ManualTotpEntry from "./AddEntryButtons/ManualTotpEntry";
+import OptionsButtonList from "./AddEntryButtons/OptionsButtonList";
+import Random from "./AddEntryButtons/Random";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -107,6 +108,7 @@ export default function AddEntryMenu() {
         ) : (
           <OptionsButtonList handleCloseModal={handlerGoToHome} setManualEntryOptions={setManualEntryOptions} />
         )}
+        {manualEntryOptions === "" && <Random />}
       </DialogContent>
     </Dialog>
   );

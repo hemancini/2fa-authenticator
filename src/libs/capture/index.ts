@@ -1,8 +1,16 @@
 import scanGIF from "@assets/img/scan.gif";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import { OTPEntry } from "@src/models/legacy/otp";
+import { getNewEntry } from "@src/otp/utils";
+import { addFromBackground } from "@src/utils/entry";
 import jsQR from "jsqr";
+
+type MessageData = {
+  captureBoxLeft: number;
+  captureBoxTop: number;
+  captureBoxWidth: number;
+  captureBoxHeight: number;
+};
 
 if (!document.getElementById("__ga_grayLayout__")) {
   chrome.runtime.onMessage.addListener((message: Message) => {
@@ -135,9 +143,13 @@ function grayLayoutUp(event: MouseEvent) {
             captureBoxHeight,
           },
         },
-        handleSuccess: (data: any) => {
-          qrDecode(data.url, data.captureBoxLeft, data.captureBoxTop, data.captureBoxWidth, data.captureBoxHeight);
+        handleSuccess: (data: MessageData & { url: string }) => {
+          qrDecode(data?.url, data.captureBoxLeft, data.captureBoxTop, data.captureBoxWidth, data.captureBoxHeight);
           resolve(data);
+        },
+        handleError: (error: Error) => {
+          reject(error);
+          console.log(error.name + " - " + error.message);
         },
       });
     });
@@ -148,11 +160,13 @@ function grayLayoutUp(event: MouseEvent) {
 async function qrDecode(url: string, left: number, top: number, width: number, height: number) {
   const canvas = document.getElementById("__ga_qrCanvas__") as HTMLCanvasElement;
   const qr = new Image();
+
   qr.onload = () => {
     const devicePixelRatio = qr.width / window.innerWidth;
     canvas.width = qr.width;
     canvas.height = qr.height;
     canvas.getContext("2d")?.drawImage(qr, 0, 0);
+
     const imageData = canvas
       .getContext("2d")
       ?.getImageData(
@@ -161,6 +175,7 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
         width * devicePixelRatio,
         height * devicePixelRatio
       );
+
     if (imageData) {
       canvas.width = imageData.width;
       canvas.height = imageData.height;
@@ -172,27 +187,41 @@ async function qrDecode(url: string, left: number, top: number, width: number, h
         return;
       }
 
-      const qrRes = jsQrCode.data;
+      const qrData = jsQrCode.data;
+      // console.log("qrData:", qrData);
 
       return new Promise((resolve, reject) => {
-        sendMessageToBackground({
-          message: {
-            type: "getTotp",
-            data: { url: qrRes as string, site: window.location.host },
-          },
-          handleSuccess: (result: OTPEntry) => {
-            const alertResp = t("addAccountSuccess", result.account);
-            resolve(result);
+        const entry = getNewEntry(qrData);
+        addFromBackground(entry)
+          .then(() => {
+            const alertResp = t("addAccountSuccess", entry.account);
+            resolve(entry);
             alert(alertResp);
-          },
-          handleError: (error: Error) => {
+          })
+          .catch((error) => {
             reject(error);
             alert(error.name + " - " + error.message);
-          },
-        });
+          });
+
+        // sendMessageToBackground({
+        //   message: {
+        //     type: "getTotp",
+        //     data: { url: qrData, site: window.location.host },
+        //   },
+        //   handleSuccess: (result: OTPEntry) => {
+        //     const alertResp = t("addAccountSuccess", result.account);
+        //     resolve(result);
+        //     alert(alertResp);
+        //   },
+        //   handleError: (error: Error) => {
+        //     reject(error);
+        //     alert(error.name + " - " + error.message);
+        //   },
+        // });
       });
     }
   };
+
   qr.src = url;
 }
 

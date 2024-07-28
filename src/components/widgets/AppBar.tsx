@@ -22,7 +22,7 @@ import { useOptionsStore } from "@src/stores/useOptions";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "wouter";
 
-import CaptureQR from "../dialogs/CaptureQR";
+import ErrorCaptureQR from "../dialogs/CaptureQR";
 import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
@@ -98,7 +98,7 @@ export default function CustomAppBar({
           </Box>
         </Toolbar>
       </AppBar>
-      <CaptureQR open={captureQRError} setOpen={setCaptureQRError} />
+      <ErrorCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
       {(isEditing || actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );
@@ -109,6 +109,7 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
     sendMessageToBackground({
       message: { type: "captureQR", data: null },
       handleSuccess: (result) => {
+        console.log("captureQRCode:", result);
         if (result === "received") {
           resolve(result);
           window.close();

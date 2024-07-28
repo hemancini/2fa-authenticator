@@ -10,6 +10,7 @@ import EntriesLegacy from "@routes/EntriesLegacy";
 import EntriesLegacyEdit from "@routes/EntriesLegacyEdit";
 import { t } from "@src/chrome/i18n";
 import Options from "@src/routes/Options";
+import Storage from "@src/routes/Storage";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
 import { Redirect, Route, Router, Switch } from "wouter";
@@ -70,6 +71,9 @@ export default function Popup() {
             </Route>
             <Route path="/options">
               <Options />
+            </Route>
+            <Route path="/storage">
+              <Storage />
             </Route>
             <Route path="/:anything*">
               <Redirect to="/" />

@@ -11,8 +11,8 @@ import { useContext, useEffect } from "react";
 export default function Entries() {
   const { entries: entriesLegacy } = useContext(EntriesContext);
   const { entries, framerReorder, setEntries } = useEntries();
-  const entriesList = Array.from(entries.values());
   const hasEntries = entries.size > 0;
+  const entriesList = hasEntries ? Array.from(entries.values()) : [];
   const [isEditing] = useUrlHashState("#/edit");
   const { removes } = useEntriesUtils();
 

@@ -4,7 +4,8 @@ import superjson from "superjson";
 import { create } from "zustand";
 import { persist, type PersistStorage } from "zustand/middleware";
 
-const { isEncrypted = true } = import.meta.env;
+const { ENCRYPTED: isEncrypted = false } = import.meta.env;
+console.log("isEncrypted:", isEncrypted);
 
 export const storage: PersistStorage<EntryState> = {
   getItem: (name) => {
@@ -16,6 +17,19 @@ export const storage: PersistStorage<EntryState> = {
     localStorage.setItem(name, isEncrypted ? encrypt(superjson.stringify(value)) : superjson.stringify(value));
   },
   removeItem: (name) => localStorage.removeItem(name),
+};
+
+export const chromePersistStorage: PersistStorage<EntryState> = {
+  getItem: async (name) =>
+    await chrome.storage.local.get([name]).then((result) => {
+      if (!result[name]) return null;
+      return superjson.parse(isEncrypted ? decrypt(result[name]) : result[name]);
+    }),
+  setItem: (name, value) => {
+    const stringified = superjson.stringify(value);
+    chrome.storage.local.set({ [name]: isEncrypted ? encrypt(stringified) : stringified });
+  },
+  removeItem: (name) => chrome.storage.local.remove([name]),
 };
 
 export const useEntries = create(
@@ -44,10 +58,15 @@ export const useEntries = create(
           state.entries = new Map(entries.map((entry) => [entry.hash, entry]));
           return { entries: state.entries };
         }),
+      removeAll: () =>
+        set((state: EntryState) => {
+          state.entries = new Map();
+          return { entries: state.entries };
+        }),
     }),
     {
       name: "entries-v2",
-      storage,
+      storage: chromePersistStorage,
     }
   )
 );

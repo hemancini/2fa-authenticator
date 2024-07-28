@@ -1,5 +1,5 @@
-import AddQrButton from "@components/dialogs/AddEntryMenu/AddQrButton";
-import UploadImage from "@components/dialogs/AddEntryMenu/UploadImage";
+import AddQrButton from "@components/dialogs/AddEntryButtons/AddQrButton";
+import UploadImage from "@components/dialogs/AddEntryButtons/UploadImage";
 import { ListItemImportBackup } from "@components/Options/Backup";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";

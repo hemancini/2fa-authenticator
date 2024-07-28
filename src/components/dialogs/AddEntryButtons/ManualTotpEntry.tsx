@@ -16,9 +16,9 @@ export interface AddEntryProps {
 }
 
 export default function ManualTotpEntry(props: AddEntryProps) {
-  const { addEntry } = useEntries();
-  const { handlerOnCandel, handlerGoToHome } = props;
   const { handleEntriesUpdate } = useContext(EntriesContext);
+  const { handlerOnCandel, handlerGoToHome } = props;
+  const { addEntry } = useEntries();
   const [totp, setTopt] = useState("");
   const [entry, setEntry] = useState<OTPEntry>();
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;

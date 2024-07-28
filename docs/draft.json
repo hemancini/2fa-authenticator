@@ -1,0 +1,15 @@
+{
+  "json": {
+    "state": {
+      "entries": []
+    },
+    "version": 0
+  },
+  "meta": {
+    "values": {
+      "state.entries": [
+        "map"
+      ]
+    }
+  }
+}

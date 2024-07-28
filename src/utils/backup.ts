@@ -11,7 +11,7 @@ export const exportBackup = async (): Promise<Blob> => {
   const { entries = new Map() } = entriesStore.state;
   if (entries.size === 0) throw new Error("No data found", { cause: "notEntriesFound" });
 
-  const encrypted = CryptoJS.AES.encrypt(JSON.stringify(Array.from(entries.values())), appKey).toString();
+  const encrypted = CryptoJS.AES.encrypt(JSON.stringify(Array.from(entries?.values() ?? [])), appKey).toString();
   const dataBlob = new Blob([JSON.stringify({ encrypted }, null, 2)], { type: "application/json" });
   return dataBlob;
 };

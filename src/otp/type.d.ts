@@ -23,6 +23,8 @@ interface OTPEntry extends Entry {
   hash: string;
 }
 
+export type TEntries = Map<string, OTPEntry>;
+
 interface EntryState {
   entries: Map<string, OTPEntry>;
   setEntries: (entries: Map<string, OTPEntry>) => void;
@@ -30,6 +32,10 @@ interface EntryState {
   removeEntry: (hash: string) => void;
   upsertEntry: (entry: OTPEntry) => void;
   framerReorder: (entries: OTPEntry[]) => void;
+  /**
+   * @deprecated since version 1.3.0
+   */
+  removeAll?: () => void;
 }
 
 type AddTypeOption = "qr-image" | "qr-scanner" | "url" | "manual" | "random";

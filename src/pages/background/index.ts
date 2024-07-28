@@ -17,18 +17,17 @@ const cachedPassphrase = "";
 const entrustSamlPath = "/#/saml/authentication/";
 
 chrome.runtime.onConnect.addListener((port) => {
-  port.onDisconnect.addListener(() => {
-    console.log("Port disconnected");
-  });
   port.onMessage.addListener(async (message: Message) => {
     try {
-      switch (message.type) {
+      const { type, data } = message;
+
+      switch (type) {
         case "captureQR":
-          await captureQR();
-          sendMessageToClient(port, {
-            type: message.type,
-            data: "received",
-          });
+          {
+            await captureQR();
+            console.log("sendMessageToBackground/captureQR: received");
+            sendMessageToClient(port, { type, data: "received" });
+          }
           break;
         case "getCapture":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
@@ -39,13 +38,14 @@ chrome.runtime.onConnect.addListener((port) => {
             const url = await getCapture(tab?.[0]);
             sendMessageToClient(port, {
               type: "getCapture",
-              data: { ...message.data, url },
+              data: { ...data, url },
             });
           });
           break;
         case "getTotp":
           {
-            const entry = await getTotp(message.data);
+            const entry = await getTotp(data);
+            console.log("sendMessageToBackground/getTotp:", entry);
             if (entry instanceof Error) {
               sendErrorMessageToClient(port, entry);
             } else {
@@ -75,7 +75,7 @@ chrome.runtime.onConnect.addListener((port) => {
                   });
                   chrome.tabs.sendMessage(tabs?.[0].id, {
                     message: "pastecode",
-                    data: message.data,
+                    data: data,
                   });
                 } else {
                   console.warn("autofill: Granted permission denied");
@@ -87,7 +87,7 @@ chrome.runtime.onConnect.addListener((port) => {
           break;
 
         default:
-          console.warn("Unknown message type", message.type);
+          console.warn("Unknown message type", type);
       }
     } catch (error) {
       console.warn(error);
@@ -143,9 +143,7 @@ async function captureQR() {
 }
 
 async function getCapture(tab: chrome.tabs.Tab) {
-  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
-    format: "png",
-  });
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
   return dataUrl;
 }
 
