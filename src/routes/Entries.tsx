@@ -1,15 +1,13 @@
 import EntryCard from "@components/CardEntry";
 import NotEntriesFound from "@components/NotEntriesFound";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { migrateV1ToV2 } from "@src/utils/entry";
 import { Reorder } from "framer-motion";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function Entries() {
-  const { entries: entriesLegacy } = useContext(EntriesContext);
   const { entries, framerReorder, setEntries } = useEntries();
   const hasEntries = entries.size > 0;
   const entriesList = hasEntries ? Array.from(entries.values()) : [];
@@ -17,13 +15,15 @@ export default function Entries() {
   const { removes } = useEntriesUtils();
 
   useEffect(() => {
-    if (entries.size === 0) {
-      const entriesMigrated = migrateV1ToV2(entriesLegacy);
-      setEntries(entriesMigrated);
-    } else {
-      console.log("Entries already migrated");
-    }
-  }, [entriesLegacy]);
+    (async () => {
+      if (entries.size === 0) {
+        const entriesMigrated = await migrateV1ToV2();
+        setEntries(entriesMigrated);
+      } else {
+        console.log("Entries already migrated");
+      }
+    })();
+  }, []);
 
   return hasEntries ? (
     <Reorder.Group

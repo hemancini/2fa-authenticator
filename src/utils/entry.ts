@@ -10,6 +10,28 @@ interface OtpAuth {
   params: Record<string, string>;
 }
 
+const { ENTRIES_STOTAGE_KEY = "entries-v2" } = import.meta.env;
+
+/**
+ * @deprecated since version 1.3.0
+ */
+const getLegacyEntries = async () => {
+  const entries: OTPEntryLegacy[] = [];
+  const storage = await chrome.storage.local.get();
+  delete storage["LocalStorage"];
+  delete storage["2fa-options"];
+  delete storage["entries-v2"];
+  delete storage["OPTIONS"];
+
+  for (const key of Object.keys(storage)) {
+    const entry = storage[key];
+    if (entry && entry.hash) {
+      entries.push(entry);
+    }
+  }
+  return entries;
+};
+
 export function newEntryFromUrl(url: string): TOTPEntry {
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
   if (!regexTotp.test(url)) {
@@ -39,10 +61,13 @@ export function newEntryFromUrl(url: string): TOTPEntry {
   return newEntry;
 }
 
-export const migrateV1ToV2 = (entries: OTPEntryLegacy[]) => {
-  if (entries.length === 0) return new Map<string, TOTPEntry>();
+export const migrateV1ToV2 = async () => {
+  console.log("Migrating entries from v1 to v2");
+  const legacyEntries = await getLegacyEntries();
+  // console.log("legacyEntries:", legacyEntries);
+  if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
   return new Map(
-    [...(entries?.values() ?? [])].map((entry) => {
+    [...(legacyEntries?.values() ?? [])].map((entry) => {
       {
         delete entry.code;
         delete entry.index;
@@ -53,8 +78,8 @@ export const migrateV1ToV2 = (entries: OTPEntryLegacy[]) => {
           entry.hash,
           {
             ...entry,
-            type: entry.type === 1 ? "totp" : "hotp",
-            algorithm: entry.algorithm === 1 ? "SHA1" : "SHA256",
+            type: entry.type === 1 || entry.type === ("totp" as unknown) ? "totp" : "hotp",
+            algorithm: entry.algorithm === 1 || entry.algorithm === ("SHA1" as unknown) ? "SHA1" : "SHA256",
           } as TOTPEntry,
         ];
       }
@@ -86,7 +111,6 @@ export async function getRandomEntry(): Promise<OTPEntry> {
 }
 
 export async function addFromBackground(entry: TOTPEntry) {
-  const { ENTRIES_STOTAGE_KEY = "entries-v2" } = import.meta.env;
   const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
   if (entriesStorage) {
     const entriesStorageParse = superjson.parse(entriesStorage[ENTRIES_STOTAGE_KEY]) as StorageValue<EntryState>;
