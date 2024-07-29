@@ -6,7 +6,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 type CardUtilsProps = {

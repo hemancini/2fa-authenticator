@@ -1,6 +1,6 @@
 import { red } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
 import { useState } from "react";
 import { useCountdown } from "react-countdown-circle-timer";

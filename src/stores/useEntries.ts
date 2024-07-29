@@ -1,4 +1,4 @@
-import type { EntryState, OTPEntry } from "@src/otp/type";
+import type { EntryState, OTPEntry } from "@src/entry/type";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import { create } from "zustand";

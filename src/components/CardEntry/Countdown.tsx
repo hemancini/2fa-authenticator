@@ -1,9 +1,8 @@
 import Box from "@mui/material/Box";
 import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import type { OTPEntry } from "@src/entry/type";
 import useCountdown from "@src/hooks/useCountdown";
-import type { OTPEntry } from "@src/otp/type";
-import { useOptionsStore } from "@src/stores/useOptions";
 
 export default function CountdownCircle({ entry }: { entry: OTPEntry }) {
   const { remainingTime, progress, currentColor, elapsedTime } = useCountdown({ entry });
@@ -25,7 +24,6 @@ export default function CountdownCircle({ entry }: { entry: OTPEntry }) {
 
 export const CounterProgress = (props: CircularProgressProps & { count: number }) => {
   const { count } = props;
-  const { isNewVersion } = useOptionsStore();
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
       <CircularProgress variant="determinate" thickness={5} {...props} />
@@ -47,8 +45,8 @@ export const CounterProgress = (props: CircularProgressProps & { count: number }
           color="text.secondary"
           sx={{
             lineHeight: 1,
-            fontSize: isNewVersion ? "0.90rem" : "0.70rem",
-            fontWeight: isNewVersion ? "bold" : "normal",
+            fontSize: "0.90rem",
+            fontWeight: "bold",
           }}
         >
           {count}

@@ -1,5 +1,5 @@
-import { OTPEntry } from "@src/otp/entry";
-import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/otp/type";
+import { OTPEntry } from "@src/entry/otp";
+import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
 

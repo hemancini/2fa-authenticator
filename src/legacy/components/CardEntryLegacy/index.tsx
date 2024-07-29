@@ -16,7 +16,7 @@ import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypassLeg
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useCounter from "@src/legacy/hooks/useCounter";
 import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
-import { OTPEntry } from "@src/otp/type";
+import { OTPEntry } from "@src/entry/type";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 

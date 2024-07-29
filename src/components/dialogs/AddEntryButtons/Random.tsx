@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import type { EntryState } from "@src/otp/type";
+import type { EntryState } from "@src/entry/type";
 import { useModalStore } from "@src/stores/useDynamicStore";
 import { chromePersistStorage, useEntries } from "@src/stores/useEntries";
 import { getRandomEntry } from "@src/utils/entry";

@@ -1,4 +1,3 @@
-import NewVersion from "@components/NewVersion";
 // import OptionsNestedList from "@components/OptionsNestedList";
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
@@ -108,8 +107,6 @@ export default function Siderbar({
         })}
         {/* <OptionsNestedList /> */}
       </List>
-      <NewVersion />
-      <Divider />
       <ThemeModeSelect />
     </Drawer>
   );

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { useEntries } from "@src/stores/useEntries";
 import { newEntryFromUrl } from "@src/utils/entry";
 import { useState } from "react";

@@ -8,7 +8,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useContext, useState } from "react";
 

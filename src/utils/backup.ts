@@ -1,4 +1,4 @@
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { storage } from "@src/stores/useEntries";
 import CryptoJS from "crypto-js";
 

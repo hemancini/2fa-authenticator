@@ -1,5 +1,5 @@
-import { generateOTP } from "@src/otp/entry";
-import { Entry } from "@src/otp/type";
+import { generateOTP } from "@src/entry/otp";
+import { Entry } from "@src/entry/type";
 import { decrypData } from "@src/utils/crypto";
 import { getBackgroundEntries } from "@src/utils/entry";
 import { getOptionsStorage } from "@src/utils/options";

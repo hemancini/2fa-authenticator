@@ -4,7 +4,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Box, Button, FormControl, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { useEntries } from "@src/stores/useEntries";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { decrypData, encrypData } from "@src/utils/crypto";

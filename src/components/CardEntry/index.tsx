@@ -10,7 +10,7 @@ import { Box, Card, IconButton, InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import type { OTPEntry } from "@src/otp/type";
+import type { OTPEntry } from "@src/entry/type";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { useEffect, useState } from "react";

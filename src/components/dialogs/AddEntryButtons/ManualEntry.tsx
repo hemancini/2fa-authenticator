@@ -14,8 +14,8 @@ import {
   TextField,
 } from "@mui/material";
 import { t } from "@src/chrome/i18n";
-import { OTPEntry } from "@src/otp/entry";
-import type { OTPAlgorithm, OTPDigits, OTPPeriod } from "@src/otp/type";
+import { OTPEntry } from "@src/entry/otp";
+import type { OTPAlgorithm, OTPDigits, OTPPeriod } from "@src/entry/type";
 import { useEntries } from "@src/stores/useEntries";
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
