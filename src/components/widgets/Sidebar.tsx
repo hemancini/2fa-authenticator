@@ -3,7 +3,6 @@ import NewVersion from "@components/NewVersion";
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
 import LockClockIcon from "@mui/icons-material/LockClock";
-import SaveIcon from "@mui/icons-material/Save";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -27,12 +26,6 @@ const routes = [
     path: "/options",
     name: t("options"),
     icon: <SettingsIcon />,
-    disabled: false,
-  },
-  {
-    path: "/storage",
-    name: "storage",
-    icon: <SaveIcon />,
     disabled: false,
   },
 ];

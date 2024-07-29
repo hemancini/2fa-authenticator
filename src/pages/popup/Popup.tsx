@@ -5,15 +5,11 @@ import AppBar from "@components/widgets/AppBar";
 import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Entries from "@routes/Entries";
-import EntriesLegacy from "@routes/EntriesLegacy";
-import EntriesLegacyEdit from "@routes/EntriesLegacyEdit";
 import { t } from "@src/chrome/i18n";
-import Options from "@src/routes/Options";
-import Storage from "@src/routes/Storage";
+import Routes from "@src/routes";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
-import { Redirect, Route, Router, Switch } from "wouter";
+import { Router } from "wouter";
 import makeMatcher, { MatcherFn } from "wouter/matcher";
 import { navigate, useLocationProperty } from "wouter/use-location";
 
@@ -36,7 +32,7 @@ const multipathMatcher: MatcherFn = (patterns, path) => {
 };
 
 export default function Popup() {
-  const { xraysEnabled, isNewVersion } = useOptionsStore();
+  const { xraysEnabled } = useOptionsStore();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isSidePanel = window.location.href.includes(DEFAULT_SIDE_PANEL_URL);
@@ -64,21 +60,7 @@ export default function Popup() {
         )}
         <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
-          <Switch>
-            <Route path="/">{isNewVersion ? <Entries /> : <EntriesLegacy />}</Route>
-            <Route path="/legacy/edit">
-              <EntriesLegacyEdit />
-            </Route>
-            <Route path="/options">
-              <Options />
-            </Route>
-            <Route path="/storage">
-              <Storage />
-            </Route>
-            <Route path="/:anything*">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
+          <Routes />
         </Container>
       </Box>
     </Router>
