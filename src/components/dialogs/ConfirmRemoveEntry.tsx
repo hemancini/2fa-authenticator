@@ -2,26 +2,16 @@ import Tooltip from "@components/CustomTooltip";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Button, Dialog, DialogActions, DialogContent, Divider, IconButton, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry as OTPEntryLegacy } from "@src/models/legacy/otp";
 import type { OTPEntry } from "@src/otp/type";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 
 type ConfirmRemoveEntryProps = {
-  entry: OTPEntry | OTPEntryLegacy;
+  entry: OTPEntry;
   isConfirmOpen: boolean;
   setIsConfirmOpen: (open: boolean) => void;
-  /**
-   * @deprecated since version 1.3.0
-   */
-  handleRemoveEntry?: (hash: string) => void;
 };
 
-export default function ConfirmRemoveEntry({
-  entry,
-  isConfirmOpen,
-  setIsConfirmOpen,
-  handleRemoveEntry,
-}: ConfirmRemoveEntryProps) {
+export default function ConfirmRemoveEntry({ entry, isConfirmOpen, setIsConfirmOpen }: ConfirmRemoveEntryProps) {
   const { hash, account } = entry;
   const { addRemove } = useEntriesUtils();
   return (
@@ -66,7 +56,6 @@ export default function ConfirmRemoveEntry({
             variant="contained"
             fullWidth
             onClick={() => {
-              handleRemoveEntry?.(hash);
               addRemove(hash);
             }}
             autoFocus

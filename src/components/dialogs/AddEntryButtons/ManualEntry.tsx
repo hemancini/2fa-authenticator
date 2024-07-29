@@ -14,12 +14,10 @@ import {
   TextField,
 } from "@mui/material";
 import { t } from "@src/chrome/i18n";
-import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import { OTPEntry } from "@src/otp/entry";
 import type { OTPAlgorithm, OTPDigits, OTPPeriod } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 export interface AddEntryProps {
@@ -48,7 +46,6 @@ export default function ManualEntry(props: AddEntryProps) {
   const { addEntry } = useEntries();
   const [isAdded, setAdded] = useState(false);
   const [isAdvance, setAdvance] = useState(false);
-  const { handleEntriesUpdate } = useContext(EntriesContext);
 
   const {
     register,
@@ -73,31 +70,11 @@ export default function ManualEntry(props: AddEntryProps) {
     setAdded(true);
   };
 
-  /**
-   * @deprecated since version 1.3.0
-   */
-  const handleSubmited = async (data: FieldValues) => {
-    const dragData = { ...dataEntry, ...data };
-    const authURL = `otpauth://totp/${dragData.account}?secret=${dragData.secret}&issuer=${dragData.issuer}&algorithm=${dragData.algorithm}&digits=${dragData.digits}&period=${dragData.period}`;
-
-    return new Promise((resolve) => {
-      sendMessageToBackground({
-        message: { type: "getTotp", data: { url: authURL } },
-        handleSuccess: (result) => {
-          handleEntriesUpdate();
-          setAdded(true);
-          resolve(result);
-        },
-      });
-    });
-  };
-
   return (
     <form
       autoComplete="off"
       onSubmit={handleSubmit((data) => {
         handleAddEntry(data);
-        handleSubmited(data);
       })}
     >
       <Box mx={0.5} display="grid" gap={2} mb={2.5}>

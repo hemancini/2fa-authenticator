@@ -6,9 +6,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import { useModalStore } from "@src/stores/useDynamicStore";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 
 import ManualEntry from "./AddEntryButtons/ManualEntry";
@@ -27,15 +26,8 @@ export interface AddEntryMenuProps {
 
 export default function AddEntryMenu() {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
-  const { handleEntriesEdited } = useContext(EntriesContext);
   const [, navigate] = useLocation();
   const { modal, toggleModal } = useModalStore();
-
-  useEffect(() => {
-    if (manualEntryOptions !== "") {
-      handleEntriesEdited();
-    }
-  }, [manualEntryOptions]);
 
   const handleOnAddEntryClose = () => {
     toggleModal("add-entry-modal");

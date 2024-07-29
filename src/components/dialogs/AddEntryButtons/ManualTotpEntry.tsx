@@ -3,12 +3,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { t } from "@src/chrome/i18n";
-import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import type { OTPEntry } from "@src/otp/type";
 import { useEntries } from "@src/stores/useEntries";
 import { newEntryFromUrl } from "@src/utils/entry";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
@@ -16,7 +14,6 @@ export interface AddEntryProps {
 }
 
 export default function ManualTotpEntry(props: AddEntryProps) {
-  const { handleEntriesUpdate } = useContext(EntriesContext);
   const { handlerOnCandel, handlerGoToHome } = props;
   const { addEntry } = useEntries();
   const [totp, setTopt] = useState("");
@@ -27,22 +24,6 @@ export default function ManualTotpEntry(props: AddEntryProps) {
     const newEntry = newEntryFromUrl(totp);
     addEntry(newEntry);
     setEntry(newEntry);
-  };
-
-  /**
-   * @deprecated since version 1.3.0
-   */
-  const handleSubmited = async () => {
-    return new Promise((resolve) => {
-      sendMessageToBackground({
-        message: { type: "getTotp", data: { url: totp } },
-        handleSuccess: (result) => {
-          handleEntriesUpdate();
-          setEntry(result);
-          resolve(result);
-        },
-      });
-    });
   };
 
   return (
@@ -85,7 +66,6 @@ export default function ManualTotpEntry(props: AddEntryProps) {
               disabled={!regexTotp.test(totp)}
               onClick={() => {
                 handleAddEntry();
-                handleSubmited();
               }}
             >
               {t("add")}

@@ -5,12 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
-import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import { useEntries } from "@src/stores/useEntries";
 import { newEntryFromUrl } from "@src/utils/entry";
 import jsQR from "jsqr";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 export default function UploadImage(props: {
   handleCloseModal: () => void;
@@ -23,7 +21,6 @@ export default function UploadImage(props: {
   const [imageDetails, setImageDetails] = useState("");
   const { addEntry } = useEntries();
 
-  const { handleEntriesUpdate } = useContext(EntriesContext);
   const handleImageChange = (event: { target: { files: FileList } }) => {
     const file = event.target.files[0];
     if (file) {
@@ -69,29 +66,8 @@ export default function UploadImage(props: {
     const newEntry = newEntryFromUrl(qrCode);
     addEntry(newEntry);
 
-    // setImageUploaded(false);
-    // handleCloseModal();
-  };
-
-  /**
-   * @deprecated since version 1.3.0
-   */
-  const handleAddEntryLegacy = async () => {
-    const totpRegex = /^otpauth:\/\/totp\//;
-    if (qrCode.match(totpRegex)) {
-      // return new Promise(() => {
-      sendMessageToBackground({
-        message: { type: "getTotp", data: { url: qrCode } },
-        handleSuccess: () => {
-          setImageUploaded(false);
-          handleEntriesUpdate();
-          handleCloseModal();
-        },
-      });
-      // });
-    } else {
-      alert("Invalid QR code");
-    }
+    setImageUploaded(false);
+    handleCloseModal();
   };
 
   return image ? (
@@ -127,7 +103,6 @@ export default function UploadImage(props: {
           variant="contained"
           onClick={() => {
             handleAddEntry();
-            handleAddEntryLegacy();
           }}
         >
           {t("add")}

@@ -1,4 +1,4 @@
-import type { OTPEntry as OTPEntryLegacy } from "@src/models/legacy/otp";
+import type { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
 import { OTPEntry } from "@src/otp/entry";
 import type { EntryState, OTPEntry as TOTPEntry, OTPPeriod, OTPType } from "@src/otp/type";
 import superjson from "superjson";

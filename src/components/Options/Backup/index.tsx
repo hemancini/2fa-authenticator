@@ -1,40 +1,39 @@
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Button, Dialog, DialogActions, DialogContent, Divider, Input } from "@mui/material";
-import { List, ListItem, ListItemButton, ListItemText, Paper, Typography, useMediaQuery } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Divider,
+  Input,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Paper,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import { ListItemIcon } from "@src/components/Options";
-import EntriesContext from "@src/contexts/legacy/Entries";
-import BackupData from "@src/models/legacy/backup";
 import { useBackupStore } from "@src/stores/useBackupStore";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useEntries } from "@src/stores/useEntries";
-import { useOptionsStore } from "@src/stores/useOptions";
 import { decryptBackup, exportBackup } from "@src/utils/backup";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "wouter";
 
 export default function Backup() {
   const { showMessage } = useBackupStore();
-  const { isNewVersion } = useOptionsStore();
 
   const theme = useTheme();
   const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleDownloadJson = async () => {
-    /**
-     * @deprecated since version 1.3.0
-     */
-    const exportBackupLegacy = async () => {
-      const dataLegacy = await BackupData.get();
-      const jsonData = JSON.stringify(dataLegacy, null, 2);
-      if (!jsonData) return;
-      return new Blob([jsonData], { type: "application/json" });
-    };
-
     try {
-      const dataBlob = isNewVersion ? await exportBackup() : await exportBackupLegacy();
+      const dataBlob = await exportBackup();
       const fileName = `${new Date().toISOString().split(".")[0]}.json`;
       const url = window.URL.createObjectURL(dataBlob);
       const link = document.createElement("a");
@@ -69,11 +68,9 @@ export default function Backup() {
 export const ListItemImportBackup = (props: { returnRaw?: boolean }) => {
   const { returnRaw = false } = props;
   const [, setLocation] = useLocation();
-  const { handleEntriesUpdate } = useContext(EntriesContext);
   const { showMessage } = useBackupStore();
   const { modal, toggleModal } = useModalStore();
   const { actionState, toggleAction } = useActionStore();
-  const { isNewVersion } = useOptionsStore();
 
   const { setEntries } = useEntries();
 
@@ -114,8 +111,7 @@ export const ListItemImportBackup = (props: { returnRaw?: boolean }) => {
     if (!jsonData) return;
     try {
       const data = JSON.parse(jsonData);
-      isNewVersion ? await importBackup(data) : await BackupData.set(data);
-      handleEntriesUpdate();
+      await importBackup(data);
       handleCloseBackgroupModal();
       handleCloseModal();
       setLocation(DEFAULT_POPUP_URL);

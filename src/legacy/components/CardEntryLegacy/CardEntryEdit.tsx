@@ -9,8 +9,8 @@ import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
-import EntriesContext from "@src/contexts/legacy/Entries";
-import { OTPEntry } from "@src/models/legacy/otp";
+import EntriesContext from "@src/legacy/contexts/Entries";
+import { OTPEntry } from "@src/legacy/models/otp";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useContext, useState } from "react";
 

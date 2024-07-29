@@ -2,7 +2,6 @@ import "@pages/popup/index.css";
 
 import ThemeProvider from "@components/ThemeProvider";
 import Popup from "@pages/popup/Popup";
-import { EntriesProviderLegacy } from "@src/contexts/legacy/Entries";
 import { createRoot } from "react-dom/client";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
@@ -15,9 +14,7 @@ function init() {
   const root = createRoot(appContainer);
   root.render(
     <ThemeProvider>
-      <EntriesProviderLegacy>
-        <Popup />
-      </EntriesProviderLegacy>
+      <Popup />
     </ThemeProvider>
   );
 }

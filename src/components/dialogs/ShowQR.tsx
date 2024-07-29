@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, Divider, Typography } from "@mui/material";
-import type { OTPEntry as OTPEntryLegacy } from "@src/models/legacy/otp";
+import type { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
 import type { OTPEntry } from "@src/otp/type";
 import { QRCodeSVG } from "qrcode.react";
 import * as React from "react";

@@ -11,25 +11,21 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { t } from "@src/chrome/i18n";
-import EntriesContext from "@src/contexts/legacy/Entries";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamicStore";
 import { useEntries } from "@src/stores/useEntries";
 import { useOptionsStore } from "@src/stores/useOptions";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "wouter";
 
 export default function MoreOptions() {
-  const [location, setLocation] = useLocation();
+  const [location] = useLocation();
   const [, toggleEditing] = useUrlHashState("#/edit");
   const { toggleModal } = useModalStore();
-  const { toggleAction } = useActionStore();
-  const { isVisibleCodes, setVisibleCodes, isNewVersion } = useOptionsStore();
+  const { isVisibleCodes, setVisibleCodes } = useOptionsStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { entries: entriesLegacy } = useContext(EntriesContext);
   const { entries } = useEntries();
   const emptyEntries = entries.size === 0;
-  const emptyEntriesLegacy = entriesLegacy?.length === 0;
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,14 +63,9 @@ export default function MoreOptions() {
             <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
             <MenuItem
               dense={true}
-              disabled={isNewVersion ? emptyEntries : emptyEntriesLegacy}
+              disabled={emptyEntries}
               onClick={() => {
-                if (isNewVersion) {
-                  toggleEditing();
-                } else {
-                  toggleAction("entries-edit-state");
-                  setLocation("/legacy/edit");
-                }
+                toggleEditing();
                 handleClose();
               }}
               sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}
@@ -87,7 +78,7 @@ export default function MoreOptions() {
             <Divider sx={{ "&.MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 } }} />
             <MenuItem
               dense={true}
-              disabled={isNewVersion ? emptyEntries : emptyEntriesLegacy}
+              disabled={emptyEntries}
               onClick={() => {
                 setVisibleCodes(!isVisibleCodes);
                 handleClose();

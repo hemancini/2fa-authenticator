@@ -13,9 +13,9 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/legacy/Entries";
-import useCounter from "@src/hooks/useCounter";
-import { OTPEntry } from "@src/models/legacy/otp";
+import EntriesContext from "@src/legacy/contexts/Entries";
+import useCounter from "@src/legacy/hooks/useCounter";
+import { OTPEntry } from "@src/legacy/models/otp";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 

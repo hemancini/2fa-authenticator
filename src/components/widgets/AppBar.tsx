@@ -1,5 +1,4 @@
 import Tooltip from "@components/CustomTooltip";
-import AddEntryMenu from "@components/dialogs/AddEntryMenu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -13,13 +12,12 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/legacy/Entries";
+import AddEntryMenu from "@src/components/dialogs/AddEntryMenu";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
-import { useOptionsStore } from "@src/stores/useOptions";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
 import ErrorCaptureQR from "../dialogs/CaptureQR";
@@ -124,10 +122,6 @@ export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.Set
 };
 
 const SaveButton = (): JSX.Element => {
-  const { handleEntriesEdited } = useContext(EntriesContext);
-  const { toggleAction } = useActionStore();
-
-  const { isNewVersion } = useOptionsStore();
   const { removes, resetRemoves, entriesEdited, resetEntriesEdited } = useEntriesUtils();
   const { removeEntry, upsertEntry } = useEntries();
   const [, toggleEditing] = useUrlHashState("#/edit");
@@ -155,13 +149,8 @@ const SaveButton = (): JSX.Element => {
       LinkComponent={Link}
       href="/"
       onClick={() => {
-        if (isNewVersion) {
-          handleSave();
-          toggleEditing();
-        } else {
-          handleEntriesEdited();
-          toggleAction("entries-edit-state");
-        }
+        handleSave();
+        toggleEditing();
       }}
     >
       <Tooltip title={t("save")} disableInteractive>
@@ -172,9 +161,6 @@ const SaveButton = (): JSX.Element => {
 };
 
 const CancelButton = (): JSX.Element => {
-  const { handleEntriesUpdate } = useContext(EntriesContext);
-  const { toggleAction } = useActionStore();
-  const { isNewVersion } = useOptionsStore();
   const [, toggleEditing] = useUrlHashState("#/edit");
   const { resetRemoves, resetEntriesEdited } = useEntriesUtils();
 
@@ -184,14 +170,9 @@ const CancelButton = (): JSX.Element => {
       color="inherit"
       aria-label={t("cancel")}
       onClick={() => {
-        handleEntriesUpdate();
-        if (isNewVersion) {
-          resetRemoves();
-          resetEntriesEdited();
-          toggleEditing();
-        } else {
-          toggleAction("entries-edit-state");
-        }
+        resetRemoves();
+        resetEntriesEdited();
+        toggleEditing();
       }}
       LinkComponent={Link}
       href="/"

@@ -1,5 +1,5 @@
-import type { OTPEntry } from "@src/models/legacy/otp";
-import { EntryStorage } from "@src/models/legacy/storage";
+import type { OTPEntry } from "@src/legacy/models/otp";
+import { EntryStorage } from "@src/legacy/models/storage";
 import { decrypData } from "@src/utils/crypto";
 import { getOptionsStorage } from "@src/utils/options";
 

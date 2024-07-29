@@ -1,4 +1,4 @@
-import EntriesContext from "@src/contexts/legacy/Entries";
+import EntriesContext from "@src/legacy/contexts/Entries";
 import { useCallback, useContext, useEffect, useState } from "react";
 
 /**

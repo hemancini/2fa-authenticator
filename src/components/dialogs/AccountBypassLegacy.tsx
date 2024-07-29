@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import { t } from "@src/chrome/i18n";
-import { OTPEntry } from "@src/models/legacy/otp";
+import { OTPEntry } from "@src/legacy/models/otp";
 import { decrypData, encrypData } from "@src/utils/crypto";
 import React, { useState } from "react";
 

@@ -28,9 +28,6 @@ type ActionStoreProps = {
     action1: boolean;
     action2: boolean;
   };
-  /**
-   * @deprecated since version 1.3.0
-   */
   toggleAction: (actionName: string) => void;
 };
 

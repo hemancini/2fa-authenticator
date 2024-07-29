@@ -1,6 +1,4 @@
 import { sendErrorMessageToClient, sendMessageToClient } from "@src/chrome/message";
-import { Encryption } from "@src/models/legacy/crypto";
-import { EntryStorage } from "@src/models/legacy/storage";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
 import manifest from "../../../manifest";
@@ -13,7 +11,6 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-const cachedPassphrase = "";
 const entrustSamlPath = "/#/saml/authentication/";
 
 chrome.runtime.onConnect.addListener((port) => {
@@ -41,20 +38,6 @@ chrome.runtime.onConnect.addListener((port) => {
               data: { ...data, url },
             });
           });
-          break;
-        case "getTotp":
-          {
-            const entry = await getTotp(data);
-            console.log("sendMessageToBackground/getTotp:", entry);
-            if (entry instanceof Error) {
-              sendErrorMessageToClient(port, entry);
-            } else {
-              sendMessageToClient(port, {
-                type: "getTotp",
-                data: entry,
-              });
-            }
-          }
           break;
         case "autofill":
           chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
@@ -145,70 +128,6 @@ async function captureQR() {
 async function getCapture(tab: chrome.tabs.Tab) {
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
   return dataUrl;
-}
-
-/**
- * @deprecated since version 1.3.0
- */
-async function getTotp(message: { url: string; site: string }) {
-  const { url, site } = message;
-  const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
-
-  if (!regexTotp.test(url)) {
-    console.warn("getTotp() => bad url", url);
-    return Error("Bad url");
-  }
-
-  const hash = crypto.randomUUID();
-  const urlObj = new URL(decodeURIComponent(url));
-  const entryData: { [hash: string]: OTPStorage } = {};
-  const period = parseInt(urlObj.searchParams.get("period") || "30");
-  entryData[hash] = {
-    hash,
-    account: urlObj.pathname.split(":")[1],
-    issuer: urlObj.searchParams.get("issuer"),
-    secret: urlObj.searchParams.get("secret"),
-    type: urlObj.pathname.split(":")[0].split("/")[2],
-    encrypted: false,
-    index: 0,
-    counter: 0,
-    pinned: false,
-    period: isNaN(period) || period < 0 || period > 60 || 60 % period !== 0 ? undefined : period,
-    digits: urlObj.searchParams.get("digits") === "8" ? 8 : 6,
-    algorithm: urlObj.searchParams.get("algorithm") === "SHA256" ? "SHA256" : "SHA1",
-    site,
-  };
-
-  if (!entryData[hash].issuer) {
-    const pattern = /otpauth:\/\/totp\/([^:]+):/;
-    const match = url.match(pattern);
-    entryData[hash].issuer = match?.[1];
-  }
-
-  if (!entryData[hash].account) {
-    const pattern = /otpauth:\/\/totp\/([^?:]+)/;
-    const match = url.match(pattern);
-    entryData[hash].account = match[1];
-    if (!match?.[1]) {
-      console.warn("getTotp() => no account", url);
-      return Error("No account");
-    }
-  }
-
-  if (!entryData[hash].secret) {
-    console.warn("getTotp() => no secret", url);
-    return Error("No secret");
-  }
-
-  // If the entries are encrypted and we aren't unlocked, error.
-  const encryption = new Encryption(cachedPassphrase);
-  if ((await EntryStorage.hasEncryptionKey()) !== encryption.getEncryptionStatus()) {
-    console.warn("getTotp() => encryption status mismatch");
-    return Error("Encryption status mismatch");
-  }
-
-  await EntryStorage.import(encryption, entryData);
-  return entryData[hash];
 }
 
 // console.log("background loaded");

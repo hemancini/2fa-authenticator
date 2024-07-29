@@ -6,7 +6,7 @@ import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { t } from "@src/chrome/i18n";
-import Routes from "@src/routes";
+import RoutesPopup from "@src/routes/Popup";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
 import { Router } from "wouter";
@@ -60,7 +60,7 @@ export default function Popup() {
         )}
         <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
-          <Routes />
+          <RoutesPopup />
         </Container>
       </Box>
     </Router>
