@@ -1,5 +1,7 @@
 import packageJson from "./package.json";
 
+const isDev = process.env.__DEV__ === "true";
+
 /**
  * After changing, please reload the extension at `chrome://extensions`
  */
@@ -21,7 +23,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   action: {
     default_popup: "src/pages/popup/index.html",
-    default_icon: "icon-34.png",
+    default_icon: isDev ? "icon-34-dev.png" : "icon-34.png",
   },
   commands: {
     "scan-qr": {
@@ -47,7 +49,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   optional_host_permissions: ["*://*/*"],
   web_accessible_resources: [
     {
-      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png"],
+      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png", "icon-34-dev.png"],
       matches: ["*://*/*"],
     },
   ],

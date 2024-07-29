@@ -1,11 +1,10 @@
 import type { OTPEntry } from "@src/entry/type";
-import { storage } from "@src/stores/useEntries";
 import CryptoJS from "crypto-js";
 
 const appKey = import.meta.env.VITE_APP_KEY || DEFAULT_APP_KEY;
 
 export const exportBackup = async (): Promise<Blob> => {
-  const entriesStore = await storage.getItem("entries-v2");
+  const entriesStore = await chrome.storage.local.get("entries");
   if (!entriesStore) throw new Error("No data found", { cause: "notEntriesFound" });
 
   const { entries = new Map() } = entriesStore.state;

@@ -4,20 +4,7 @@ import superjson from "superjson";
 import { create } from "zustand";
 import { persist, type PersistStorage } from "zustand/middleware";
 
-const { ENCRYPTED: isEncrypted = false } = import.meta.env;
-console.log("isEncrypted:", isEncrypted);
-
-export const storage: PersistStorage<EntryState> = {
-  getItem: (name) => {
-    const str = localStorage.getItem(name);
-    if (!str) return null;
-    return superjson.parse(isEncrypted ? decrypt(str) : str);
-  },
-  setItem: (name, value) => {
-    localStorage.setItem(name, isEncrypted ? encrypt(superjson.stringify(value)) : superjson.stringify(value));
-  },
-  removeItem: (name) => localStorage.removeItem(name),
-};
+const { ENCRYPTED: isEncrypted = true } = import.meta.env;
 
 export const chromePersistStorage: PersistStorage<EntryState> = {
   getItem: async (name) =>
