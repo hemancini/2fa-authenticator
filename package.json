@@ -1,6 +1,6 @@
 {
   "name": "twofa-authenticator",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "This extension provides 2FA authentication codes in the browser",
   "license": "MIT",
   "repository": {
