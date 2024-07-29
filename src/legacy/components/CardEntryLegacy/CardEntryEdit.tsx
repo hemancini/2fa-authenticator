@@ -6,9 +6,9 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import type { OTPEntry } from "@src/entry/type";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
-import type { OTPEntry } from "@src/entry/type";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useContext, useState } from "react";
 

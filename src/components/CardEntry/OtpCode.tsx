@@ -1,8 +1,8 @@
 import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
+import type { OTPEntry } from "@src/entry/type";
 import useCountdown from "@src/hooks/useCountdown";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import type { OTPEntry } from "@src/entry/type";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
 import { useState } from "react";
 

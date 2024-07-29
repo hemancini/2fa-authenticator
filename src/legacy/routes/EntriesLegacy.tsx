@@ -1,5 +1,5 @@
-import CardEntryLegacy from "@src/legacy/components/CardEntryLegacy";
 import NotEntriesFound from "@components/NotEntriesFound";
+import CardEntryLegacy from "@src/legacy/components/CardEntryLegacy";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useRefreshCodes from "@src/legacy/hooks/useRefreshCodes";
 import { Reorder } from "framer-motion";

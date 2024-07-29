@@ -12,11 +12,11 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
+import { OTPEntry } from "@src/entry/type";
 import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypassLegacy";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useCounter from "@src/legacy/hooks/useCounter";
 import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
-import { OTPEntry } from "@src/entry/type";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
