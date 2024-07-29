@@ -1,31 +1,27 @@
-import type { OTPEntry } from "@src/legacy/models/otp";
-import { EntryStorage } from "@src/legacy/models/storage";
+import { generateOTP } from "@src/otp/entry";
+import { Entry } from "@src/otp/type";
 import { decrypData } from "@src/utils/crypto";
+import { getBackgroundEntries } from "@src/utils/entry";
 import { getOptionsStorage } from "@src/utils/options";
 
 chrome.runtime.onMessage.addListener(async (request) => {
   const { bypassEnabled } = await getOptionsStorage();
   if (request.message === "bypass") {
-    /** @deprecated This constant is deprecate. Use `chromeStorageKey` new instead. */
-    const chromeStorageKeyDeprecated = "OPTIONS";
-    /** @deprecated This constant is deprecate. Use `bypassEnabled` new instead. */
-    const bypassEnabledDeprecated = await chrome.storage.local
-      .get([chromeStorageKeyDeprecated])
-      .then((result) => result[chromeStorageKeyDeprecated]?.bypassEnabled);
-    if (bypassEnabled || bypassEnabledDeprecated) {
-      const entries = await EntryStorage.get();
+    if (bypassEnabled) {
+      const backgroundEntries = await getBackgroundEntries();
+      const entries = Array.from(backgroundEntries.values());
       const filter = entries.filter(
         (entry) => entry?.site?.includes(location.host) && entry?.user !== "" && entry?.pass !== ""
       );
       const entry = filter?.[0];
       if (entry?.site?.includes(request?.data)) {
-        autoLoginEntrust(entry);
+        autoLoginEntrust(entry as Entry);
       }
     }
   }
 });
 
-const autoLoginEntrust = async (entry: OTPEntry) => {
+const autoLoginEntrust = async (entry: Entry) => {
   let iteration = 0;
   let intervalOTP = undefined;
   let intervalOptions = undefined;
@@ -112,10 +108,11 @@ const autoLoginEntrust = async (entry: OTPEntry) => {
   const setOTP = () => {
     iteration++;
     console.log("setOTP");
+    const code = generateOTP(entry);
     const otpInput = document.getElementById("otp");
     if (otpInput) {
       otpInput.click();
-      document.execCommand("insertText", false, entry.code);
+      document.execCommand("insertText", false, code);
       const nextButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
       if (nextButton) nextButton.click();
       iteration = 0;

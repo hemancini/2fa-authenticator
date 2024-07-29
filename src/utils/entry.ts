@@ -110,6 +110,15 @@ export async function getRandomEntry(): Promise<OTPEntry> {
   return newEntry;
 }
 
+export const getBackgroundEntries = async () => {
+  const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
+  if (entriesStorage) {
+    const entriesStorageParse = superjson.parse(entriesStorage[ENTRIES_STOTAGE_KEY]) as StorageValue<EntryState>;
+    return entriesStorageParse.state.entries;
+  }
+  return new Map<string, TOTPEntry>();
+};
+
 export async function addFromBackground(entry: TOTPEntry) {
   const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
   if (entriesStorage) {

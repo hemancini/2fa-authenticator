@@ -14,6 +14,7 @@ interface Entry {
   digits: OTPDigits;
   algorithm: OTPAlgorithm;
   encrypted?: boolean;
+  site?: string;
   user?: string;
   pass?: string;
 }

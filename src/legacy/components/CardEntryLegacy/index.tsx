@@ -1,7 +1,6 @@
 import { CounterProgress } from "@components/CardEntry/Countdown";
 import CustomIconButton from "@components/CustomIconButton";
 import Tooltip from "@components/CustomTooltip";
-import AccountBypassLegacy from "@components/dialogs/AccountBypassLegacy";
 import ShowQR from "@components/dialogs/ShowQR";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -13,14 +12,16 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
+import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypassLegacy";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useCounter from "@src/legacy/hooks/useCounter";
-import { OTPEntry } from "@src/legacy/models/otp";
+import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
+import { OTPEntry } from "@src/otp/type";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 type EntryContentProps = {
-  entry: OTPEntry;
+  entry: OTPEntryLegacy;
   handleCopyCode: () => void;
   isToolpipCopyOpen: boolean;
   isVisibleCode?: boolean;
@@ -30,7 +31,7 @@ const issuerBypass = "WOM";
 const regexEAS = /^[A-Za-z0-9+/=]+$/;
 const defaultEyesIconSize = 20;
 
-export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
+export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
   const { bypassEnabled, isVisibleCodes } = useOptionsStore();
   const [isVisible, setVisible] = useState(isVisibleCodes);
 
@@ -161,7 +162,7 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntry }) {
           />
         </CardContent>
       </Card>
-      <ShowQR entry={entry} open={showQR} setOpen={setShowQR} />
+      <ShowQR entry={entry as unknown as OTPEntry} open={showQR} setOpen={setShowQR} />
       <AccountBypassLegacy
         entry={entry}
         isOpen={showAccount}

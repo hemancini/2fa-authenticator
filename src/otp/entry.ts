@@ -29,8 +29,8 @@ export class OTPEntry implements Entry {
     this.algorithm = algorithm;
     this.encrypted = encrypted;
     this.hash = this.generateHash();
+    this.site = window.location.hostname ?? "";
 
-    if (!this.site) this.site = window.location.hostname ?? "";
     if (!this.algorithm) this.algorithm = "SHA1";
     if (!this.period) this.period = 30;
     if (!this.digits) this.digits = 6;

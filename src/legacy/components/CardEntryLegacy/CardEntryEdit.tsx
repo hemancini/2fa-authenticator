@@ -1,16 +1,14 @@
-import Tooltip from "@components/CustomTooltip";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { Card, CardContent, FormControl } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { t } from "@src/chrome/i18n";
 import EntriesContext from "@src/legacy/contexts/Entries";
-import { OTPEntry } from "@src/legacy/models/otp";
+import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
+import type { OTPEntry } from "@src/otp/type";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useContext, useState } from "react";
 
@@ -33,7 +31,7 @@ export default function CardEntryEdit({
   entry,
   handleRender,
 }: {
-  entry: OTPEntry;
+  entry: OTPEntryLegacy;
   handleRender: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -118,10 +116,9 @@ export default function CardEntryEdit({
         </Card>
         {!entry.pinned && (
           <ConfirmRemoveEntry
-            entry={entry}
+            entry={entry as unknown as OTPEntry}
             isConfirmOpen={isConfirmOpen}
             setIsConfirmOpen={setIsConfirmOpen}
-            handleRemoveEntry={handleRemoveEntry}
           />
         )}
       </Box>
