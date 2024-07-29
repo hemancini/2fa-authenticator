@@ -2,6 +2,7 @@
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
 import LockClockIcon from "@mui/icons-material/LockClock";
+import SaveIcon from "@mui/icons-material/Save";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -18,14 +19,34 @@ import { Link, useRoute } from "wouter";
 
 const anchor = "left";
 const drawerWidth = 175;
+const isDev = import.meta.env.VITE_IS_DEV === "true";
 
-const routes = [
-  { path: "/", name: t("entries"), icon: <LockClockIcon />, disabled: false },
+interface Routes {
+  path: string;
+  name: string;
+  icon: React.ReactNode;
+  disabled?: boolean;
+  visible?: boolean;
+}
+
+const routes: Routes[] = [
+  {
+    path: "/",
+    name: t("entries"),
+    icon: <LockClockIcon />,
+    disabled: false,
+  },
   {
     path: "/options",
     name: t("options"),
     icon: <SettingsIcon />,
     disabled: false,
+  },
+  {
+    path: "/storage",
+    name: "storage",
+    icon: <SaveIcon />,
+    visible: isDev,
   },
 ];
 
@@ -82,27 +103,29 @@ export default function Siderbar({
         <Divider />
         {routes.map((route, index) => {
           return (
-            <div key={index}>
-              <ListItem disablePadding onClick={!route.disabled && handleClose}>
-                <ListItemButtonRoute
-                  href={route.path}
-                  disabled={route.disabled}
-                  hrefPopup={DEFAULT_POPUP_URL.includes("?popup=true") && DEFAULT_POPUP_URL}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: "auto",
-                      mr: 2,
-                      "& .MuiSvgIcon-root": { fontSize: 22 },
-                    }}
+            !(route.visible === false) && (
+              <div key={index}>
+                <ListItem disablePadding onClick={!route.disabled && handleClose}>
+                  <ListItemButtonRoute
+                    href={route.path}
+                    disabled={route.disabled}
+                    hrefPopup={DEFAULT_POPUP_URL.includes("?popup=true") && DEFAULT_POPUP_URL}
                   >
-                    {route.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={route.name} />
-                </ListItemButtonRoute>
-              </ListItem>
-              <Divider />
-            </div>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "auto",
+                        mr: 2,
+                        "& .MuiSvgIcon-root": { fontSize: 22 },
+                      }}
+                    >
+                      {route.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={route.name} />
+                  </ListItemButtonRoute>
+                </ListItem>
+                <Divider />
+              </div>
+            )
           );
         })}
         {/* <OptionsNestedList /> */}

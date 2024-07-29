@@ -1,6 +1,6 @@
 import packageJson from "./package.json";
 
-const isDev = process.env.__DEV__ === "true";
+// const isDev = process.env.__DEV__ === "true";
 
 /**
  * After changing, please reload the extension at `chrome://extensions`
@@ -23,7 +23,8 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   action: {
     default_popup: "src/pages/popup/index.html",
-    default_icon: isDev ? "icon-34-dev.png" : "icon-34.png",
+    default_icon: "icon-34-dev.png",
+    // default_icon: isDev ? "icon-34-dev.png" : "icon-34.png",
   },
   commands: {
     "scan-qr": {

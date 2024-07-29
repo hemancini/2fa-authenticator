@@ -1,6 +1,7 @@
 import { getOptionsStorage } from "@src/utils/options";
 
 chrome.runtime.onMessage.addListener(async (request) => {
+  console.log("autofill:", request.message);
   const { autofillEnabled } = await getOptionsStorage();
   if (request.message === "pastecode") {
     const { code } = request.data;

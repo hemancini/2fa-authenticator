@@ -1,12 +1,7 @@
 import { Box, Button } from "@mui/material";
-import type { EntryState } from "@src/entry/type";
 import { useModalStore } from "@src/stores/useDynamicStore";
-import { chromePersistStorage, useEntries } from "@src/stores/useEntries";
+import { useEntries } from "@src/stores/useEntries";
 import { getRandomEntry } from "@src/utils/entry";
-import superjson from "superjson";
-import { StorageValue } from "zustand/middleware";
-
-import draft from "../../../../docs/draft.json";
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 
@@ -22,22 +17,6 @@ export default function AddRandom() {
     }
   };
 
-  const handleAddRandomEntryDraft = async () => {
-    const newEntry = await getRandomEntry();
-    const entriesStorage = await chromePersistStorage.getItem("entries-v2");
-
-    if (entriesStorage) {
-      entriesStorage?.state?.entries?.set(newEntry.hash, newEntry);
-      await chrome.storage.local.set({ ["entries-v2"]: superjson.stringify(entriesStorage) });
-    } else {
-      const draftParse = superjson.parse(JSON.stringify(draft)) as StorageValue<EntryState>;
-      draftParse.state.entries = new Map([[newEntry.hash, newEntry]]);
-      await chrome.storage.local.set({ ["entries-v2"]: superjson.stringify(draftParse) });
-    }
-
-    toggleModal("add-entry-modal");
-  };
-
   return (
     isDev && (
       <Box
@@ -49,7 +28,7 @@ export default function AddRandom() {
           gap: 1,
         }}
       >
-        <Button size="small" variant="contained" onClick={handleAddRandomEntryDraft}>
+        <Button size="small" variant="contained" onClick={handleAddRandomEntry}>
           Random
         </Button>
         <Button

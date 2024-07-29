@@ -17,14 +17,11 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (message: Message) => {
     try {
       const { type, data } = message;
-
+      console.log("sendMessageToBackground:", type);
       switch (type) {
         case "captureQR":
-          {
-            await captureQR();
-            console.log("sendMessageToBackground/captureQR: received");
-            sendMessageToClient(port, { type, data: "received" });
-          }
+          await captureQR();
+          sendMessageToClient(port, { type, data: "received" });
           break;
         case "getCapture":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {

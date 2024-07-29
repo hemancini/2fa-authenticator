@@ -4,7 +4,7 @@ import superjson from "superjson";
 import { create } from "zustand";
 import { persist, type PersistStorage } from "zustand/middleware";
 
-const { ENCRYPTED: isEncrypted = true } = import.meta.env;
+const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export const chromePersistStorage: PersistStorage<EntryState> = {
   getItem: async (name) =>

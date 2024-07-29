@@ -1,5 +1,6 @@
 import { OTPEntry } from "@src/entry/otp";
 import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
+import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
 
@@ -10,26 +11,7 @@ interface OtpAuth {
 }
 
 const { ENTRIES_STOTAGE_KEY = "entries-v2" } = import.meta.env;
-
-/**
- * @deprecated since version 1.3.0
- */
-const getLegacyEntries = async () => {
-  const entries: OTPEntryLegacy[] = [];
-  const storage = await chrome.storage.local.get();
-  delete storage["LocalStorage"];
-  delete storage["2fa-options"];
-  delete storage["entries-v2"];
-  delete storage["OPTIONS"];
-
-  for (const key of Object.keys(storage)) {
-    const entry = storage[key];
-    if (entry && entry.hash) {
-      entries.push(entry);
-    }
-  }
-  return entries;
-};
+const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export function newEntryFromUrl(url: string): TOTPEntry {
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
@@ -60,8 +42,8 @@ export function newEntryFromUrl(url: string): TOTPEntry {
   return newEntry;
 }
 
-export const migrateV1ToV2 = async () => {
-  console.log("Migrating entries from v1 to v2");
+export const migrateLegacy = async () => {
+  console.log("Migrating legacy entries");
   const legacyEntries = await getLegacyEntries();
   // console.log("legacyEntries:", legacyEntries);
   if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
@@ -112,7 +94,8 @@ export async function getRandomEntry(): Promise<OTPEntry> {
 export const getBackgroundEntries = async () => {
   const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
   if (entriesStorage) {
-    const entriesStorageParse = superjson.parse(entriesStorage[ENTRIES_STOTAGE_KEY]) as StorageValue<EntryState>;
+    const data = entriesStorage[ENTRIES_STOTAGE_KEY];
+    const entriesStorageParse = superjson.parse(isEncrypted ? decrypt(data) : data) as StorageValue<EntryState>;
     return entriesStorageParse.state.entries;
   }
   return new Map<string, TOTPEntry>();
@@ -121,13 +104,20 @@ export const getBackgroundEntries = async () => {
 export async function addFromBackground(entry: TOTPEntry) {
   const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
   if (entriesStorage) {
-    const entriesStorageParse = superjson.parse(entriesStorage[ENTRIES_STOTAGE_KEY]) as StorageValue<EntryState>;
+    const data = entriesStorage[ENTRIES_STOTAGE_KEY];
+    const entriesStorageParse = superjson.parse(isEncrypted ? decrypt(data) : data) as StorageValue<EntryState>;
     entriesStorageParse.state.entries = new Map([[entry.hash, entry], ...entriesStorageParse.state.entries]);
-    await chrome.storage.local.set({ [ENTRIES_STOTAGE_KEY]: superjson.stringify(entriesStorageParse) });
+    const entriesStringified = superjson.stringify(entriesStorageParse);
+    await chrome.storage.local.set({
+      [ENTRIES_STOTAGE_KEY]: isEncrypted ? encrypt(entriesStringified) : entriesStringified,
+    });
   } else {
     const draftParse = superjson.parse(JSON.stringify(draftStorage)) as StorageValue<EntryState>;
     draftParse.state.entries = new Map([[entry.hash, entry]]);
-    await chrome.storage.local.set({ [ENTRIES_STOTAGE_KEY]: superjson.stringify(draftParse) });
+    const draftStringified = superjson.stringify(draftParse);
+    await chrome.storage.local.set({
+      [ENTRIES_STOTAGE_KEY]: isEncrypted ? encrypt(draftStringified) : draftStringified,
+    });
   }
 }
 
@@ -177,3 +167,23 @@ const draftStorage = {
     },
   },
 };
+
+/**
+ * @deprecated since version 1.3.0
+ */
+async function getLegacyEntries() {
+  const entries: OTPEntryLegacy[] = [];
+  const storage = await chrome.storage.local.get();
+  delete storage["LocalStorage"];
+  delete storage["2fa-options"];
+  delete storage["entries-v2"];
+  delete storage["OPTIONS"];
+
+  for (const key of Object.keys(storage)) {
+    const entry = storage[key];
+    if (entry && entry.hash) {
+      entries.push(entry);
+    }
+  }
+  return entries;
+}

@@ -10,10 +10,10 @@ import { useModalStore } from "@src/stores/useDynamicStore";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
+import Random from "../../storage/components/AddEntryButtons/Random";
 import ManualEntry from "./AddEntryButtons/ManualEntry";
 import ManualTotpEntry from "./AddEntryButtons/ManualTotpEntry";
 import OptionsButtonList from "./AddEntryButtons/OptionsButtonList";
-import Random from "./AddEntryButtons/Random";
 
 export interface AddEntryProps {
   handlerOnCandel: () => void;
