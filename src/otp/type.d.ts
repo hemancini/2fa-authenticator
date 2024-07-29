@@ -62,3 +62,25 @@ export {
   OTPPeriod,
   OTPType,
 };
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export interface OTPEntryLegacy {
+  type: OTPType | number;
+  index: number;
+  issuer: string;
+  secret: string | null;
+  encSecret: string | null;
+  account: string;
+  hash: string;
+  counter: number;
+  period: number;
+  digits: number;
+  algorithm: OTPAlgorithm | number;
+  pinned: boolean;
+  code: string;
+  site: string;
+  user: string;
+  pass: string;
+}
