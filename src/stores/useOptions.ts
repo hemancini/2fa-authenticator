@@ -17,6 +17,9 @@ interface OptionsStore {
   xraysEnabled: boolean;
   isVisibleCodes: boolean;
   setVisibleCodes: (isVisible: boolean) => void;
+  /**
+   * @deprecated since version 1.3.0
+   */
   isNewVersion: boolean;
   toggleNewVersion: () => void;
 }
