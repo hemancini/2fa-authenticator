@@ -6,17 +6,15 @@ import { getOptionsStorage } from "@src/utils/options";
 
 chrome.runtime.onMessage.addListener(async (request) => {
   const { bypassEnabled } = await getOptionsStorage();
-  if (request.message === "bypass") {
-    if (bypassEnabled) {
-      const backgroundEntries = await getBackgroundEntries();
-      const entries = Array.from(backgroundEntries.values());
-      const filter = entries.filter(
-        (entry) => entry?.site?.includes(location.host) && entry?.user !== "" && entry?.pass !== ""
-      );
-      const entry = filter?.[0];
-      if (entry?.site?.includes(request?.data)) {
-        autoLoginEntrust(entry as Entry);
-      }
+  if (bypassEnabled && request.message === "bypass") {
+    const backgroundEntries = await getBackgroundEntries();
+    const entries = Array.from(backgroundEntries.values());
+    const filter = entries.filter(
+      (entry) => entry?.site?.includes(location.host) && entry?.user !== "" && entry?.pass !== ""
+    );
+    const entry = filter?.[0];
+    if (entry?.site?.includes(request?.data)) {
+      autoLoginEntrust(entry as Entry);
     }
   }
 });
@@ -31,7 +29,7 @@ const autoLoginEntrust = async (entry: Entry) => {
 
   const setUserId = () => {
     iteration++;
-    console.log("setUserId");
+    // console.log("setUserId");
     const userIdInput = document.getElementById("userId");
     if (userIdInput) {
       userIdInput.click();
@@ -46,14 +44,14 @@ const autoLoginEntrust = async (entry: Entry) => {
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalUserId);
-      console.log("setUserId - iteration > 10");
+      // console.log("setUserId - iteration > 10");
       intervalPassword = setInterval(setPassword, intervalMilliseconds);
     }
   };
 
   const setPassword = () => {
     iteration++;
-    console.log("setPassword");
+    // console.log("setPassword");
     const otpInput = document.getElementById("otp");
     if (otpInput) {
       otpInput.click();
@@ -66,14 +64,14 @@ const autoLoginEntrust = async (entry: Entry) => {
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalPassword);
-      console.log("setPassword - iteration > 10");
+      // console.log("setPassword - iteration > 10");
       intervalOptions = setInterval(selectOptions, intervalMilliseconds);
     }
   };
 
   const selectOptions = () => {
     iteration++;
-    console.log("selectOptions");
+    // console.log("selectOptions");
     const options = document.getElementById("alternative-authenticators");
     if (options) {
       options.click();
@@ -83,14 +81,14 @@ const autoLoginEntrust = async (entry: Entry) => {
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalOptions);
-      console.log("selectOptions - iteration > 10");
+      // console.log("selectOptions - iteration > 10");
       intervalOptionsList = setInterval(selectOptionsList, intervalMilliseconds);
     }
   };
 
   const selectOptionsList = () => {
     iteration++;
-    console.log("selectOptionsList");
+    // console.log("selectOptionsList");
     const optionsList = document.getElementById("change-authenticator-TOKEN");
     if (optionsList) {
       optionsList.click();
@@ -100,14 +98,14 @@ const autoLoginEntrust = async (entry: Entry) => {
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalOptionsList);
-      console.log("selectOptionsList - iteration > 10");
+      // console.log("selectOptionsList - iteration > 10");
       intervalOTP = setInterval(setOTP, intervalMilliseconds);
     }
   };
 
   const setOTP = () => {
     iteration++;
-    console.log("setOTP");
+    // console.log("setOTP");
     const code = generateOTP(entry);
     const otpInput = document.getElementById("otp");
     if (otpInput) {
@@ -120,7 +118,7 @@ const autoLoginEntrust = async (entry: Entry) => {
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalOTP);
-      console.log("setOTP - iteration > 10");
+      // console.log("setOTP - iteration > 10");
     }
   };
 

@@ -1,7 +1,5 @@
 import packageJson from "./package.json";
 
-// const isDev = process.env.__DEV__ === "true";
-
 /**
  * After changing, please reload the extension at `chrome://extensions`
  */
@@ -23,18 +21,17 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   action: {
     default_popup: "src/pages/popup/index.html",
-    default_icon: "icon-34-dev.png",
-    // default_icon: isDev ? "icon-34-dev.png" : "icon-34.png",
+    default_icon: "icon-34.png",
   },
-  commands: {
-    "scan-qr": {
-      suggested_key: {
-        default: "Ctrl+Shift+P",
-        mac: "Command+Shift+P",
-      },
-      description: "Scan a QR code",
-    },
-  },
+  // commands: {
+  //   "scan-qr": {
+  //     suggested_key: {
+  //       default: "Ctrl+Shift+P",
+  //       mac: "Command+Shift+P",
+  //     },
+  //     description: "Scan a QR code",
+  //   },
+  // },
   icons: {
     "128": "icon-128.png",
   },
@@ -50,7 +47,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   optional_host_permissions: ["*://*/*"],
   web_accessible_resources: [
     {
-      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png", "icon-34-dev.png"],
+      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png"],
       matches: ["*://*/*"],
     },
   ],

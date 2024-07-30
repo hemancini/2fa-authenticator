@@ -172,6 +172,9 @@ const draftStorage = {
   },
 };
 
+/**
+ * @deprecated since version 1.3.0
+ */
 export async function clearLegacyEntries(entries: Map<string, TOTPEntry>) {
   const keys = [...entries.keys()];
   for (const key of keys) {

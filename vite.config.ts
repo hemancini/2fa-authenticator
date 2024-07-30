@@ -7,8 +7,6 @@ import { defineConfig } from "vite";
 import manifest from "./manifest";
 import {
   assetsDir,
-  autofillDir,
-  bypassDir,
   componentsDir,
   definitionsDir,
   outDir,

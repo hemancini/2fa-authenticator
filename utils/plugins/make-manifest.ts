@@ -7,7 +7,6 @@ import ManifestParser from "../manifest-parser";
 
 const { resolve } = path;
 
-const isDev = process.env.__DEV__ === "true";
 const distDir = resolve(__dirname, "..", "..", "dist");
 const publicDir = resolve(__dirname, "..", "..", "public");
 
@@ -28,10 +27,17 @@ export default function makeManifest(
       });
     }
 
-    if (!isDev) {
-      delete manifest.devtools_page;
-    } else if (!manifest.name.includes("dev")) {
+    if (config.isDev) {
       manifest.name = `${manifest.name} (dev)`;
+      manifest.action.default_icon = "icon-34-dev.png";
+      manifest.web_accessible_resources = [
+        {
+          ...manifest.web_accessible_resources[0],
+          resources: [...manifest.web_accessible_resources[0].resources, "icon-34-dev.png"],
+        },
+      ];
+    } else {
+      delete manifest.devtools_page;
     }
 
     fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));

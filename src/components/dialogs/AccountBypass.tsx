@@ -30,7 +30,6 @@ export default function AccountBypassDialog({ entry }: { entry: OTPEntry }) {
     formData.forEach((value, key) => {
       formDataObject[key] = value.toString();
     });
-
     const { user, pass } = formDataObject;
     upsertEntry({ ...entry, user: encrypData(user), pass: encrypData(pass) });
 
