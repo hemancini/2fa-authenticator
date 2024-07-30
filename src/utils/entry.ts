@@ -1,5 +1,6 @@
 import { OTPEntry } from "@src/entry/otp";
 import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
+import { remove } from "@src/storage/utils";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
@@ -47,7 +48,8 @@ export const migrateLegacy = async () => {
   const legacyEntries = await getLegacyEntries();
   // console.log("legacyEntries:", legacyEntries);
   if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
-  return new Map(
+
+  const entries = new Map(
     [...(legacyEntries?.values() ?? [])].map((entry) => {
       {
         delete entry.code;
@@ -66,6 +68,8 @@ export const migrateLegacy = async () => {
       }
     })
   );
+
+  return entries;
 };
 
 export async function getRandomEntry(): Promise<OTPEntry> {
@@ -167,6 +171,14 @@ const draftStorage = {
     },
   },
 };
+
+export async function clearLegacyEntries(entries: Map<string, TOTPEntry>) {
+  const keys = [...entries.keys()];
+  for (const key of keys) {
+    console.log("Removing legacy entry:", key);
+    await remove(key);
+  }
+}
 
 /**
  * @deprecated since version 1.3.0

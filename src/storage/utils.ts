@@ -90,7 +90,7 @@ export const getAll = () =>
 export const remove = async (key: string) => {
   storage
     .removeItem(key)
-    .then(() => console.log("Item removed"))
+    // .then(() => console.log("Item removed"))
     .catch((error) => console.error("Error removing item:", error));
 };
 

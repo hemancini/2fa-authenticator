@@ -1,3 +1,4 @@
+import ChromeStoreIcon from "@assets/img/chrome-store-192px.svg";
 import CustomSwitch from "@components/CustomSwitch";
 import Tooltip from "@components/CustomTooltip";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
@@ -22,9 +23,8 @@ import { useOptionsStore } from "@src/stores/useOptions";
 
 import packageJson from "../../../package.json";
 
-export const ListItemIcon = (props: ListItemIconProps) => (
-  <ListItemIconMui sx={{ minWidth: "auto", ml: 0.2, mr: 2 }} {...props} />
-);
+const isDev = import.meta.env.VITE_IS_DEV === "true";
+const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
 
 export default function Options() {
   const { showMessage } = useBackupStore();
@@ -167,15 +167,32 @@ export default function Options() {
           </ListItem>
           <Divider />
           <ListItem disablePadding>
-            <ListItemButton dense={!isUpSm} href={packageJson.repository.url} target="_blank">
+            <ListItemButton dense={!isUpSm} href={packageJson.repository.url} target="_blank" rel="noopener noreferrer">
               <ListItemIcon>
                 <CodeIcon />
               </ListItemIcon>
               <ListItemText primary={t("sourceCode")} />
             </ListItemButton>
           </ListItem>
+          {isDev && (
+            <>
+              <Divider />
+              <ListItem disablePadding>
+                <ListItemButton dense={!isUpSm} href={chromeWebStoreUrl} target="_blank" rel="noopener noreferrer">
+                  <ListItemIcon>
+                    <img src={ChromeStoreIcon} alt="icon" width={22} height={22} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Chrome Web Store"} />
+                </ListItemButton>
+              </ListItem>
+            </>
+          )}
         </List>
       </Paper>
     </main>
   );
 }
+
+export const ListItemIcon = (props: ListItemIconProps) => (
+  <ListItemIconMui sx={{ minWidth: "auto", ml: 0.2, mr: 2 }} {...props} />
+);
