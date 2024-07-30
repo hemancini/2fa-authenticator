@@ -1,4 +1,3 @@
-// import OptionsNestedList from "@components/OptionsNestedList";
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
 import LockClockIcon from "@mui/icons-material/LockClock";
@@ -128,7 +127,6 @@ export default function Siderbar({
             )
           );
         })}
-        {/* <OptionsNestedList /> */}
       </List>
       <ThemeModeSelect />
     </Drawer>
