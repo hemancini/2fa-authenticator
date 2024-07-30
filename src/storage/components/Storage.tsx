@@ -4,6 +4,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import React, { useEffect, useState } from "react";
+import superjson from "superjson";
 
 import { getAll, remove } from "../utils";
 
@@ -49,7 +50,11 @@ export default function storagePage() {
             >
               X
             </button>
-            <pre>{JSON.stringify(storages[key], null, 4)}</pre>
+            <pre>
+              {key === "entries-v2"
+                ? JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)
+                : JSON.stringify(storages[key], null, 2)}
+            </pre>
           </TabPanel>
         ))}
       </TabContext>
