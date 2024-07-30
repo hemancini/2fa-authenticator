@@ -23,10 +23,13 @@ export const useEntries = create(
   persist<EntryState>(
     (set) => ({
       entries: new Map<string, OTPEntry>(),
-      setEntries: (entries: Map<string, OTPEntry>) => set({ entries }),
+      setEntries: (entries: Map<string, OTPEntry>) =>
+        set((state: EntryState) => {
+          state.entries = entries;
+          return { entries: state.entries };
+        }),
       addEntry: (entry: OTPEntry) =>
         set((state: EntryState) => {
-          // state.entries.set(entry.hash, entry);
           state.entries = new Map([[entry.hash, entry], ...Array.from(state.entries)]);
           return { entries: state.entries };
         }),
