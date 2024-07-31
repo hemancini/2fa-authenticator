@@ -68,7 +68,7 @@ export const migrateLegacy = async () => {
       }
     })
   );
-
+  console.log("entries:", entries);
   return entries;
 };
 
@@ -188,7 +188,7 @@ export async function clearLegacyEntries(entries: Map<string, TOTPEntry>) {
  */
 async function getLegacyEntries() {
   const entries: OTPEntryLegacy[] = [];
-  const storage = await chrome.storage.local.get();
+  const storage = await chrome.storage.sync.get();
   delete storage["LocalStorage"];
   delete storage["2fa-options"];
   delete storage["entries"];
