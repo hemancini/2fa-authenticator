@@ -20,8 +20,6 @@ export default function Entries() {
         const entriesMigrated = await migrateLegacy();
         setEntries(entriesMigrated);
         await clearLegacyEntries(entriesMigrated);
-      } else {
-        console.log("Entries already migrated");
       }
     })();
   }, []);

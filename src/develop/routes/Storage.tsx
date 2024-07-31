@@ -1,5 +1,5 @@
 import Storage from "../components/Storage";
 
-export default function storageRputes() {
+export default function storageRoutes() {
   return <Storage />;
 }

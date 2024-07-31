@@ -2,10 +2,9 @@ import "@pages/popup/Popup.css";
 
 import Entries from "@routes/Entries";
 import { t } from "@src/chrome/i18n";
+import Storage from "@src/develop/routes/Storage";
 import Options from "@src/routes/Options";
 import { Redirect, Route, Switch } from "wouter";
-
-import Storage from "../storage/routes/Storage";
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 
