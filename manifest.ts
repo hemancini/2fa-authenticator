@@ -23,15 +23,15 @@ const manifest: chrome.runtime.ManifestV3 = {
     default_popup: "src/pages/popup/index.html",
     default_icon: "icon-34.png",
   },
-  // commands: {
-  //   "scan-qr": {
-  //     suggested_key: {
-  //       default: "Ctrl+Shift+P",
-  //       mac: "Command+Shift+P",
-  //     },
-  //     description: "Scan a QR code",
-  //   },
-  // },
+  commands: {
+    "scan-qr": {
+      suggested_key: {
+        default: "Ctrl+Shift+P",
+        mac: "Command+Shift+P",
+      },
+      description: "Scan a QR code",
+    },
+  },
   icons: {
     "128": "icon-128.png",
   },
