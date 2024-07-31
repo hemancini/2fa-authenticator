@@ -52,6 +52,7 @@ export const migrateLegacy = async () => {
   const entries = new Map(
     [...(legacyEntries?.values() ?? [])].map((entry) => {
       {
+        const period = entry.counter as OTPPeriod;
         delete entry.code;
         delete entry.index;
         delete entry.pinned;
@@ -63,6 +64,7 @@ export const migrateLegacy = async () => {
             ...entry,
             type: entry.type === 1 || entry.type === ("totp" as unknown) ? "totp" : "hotp",
             algorithm: entry.algorithm === 1 || entry.algorithm === ("SHA1" as unknown) ? "SHA1" : "SHA256",
+            period,
           } as TOTPEntry,
         ];
       }
