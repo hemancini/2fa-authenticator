@@ -46,7 +46,7 @@ export function newEntryFromUrl(url: string): TOTPEntry {
 export const migrateLegacy = async () => {
   console.log("Migrating legacy entries");
   const legacyEntries = await getLegacyEntries();
-  // console.log("legacyEntries:", legacyEntries);
+  console.log("legacyEntries:", legacyEntries);
   if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
 
   const entries = new Map(
