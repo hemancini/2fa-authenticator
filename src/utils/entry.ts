@@ -193,14 +193,9 @@ export async function clearLegacyEntries() {
 async function getLegacyEntries() {
   const entries: OTPEntryLegacy[] = [];
   const storage = await chrome.storage.sync.get();
-  delete storage["LocalStorage"];
-  delete storage["2fa-options"];
-  delete storage["entries"];
-  delete storage["OPTIONS"];
-
   for (const key of Object.keys(storage)) {
     const entry = storage[key];
-    if (entry && entry.hash) {
+    if (entry && entry.hash && entry.secret) {
       entries.push(entry);
     }
   }
