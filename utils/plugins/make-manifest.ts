@@ -28,7 +28,7 @@ export default function makeManifest(
     }
 
     if (config.isDev) {
-      manifest.name = `${manifest.name} (dev)`;
+      manifest.name = !manifest.name.includes("dev") ? `${manifest.name} (dev)` : manifest.name;
       manifest.action.default_icon = "icon-34-dev.png";
       manifest.web_accessible_resources = [
         {
