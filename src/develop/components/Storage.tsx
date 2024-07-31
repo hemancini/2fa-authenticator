@@ -1,5 +1,5 @@
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Divider, Tab, Tabs } from "@mui/material";
 import { getAll, remove } from "@src/chrome/localStorage";
 import React, { useEffect, useState } from "react";
 import superjson from "superjson";
@@ -46,11 +46,13 @@ export default function storagePage() {
             >
               X
             </button>
-            <pre>
-              {JSON.stringify(storages[key], null, 2)}
-              {key === "entries" &&
-                JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)}
-            </pre>
+            <pre>{JSON.stringify(storages[key], null, 2)}</pre>
+            {key === "entries" && (
+              <>
+                <Divider />
+                <pre>{JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)}</pre>
+              </>
+            )}
           </TabPanel>
         ))}
       </TabContext>

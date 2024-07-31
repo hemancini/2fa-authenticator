@@ -1,8 +1,6 @@
 import HexEncoder from "crypto-js/enc-hex";
 import HmacSHA1 from "crypto-js/hmac-sha1";
 import HmacSHA256 from "crypto-js/hmac-sha256";
-import SHA1 from "crypto-js/sha1";
-import SHA256 from "crypto-js/sha256";
 
 import type { Entry, OTPAlgorithm, OTPDigits, OTPPeriod, OTPType } from "./type";
 import { base32tohex, dec2hex, hex2dec, leftpad } from "./utils";
@@ -37,9 +35,7 @@ export class OTPEntry implements Entry {
   }
 
   private generateHash(): string {
-    const data = `${this.issuer}${this.account}${this.secret}${new Date().getTime()}`;
-    const algorithm = this.algorithm === "SHA1" ? SHA1 : SHA256;
-    return algorithm(data).toString(HexEncoder);
+    return crypto.randomUUID();
   }
 }
 

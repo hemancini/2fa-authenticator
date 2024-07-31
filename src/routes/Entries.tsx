@@ -19,7 +19,7 @@ export default function Entries() {
       if (entries.size === 0) {
         const entriesMigrated = await migrateLegacy();
         setEntries(entriesMigrated);
-        // await clearLegacyEntries(entriesMigrated);
+        clearLegacyEntries();
       }
     })();
   }, []);

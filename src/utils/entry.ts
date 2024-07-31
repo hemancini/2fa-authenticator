@@ -1,6 +1,6 @@
 import { remove } from "@src/chrome/localStorage";
 import { OTPEntry } from "@src/entry/otp";
-import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
+import type { EntryState, OTPDigits, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
@@ -42,37 +42,6 @@ export function newEntryFromUrl(url: string): TOTPEntry {
 
   return newEntry;
 }
-
-export const migrateLegacy = async () => {
-  console.log("Migrating legacy entries");
-  const legacyEntries = await getLegacyEntries();
-  console.log("legacyEntries:", legacyEntries);
-  if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
-
-  const entries = new Map(
-    [...(legacyEntries?.values() ?? [])].map((entry) => {
-      {
-        const period = entry.counter as OTPPeriod;
-        delete entry.code;
-        delete entry.index;
-        delete entry.pinned;
-        delete entry.counter;
-        delete entry.encSecret;
-        return [
-          entry.hash,
-          {
-            ...entry,
-            type: entry.type === 1 || entry.type === ("totp" as unknown) ? "totp" : "hotp",
-            algorithm: entry.algorithm === 1 || entry.algorithm === ("SHA1" as unknown) ? "SHA1" : "SHA256",
-            period,
-          } as TOTPEntry,
-        ];
-      }
-    })
-  );
-  console.log("entries:", entries);
-  return entries;
-};
 
 export async function getRandomEntry(): Promise<OTPEntry> {
   const response = await fetch("https://randomuser.me/api/");
@@ -177,11 +146,44 @@ const draftStorage = {
 /**
  * @deprecated since version 1.3.0
  */
-export async function clearLegacyEntries(entries: Map<string, TOTPEntry>) {
-  const keys = [...entries.keys()];
-  for (const key of keys) {
-    console.log("Removing legacy entry:", key);
-    await remove(key);
+export const migrateLegacy = async () => {
+  console.log("Migrating legacy entries");
+  const legacyEntries = await getLegacyEntries();
+  if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
+
+  const entries = new Map(
+    [...(legacyEntries?.values() ?? [])].map((entryLegacy) => {
+      {
+        const { issuer, account, secret, counter: period = 30, digits = 6 } = entryLegacy;
+
+        const newEntry = new OTPEntry({
+          issuer: issuer,
+          account: account,
+          secret: secret,
+          period: period as OTPPeriod,
+          digits: digits as OTPDigits,
+          type: (entryLegacy.type === 1 || entryLegacy.type === ("totp" as unknown) ? "totp" : "hotp") as OTPType,
+          algorithm: entryLegacy.algorithm === 1 || entryLegacy.algorithm === ("SHA1" as unknown) ? "SHA1" : "SHA256",
+        });
+
+        return [newEntry.hash, newEntry];
+      }
+    })
+  );
+
+  return entries;
+};
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export async function clearLegacyEntries() {
+  const entriesLegacy = await getLegacyEntries();
+  if (entriesLegacy.length === 0) return;
+
+  for (const entry of entriesLegacy) {
+    console.log("Removing legacy entry:", entry);
+    await remove(entry.hash);
   }
 }
 
