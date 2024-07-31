@@ -55,7 +55,7 @@ export const useEntries = create(
         }),
     }),
     {
-      name: "entries-v2",
+      name: "entries",
       storage: chromePersistStorage,
     }
   )

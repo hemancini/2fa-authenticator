@@ -11,7 +11,7 @@ interface OtpAuth {
   params: Record<string, string>;
 }
 
-const { ENTRIES_STOTAGE_KEY = "entries-v2" } = import.meta.env;
+const { ENTRIES_STOTAGE_KEY = "entries" } = import.meta.env;
 const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export function newEntryFromUrl(url: string): TOTPEntry {
@@ -191,7 +191,7 @@ async function getLegacyEntries() {
   const storage = await chrome.storage.local.get();
   delete storage["LocalStorage"];
   delete storage["2fa-options"];
-  delete storage["entries-v2"];
+  delete storage["entries"];
   delete storage["OPTIONS"];
 
   for (const key of Object.keys(storage)) {
