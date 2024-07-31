@@ -5,9 +5,8 @@ import { getOptionsStorage, setOptionsStorage } from "@src/utils/options";
 import React, { useEffect } from "react";
 
 const Debug = () => {
-  const { entries: entries_v2 } = useEntries();
+  const { entries } = useEntries();
 
-  const [entries, setEntries] = React.useState<any>();
   const [options, setOptions] = React.useState<any>();
   const [xraysEnabled, setXraysEnabled] = React.useState<boolean>(false);
 
@@ -22,12 +21,6 @@ const Debug = () => {
 
   useEffect(() => {
     (async () => {
-      const storage = await chrome.storage.local.get();
-      delete storage["LocalStorage"];
-      delete storage["2fa-options"];
-      delete storage["OPTIONS"];
-      setEntries(storage);
-
       const _options = await getOptionsStorage();
       setOptions(_options);
 
@@ -45,12 +38,10 @@ const Debug = () => {
           X-rays
         </label>
       </div>
-      <p>entries v2</p>
-      <pre>{JSON.stringify(Array.from(entries_v2)?.flat(Infinity), null, 4)}</pre>
       <p>entries</p>
-      <pre>{JSON.stringify(entries, null, 4)}</pre>
+      <pre>{JSON.stringify(Array.from(entries)?.flat(Infinity), null, 2)}</pre>
       <p>options</p>
-      <pre>{JSON.stringify(options, null, 4)}</pre>
+      <pre>{JSON.stringify(options, null, 2)}</pre>
     </div>
   );
 };
