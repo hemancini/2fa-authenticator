@@ -76,7 +76,7 @@ class ChromeStorage {
   }
 }
 
-const storage = new ChromeStorage("local");
+const storage = new ChromeStorage("sync");
 
 export const getAll = () =>
   storage

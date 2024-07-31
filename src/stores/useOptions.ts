@@ -19,10 +19,12 @@ interface OptionsStore {
   setVisibleCodes: (isVisible: boolean) => void;
 }
 
+const storageArea = "sync";
+
 const chromePersistStorage: PersistStorage<OptionsStore> = {
-  getItem: async (name) => await chrome.storage.local.get([name]).then((result) => result[name]),
-  setItem: (name, value) => chrome.storage.local.set({ [name]: value }),
-  removeItem: (name) => chrome.storage.local.remove([name]),
+  getItem: async (name) => await chrome.storage[storageArea].get([name]).then((result) => result[name]),
+  setItem: (name, value) => chrome.storage[storageArea].set({ [name]: value }),
+  removeItem: (name) => chrome.storage[storageArea].remove([name]),
 };
 
 export const useOptionsStore = create<OptionsStore>()(

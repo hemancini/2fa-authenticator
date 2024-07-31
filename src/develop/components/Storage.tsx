@@ -47,9 +47,9 @@ export default function storagePage() {
               X
             </button>
             <pre>
-              {key === "entries"
-                ? JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)
-                : JSON.stringify(storages[key], null, 2)}
+              {JSON.stringify(storages[key], null, 2)}
+              {key === "entries" &&
+                JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)}
             </pre>
           </TabPanel>
         ))}
