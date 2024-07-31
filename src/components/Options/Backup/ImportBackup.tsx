@@ -15,8 +15,8 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import { ListItemIcon } from "@src/components/Options";
-import { useBackupStore } from "@src/stores/useBackupStore";
-import { useModalStore } from "@src/stores/useDynamicStore";
+import { useBackupStore } from "@src/stores/useBackup";
+import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
 import { decryptBackup } from "@src/utils/backup";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
   const { returnRaw = false } = props;
   const [, setLocation] = useLocation();
   const { showMessage } = useBackupStore();
-  const { modal, toggleModal } = useModalStore();
+  const { isOpenModal, toggleModal } = useModalStore();
 
   const { setEntries } = useEntries();
 
@@ -47,7 +47,7 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
 
   const handleCloseBackgroupModal = () => {
     const addEntryModalKey = "add-entry-modal";
-    if (modal[addEntryModalKey]) {
+    if (isOpenModal[addEntryModalKey]) {
       toggleModal(addEntryModalKey);
     }
   };

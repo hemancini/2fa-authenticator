@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
-import { useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamic";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
@@ -27,7 +27,7 @@ export interface AddEntryMenuProps {
 export default function AddEntryMenu() {
   const [manualEntryOptions, setManualEntryOptions] = useState<"" | "TOTP" | "MANUAL">("");
   const [, navigate] = useLocation();
-  const { modal, toggleModal } = useModalStore();
+  const { isOpenModal, toggleModal } = useModalStore();
 
   const handleOnAddEntryClose = () => {
     toggleModal("add-entry-modal");
@@ -47,7 +47,7 @@ export default function AddEntryMenu() {
 
   return (
     <Dialog
-      open={modal["add-entry-modal"] || false}
+      open={isOpenModal["add-entry-modal"] || false}
       onClose={handleOnAddEntryClose}
       sx={{
         mx: 3,

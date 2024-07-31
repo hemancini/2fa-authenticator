@@ -1,6 +1,6 @@
+import { remove } from "@src/chrome/localStorage";
 import { OTPEntry } from "@src/entry/otp";
 import type { EntryState, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
-import { remove } from "@src/storage/utils";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";

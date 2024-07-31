@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { t } from "@src/chrome/i18n";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";

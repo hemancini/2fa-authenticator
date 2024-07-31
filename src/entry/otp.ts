@@ -37,7 +37,7 @@ export class OTPEntry implements Entry {
   }
 
   private generateHash(): string {
-    const data = `${this.issuer}${this.account}${this.secret}${this.period}${new Date().getTime()}`;
+    const data = `${this.issuer}${this.account}${this.secret}${new Date().getTime()}`;
     const algorithm = this.algorithm === "SHA1" ? SHA1 : SHA256;
     return algorithm(data).toString(HexEncoder);
   }

@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import KeyIcon from "@mui/icons-material/Key";
 import Button from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
-import { useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamic";
 
 export default function NotEntriesFound() {
   const { toggleModal } = useModalStore();

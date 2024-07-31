@@ -14,7 +14,7 @@ import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import AddEntryMenu from "@src/components/dialogs/AddEntryMenu";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useEffect, useState } from "react";
@@ -33,8 +33,7 @@ export default function CustomAppBar({
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
-  const { modal } = useModalStore();
-  const { actionState } = useActionStore();
+  const { isOpenModal: modal } = useModalStore();
   const [isEditing] = useUrlHashState("#/edit");
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
@@ -47,7 +46,7 @@ export default function CustomAppBar({
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
-            {isEditing || actionState["entries-edit-state"] ? (
+            {isEditing ? (
               <CancelButton />
             ) : (
               <IconButton
@@ -76,7 +75,7 @@ export default function CustomAppBar({
             {/* {isDev && " dev"} */}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
-            {isEditing || actionState["entries-edit-state"] ? (
+            {isEditing ? (
               <SaveButton />
             ) : (
               <Box minWidth={30} sx={{ display: "flex" }}>
@@ -97,7 +96,7 @@ export default function CustomAppBar({
         </Toolbar>
       </AppBar>
       <ErrorCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(isEditing || actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
+      {(isEditing || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );
 }

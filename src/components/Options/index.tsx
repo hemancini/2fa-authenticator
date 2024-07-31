@@ -17,9 +17,9 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import Backup from "@src/components/Options/Backup";
-import { syncTimeWithGoogle } from "@src/models/options";
-import { useBackupStore } from "@src/stores/useBackupStore";
+import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
+import { syncTimeWithGoogle } from "@src/utils/options";
 
 import packageJson from "../../../package.json";
 

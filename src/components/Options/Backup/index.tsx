@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import { ListItemIcon } from "@src/components/Options";
 import ImportBackup from "@src/components/Options/Backup/ImportBackup";
-import { useBackupStore } from "@src/stores/useBackupStore";
+import { useBackupStore } from "@src/stores/useBackup";
 import { exportBackup } from "@src/utils/backup";
 
 export default function Backup() {

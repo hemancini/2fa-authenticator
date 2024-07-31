@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { useModalStore } from "@src/stores/useDynamicStore";
+import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
 import { getRandomEntry } from "@src/utils/entry";
 

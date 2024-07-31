@@ -1,12 +1,8 @@
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import Box from "@mui/material/Box";
-import Tab from "@mui/material/Tab";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Box, Tab, Tabs } from "@mui/material";
+import { getAll, remove } from "@src/chrome/localStorage";
 import React, { useEffect, useState } from "react";
 import superjson from "superjson";
-
-import { getAll, remove } from "../utils";
 
 export default function storagePage() {
   const [value, setValue] = React.useState("0");
@@ -34,11 +30,11 @@ export default function storagePage() {
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto">
             {storageKeys?.map((key, i) => (
-              <Tab key={key} label={key} value={`${i}`} />
+              <Tab key={key} label={key} value={`${i}`} sx={{ textTransform: "none" }} wrapped />
             ))}
-          </TabList>
+          </Tabs>
         </Box>
         {storageKeys?.map((key, i) => (
           <TabPanel key={key} value={`${i}`}>
