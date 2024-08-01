@@ -53,7 +53,7 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
           {isEditing && <DragButton />}
         </Box>
         <CustomTypography entry={entry} property="account" />
-        <Box sx={{ display: "flex", position: "absolute", bottom: 6, right: 8 }}>
+        <Box sx={{ display: "flex", position: "absolute", bottom: 7, right: 8 }}>
           {!isEditing && <Countdown entry={entry} />}
         </Box>
       </Card>
