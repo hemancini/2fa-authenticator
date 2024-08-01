@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist, PersistStorage } from "zustand/middleware";
 
-const chromeStorageKey = "2fa-options";
-
 interface OptionsStore {
   themeMode: ThemeMode;
   toggleThemeMode: (mode: ThemeMode) => void;
@@ -15,16 +13,14 @@ interface OptionsStore {
   autofillEnabled: boolean;
   toggleAutofillEnabled: () => void;
   xraysEnabled: boolean;
-  isVisibleCodes: boolean;
-  setVisibleCodes: (isVisible: boolean) => void;
+  isVisibleTokens: boolean;
+  toggleVisibleTokens: () => void;
 }
 
-const storageArea = "sync";
-
 const chromePersistStorage: PersistStorage<OptionsStore> = {
-  getItem: async (name) => await chrome.storage[storageArea].get([name]).then((result) => result[name]),
-  setItem: (name, value) => chrome.storage[storageArea].set({ [name]: value }),
-  removeItem: (name) => chrome.storage[storageArea].remove([name]),
+  getItem: async (name) => await chrome.storage[CHROME_STORAGE_AREA].get([name]).then((result) => result[name]),
+  setItem: (name, value) => chrome.storage[CHROME_STORAGE_AREA].set({ [name]: value }),
+  removeItem: (name) => chrome.storage[CHROME_STORAGE_AREA].remove([name]),
 };
 
 export const useOptionsStore = create<OptionsStore>()(
@@ -51,14 +47,14 @@ export const useOptionsStore = create<OptionsStore>()(
         set((state) => ({ autofillEnabled: !state.autofillEnabled }));
       },
       xraysEnabled: false,
-      isVisibleCodes: false,
-      setVisibleCodes: (isVisibleCodes) => {
-        set({ isVisibleCodes });
+      isVisibleTokens: false,
+      toggleVisibleTokens: () => {
+        set((state) => ({ isVisibleTokens: !state.isVisibleTokens }));
       },
     }),
     {
-      name: chromeStorageKey, // name of the item in the storage (must be unique)
-      storage: chromePersistStorage, // (optional) by default, 'localStorage' is used
+      name: STORAGE_OPTIONS_KEY,
+      storage: chromePersistStorage,
     }
   )
 );

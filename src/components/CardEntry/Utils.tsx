@@ -14,8 +14,8 @@ type CardUtilsProps = {
   showQR?: boolean;
   setShowQR: Dispatch<SetStateAction<boolean>>;
   showCardUtils: boolean;
-  isVisibleCode: boolean;
-  setVisibleCode: Dispatch<SetStateAction<boolean>>;
+  isVisibleToken: boolean;
+  setVisibleToken: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function CardUtils({
@@ -23,8 +23,8 @@ export default function CardUtils({
   showQR,
   setShowQR,
   showCardUtils = false,
-  isVisibleCode,
-  setVisibleCode,
+  isVisibleToken,
+  setVisibleToken,
 }: CardUtilsProps) {
   return (
     showCardUtils && (
@@ -40,8 +40,8 @@ export default function CardUtils({
         }}
       >
         <AccountBypassButton entry={entry} />
-        <CustomIconButton title={t("showToken")} onClick={() => setVisibleCode(!isVisibleCode)}>
-          {isVisibleCode ? <VisibilityIcon /> : <VisibilityOffIcon />}
+        <CustomIconButton title={t("showToken")} onClick={() => setVisibleToken(!isVisibleToken)}>
+          {isVisibleToken ? <VisibilityIcon /> : <VisibilityOffIcon />}
         </CustomIconButton>
         <CustomIconButton title={t("showQR")} onClick={() => setShowQR(!showQR)}>
           <QrCode2Icon />

@@ -1,8 +1,11 @@
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Divider, Tab, Tabs } from "@mui/material";
 import { getAll, remove } from "@src/chrome/localStorage";
+import { decrypt } from "@src/utils/crypto";
 import React, { useEffect, useState } from "react";
 import superjson from "superjson";
+
+const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export default function storagePage() {
   const [value, setValue] = React.useState("0");
@@ -26,6 +29,30 @@ export default function storagePage() {
     setValue(newValue);
   };
 
+  const StringifyEntries = ({ data }: { data?: string }) => {
+    const [value, setValue] = React.useState("");
+
+    useEffect(() => {
+      try {
+        const dataStringify = JSON.stringify(
+          JSON.parse(superjson.stringify(superjson.parse(isEncrypted ? decrypt(data) : data))),
+          null,
+          2
+        );
+        setValue(dataStringify);
+      } catch (error) {
+        console.error(error?.message);
+      }
+    }, []);
+
+    return (
+      <>
+        <Divider />
+        <pre>{value}</pre>
+      </>
+    );
+  };
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
@@ -47,12 +74,7 @@ export default function storagePage() {
               X
             </button>
             <pre>{JSON.stringify(storages[key], null, 2)}</pre>
-            {key === "entries" && (
-              <>
-                <Divider />
-                <pre>{JSON.stringify(JSON.parse(superjson.stringify(superjson.parse(storages[key]))), null, 2)}</pre>
-              </>
-            )}
+            {key === STORAGE_ENTRIES_KEY && <StringifyEntries data={storages[key]} />}
           </TabPanel>
         ))}
       </TabContext>

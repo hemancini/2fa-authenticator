@@ -11,7 +11,6 @@ interface OtpAuth {
   params: Record<string, string>;
 }
 
-const { ENTRIES_STOTAGE_KEY = "entries" } = import.meta.env;
 const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export function newEntryFromUrl(url: string): TOTPEntry {
@@ -67,9 +66,9 @@ export async function getRandomEntry(): Promise<OTPEntry> {
 }
 
 export const getBackgroundEntries = async () => {
-  const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
+  const entriesStorage = await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_ENTRIES_KEY]);
   if (entriesStorage) {
-    const data = entriesStorage[ENTRIES_STOTAGE_KEY];
+    const data = entriesStorage[STORAGE_ENTRIES_KEY];
     const entriesStorageParse = superjson.parse(isEncrypted ? decrypt(data) : data) as StorageValue<EntryState>;
     return entriesStorageParse.state.entries;
   }
@@ -77,21 +76,21 @@ export const getBackgroundEntries = async () => {
 };
 
 export async function addFromBackground(entry: TOTPEntry) {
-  const entriesStorage = await chrome.storage.local.get([ENTRIES_STOTAGE_KEY]);
+  const entriesStorage = await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_ENTRIES_KEY]);
   if (entriesStorage) {
-    const data = entriesStorage[ENTRIES_STOTAGE_KEY];
+    const data = entriesStorage[STORAGE_ENTRIES_KEY];
     const entriesStorageParse = superjson.parse(isEncrypted ? decrypt(data) : data) as StorageValue<EntryState>;
     entriesStorageParse.state.entries = new Map([[entry.hash, entry], ...entriesStorageParse.state.entries]);
     const entriesStringified = superjson.stringify(entriesStorageParse);
-    await chrome.storage.local.set({
-      [ENTRIES_STOTAGE_KEY]: isEncrypted ? encrypt(entriesStringified) : entriesStringified,
+    await chrome.storage[CHROME_STORAGE_AREA].set({
+      [STORAGE_ENTRIES_KEY]: isEncrypted ? encrypt(entriesStringified) : entriesStringified,
     });
   } else {
     const draftParse = superjson.parse(JSON.stringify(draftStorage)) as StorageValue<EntryState>;
     draftParse.state.entries = new Map([[entry.hash, entry]]);
     const draftStringified = superjson.stringify(draftParse);
-    await chrome.storage.local.set({
-      [ENTRIES_STOTAGE_KEY]: isEncrypted ? encrypt(draftStringified) : draftStringified,
+    await chrome.storage[CHROME_STORAGE_AREA].set({
+      [STORAGE_ENTRIES_KEY]: isEncrypted ? encrypt(draftStringified) : draftStringified,
     });
   }
 }

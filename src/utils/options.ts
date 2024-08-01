@@ -1,12 +1,11 @@
-const storageArea = "sync";
-const chromeStorageKey = "2fa-options";
-
 export const getOptionsStorage = async (): Promise<OptionsInterface> => {
-  return await chrome.storage[storageArea].get([chromeStorageKey]).then((result) => result[chromeStorageKey]?.state);
+  return await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_ENTRIES_KEY]).then(
+    (result) => result[STORAGE_ENTRIES_KEY]?.state
+  );
 };
 
 export const setOptionsStorage = async (data: unknown) => {
-  await chrome.storage[storageArea].set({ [chromeStorageKey]: { state: data } });
+  await chrome.storage[CHROME_STORAGE_AREA].set({ [STORAGE_ENTRIES_KEY]: { state: data } });
 };
 
 export async function syncTimeWithGoogle() {

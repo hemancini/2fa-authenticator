@@ -76,6 +76,9 @@ export default defineConfig({
       { name: "Blue Grey", hex: "#607d8b" },
       { name: "Teal", hex: "#009688" },
     ]),
+    STORAGE_OPTIONS_KEY: JSON.stringify("options"),
+    STORAGE_ENTRIES_KEY: JSON.stringify("entries"),
+    CHROME_STORAGE_AREA: JSON.stringify("sync"),
   },
   publicDir,
   build: {

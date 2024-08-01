@@ -22,7 +22,7 @@ export default function MoreOptions() {
   const [location] = useLocation();
   const [, toggleEditing] = useUrlHashState("#/edit");
   const { toggleModal } = useModalStore();
-  const { isVisibleCodes, setVisibleCodes } = useOptionsStore();
+  const { isVisibleTokens, toggleVisibleTokens } = useOptionsStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { entries } = useEntries();
   const emptyEntries = entries.size === 0;
@@ -80,13 +80,13 @@ export default function MoreOptions() {
               dense={true}
               disabled={emptyEntries}
               onClick={() => {
-                setVisibleCodes(!isVisibleCodes);
+                toggleVisibleTokens();
                 handleClose();
               }}
               sx={{ "& .MuiListItemIcon-root": { minWidth: 31 } }}
             >
-              <ListItemIcon>{isVisibleCodes ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
-              {t("visibleToken")}
+              <ListItemIcon>{isVisibleTokens ? <VisibilityIcon /> : <VisibilityOffIcon />}</ListItemIcon>
+              {t("visibleTokens")}
             </MenuItem>
           </MenuList>
         </Menu>

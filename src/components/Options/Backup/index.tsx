@@ -2,8 +2,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Divider, List, ListItem, ListItemButton, ListItemText, Paper, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
-import { ListItemIcon } from "@src/components/Options";
 import ImportBackup from "@src/components/Options/Backup/ImportBackup";
+import CustomItemIcon from "@src/components/Options/CustomItemIcon";
 import { useBackupStore } from "@src/stores/useBackup";
 import { exportBackup } from "@src/utils/backup";
 
@@ -34,9 +34,9 @@ export default function Backup() {
       <List sx={{ p: 0 }}>
         <ListItem disablePadding>
           <ListItemButton dense={!isUpSm} onClick={handleDownloadJson}>
-            <ListItemIcon>
+            <CustomItemIcon>
               <FileDownloadIcon />
-            </ListItemIcon>
+            </CustomItemIcon>
             <ListItemText primary={t("exportBackup")} />
           </ListItemButton>
         </ListItem>

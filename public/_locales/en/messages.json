@@ -155,7 +155,10 @@
   "autofillDesc": {
     "message": "Autofill the code in the input field"
   },
-  "visibleToken": {
-    "message": "Visible token"
+  "visibleTokens": {
+    "message": "Visible tokens"
+  },
+  "visibleTokensDesc": {
+    "message": "Show or hide the tokens"
   }
 }

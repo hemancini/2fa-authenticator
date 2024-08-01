@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
-import { ListItemIcon } from "@src/components/Options";
+import CustomItemIcon from "@src/components/Options/CustomItemIcon";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
@@ -112,9 +112,9 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
         <label htmlFor="update-file-button">
           <ListItem disablePadding dense={!isUpSm}>
             <ListItemButton>
-              <ListItemIcon>
+              <CustomItemIcon>
                 <UploadFileIcon />
-              </ListItemIcon>
+              </CustomItemIcon>
               <ListItemText primary={t("importBackup")} />
             </ListItemButton>
             <FileInput />

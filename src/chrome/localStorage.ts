@@ -5,7 +5,7 @@ interface StorageData {
 class ChromeStorage {
   private storageArea: chrome.storage.StorageArea;
 
-  constructor(storageType: "local" | "sync" = "local") {
+  constructor(storageType: "local" | "sync" = "sync") {
     this.storageArea = chrome.storage[storageType];
   }
 
@@ -76,7 +76,7 @@ class ChromeStorage {
   }
 }
 
-const storage = new ChromeStorage("sync");
+const storage = new ChromeStorage(CHROME_STORAGE_AREA);
 
 export const getAll = () =>
   storage
