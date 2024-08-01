@@ -186,7 +186,7 @@ export async function clearLegacyEntries() {
 
   for (const entry of entriesLegacy) {
     console.log("Removing legacy entry", entry.account);
-    // await remove(entry.hash);
+    await remove(entry.hash);
   }
 }
 
