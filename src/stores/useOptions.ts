@@ -47,7 +47,7 @@ export const useOptionsStore = create<OptionsStore>()(
         set((state) => ({ autofillEnabled: !state.autofillEnabled }));
       },
       xraysEnabled: false,
-      isVisibleTokens: false,
+      isVisibleTokens: true,
       toggleVisibleTokens: () => {
         set((state) => ({ isVisibleTokens: !state.isVisibleTokens }));
       },

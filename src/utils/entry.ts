@@ -153,13 +153,14 @@ export const migrateLegacy = async () => {
   const entries = new Map(
     [...(legacyEntries?.values() ?? [])].map((entryLegacy) => {
       {
-        const { issuer, account, secret, counter: period = 30, digits = 6 } = entryLegacy;
+        const { issuer, account, secret, counter = 30, digits = 6 } = entryLegacy;
+        console.log(superjson.stringify(entryLegacy));
 
         const newEntry = new OTPEntry({
           issuer: issuer,
           account: account,
-          secret: secret,
-          period: period as OTPPeriod,
+          secret: isEncrypted ? encrypt(secret) : secret,
+          period: counter as OTPPeriod,
           digits: digits as OTPDigits,
           type: (entryLegacy.type === 1 || entryLegacy.type === ("totp" as unknown) ? "totp" : "hotp") as OTPType,
           algorithm: entryLegacy.algorithm === 1 || entryLegacy.algorithm === ("SHA1" as unknown) ? "SHA1" : "SHA256",
@@ -169,7 +170,7 @@ export const migrateLegacy = async () => {
       }
     })
   );
-
+  console.log(superjson.stringify(entries));
   return entries;
 };
 
@@ -182,7 +183,7 @@ export async function clearLegacyEntries() {
 
   for (const entry of entriesLegacy) {
     console.log("Removing legacy entry", entry.account);
-    await remove(entry.hash);
+    // await remove(entry.hash);
   }
 }
 
