@@ -1,6 +1,7 @@
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Divider, Tab, Tabs } from "@mui/material";
 import { getAll, remove } from "@src/chrome/localStorage";
+import { STORAGE_ENTRIES_KEY } from "@src/config";
 import { decrypt } from "@src/utils/crypto";
 import React, { useEffect, useState } from "react";
 import superjson from "superjson";

@@ -13,6 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
+import { DEFAULT_POPUP_URL } from "@src/config";
 import React from "react";
 import { Link, useRoute } from "wouter";
 

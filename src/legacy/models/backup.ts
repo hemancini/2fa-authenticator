@@ -1,3 +1,4 @@
+import { DEFAULT_APP_KEY } from "@src/config";
 import CryptoJS from "crypto-js";
 
 import type { OTPEntry } from "./otp";

@@ -1,3 +1,5 @@
+import { CHROME_STORAGE_AREA } from "@src/config";
+
 interface StorageData {
   [key: string]: unknown;
 }

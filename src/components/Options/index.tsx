@@ -16,6 +16,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import Backup from "@src/components/Options/Backup";
+import { DEFAULT_POPUP_URL } from "@src/config";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { syncTimeWithGoogle } from "@src/utils/options";

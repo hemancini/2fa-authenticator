@@ -15,6 +15,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import CustomItemIcon from "@src/components/Options/CustomItemIcon";
+import { DEFAULT_POPUP_URL } from "@src/config";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";

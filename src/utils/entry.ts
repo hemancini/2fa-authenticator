@@ -1,4 +1,5 @@
 import { remove } from "@src/chrome/localStorage";
+import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
 import { OTPEntry } from "@src/entry/otp";
 import type { EntryState, OTPDigits, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
 import { decrypt, encrypt } from "@src/utils/crypto";

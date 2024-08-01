@@ -1,6 +1,5 @@
+import { DEFAULT_APP_KEY, HASH_KEY } from "@src/config";
 import CryptoJS from "crypto-js";
-
-const { HASH_KEY = "MY_SUPER_SECRET_KEY" } = import.meta.env;
 
 function fingerprint() {
   return HASH_KEY;

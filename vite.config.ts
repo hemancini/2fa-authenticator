@@ -5,6 +5,7 @@ import path, { resolve } from "path";
 import { defineConfig } from "vite";
 
 import manifest from "./manifest";
+import packageJson from "./package.json";
 import {
   assetsDir,
   componentsDir,
@@ -59,26 +60,7 @@ export default defineConfig({
     },
   ],
   define: {
-    DEFAULT_APP_KEY: JSON.stringify("PAaD&z7XC_-WQE"),
-    DEFAULT_POPUP_URL: JSON.stringify(`/${manifest.action.default_popup}`),
-    DEFAULT_SIDE_PANEL_URL: JSON.stringify(`/${manifest.side_panel.default_path}`),
-    DEFAULT_COLOR: JSON.stringify("#619f04"),
-    DEFAULT_MODE: JSON.stringify("system"),
-    DEFAULT_COLORS: JSON.stringify([
-      { name: "White", hex: "#fafafa" },
-      { name: "Green", hex: "#619f04" },
-      { name: "Orange", hex: "#ed6c02" },
-      { name: "Purple", hex: "#9c27b0" },
-      { name: "Deep Purple", hex: "#673ab7" },
-      { name: "Purple Pain", hex: "#8458B3" },
-      { name: "Indigo", hex: "#3f51b5" },
-      { name: "Blue", hex: "#2196f3" },
-      { name: "Blue Grey", hex: "#607d8b" },
-      { name: "Teal", hex: "#009688" },
-    ]),
-    STORAGE_OPTIONS_KEY: JSON.stringify("options"),
-    STORAGE_ENTRIES_KEY: JSON.stringify("entries"),
-    CHROME_STORAGE_AREA: JSON.stringify("sync"),
+    APP_VERSION: packageJson.version,
   },
   publicDir,
   build: {

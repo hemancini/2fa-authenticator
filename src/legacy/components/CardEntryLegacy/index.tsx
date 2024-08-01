@@ -12,6 +12,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
+import { DEFAULT_COLORS } from "@src/config";
 import { OTPEntry } from "@src/entry/type";
 import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypassLegacy";
 import EntriesContext from "@src/legacy/contexts/Entries";
@@ -181,7 +182,8 @@ const EntryContent = (props: EntryContentProps) => {
 
   const period = entry?.period || 30;
   const { discount, progress } = useCounter({ period });
-  const isDark = (theme: Theme) => DEFAULT_COLORS[0].hex === themeColor && theme.palette.mode !== "dark";
+  const isDark = (theme: Theme) =>
+    Object.values(DEFAULT_COLORS).find((c) => c.main === themeColor)?.dark && theme.palette.mode === "dark";
 
   return (
     <>

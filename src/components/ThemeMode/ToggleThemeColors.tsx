@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
+import { DEFAULT_COLORS } from "@src/config";
 import { useOptionsStore } from "@src/stores/useOptions";
 
 import Tooltip from "../CustomTooltip";
@@ -49,16 +50,16 @@ export default function ToggleThemeColors() {
             />
           }
         >
-          {DEFAULT_COLORS.map((color) => (
-            <MenuItem key={color.name} value={color.hex} dense>
+          {Object.entries(DEFAULT_COLORS).map(([name, color]) => (
+            <MenuItem key={color.main} value={color.main} dense>
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <SquareIcon sx={{ borderRadius: 4, mr: 1, color: color.hex }} />
-                <ListItemText primary={color.name} />
+                <SquareIcon sx={{ borderRadius: 4, mr: 1, color: color.main }} />
+                <ListItemText primary={name} />
               </Box>
             </MenuItem>
           ))}

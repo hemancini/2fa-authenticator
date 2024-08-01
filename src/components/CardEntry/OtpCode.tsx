@@ -69,7 +69,7 @@ const CustomTypography = ({ entry, isVisible, optCode }: { entry: OTPEntry; isVi
         alignItems: "center",
         letterSpacing: 4,
         fontWeight: "bold",
-        color: currentColor,
+        color: currentColor === "#fafafa" ? "black" : currentColor,
         fontSize: isVisible ? "1.9rem" : "3rem",
         lineHeight: isVisible ? 1 : 0.6,
       }}

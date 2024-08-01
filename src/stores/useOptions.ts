@@ -1,3 +1,4 @@
+import { CHROME_STORAGE_AREA, DEFAULT_COLOR, DEFAULT_MODE, STORAGE_OPTIONS_KEY } from "@src/config";
 import { create } from "zustand";
 import { persist, PersistStorage } from "zustand/middleware";
 

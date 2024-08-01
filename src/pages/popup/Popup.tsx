@@ -6,6 +6,7 @@ import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { t } from "@src/chrome/i18n";
+import { DEFAULT_SIDE_PANEL_URL } from "@src/config";
 import RoutesPopup from "@src/routes/Popup";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
