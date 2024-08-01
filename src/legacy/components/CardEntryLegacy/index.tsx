@@ -32,8 +32,8 @@ const regexEAS = /^[A-Za-z0-9+/=]+$/;
 const defaultEyesIconSize = 20;
 
 export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
-  const { bypassEnabled, isVisibleCodes } = useOptionsStore();
-  const [isVisible, setVisible] = useState(isVisibleCodes);
+  const { bypassEnabled, isVisibleTokens } = useOptionsStore();
+  const [isVisible, setVisible] = useState(isVisibleTokens);
 
   const { handleEntriesUpdate } = useContext(EntriesContext);
 
@@ -65,8 +65,8 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
   };
 
   useEffect(() => {
-    setVisible(isVisibleCodes);
-  }, [isVisibleCodes]);
+    setVisible(isVisibleTokens);
+  }, [isVisibleTokens]);
 
   return (
     <>
