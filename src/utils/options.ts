@@ -1,13 +1,13 @@
-import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
+import { CHROME_STORAGE_AREA, STORAGE_OPTIONS_KEY } from "@src/config";
 
 export const getOptionsStorage = async (): Promise<OptionsInterface> => {
-  return await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_ENTRIES_KEY]).then(
-    (result) => result[STORAGE_ENTRIES_KEY]?.state
+  return await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_OPTIONS_KEY]).then(
+    (result) => result[STORAGE_OPTIONS_KEY]?.state
   );
 };
 
 export const setOptionsStorage = async (data: unknown) => {
-  await chrome.storage[CHROME_STORAGE_AREA].set({ [STORAGE_ENTRIES_KEY]: { state: data } });
+  await chrome.storage[CHROME_STORAGE_AREA].set({ [STORAGE_OPTIONS_KEY]: { state: data } });
 };
 
 export async function syncTimeWithGoogle() {

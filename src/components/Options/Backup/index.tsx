@@ -1,17 +1,16 @@
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { Divider, List, ListItem, ListItemButton, ListItemText, Paper, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Divider, List, ListItem, ListItemButton, ListItemText, Paper } from "@mui/material";
 import { t } from "@src/chrome/i18n";
 import ImportBackup from "@src/components/Options/Backup/ImportBackup";
 import CustomItemIcon from "@src/components/Options/CustomItemIcon";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { exportBackup } from "@src/utils/backup";
 
 export default function Backup() {
   const { showMessage } = useBackupStore();
 
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   const handleDownloadJson = async () => {
     try {

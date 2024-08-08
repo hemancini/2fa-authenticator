@@ -14,6 +14,7 @@ interface OptionsStore {
   autofillEnabled: boolean;
   toggleAutofillEnabled: () => void;
   xraysEnabled: boolean;
+  toggleXraysEnabled: () => void;
   isVisibleTokens: boolean;
   toggleVisibleTokens: () => void;
 }
@@ -48,6 +49,9 @@ export const useOptionsStore = create<OptionsStore>()(
         set((state) => ({ autofillEnabled: !state.autofillEnabled }));
       },
       xraysEnabled: false,
+      toggleXraysEnabled: () => {
+        set((state) => ({ xraysEnabled: !state.xraysEnabled }));
+      },
       isVisibleTokens: true,
       toggleVisibleTokens: () => {
         set((state) => ({ isVisibleTokens: !state.isVisibleTokens }));

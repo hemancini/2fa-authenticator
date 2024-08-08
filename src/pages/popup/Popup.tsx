@@ -34,7 +34,6 @@ const multipathMatcher: MatcherFn = (patterns, path) => {
 
 export default function Popup() {
   const { xraysEnabled } = useOptionsStore();
-
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isSidePanel = window.location.href.includes(DEFAULT_SIDE_PANEL_URL);
 
@@ -48,10 +47,10 @@ export default function Popup() {
   return (
     <Router base={window.location.pathname} matcher={multipathMatcher} hook={useHashLocation}>
       <Box
-        sx={{
+        sx={(theme) => ({
           display: "flex",
-          "& *": xraysEnabled ? { border: "0.5px solid black" } : {},
-        }}
+          "& *": xraysEnabled ? { border: `0.5px solid ${theme.palette.mode === "dark" ? "white" : "black"}` } : {},
+        })}
       >
         {!isSidePanel && !isPopup && (
           <React.Fragment>

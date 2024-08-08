@@ -10,15 +10,14 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
 import CustomItemIcon from "@src/components/Options/CustomItemIcon";
 import { DEFAULT_POPUP_URL } from "@src/config";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
-import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
+import { useModalStore } from "@src/stores/useModal";
 import { decryptBackup } from "@src/utils/backup";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
@@ -34,8 +33,7 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
   const { isOpen, setOpen, infoText, setInfoText, isCloseAccion, setCloseAction, jsonData, setJsonData } =
     useBackupStore();
 
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   const handleCloseModal = () => {
     setOpen(false);

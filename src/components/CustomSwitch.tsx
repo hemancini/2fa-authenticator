@@ -1,10 +1,8 @@
-import { useTheme } from "@mui/material/styles";
 import SwitchMui, { SwitchProps } from "@mui/material/Switch";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 
 export default function CustomSwitch(props: SwitchProps) {
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   const stylesDownSm = {
     "& .MuiSwitch-track": { width: 25, height: "75%" },

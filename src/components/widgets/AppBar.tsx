@@ -6,17 +6,16 @@ import SaveIcon from "@mui/icons-material/Save";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import AddEntryMenu from "@src/components/dialogs/AddEntryMenu";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
+import { useModalStore } from "@src/stores/useModal";
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
@@ -38,8 +37,7 @@ export default function CustomAppBar({
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   return (
     <>

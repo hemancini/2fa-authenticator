@@ -1,12 +1,23 @@
 import Tooltip from "@components/CustomTooltip";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { CircularProgress } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 
 import CustomItemIcon from "./CustomItemIcon";
+
+interface CustomItemButtonProps {
+  primary: string;
+  toolltip?: string;
+  handleButton: () => void;
+  icon?: JSX.Element;
+  isNewTab?: boolean;
+  disabled?: boolean;
+  isLoading?: boolean;
+}
 
 export default function CustomItemButton({
   primary,
@@ -14,21 +25,16 @@ export default function CustomItemButton({
   handleButton,
   icon,
   isNewTab = false,
-}: {
-  primary: string;
-  toolltip?: string;
-  handleButton: () => void;
-  icon: JSX.Element;
-  isNewTab?: boolean;
-}) {
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  disabled = false,
+  isLoading = false,
+}: CustomItemButtonProps) {
+  const { isUpSm } = useScreenSize();
 
   return (
     <ListItem disablePadding>
       <Tooltip title={toolltip ?? ""} disableInteractive>
-        <ListItemButton dense={!isUpSm} onClick={handleButton}>
-          <CustomItemIcon>{icon}</CustomItemIcon>
+        <ListItemButton dense={!isUpSm} onClick={handleButton} disabled={isLoading || disabled}>
+          <CustomItemIcon>{icon ? icon : <Avatar sx={{ width: 24, height: 24 }} />}</CustomItemIcon>
           <ListItemText primary={primary} />
           {isNewTab && (
             <div
@@ -48,6 +54,7 @@ export default function CustomItemButton({
               />
             </div>
           )}
+          {isLoading && <CircularProgress size={22} />}
         </ListItemButton>
       </Tooltip>
     </ListItem>

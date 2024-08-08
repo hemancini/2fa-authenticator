@@ -43,7 +43,7 @@ export function sendMessageToBackground<M extends Message>({
 
 export function sendMessageToClient(
   port: chrome.runtime.Port,
-  message: { type: Message["type"]; data: Message["data"] } | ErrorMessage
+  message: { type: Message["type"]; data?: Message["data"] } | ErrorMessage
 ) {
   try {
     port.postMessage(message);

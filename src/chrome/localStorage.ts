@@ -7,7 +7,7 @@ interface StorageData {
 class ChromeStorage {
   private storageArea: chrome.storage.StorageArea;
 
-  constructor(storageType: "local" | "sync" = "sync") {
+  constructor(storageType: "local" | "sync" | "session" = "sync") {
     this.storageArea = chrome.storage[storageType];
   }
 

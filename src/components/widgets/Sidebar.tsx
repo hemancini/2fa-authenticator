@@ -1,5 +1,6 @@
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
+import BackupIcon from "@mui/icons-material/Backup";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import SaveIcon from "@mui/icons-material/Save";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -10,10 +11,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { DEFAULT_POPUP_URL } from "@src/config";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 import React from "react";
 import { Link, useRoute } from "wouter";
 
@@ -44,8 +44,14 @@ const routes: Routes[] = [
   },
   {
     path: "/storage",
-    name: "storage",
+    name: "Storage",
     icon: <SaveIcon />,
+    visible: isDev,
+  },
+  {
+    path: "/backup",
+    name: "Backup",
+    icon: <BackupIcon />,
     visible: isDev,
   },
 ];
@@ -83,8 +89,7 @@ export default function Siderbar({
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   const handleClose = () => {
     setDrawerOpen(false);

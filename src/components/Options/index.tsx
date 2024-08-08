@@ -1,6 +1,7 @@
 import ChromeStoreIcon from "@assets/img/chrome-store-192px.svg";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
+import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -12,11 +13,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import Backup from "@src/components/Options/Backup";
 import { DEFAULT_POPUP_URL } from "@src/config";
+import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { syncTimeWithGoogle } from "@src/utils/options";
@@ -41,10 +41,11 @@ export default function Options() {
     bypassEnabled,
     autofillEnabled,
     isVisibleTokens,
+    xraysEnabled,
+    toggleXraysEnabled,
   } = useOptionsStore();
 
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   const handleSyncClock = () => {
     chrome.permissions.request({ origins: ["https://www.google.com/"] }, async (granted) => {
@@ -127,6 +128,14 @@ export default function Options() {
                     <VisibilityOffIcon sx={{ fontSize: 20 }} />
                   )
                 }
+              />
+              <Divider />
+              <CustomItemSwitch
+                primary={"X-Rays"}
+                tooltip={"X-Rays enabled"}
+                switchEnabled={xraysEnabled}
+                toggleSwitch={toggleXraysEnabled}
+                icon={<DataArrayIcon sx={{ fontSize: 20 }} />}
               />
             </>
           )}

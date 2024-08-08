@@ -12,12 +12,12 @@ reloadOnUpdate("pages/background");
 reloadOnUpdate("pages/content/style.scss");
 
 const entrustSamlPath = "/#/saml/authentication/";
+const { VITE_GOOGLE_REDIRECT_URI: GOOGLE_REDIRECT_URI } = import.meta.env;
 
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(async (message: Message) => {
     try {
       const { type, data } = message;
-      console.log("sendMessageToBackground:", type);
       switch (type) {
         case "captureQR":
           await captureQR();
@@ -64,6 +64,34 @@ chrome.runtime.onConnect.addListener((port) => {
               }
             );
           });
+          break;
+        case "oauth":
+          {
+            const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
+              if (changeInfo.status === "complete") {
+                const url = tab?.url;
+                if (!url) return;
+
+                // auth token from google
+                if (url.startsWith(GOOGLE_REDIRECT_URI)) {
+                  chrome.tabs.remove(tabId); // close the tab
+
+                  const urlParams = new URLSearchParams(url);
+                  const token = urlParams.get("access_token");
+                  if (!token) return;
+                  // console.log("token:", token);
+                  sendMessageToClient(port, { type: "oauth", data: token });
+
+                  // remove the listener
+                  chrome.tabs.onUpdated.removeListener(onUpdated);
+                  return;
+                }
+              }
+            };
+
+            // Add listener to check the url
+            chrome.tabs.onUpdated.addListener(onUpdated);
+          }
           break;
 
         default:
@@ -126,5 +154,3 @@ async function getCapture(tab: chrome.tabs.Tab) {
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
   return dataUrl;
 }
-
-// console.log("background loaded");

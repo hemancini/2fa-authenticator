@@ -6,9 +6,10 @@ import colorLog from "../log";
 import ManifestParser from "../manifest-parser";
 
 const { resolve } = path;
-
 const distDir = resolve(__dirname, "..", "..", "dist");
 const publicDir = resolve(__dirname, "..", "..", "public");
+
+const oAuth2Enabled = false; // <-- Google OAuth2 Intenty API oAuth2Enabled flag
 
 export default function makeManifest(
   manifest: chrome.runtime.ManifestV3,
@@ -36,6 +37,14 @@ export default function makeManifest(
           resources: [...manifest.web_accessible_resources[0].resources, "icon-34-dev.png"],
         },
       ];
+      if (oAuth2Enabled) {
+        manifest.permissions.push("identity");
+        manifest.key = import.meta.env.VITE_GOOGLE_OAUTH2_EXT_KEY;
+        manifest.oauth2 = {
+          client_id: import.meta.env.VITE_GOOGLE_OAUTH2_EXT_ID,
+          scopes: ["https://www.googleapis.com/auth/drive.appdata"],
+        };
+      }
     } else {
       delete manifest.devtools_page;
     }

@@ -2,6 +2,7 @@ import "@pages/popup/Popup.css";
 
 import Entries from "@routes/Entries";
 import { t } from "@src/chrome/i18n";
+import Backup from "@src/develop/routes/Backup";
 import Storage from "@src/develop/routes/Storage";
 import Options from "@src/routes/Options";
 import { Redirect, Route, Switch } from "wouter";
@@ -18,16 +19,23 @@ export default function RoutesPopup() {
 
   return (
     <Switch>
-      <Route path="/">
-        <Entries />
-      </Route>
+      {/* TODO: init - optimize the routes */}
+      <Route path="/" component={Entries} />
+      <Route path="/edit" component={Entries} />
+      <Route path="/account/bypass" component={Entries} />
+      {/* TODO: fin - optimize the routes */}
       <Route path="/options">
         <Options />
       </Route>
       {isDev && (
-        <Route path="/storage">
-          <Storage />
-        </Route>
+        <Switch>
+          <Route path="/storage">
+            <Storage />
+          </Route>
+          <Route path="/backup">
+            <Backup />
+          </Route>
+        </Switch>
       )}
       <Route path="/:anything*">
         <Redirect to="/" />

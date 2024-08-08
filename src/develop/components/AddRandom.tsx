@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
-import { useModalStore } from "@src/stores/useDynamic";
 import { useEntries } from "@src/stores/useEntries";
+import { useModalStore } from "@src/stores/useModal";
 import { getRandomEntry } from "@src/utils/entry";
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
