@@ -1,6 +1,4 @@
 import { sendErrorMessageToClient, sendMessageToClient } from "@src/chrome/message";
-import { Encryption } from "@src/models/encryption";
-import { EntryStorage } from "@src/models/storage";
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
 import manifest from "../../../manifest";
@@ -13,22 +11,17 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-const cachedPassphrase = "";
 const entrustSamlPath = "/#/saml/authentication/";
+const { VITE_GOOGLE_REDIRECT_URI: GOOGLE_REDIRECT_URI } = import.meta.env;
 
 chrome.runtime.onConnect.addListener((port) => {
-  port.onDisconnect.addListener(() => {
-    console.log("Port disconnected");
-  });
   port.onMessage.addListener(async (message: Message) => {
     try {
-      switch (message.type) {
+      const { type, data } = message;
+      switch (type) {
         case "captureQR":
           await captureQR();
-          sendMessageToClient(port, {
-            type: message.type,
-            data: "received",
-          });
+          sendMessageToClient(port, { type, data: "received" });
           break;
         case "getCapture":
           await chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tab) => {
@@ -39,22 +32,9 @@ chrome.runtime.onConnect.addListener((port) => {
             const url = await getCapture(tab?.[0]);
             sendMessageToClient(port, {
               type: "getCapture",
-              data: { ...message.data, url },
+              data: { ...data, url },
             });
           });
-          break;
-        case "getTotp":
-          {
-            const entry = await getTotp(message.data);
-            if (entry instanceof Error) {
-              sendErrorMessageToClient(port, entry);
-            } else {
-              sendMessageToClient(port, {
-                type: "getTotp",
-                data: entry,
-              });
-            }
-          }
           break;
         case "autofill":
           chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
@@ -71,11 +51,11 @@ chrome.runtime.onConnect.addListener((port) => {
                 if (granted) {
                   await chrome.scripting.executeScript({
                     target: { tabId: tabs?.[0].id, allFrames: true },
-                    files: ["/src/pages/autofill/index.js"],
+                    files: ["/src/libs/autofill/index.js"],
                   });
                   chrome.tabs.sendMessage(tabs?.[0].id, {
                     message: "pastecode",
-                    data: message.data,
+                    data: data,
                   });
                 } else {
                   console.warn("autofill: Granted permission denied");
@@ -85,9 +65,37 @@ chrome.runtime.onConnect.addListener((port) => {
             );
           });
           break;
+        case "oauth":
+          {
+            const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
+              if (changeInfo.status === "complete") {
+                const url = tab?.url;
+                if (!url) return;
+
+                // auth token from google
+                if (url.startsWith(GOOGLE_REDIRECT_URI)) {
+                  chrome.tabs.remove(tabId); // close the tab
+
+                  const urlParams = new URLSearchParams(url);
+                  const token = urlParams.get("access_token");
+                  if (!token) return;
+                  // console.log("token:", token);
+                  sendMessageToClient(port, { type: "oauth", data: token });
+
+                  // remove the listener
+                  chrome.tabs.onUpdated.removeListener(onUpdated);
+                  return;
+                }
+              }
+            };
+
+            // Add listener to check the url
+            chrome.tabs.onUpdated.addListener(onUpdated);
+          }
+          break;
 
         default:
-          console.warn("Unknown message type", message.type);
+          console.warn("Unknown message type", type);
       }
     } catch (error) {
       console.warn(error);
@@ -130,84 +138,19 @@ async function captureQR() {
       console.warn("captureQR: No active tab found");
       throw new Error("No active tab found");
     }
+    await chrome.scripting.insertCSS({
+      files: ["/assets/css/captureStyle.chunk.css"],
+      target: { tabId: tab?.[0].id },
+    });
     await chrome.scripting.executeScript({
       target: { tabId: tab?.[0].id, allFrames: true },
-      files: ["/src/pages/capture/index.js"],
-    });
-    await chrome.scripting.insertCSS({
-      files: ["/assets/css/contentCapture.chunk.css"],
-      target: { tabId: tab?.[0].id },
+      files: ["/src/libs/capture/index.js"],
     });
     chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
   });
 }
 
 async function getCapture(tab: chrome.tabs.Tab) {
-  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
-    format: "png",
-  });
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
   return dataUrl;
 }
-
-async function getTotp(message: { url: string; site: string }) {
-  const { url, site } = message;
-  const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
-
-  if (!regexTotp.test(url)) {
-    console.warn("getTotp() => bad url", url);
-    return Error("Bad url");
-  }
-
-  const hash = crypto.randomUUID();
-  const urlObj = new URL(decodeURIComponent(url));
-  const entryData: { [hash: string]: OTPStorage } = {};
-  const period = parseInt(urlObj.searchParams.get("period") || "30");
-  entryData[hash] = {
-    hash,
-    account: urlObj.pathname.split(":")[1],
-    issuer: urlObj.searchParams.get("issuer"),
-    secret: urlObj.searchParams.get("secret"),
-    type: urlObj.pathname.split(":")[0].split("/")[2],
-    encrypted: false,
-    index: 0,
-    counter: 0,
-    pinned: false,
-    period: isNaN(period) || period < 0 || period > 60 || 60 % period !== 0 ? undefined : period,
-    digits: urlObj.searchParams.get("digits") === "8" ? 8 : 6,
-    algorithm: urlObj.searchParams.get("algorithm") === "SHA256" ? "SHA256" : "SHA1",
-    site,
-  };
-
-  if (!entryData[hash].issuer) {
-    const pattern = /otpauth:\/\/totp\/([^:]+):/;
-    const match = url.match(pattern);
-    entryData[hash].issuer = match?.[1];
-  }
-
-  if (!entryData[hash].account) {
-    const pattern = /otpauth:\/\/totp\/([^?:]+)/;
-    const match = url.match(pattern);
-    entryData[hash].account = match[1];
-    if (!match?.[1]) {
-      console.warn("getTotp() => no account", url);
-      return Error("No account");
-    }
-  }
-
-  if (!entryData[hash].secret) {
-    console.warn("getTotp() => no secret", url);
-    return Error("No secret");
-  }
-
-  // If the entries are encrypted and we aren't unlocked, error.
-  const encryption = new Encryption(cachedPassphrase);
-  if ((await EntryStorage.hasEncryptionKey()) !== encryption.getEncryptionStatus()) {
-    console.warn("getTotp() => encryption status mismatch");
-    return Error("Encryption status mismatch");
-  }
-
-  await EntryStorage.import(encryption, entryData);
-  return entryData[hash];
-}
-
-// console.log("background loaded");

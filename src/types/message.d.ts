@@ -19,11 +19,3 @@ interface GetCapture {
     captureBoxHeight: number;
   };
 }
-
-interface GetTotp {
-  type: "getTotp";
-  data: {
-    text: string;
-    fromPopup?: boolean;
-  };
-}

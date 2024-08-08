@@ -20,6 +20,9 @@
   "save": {
     "message": "Guardar"
   },
+  "close": {
+    "message": "Cerrar"
+  },
   "editEntries": {
     "message": "Editar cuentas"
   },
@@ -152,7 +155,10 @@
   "autofillDesc": {
     "message": "Autocompletar el código de verificación en el campo de entrada."
   },
-  "visibleToken": {
-    "message": "Token visible"
+  "visibleTokens": {
+    "message": "Token visibles"
+  },
+  "visibleTokensDesc": {
+    "message": "Mostrar o ocultar los tokens"
   }
 }

@@ -10,8 +10,8 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: "__MSG_extensionDescription__",
   homepage_url: packageJson.repository.url,
-  // options_page: "src/pages/options/index.html",
-  permissions: ["tabs", "activeTab", "storage", "scripting", "sidePanel" as any],
+  options_page: "src/pages/popup/index.html#/options",
+  permissions: ["tabs", "activeTab", "storage", "scripting"],
   side_panel: {
     default_path: "src/pages/sidePanel/index.html",
   },
@@ -38,7 +38,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   content_scripts: [
     {
       matches: ["https://*.us.trustedauth.com/*"],
-      js: ["src/pages/bypass/index.js"],
+      js: ["src/libs/bypass/index.js"],
       // KEY for cache invalidation
       css: ["assets/css/contentStyle<KEY>.chunk.css"],
     },

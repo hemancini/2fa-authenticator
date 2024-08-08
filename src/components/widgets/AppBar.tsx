@@ -1,5 +1,4 @@
-import AddEntryMenu from "@components/AddEntryMenu";
-import Tooltip from "@components/Tooltip";
+import Tooltip from "@components/CustomTooltip";
 import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -7,41 +6,25 @@ import SaveIcon from "@mui/icons-material/Save";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import EntriesContext from "@src/contexts/Entries";
-import { useActionStore, useModalStore } from "@src/stores/useDynamicStore";
-import { useContext, useState } from "react";
+import AddEntryMenu from "@src/components/dialogs/AddEntryMenu";
+import { useScreenSize } from "@src/hooks/useScreenSize";
+import useUrlHashState from "@src/hooks/useUrlHashState";
+import { useEntries } from "@src/stores/useEntries";
+import { useEntriesUtils } from "@src/stores/useEntriesUtils";
+import { useModalStore } from "@src/stores/useModal";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
-import DialogCaptureQR from "../DialogCaptureQR";
-import AppbarMenu from "./AppbarMenu";
+import ErrorCaptureQR from "../dialogs/CaptureQR";
+import MoreOptions from "./MoreOptions";
 
 const defaultIconSize = { fontSize: 20 };
 
-export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
-  return new Promise((resolve, reject) => {
-    sendMessageToBackground({
-      message: { type: "captureQR", data: null },
-      handleSuccess: (result) => {
-        if (result === "received") {
-          resolve(result);
-          window.close();
-        }
-      },
-      handleError: (error) => {
-        setCaptureQRError((prevState) => !prevState);
-        reject(error);
-      },
-    });
-  });
-};
-
-export default function ButtonAppBar({
+export default function CustomAppBar({
   drawerOpen,
   setDrawerOpen,
 }: {
@@ -49,20 +32,19 @@ export default function ButtonAppBar({
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
-  const { modal } = useModalStore();
-  const { actionState } = useActionStore();
+  const { isOpenModal: modal } = useModalStore();
+  const [isEditing] = useUrlHashState("#/edit");
 
   const isDev = import.meta.env.VITE_IS_DEV === "true";
 
-  const theme = useTheme();
-  const isUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isUpSm } = useScreenSize();
 
   return (
     <>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, pr: "0 !important" }}>
         <Toolbar variant="dense" disableGutters sx={{ display: "flex", px: 1, minHeight: 40 }}>
           <Box sx={{ display: "flex", flexGrow: 1, width: 40 }}>
-            {actionState["entries-edit-state"] ? (
+            {isEditing ? (
               <CancelButton />
             ) : (
               <IconButton
@@ -91,7 +73,7 @@ export default function ButtonAppBar({
             {/* {isDev && " dev"} */}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
-            {actionState["entries-edit-state"] ? (
+            {isEditing ? (
               <SaveButton />
             ) : (
               <Box minWidth={30} sx={{ display: "flex" }}>
@@ -105,21 +87,57 @@ export default function ButtonAppBar({
                     <QrCodeScannerIcon sx={defaultIconSize} />
                   </Tooltip>
                 </IconButton>
-                <AppbarMenu />
+                <MoreOptions />
               </Box>
             )}
           </Box>
         </Toolbar>
       </AppBar>
-      <DialogCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(actionState["entries-edit-state"] || modal["add-entry-modal"]) && <AddEntryMenu />}
+      <ErrorCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
+      {(isEditing || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );
 }
 
+export const captureQRCode = async (setCaptureQRError?: React.Dispatch<React.SetStateAction<boolean>>) => {
+  return new Promise((resolve, reject) => {
+    sendMessageToBackground({
+      message: { type: "captureQR", data: null },
+      handleSuccess: (result) => {
+        console.log("captureQRCode:", result);
+        if (result === "received") {
+          resolve(result);
+          window.close();
+        }
+      },
+      handleError: (error) => {
+        setCaptureQRError((prevState) => !prevState);
+        reject(error);
+      },
+    });
+  });
+};
+
 const SaveButton = (): JSX.Element => {
-  const { toggleAction } = useActionStore();
-  const { handleEntriesEdited } = useContext(EntriesContext);
+  const { removes, resetRemoves, entriesEdited, resetEntriesEdited } = useEntriesUtils();
+  const { removeEntry, upsertEntry } = useEntries();
+  const [, toggleEditing] = useUrlHashState("#/edit");
+
+  const onComplete = () => {
+    toggleEditing();
+    resetRemoves();
+    resetEntriesEdited();
+  };
+
+  const handleSave = () => {
+    removes?.forEach((hash) => removeEntry(hash));
+    entriesEdited?.forEach((entry) => upsertEntry(entry));
+  };
+
+  useEffect(() => {
+    window.addEventListener("popstate", onComplete);
+  });
+
   return (
     <IconButton
       size="small"
@@ -128,8 +146,8 @@ const SaveButton = (): JSX.Element => {
       LinkComponent={Link}
       href="/"
       onClick={() => {
-        handleEntriesEdited();
-        toggleAction("entries-edit-state");
+        handleSave();
+        toggleEditing();
       }}
     >
       <Tooltip title={t("save")} disableInteractive>
@@ -140,16 +158,18 @@ const SaveButton = (): JSX.Element => {
 };
 
 const CancelButton = (): JSX.Element => {
-  const { toggleAction } = useActionStore();
-  const { handleEntriesUpdate } = useContext(EntriesContext);
+  const [, toggleEditing] = useUrlHashState("#/edit");
+  const { resetRemoves, resetEntriesEdited } = useEntriesUtils();
+
   return (
     <IconButton
       size="small"
       color="inherit"
       aria-label={t("cancel")}
       onClick={() => {
-        toggleAction("entries-edit-state");
-        handleEntriesUpdate();
+        resetRemoves();
+        resetEntriesEdited();
+        toggleEditing();
       }}
       LinkComponent={Link}
       href="/"

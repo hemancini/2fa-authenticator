@@ -2,30 +2,29 @@ import "@pages/popup/Popup.css";
 
 import ToolbarOffset from "@components/ToolbarOffset";
 import AppBar from "@components/widgets/AppBar";
-import DrawerMenu from "@components/widgets/DrawerMenu";
+import Siderbar from "@components/widgets/Sidebar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Entries from "@routes/Entries";
-import EntriesEdit from "@routes/EntriesEdit";
 import { t } from "@src/chrome/i18n";
-import Options from "@src/routes/Options";
-import { useOptionsStore } from "@src/stores/useOptionsStore";
+import { DEFAULT_SIDE_PANEL_URL } from "@src/config";
+import RoutesPopup from "@src/routes/Popup";
+import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useState } from "react";
-import { Redirect, Route, Router, Switch } from "wouter";
-import makeMatcher from "wouter/matcher";
+import { Router } from "wouter";
+import makeMatcher, { MatcherFn } from "wouter/matcher";
 import { navigate, useLocationProperty } from "wouter/use-location";
 
 const hashLocation = () => window.location.hash.replace(/^#/, "") || "/";
-const hashNavigate = (to) => navigate("#" + to);
+const hashNavigate = (to: string) => navigate("#" + to);
 
-const useHashLocation = () => {
+const useHashLocation = (): [string, (to: string) => void] => {
   const location = useLocationProperty(hashLocation);
   return [location, hashNavigate];
 };
 
 const defaultMatcher = makeMatcher();
 
-const multipathMatcher = (patterns, path) => {
+const multipathMatcher: MatcherFn = (patterns, path) => {
   for (const pattern of [patterns].flat()) {
     const [match, params] = defaultMatcher(pattern, path);
     if (match) return [match, params];
@@ -35,7 +34,6 @@ const multipathMatcher = (patterns, path) => {
 
 export default function Popup() {
   const { xraysEnabled } = useOptionsStore();
-
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isSidePanel = window.location.href.includes(DEFAULT_SIDE_PANEL_URL);
 
@@ -47,35 +45,22 @@ export default function Popup() {
   }
 
   return (
-    <Router base={window.location.pathname} matcher={multipathMatcher as any} hook={useHashLocation as any}>
+    <Router base={window.location.pathname} matcher={multipathMatcher} hook={useHashLocation}>
       <Box
-        sx={{
+        sx={(theme) => ({
           display: "flex",
-          "& *": xraysEnabled ? { border: "0.5px solid black" } : {},
-        }}
+          "& *": xraysEnabled ? { border: `0.5px solid ${theme.palette.mode === "dark" ? "white" : "black"}` } : {},
+        })}
       >
         {!isSidePanel && !isPopup && (
           <React.Fragment>
             <AppBar {...{ drawerOpen, setDrawerOpen }} />
-            <DrawerMenu {...{ drawerOpen, setDrawerOpen }} />
+            <Siderbar {...{ drawerOpen, setDrawerOpen }} />
           </React.Fragment>
         )}
-        <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1 }}>
+        <Container component="main" maxWidth="sm" sx={{ py: 0.7, flexGrow: 1, px: "0.8rem" }}>
           {!isSidePanel && !isPopup && <ToolbarOffset />}
-          <Switch>
-            <Route path={["/", DEFAULT_POPUP_URL, DEFAULT_SIDE_PANEL_URL] as any}>
-              <Entries />
-            </Route>
-            <Route path="/entries/edit">
-              <EntriesEdit />
-            </Route>
-            <Route path="/options">
-              <Options />
-            </Route>
-            <Route path="/:anything*">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
+          <RoutesPopup />
         </Container>
       </Box>
     </Router>

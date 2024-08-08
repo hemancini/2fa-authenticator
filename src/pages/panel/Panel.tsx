@@ -1,24 +1,16 @@
 import "@pages/panel/Panel.css";
 
+import { useEntries } from "@src/stores/useEntries";
+import { getOptionsStorage, setOptionsStorage } from "@src/utils/options";
 import React, { useEffect } from "react";
 
-const getOptionsStorage = async () => {
-  const chromeStorageKey = "2fa-options";
-  const storage = await chrome.storage.local.get([chromeStorageKey]);
-  return storage[chromeStorageKey]?.state;
-};
-
-const setOptionsStorage = async (data: any) => {
-  const chromeStorageKey = "2fa-options";
-  await chrome.storage.local.set({ [chromeStorageKey]: { state: data } });
-};
-
 const Debug = () => {
-  const [entries, setEntries] = React.useState<any>();
+  const { entries } = useEntries();
+
   const [options, setOptions] = React.useState<any>();
   const [xraysEnabled, setXraysEnabled] = React.useState<boolean>(false);
 
-  const handleXraysEnbledChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleXraysEnbledChange = async () => {
     const _options = await getOptionsStorage();
     const optionsDraft = { ..._options, xraysEnabled: !xraysEnabled };
     await setOptionsStorage(optionsDraft).then(() => {
@@ -29,12 +21,6 @@ const Debug = () => {
 
   useEffect(() => {
     (async () => {
-      const storage = await chrome.storage.local.get();
-      delete storage["LocalStorage"];
-      delete storage["2fa-options"];
-      delete storage["OPTIONS"];
-      setEntries(storage);
-
       const _options = await getOptionsStorage();
       setOptions(_options);
 
@@ -53,9 +39,9 @@ const Debug = () => {
         </label>
       </div>
       <p>entries</p>
-      <pre>{JSON.stringify(entries, null, 4)}</pre>
+      <pre>{JSON.stringify(Array.from(entries)?.flat(Infinity), null, 2)}</pre>
       <p>options</p>
-      <pre>{JSON.stringify(options, null, 4)}</pre>
+      <pre>{JSON.stringify(options, null, 2)}</pre>
     </div>
   );
 };

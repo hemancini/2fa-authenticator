@@ -1,0 +1,33 @@
+import { resolve } from "node:path";
+
+export const {
+  rootDir,
+  outDir,
+  pagesDir,
+  assetsDir,
+  routesDir,
+  componentsDir,
+  definitionsDir,
+  publicDir,
+  autofillDir,
+  autofillOutDir,
+  bypassDir,
+  bypassOutDir,
+  captureDir,
+  captureOutDir,
+} = {
+  outDir: resolve("dist"),
+  publicDir: resolve("public"),
+  rootDir: resolve("src"),
+  assetsDir: resolve("src", "assets"),
+  pagesDir: resolve("src", "pages"),
+  routesDir: resolve("src", "routes"),
+  componentsDir: resolve("src", "components"),
+  definitionsDir: resolve("src", "definitions"),
+  autofillDir: resolve("src", "libs", "autofill"),
+  autofillOutDir: resolve("dist", "src", "libs", "autofill"),
+  bypassDir: resolve("src", "libs", "bypass"),
+  bypassOutDir: resolve("dist", "src", "libs", "bypass"),
+  captureDir: resolve("src", "libs", "capture"),
+  captureOutDir: resolve("dist", "src", "libs", "capture"),
+} as const;

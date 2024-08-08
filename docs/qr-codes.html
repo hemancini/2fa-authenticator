@@ -1,140 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TOTP QR Codes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-    <style>
-      * {
-        /* border: 0.5px solid black; */
-        font-family: "Roboto", sans-serif;
-      }
-      header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f5f5f5;
-      }
-      body {
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-      .grid-container {
-        margin-top: 30px;
-        margin-bottom: 30px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        grid-auto-flow: row dense;
-        gap: 50px;
-      }
-      .grid-item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-      }
-      .span-url {
-        margin-top: 20px;
-        font-size: small;
-      }
-      .is-failed {
-        color: tomato;
-      }
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>TOTP QR Codes</h1>
-    </header>
-    <div id="qr-list" class="grid-container"></div>
-  </body>
-  <script type="text/javascript">
-    const issuers = ["jijiji", "WOM", "gitlab", "entrust"];
-    const qrApiUrl = "https://chart.googleapis.com/chart?cht=qr&chl=";
 
-    function randomNumbers(length = 6) {
-      const randomNumber = Math.floor(Math.random() * 10 ** length);
-      return randomNumber.toString().padStart(length, "0");
-    }
-    function randomNumber(max = 1) {
-      return Math.floor(Math.random() * max) + 1;
-    }
-    function randomString(length = 9) {
-      return Array.from({ length }, () => Math.random().toString(36).charAt(2))
-        .join("")
-        .toUpperCase();
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOTP QR Codes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      /* border: 0.5px solid black; */
+      font-family: "Roboto", sans-serif;
     }
 
-    const qrList = [
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
-        }:prueba-${randomNumbers()}?secret=${randomString()}&period=10`,
-      },
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f5f5f5;
+    }
+
+    body {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .grid-container {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-auto-flow: row dense;
+      gap: 50px;
+    }
+
+    .grid-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .span-url {
+      margin-top: 20px;
+      font-size: small;
+    }
+
+    .is-failed {
+      color: tomato;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>TOTP QR Codes</h1>
+  </header>
+  <div id="qr-list" class="grid-container"></div>
+</body>
+<script type="text/javascript">
+  const issuers = ["jijiji", "WOM", "gitlab", "entrust"];
+  // const qrApiUrl = "https://chart.googleapis.com/chart?cht=qr&chl=";
+  const qrApiUrl = "https://qrcode.tec-it.com/API/QRCode?data=";
+
+  function randomNumbers(length = 6) {
+    const randomNumber = Math.floor(Math.random() * 10 ** length);
+    return randomNumber.toString().padStart(length, "0");
+  }
+  function randomNumber(max = 1) {
+    return Math.floor(Math.random() * max) + 1;
+  }
+  function randomString(length = 9) {
+    return Array.from({ length }, () => Math.random().toString(36).charAt(2))
+      .join("")
+      .toUpperCase();
+  }
+
+  const qrList = [
+    {
+      url: `otpauth://totp/prueba-${randomNumbers()}?secret=${randomString()}&issuer=${issuers[randomNumber(issuers.length - 1)]}&period=10`,
+    },
+    {
+      url: `otpauth://totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}?issuer=wenawena&secret=${randomString()}`,
-      },
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
+    },
+    {
+      url: `otpauth://totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}?secret=${randomString()}`,
-      },
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
+    },
+    {
+      url: `otpauth://totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}?period=20&secret=${randomString()}`,
-      },
-      {
-        url: `otpaut/totp/${
-          issuers[randomNumber(issuers.length - 1)]
+    },
+    {
+      url: `otpaut/totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}?secret=${randomString()}`,
-        isFailed: true,
-      },
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
+      isFailed: true,
+    },
+    {
+      url: `otpauth://totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}/secret=${randomString()}`,
-        isFailed: true,
-      },
-      {
-        url: `otpauth://totp/${
-          issuers[randomNumber(issuers.length - 1)]
+      isFailed: true,
+    },
+    {
+      url: `otpauth://totp/${issuers[randomNumber(issuers.length - 1)]
         }:prueba-${randomNumbers()}secret=${randomString()}`,
-        isFailed: true,
-      },
-    ];
+      isFailed: true,
+    },
+  ];
 
-    const imgSize = 200;
-    const qrListElement = document.getElementById("qr-list");
+  const imgSize = 200;
+  const qrListElement = document.getElementById("qr-list");
 
-    if (qrListElement) {
-      qrList
-        .sort(() => Math.random() - 0.5)
-        .forEach((qr) => {
-          const qrContent = document.createElement("div");
-          const qrName = document.createElement("span");
-          const qrImg = document.createElement("img");
+  if (qrListElement) {
+    qrList
+      .sort(() => Math.random() - 0.5)
+      .forEach((qr) => {
+        const qrContent = document.createElement("div");
+        const qrName = document.createElement("span");
+        const qrImg = document.createElement("img");
 
-          qrName.innerHTML = qr.url;
-          qrName.classList.add("span-url");
-          qrName.classList.add(qr.isFailed && "is-failed");
+        qrName.innerHTML = qr.url;
+        qrName.classList.add("span-url");
+        qrName.classList.add(qr.isFailed && "is-failed");
 
-          qrImg.setAttribute("src", qrApiUrl + encodeURIComponent(qr.url) + `&chs=${imgSize}x${imgSize}&chld=L|0`);
-          qrImg.setAttribute("alt", qr.url);
+        qrImg.setAttribute("src", qrApiUrl + encodeURIComponent(qr.url) + `&chs=${imgSize}x${imgSize}&chld=L|0`);
+        qrImg.setAttribute("alt", qr.url);
 
-          qrContent.appendChild(qrImg);
-          qrContent.appendChild(qrName);
-          qrContent.classList.add("grid-item");
-          qrListElement.appendChild(qrContent);
-        });
-    }
-  </script>
+        qrContent.appendChild(qrImg);
+        qrContent.appendChild(qrName);
+        qrContent.classList.add("grid-item");
+        qrListElement.appendChild(qrContent);
+      });
+  }
+</script>
+
 </html>
