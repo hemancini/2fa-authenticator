@@ -146,17 +146,15 @@ const draftStorage = {
  * @deprecated since version 1.3.0
  */
 export const migrateLegacy = async () => {
+  console.log("Migrating legacy entries");
+
   let legacyEntries = await getLegacyEntries("local");
   if (legacyEntries.length === 0) {
-    console.log("No legacy entries found in local storage");
     legacyEntries = await getLegacyEntries("sync");
     if (legacyEntries.length === 0) {
-      console.log("No legacy entries found in sync storage");
       return new Map<string, TOTPEntry>();
     }
   }
-
-  console.log("Migrating legacy entries");
 
   const entries = new Map(
     [...(legacyEntries?.values() ?? [])].map((entryLegacy) => {
@@ -200,3 +198,18 @@ async function getLegacyEntries(storageType: "local" | "sync" = "local"): Promis
   }
   return entries;
 }
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export const setMigrated = async (migrated: boolean) => {
+  await chrome.storage.local.set({ migrated });
+};
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export const getIsMigrated = async () => {
+  const { migrated } = await chrome.storage.local.get("migrated");
+  return migrated;
+};

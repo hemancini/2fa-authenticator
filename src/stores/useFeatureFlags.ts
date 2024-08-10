@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist, PersistStorage } from "zustand/middleware";
 
 interface FeatureFlagsStore {
   useLegacy: boolean;
@@ -9,14 +9,20 @@ interface FeatureFlagsStore {
   fetchFeatureFlags: () => Promise<void>;
 }
 
+const chromePersistStorage: PersistStorage<FeatureFlagsStore> = {
+  getItem: async (name) => await chrome.storage.session.get([name]).then((result) => result[name]),
+  setItem: (name, value) => chrome.storage.session.set({ [name]: value }),
+  removeItem: (name) => chrome.storage.session.remove([name]),
+};
+
 export const useFeatureFlags = create(
   persist<FeatureFlagsStore>(
     (set) => ({
-      useLegacy: false,
+      useLegacy: true,
       entrustBypass: true,
       visibleTokens: true,
       fetchFeatureFlags: async () => {
-        const response = await fetch(import.meta.env.VITE_FEATURE_FLAGS_URI_, { cache: "no-store" });
+        const response = await fetch(import.meta.env.VITE_FEATURE_FLAGS_URI, { cache: "no-store" });
         const featureFlags = await response.json();
         // console.log(featureFlags);
         set((state) => {
@@ -32,7 +38,7 @@ export const useFeatureFlags = create(
     }),
     {
       name: "feature-flags",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: chromePersistStorage,
     }
   )
 );
