@@ -1,6 +1,6 @@
 import { CHROME_STORAGE_AREA, STORAGE_OPTIONS_KEY } from "@src/config";
 
-export const getOptionsStorage = async (): Promise<OptionsInterface> => {
+export const getOptionsStorage = async (): Promise<OptionsStore> => {
   return await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_OPTIONS_KEY]).then(
     (result) => result[STORAGE_OPTIONS_KEY]?.state
   );

@@ -14,6 +14,7 @@ interface Entry {
   digits: OTPDigits;
   algorithm: OTPAlgorithm;
   encrypted?: boolean;
+  isVisible?: boolean;
   site?: string;
   user?: string;
   pass?: string;
@@ -32,6 +33,8 @@ interface EntryState {
   removeEntry: (hash: string) => void;
   upsertEntry: (entry: OTPEntry) => void;
   framerReorder: (entries: OTPEntry[]) => void;
+  toggleVisible: (hash: string) => void;
+  toggleVisibleTokens: () => void;
   /**
    * @deprecated since version 1.3.0
    */

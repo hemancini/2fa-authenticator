@@ -18,11 +18,19 @@ type DefaultColors = [
 type DefaultColorNames = DefaultColors[number]["name"];
 type DefaultColorHexes = DefaultColors[number]["main"];
 
-interface OptionsInterface {
+interface OptionsStore {
   themeMode: ThemeMode;
+  toggleThemeMode: (mode: ThemeMode) => void;
   themeColor: DefaultColorHexes;
+  toggleThemeColor: (color: DefaultColorHexes) => void;
   tooltipEnabled: boolean;
+  toggleTooltipEnabled: () => void;
   bypassEnabled: boolean;
-  xraysEnabled: boolean;
+  toggleBypassEnabled: () => void;
   autofillEnabled: boolean;
+  toggleAutofillEnabled: () => void;
+  xraysEnabled: boolean;
+  toggleXraysEnabled: () => void;
+  isVisibleTokens: boolean;
+  toggleVisibleTokens: () => void;
 }

@@ -1,23 +1,7 @@
 import { CHROME_STORAGE_AREA, DEFAULT_COLOR, DEFAULT_MODE, STORAGE_OPTIONS_KEY } from "@src/config";
+import { useEntries } from "@src/stores/useEntries";
 import { create } from "zustand";
 import { persist, PersistStorage } from "zustand/middleware";
-
-interface OptionsStore {
-  themeMode: ThemeMode;
-  toggleThemeMode: (mode: ThemeMode) => void;
-  themeColor: DefaultColorHexes;
-  toggleThemeColor: (color: DefaultColorHexes) => void;
-  tooltipEnabled: boolean;
-  toggleTooltipEnabled: () => void;
-  bypassEnabled: boolean;
-  toggleBypassEnabled: () => void;
-  autofillEnabled: boolean;
-  toggleAutofillEnabled: () => void;
-  xraysEnabled: boolean;
-  toggleXraysEnabled: () => void;
-  isVisibleTokens: boolean;
-  toggleVisibleTokens: () => void;
-}
 
 const chromePersistStorage: PersistStorage<OptionsStore> = {
   getItem: async (name) => await chrome.storage[CHROME_STORAGE_AREA].get([name]).then((result) => result[name]),
@@ -54,7 +38,10 @@ export const useOptionsStore = create<OptionsStore>()(
       },
       isVisibleTokens: true,
       toggleVisibleTokens: () => {
-        set((state) => ({ isVisibleTokens: !state.isVisibleTokens }));
+        set((state) => {
+          useEntries.getState().toggleVisibleTokens();
+          return { isVisibleTokens: !state.isVisibleTokens };
+        });
       },
     }),
     {

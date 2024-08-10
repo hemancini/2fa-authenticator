@@ -4,12 +4,17 @@ import Entries from "@routes/Entries";
 import { t } from "@src/chrome/i18n";
 import Backup from "@src/develop/routes/Backup";
 import Storage from "@src/develop/routes/Storage";
+import { EntriesProviderLegacy } from "@src/legacy/contexts/Entries";
+import EntriesLegacy from "@src/legacy/routes/EntriesLegacy";
+import EntriesLegacyEdit from "@src/legacy/routes/EntriesLegacyEdit";
 import Options from "@src/routes/Options";
+import { useFeatureFlags } from "@src/stores/useFeatureFlags";
 import { Redirect, Route, Switch } from "wouter";
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 
 export default function RoutesPopup() {
+  const { useLegacy } = useFeatureFlags();
   const urlObj = new URL(decodeURIComponent(window.location.href));
   const isPopup = urlObj.searchParams.get("popup") === "true";
 
@@ -17,13 +22,36 @@ export default function RoutesPopup() {
     document.title = t("extensionName");
   }
 
+  console.log("useLegacy:", useLegacy);
+
   return (
     <Switch>
-      {/* TODO: init - optimize the routes */}
-      <Route path="/" component={Entries} />
-      <Route path="/edit" component={Entries} />
-      <Route path="/account/bypass" component={Entries} />
-      {/* TODO: fin - optimize the routes */}
+      {!useLegacy ? (
+        <>
+          <Route path="/" component={Entries} />
+          <Route path="/edit" component={Entries} />
+          <Route path="/account/bypass" component={Entries} />
+        </>
+      ) : (
+        <>
+          <Route
+            path="/"
+            component={() => (
+              <EntriesProviderLegacy>
+                <EntriesLegacy />
+              </EntriesProviderLegacy>
+            )}
+          />
+          <Route
+            path="/edit"
+            component={() => (
+              <EntriesProviderLegacy>
+                <EntriesLegacyEdit />
+              </EntriesProviderLegacy>
+            )}
+          />
+        </>
+      )}
       <Route path="/options">
         <Options />
       </Route>

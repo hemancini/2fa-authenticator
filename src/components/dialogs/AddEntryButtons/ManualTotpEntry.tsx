@@ -20,7 +20,7 @@ export default function ManualTotpEntry(props: AddEntryProps) {
   const [entry, setEntry] = useState<OTPEntry>();
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
 
-  const handleAddEntry = async () => {
+  const handleAddEntry = () => {
     const newEntry = newEntryFromUrl(totp);
     addEntry(newEntry);
     setEntry(newEntry);

@@ -3,7 +3,7 @@ import NotEntriesFound from "@components/NotEntriesFound";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
-import { clearLegacyEntries, migrateLegacy } from "@src/utils/entry";
+import { migrateLegacy } from "@src/utils/entry";
 import { Reorder } from "framer-motion";
 import { useEffect } from "react";
 
@@ -19,7 +19,6 @@ export default function Entries() {
       if (entries.size === 0) {
         const entriesMigrated = await migrateLegacy();
         setEntries(entriesMigrated);
-        clearLegacyEntries();
       }
     })();
   }, []);

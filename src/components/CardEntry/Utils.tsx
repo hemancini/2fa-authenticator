@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
 import type { OTPEntry } from "@src/entry/type";
+import { useEntries } from "@src/stores/useEntries";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 type CardUtilsProps = {
@@ -14,18 +15,11 @@ type CardUtilsProps = {
   showQR?: boolean;
   setShowQR: Dispatch<SetStateAction<boolean>>;
   showCardUtils: boolean;
-  isVisibleToken: boolean;
-  setVisibleToken: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function CardUtils({
-  entry,
-  showQR,
-  setShowQR,
-  showCardUtils = false,
-  isVisibleToken,
-  setVisibleToken,
-}: CardUtilsProps) {
+export default function CardUtils({ entry, showQR, setShowQR, showCardUtils = false }: CardUtilsProps) {
+  const { hash, isVisible } = entry;
+  const { toggleVisible } = useEntries();
   return (
     showCardUtils && (
       <Box
@@ -40,8 +34,8 @@ export default function CardUtils({
         }}
       >
         <AccountBypassButton entry={entry} />
-        <CustomIconButton title={t("showToken")} onClick={() => setVisibleToken(!isVisibleToken)}>
-          {isVisibleToken ? <VisibilityIcon /> : <VisibilityOffIcon />}
+        <CustomIconButton title={t("showToken")} onClick={() => toggleVisible(hash)}>
+          {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
         </CustomIconButton>
         <CustomIconButton title={t("showQR")} onClick={() => setShowQR(!showQR)}>
           <QrCode2Icon />
