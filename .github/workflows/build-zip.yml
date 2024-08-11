@@ -25,6 +25,8 @@ jobs:
 
       - run: pnpm install
       - run: pnpm build
+        env:
+          VITE_FEATURE_FLAGS_URI: ${{ env.VITE_FEATURE_FLAGS_URI }}
 
       - uses: actions/upload-artifact@v3
         with:
