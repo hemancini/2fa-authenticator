@@ -22,7 +22,7 @@ export default function RoutesPopup() {
     document.title = t("extensionName");
   }
 
-  console.log("useLegacy:", useLegacy);
+  // console.log("useLegacy:", useLegacy);
 
   return (
     <Switch>
