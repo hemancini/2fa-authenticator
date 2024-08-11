@@ -1,4 +1,3 @@
-import { remove } from "@src/chrome/localStorage";
 import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
 import { OTPEntry } from "@src/entry/otp";
 import type { EntryState, OTPDigits, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
@@ -148,8 +147,14 @@ const draftStorage = {
  */
 export const migrateLegacy = async () => {
   console.log("Migrating legacy entries");
-  const legacyEntries = await getLegacyEntries();
-  if (legacyEntries.length === 0) return new Map<string, TOTPEntry>();
+
+  let legacyEntries = await getLegacyEntries("local");
+  if (legacyEntries.length === 0) {
+    legacyEntries = await getLegacyEntries("sync");
+    if (legacyEntries.length === 0) {
+      return new Map<string, TOTPEntry>();
+    }
+  }
 
   const entries = new Map(
     [...(legacyEntries?.values() ?? [])].map((entryLegacy) => {
@@ -181,22 +186,10 @@ export const migrateLegacy = async () => {
 /**
  * @deprecated since version 1.3.0
  */
-export async function clearLegacyEntries() {
-  const entriesLegacy = await getLegacyEntries();
-  if (entriesLegacy.length === 0) return;
-
-  for (const entry of entriesLegacy) {
-    console.log("Removing legacy entry", entry.account);
-    await remove(entry.hash);
-  }
-}
-
-/**
- * @deprecated since version 1.3.0
- */
-async function getLegacyEntries() {
+async function getLegacyEntries(storageType: "local" | "sync" = "local"): Promise<OTPEntryLegacy[]> {
   const entries: OTPEntryLegacy[] = [];
-  const storage = await chrome.storage.sync.get();
+  const storage = await chrome.storage[storageType].get();
+
   for (const key of Object.keys(storage)) {
     const entry = storage[key];
     if (entry && entry.hash && entry.secret) {
@@ -205,3 +198,18 @@ async function getLegacyEntries() {
   }
   return entries;
 }
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export const setMigrated = async (migrated: boolean) => {
+  await chrome.storage.local.set({ migrated });
+};
+
+/**
+ * @deprecated since version 1.3.0
+ */
+export const getIsMigrated = async () => {
+  const { migrated } = await chrome.storage.local.get("migrated");
+  return migrated;
+};

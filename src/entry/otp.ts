@@ -14,8 +14,9 @@ export class OTPEntry implements Entry {
   type: OTPType;
   digits: OTPDigits;
   algorithm: OTPAlgorithm;
-  encrypted: boolean;
-  site?: string;
+  isVisible?: boolean;
+  encrypted?: boolean;
+  site: string;
 
   constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false }: Entry) {
     this.issuer = issuer;

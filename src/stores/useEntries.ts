@@ -1,5 +1,6 @@
 import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
 import type { EntryState, OTPEntry } from "@src/entry/type";
+import { useOptionsStore } from "@src/stores/useOptions";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import { create } from "zustand";
@@ -20,18 +21,25 @@ export const chromePersistStorage: PersistStorage<EntryState> = {
   removeItem: (name) => chrome.storage[CHROME_STORAGE_AREA].remove([name]),
 };
 
+const checkEntry = (entry: OTPEntry): OTPEntry => {
+  const { isVisibleTokens = true } = useOptionsStore.getState();
+  const newEntry: OTPEntry = { ...entry, isVisible: isVisibleTokens };
+  return newEntry;
+};
+
 export const useEntries = create(
   persist<EntryState>(
     (set) => ({
       entries: new Map<string, OTPEntry>(),
       setEntries: (entries: Map<string, OTPEntry>) =>
-        set((state: EntryState) => {
-          state.entries = entries;
+        set((state) => {
+          state.entries = new Map(Array.from(entries).map(([hash, entry]) => [hash, checkEntry(entry)]));
           return { entries: state.entries };
         }),
       addEntry: (entry: OTPEntry) =>
         set((state: EntryState) => {
-          state.entries = new Map([[entry.hash, entry], ...Array.from(state.entries)]);
+          const newEntry = checkEntry(entry);
+          state.entries = new Map([[newEntry.hash, newEntry], ...Array.from(state.entries)]);
           return { entries: state.entries };
         }),
       removeEntry: (hash: string) =>
@@ -41,12 +49,28 @@ export const useEntries = create(
         }),
       upsertEntry: (entry: OTPEntry) =>
         set((state: EntryState) => {
-          state.entries.set(entry.hash, entry);
+          const newEntry = checkEntry(entry);
+          state.entries.set(newEntry.hash, newEntry);
           return { entries: state.entries };
         }),
       framerReorder: (entries: OTPEntry[]) =>
         set((state: EntryState) => {
           state.entries = new Map(entries.map((entry) => [entry.hash, entry]));
+          return { entries: state.entries };
+        }),
+      toggleVisible: (hash: string) =>
+        set((state: EntryState) => {
+          const entry = state.entries.get(hash);
+          if (entry) {
+            const isVisible = !entry.isVisible;
+            state.entries.set(hash, { ...entry, isVisible });
+          }
+          return { entries: state.entries };
+        }),
+      toggleVisibleTokens: () =>
+        set((state: EntryState) => {
+          const { isVisibleTokens } = useOptionsStore.getState();
+          state.entries.forEach((entry) => (entry.isVisible = !isVisibleTokens));
           return { entries: state.entries };
         }),
       removeAll: () =>

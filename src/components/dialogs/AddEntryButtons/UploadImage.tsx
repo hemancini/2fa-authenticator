@@ -97,14 +97,7 @@ export default function UploadImage(props: {
         <Button size="small" variant="outlined" fullWidth onClick={() => setUploadImageOption(false)}>
           {t("cancel")}
         </Button>
-        <Button
-          fullWidth
-          size="small"
-          variant="contained"
-          onClick={() => {
-            handleAddEntry();
-          }}
-        >
+        <Button fullWidth size="small" variant="contained" onClick={() => handleAddEntry()}>
           {t("add")}
         </Button>
       </Box>

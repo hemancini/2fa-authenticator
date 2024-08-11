@@ -10,7 +10,7 @@ export const exportBackup = async (): Promise<Blob> => {
   return blobData;
 };
 
-export const decryptBackup = async ({ data }: { data: string }) => {
+export const decryptBackup = async ({ data }: { data: string }): Promise<Map<string, OTPEntry>> => {
   const decryptedData = decrypData(data);
   const entriesArray = JSON.parse(decryptedData) as OTPEntry[];
   const entries = new Map(entriesArray.map((entry) => [entry.hash, entry]));

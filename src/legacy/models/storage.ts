@@ -241,7 +241,7 @@ export class EntryStorage {
   private static isValidEntry(_data: { [hash: string]: OTPStorage }, hash: string) {
     const data = _data[hash];
     if (typeof data !== "object") {
-      console.log('Key "' + hash + '" is not an object');
+      // console.log('Key "' + hash + '" is not an object');
       return false;
     } else if (!this.isOTPStorage(data)) {
       return false;

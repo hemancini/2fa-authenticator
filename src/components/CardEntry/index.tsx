@@ -12,21 +12,15 @@ import { t } from "@src/chrome/i18n";
 import type { OTPEntry } from "@src/entry/type";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
-import { useOptionsStore } from "@src/stores/useOptions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function CardEntry({ entry }: { entry: OTPEntry }) {
-  const { isVisibleTokens } = useOptionsStore();
+  const { isVisible } = entry;
   const [isEditing] = useUrlHashState("#/edit");
 
   const [showQR, setShowQR] = useState(false);
   const [showUtils, setShowUtils] = useState(false);
-  const [isVisibleToken, setVisibleToken] = useState(isVisibleTokens);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  useEffect(() => {
-    setVisibleToken(isVisibleTokens);
-  }, [isVisibleTokens]);
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -45,11 +39,9 @@ export default function CardEntry({ entry }: { entry: OTPEntry }) {
         onMouseOut={() => setShowUtils(false)}
       >
         <CustomTypography entry={entry} property="issuer" />
-        {!isEditing && (
-          <CardUtils {...{ entry, showQR, setShowQR, showCardUtils: showUtils, isVisibleToken, setVisibleToken }} />
-        )}
+        {!isEditing && <CardUtils {...{ entry, showQR, setShowQR, showCardUtils: showUtils }} />}
         <Box sx={{ display: "flex", gap: 4 }}>
-          <OtpCode entry={entry} isVisible={!isEditing && isVisibleToken} />
+          <OtpCode entry={entry} isVisible={!isEditing && isVisible} />
           {isEditing && <DragButton />}
         </Box>
         <CustomTypography entry={entry} property="account" />

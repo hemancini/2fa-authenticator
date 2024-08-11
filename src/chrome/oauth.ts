@@ -106,6 +106,10 @@ export function removeCachedAuthToken(token: string): Promise<void> {
  */
 export async function oauthPopup(): Promise<void> {
   const url = new URL(GOOGLE_OAUTH2_ENDPOINT);
+  if (!GOOGLE_REDIRECT_URI || !GOOGLE_SCOPE || !GOOGLE_OAUTH2_ENDPOINT || !GOOGLE_CLIENT_ID) {
+    throw new Error("Missing environment variables");
+  }
+
   url.searchParams.append("scope", GOOGLE_SCOPE);
   url.searchParams.append("client_id", GOOGLE_CLIENT_ID);
   url.searchParams.append("redirect_uri", GOOGLE_REDIRECT_URI);

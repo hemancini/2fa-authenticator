@@ -1,5 +1,14 @@
 import { ILocalStorage, LocalStorage } from "@src/legacy/chrome/localStorage";
 
+interface OptionsInterface {
+  themeMode: ThemeMode;
+  themeColor: DefaultColorHexes;
+  tooltipEnabled: boolean;
+  bypassEnabled: boolean;
+  xraysEnabled: boolean;
+  autofillEnabled: boolean;
+}
+
 export class Options implements OptionsInterface {
   themeMode: ThemeMode;
   themeColor: DefaultColorHexes;

@@ -1,4 +1,5 @@
 import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import type { OTPEntry } from "@src/entry/type";
@@ -50,30 +51,40 @@ export default function OtpCode({ entry, isVisible }: { entry: OTPEntry; isVisib
       arrow
     >
       <CardActionArea disabled={isEditing} onClick={handleCopyCode} sx={{ borderRadius: 2, width: "auto" }}>
-        <CustomTypography entry={entry} isVisible={isVisible} optCode={optCode} />
+        <CustomTypography entry={entry} isVisible={isVisible} optCode={optCode} isEditing={isEditing} />
       </CardActionArea>
     </MuiTooltip>
   );
 }
 
-const CustomTypography = ({ entry, isVisible, optCode }: { entry: OTPEntry; isVisible: boolean; optCode: string }) => {
+const CustomTypography = ({
+  entry,
+  optCode,
+  isVisible,
+  isEditing,
+}: {
+  entry: OTPEntry;
+  optCode: string;
+  isVisible: boolean;
+  isEditing: boolean;
+}) => {
   const { currentColor, remainingTime } = useCountdown({ entry });
   const isParpadeando = remainingTime <= 5;
   return (
     <Typography
       component={"h5"}
-      sx={{
+      sx={(theme) => ({
         ml: 0.5,
         height: 31,
         display: "flex",
         alignItems: "center",
         letterSpacing: 4,
         fontWeight: "bold",
-        color: currentColor === "#fafafa" ? "black" : currentColor,
+        color: currentColor === "#fafafa" ? grey[400] : !isEditing ? currentColor : theme.palette.primary.main,
         fontSize: isVisible ? "1.9rem" : "3rem",
         lineHeight: isVisible ? 1 : 0.6,
-      }}
-      className={isParpadeando ? "parpadea" : ""}
+      })}
+      className={isParpadeando && !isEditing ? "parpadea" : ""}
     >
       {isVisible ? optCode : "••••••"}
     </Typography>
