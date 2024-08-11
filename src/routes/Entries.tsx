@@ -19,11 +19,9 @@ export default function Entries() {
       const isMigrated = await getIsMigrated();
       if (isMigrated) return;
 
-      if (entries.size === 0) {
-        const entriesMigrated = await migrateLegacy();
-        setEntries(entriesMigrated);
-        await setMigrated(true);
-      }
+      const entriesMigrated = await migrateLegacy();
+      setEntries(entriesMigrated);
+      await setMigrated(true);
     })();
   }, []);
 
