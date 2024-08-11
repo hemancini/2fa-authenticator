@@ -10,6 +10,10 @@ type ScreenSize = {
   isUpMd: boolean;
   isUpLg: boolean;
   isUpXl: boolean;
+  isDownSm: boolean;
+  isDownMd: boolean;
+  isDownLg: boolean;
+  isDownXl: boolean;
 };
 
 export const useScreenSize = (): ScreenSize => {
@@ -26,5 +30,10 @@ export const useScreenSize = (): ScreenSize => {
   const isUpLg = useMediaQuery(theme.breakpoints.up("lg"));
   const isUpXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-  return { isXs, isSm, isMd, isLg, isXl, isUpSm, isUpMd, isUpLg, isUpXl };
+  const isDownSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
+  const isDownLg = useMediaQuery(theme.breakpoints.down("lg"));
+  const isDownXl = useMediaQuery(theme.breakpoints.down("xl"));
+
+  return { isXs, isSm, isMd, isLg, isXl, isUpSm, isUpMd, isUpLg, isUpXl, isDownSm, isDownMd, isDownLg, isDownXl };
 };
