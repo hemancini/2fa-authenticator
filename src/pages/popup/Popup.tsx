@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import { t } from "@src/chrome/i18n";
 import { DEFAULT_SIDE_PANEL_URL } from "@src/config";
 import RoutesPopup from "@src/routes/Popup";
-import { useFeatureFlags } from "@src/stores/useFeatureFlags";
+// import { useFeatureFlags } from "@src/stores/useFeatureFlags";
 import { useOptionsStore } from "@src/stores/useOptions";
 import React, { useEffect, useState } from "react";
 import { Router } from "wouter";
@@ -46,7 +46,7 @@ export default function Popup() {
   }
 
   useEffect(() => {
-    useFeatureFlags.getState().fetchFeatureFlags();
+    // useFeatureFlags.getState().fetchFeatureFlags();
   }, []);
 
   return (

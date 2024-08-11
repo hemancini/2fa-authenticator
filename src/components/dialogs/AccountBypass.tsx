@@ -1,5 +1,5 @@
-import { CustomIconButton } from "@components/CardEntry/Utils";
 import CustomDialog from "@components/CustomDialog";
+import { CustomIconButton } from "@components/EntryCard/Utils";
 import PersonIcon from "@mui/icons-material/Person";
 import { Box, Button, FormControl, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { t } from "@src/chrome/i18n";

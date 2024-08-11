@@ -18,7 +18,7 @@ const chromePersistStorage: PersistStorage<FeatureFlagsStore> = {
 export const useFeatureFlags = create(
   persist<FeatureFlagsStore>(
     (set) => ({
-      useLegacy: true,
+      useLegacy: false,
       entrustBypass: true,
       visibleTokens: true,
       fetchFeatureFlags: async () => {
