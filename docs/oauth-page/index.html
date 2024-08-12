@@ -1,34 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OAuth 2.0</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociona tu Extensión de Google Chrome</title>
+    <style>
+        :root {
+            --primary-color: #004777;
+            --secondary-color: #F7B801;
+            --text-color: #333;
+            --background-color: #fff;
+        }
 
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      text-align: center;
-      flex-direction: column;
-    }
-  </style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #F7B801;
+                --secondary-color: #004777;
+                --text-color: #eee;
+                --background-color: #121212;
+            }
+        }
 
-  <script>
-    function closeWindow() {
-      window.close();
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
 
-    window.onload = function () {
-      setTimeout(closeWindow, 5000); // Cierra la ventana después de 5 segundos (5000 milisegundos)
-    };
-  </script>
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 20px 0;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: var(--text-color);
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        @media (min-width: 768px) {
+            p {
+                font-size: 1.5em;
+            }
+
+            .btn {
+                font-size: 1.2em;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <h1>OAuth 2.0</h1>
-  <p>Esta ventana se cerrará automáticamente en 5 segundos.</p>
+    <h1>¡Mejora tu Navegación con Nuestra Extensión!</h1>
+    <p>Descubre una nueva forma de navegar por la web con nuestra extensión para Google Chrome. Mejora tu productividad y disfruta de una experiencia personalizada.</p>
+    <button class="btn">Añadir a Chrome</button>
+    <img src="https://via.placeholder.com/600x400" alt="Vista previa de la extensión">
+    
+    <div class="footer">
+        <p>
+            <a href="./privacy">Política de Privacidad y Condiciones del Servicio</a>
+        </p>
+    </div>
 </body>
-
 </html>

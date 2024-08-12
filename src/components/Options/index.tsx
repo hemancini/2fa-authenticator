@@ -5,6 +5,7 @@ import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import TabIcon from "@mui/icons-material/Tab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Divider from "@mui/material/Divider";
@@ -16,6 +17,7 @@ import Paper from "@mui/material/Paper";
 import { t } from "@src/chrome/i18n";
 import Backup from "@src/components/Options/Backup";
 import { DEFAULT_POPUP_URL } from "@src/config";
+import GoogleBackups from "@src/develop/components/GoogleBackups";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useFeatureFlags } from "@src/stores/useFeatureFlags";
@@ -26,6 +28,8 @@ import packageJson from "../../../package.json";
 import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
+
+const useCloudBackup = false;
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
@@ -151,7 +155,7 @@ export default function Options() {
           )}
         </List>
       </Paper>
-
+      {useCloudBackup ? <GoogleBackups /> : <Backup />}
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
           <ListItem disablePadding>
@@ -164,8 +168,6 @@ export default function Options() {
           </ListItem>
         </List>
       </Paper>
-
-      <Backup />
 
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
@@ -186,6 +188,18 @@ export default function Options() {
           />
           {isDev && (
             <>
+              <Divider />
+              <CustomListButton
+                isNewTab
+                primary="Open in browser"
+                toolltip="Open in browser"
+                icon={<TabIcon />}
+                handleButton={() =>
+                  chrome.tabs.create({
+                    url: chrome.runtime.getURL(DEFAULT_POPUP_URL),
+                  })
+                }
+              />
               <Divider />
               <CustomListButton
                 primary={"Chrome Web Store"}
