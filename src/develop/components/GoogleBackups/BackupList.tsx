@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { Button, CircularProgress, DialogActions, List, Typography } from "@mui/material";
+import { Button, CircularProgress, DialogActions, Divider, List, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,9 +14,12 @@ import { useEffect, useState } from "react";
 import { Appdata, getListAppdata } from "../../oauth";
 import { useAuth } from "../../stores/useAuth";
 import CustomListItem from "./CustomListItem";
-import type { BackupDialogProps } from "./types";
 
-export default function BackupList({ state: { setOpen } }: BackupDialogProps) {
+interface BackupListProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function BackupList({ setOpen }: BackupListProps) {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | undefined>();
   const [listAppdata, setListAppdata] = useState<Appdata[]>();
@@ -73,19 +76,15 @@ export default function BackupList({ state: { setOpen } }: BackupDialogProps) {
     <Dialog
       open={true}
       onClose={handleClose}
-      maxWidth={"xs"}
+      // maxWidth={false}
       fullWidth={true}
-      fullScreen={isXs}
-      sx={(theme) => ({
-        "& .MuiDialogContent-root": {
-          padding: theme.spacing(1),
-        },
-        "& .MuiDialogActions-root": {
-          padding: theme.spacing(1),
-        },
-      })}
+      sx={{
+        "& .MuiDialogContent-root": { p: 1, pb: 2 },
+        "& .MuiDialogActions-root": { py: 0.5 },
+      }}
     >
       <DialogTitle sx={{ py: 1 }}>Backups</DialogTitle>
+      <Divider />
       <IconButton
         size="small"
         aria-label="close"
@@ -99,7 +98,7 @@ export default function BackupList({ state: { setOpen } }: BackupDialogProps) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent dividers sx={{ minHeight: !isXs && 200 }}>
+      <DialogContent sx={{ minHeight: !isXs && 200 }}>
         {isLoading && !loginError && (
           <CustomFlexBox>
             <CircularProgress size={50} />
@@ -148,13 +147,11 @@ export default function BackupList({ state: { setOpen } }: BackupDialogProps) {
           </Box>
         )}
       </DialogContent>
-      {appdataNotFound && (
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            OK
-          </Button>
-        </DialogActions>
-      )}
+      <DialogActions sx={{ pb: 2, pr: 2 }}>
+        <Button autoFocus onClick={handleClose}>
+          Close
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

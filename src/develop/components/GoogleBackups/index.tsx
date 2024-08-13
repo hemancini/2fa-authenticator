@@ -19,8 +19,8 @@ import ExportBackup from "./ExportBackup";
 
 export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) {
   const { token, setToken } = useAuth();
-  const [showDialogOpen, setShowDialogOpen] = useState(false);
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [backupListOpen, setBackupListOpen] = useState(false);
+  const [exportBackupOpen, setExportBackupOpen] = useState(false);
 
   const { execute: executeRevokeAuthTokenJS, isLoading: isLoadingRevokeAuthTokenJS } = useAsync(revokeAuthTokenJS);
 
@@ -36,14 +36,14 @@ export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) 
           <CustomItemButton
             primary="Show Google backups"
             toolltip="Show Google backups"
-            handleButton={() => setShowDialogOpen(true)}
+            handleButton={() => setBackupListOpen(true)}
             icon={<CloudSyncIcon />}
           />
           <Divider />
           <CustomItemButton
             primary="Export backups to Google"
             toolltip="Export backups to Google"
-            handleButton={() => setExportDialogOpen(true)}
+            handleButton={() => setExportBackupOpen(true)}
             icon={<CloudUploadIcon />}
           />
           <Divider />
@@ -71,8 +71,8 @@ export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) 
         </>
       )}
 
-      {showDialogOpen && <BackupList state={{ setOpen: setShowDialogOpen }} />}
-      {exportDialogOpen && <ExportBackup state={{ setOpen: setExportDialogOpen }} />}
+      {backupListOpen && <BackupList {...{ setOpen: setBackupListOpen }} />}
+      {exportBackupOpen && <ExportBackup {...{ setOpen: setExportBackupOpen }} />}
     </main>
   );
 }

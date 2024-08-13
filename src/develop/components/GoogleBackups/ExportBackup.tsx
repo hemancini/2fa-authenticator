@@ -16,9 +16,12 @@ import React, { useState } from "react";
 
 import { uploadAppdata } from "../../oauth";
 import { useAuth } from "../../stores/useAuth";
-import type { BackupDialogProps } from "./types";
 
-export default function ExportBackup({ state: { setOpen } }: BackupDialogProps) {
+interface ExportBackupProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function ExportBackup({ setOpen }: ExportBackupProps) {
   const { entries } = useEntries();
   const { isXs } = useScreenSize();
   const { token, setToken, loginType } = useAuth();
@@ -168,10 +171,12 @@ const SuccessDialog = ({ handleClose }: { handleClose: () => void }) => {
       <DialogTitle>Success</DialogTitle>
       <Divider />
       <DialogContent>
-        <DialogContentText>The backup was successfully saved.</DialogContentText>
+        <DialogContentText sx={{ justifyContent: "center", textAlign: "center" }}>
+          Backup saved successfully.
+        </DialogContentText>
       </DialogContent>
-      <DialogActions sx={{ m: 1 }}>
-        <Button onClick={handleClose} variant="contained" color="primary">
+      <DialogActions sx={{ m: 1, justifyContent: "center" }}>
+        <Button onClick={handleClose} variant="contained" color="primary" autoFocus sx={{ px: 4 }}>
           Close
         </Button>
       </DialogActions>

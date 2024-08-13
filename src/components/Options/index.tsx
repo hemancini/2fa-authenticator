@@ -28,7 +28,7 @@ import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
 
-const useCloudBackup = false;
+const useCloudBackup = true;
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
