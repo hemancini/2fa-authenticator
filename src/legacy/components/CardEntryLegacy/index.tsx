@@ -1,7 +1,7 @@
-import { CounterProgress } from "@components/CardEntry/Countdown";
 import CustomIconButton from "@components/CustomIconButton";
 import Tooltip from "@components/CustomTooltip";
 import ShowQR from "@components/dialogs/ShowQR";
+import { CounterProgress } from "@components/EntryCard/Countdown";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
@@ -82,10 +82,10 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
             backgroundColor: "rgba(0, 0, 0, 0.03)",
           },
         }}
-      // {...{
-      //   sx: { borderRadius: 0 },
-      //   variant: "elevation",
-      // }}
+        // {...{
+        //   sx: { borderRadius: 0 },
+        //   variant: "elevation",
+        // }}
       >
         <CardContent sx={{ py: 0.3, px: 1.2, "&:last-child": { pb: 0.3 } }}>
           <BoxRelative>

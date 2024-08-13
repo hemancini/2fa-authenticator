@@ -1,5 +1,5 @@
 import SaveIcon from "@mui/icons-material/Save";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { sendMessageToBackgroundAsync } from "@src/chrome/message";
-import { oauthSignInJS } from "@src/chrome/oauth";
+import { oauthLogin } from "@src/chrome/oauth";
 import { useAsync } from "@src/hooks/useAsync";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useEntries } from "@src/stores/useEntries";
@@ -18,10 +18,10 @@ import { uploadAppdata } from "../../oauth";
 import { useAuth } from "../../stores/useAuth";
 import type { BackupDialogProps } from "./types";
 
-export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) {
+export default function ExportBackup({ state: { setOpen } }: BackupDialogProps) {
   const { entries } = useEntries();
-  const { isUpSm } = useScreenSize();
-  const { token, setToken } = useAuth();
+  const { isXs } = useScreenSize();
+  const { token, setToken, loginType } = useAuth();
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [formError, setFormError] = useState<undefined | string>(undefined);
@@ -34,7 +34,7 @@ export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) 
   });
 
   const formattedDate = formatter.format(new Date());
-  const fileName = `backup-${formattedDate?.replace(/\//g, "-")}.json`;
+  const fileName = `${formattedDate?.replace(/\//g, "-").toLowerCase()}.json`;
 
   const { execute, isLoading, error } = useAsync(uploadAppdata);
 
@@ -43,7 +43,7 @@ export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) 
   };
 
   const retryUploadAppdata = async (fileName: string, fileContent: string): Promise<void> => {
-    oauthSignInJS();
+    await oauthLogin(loginType); // Open the OAuth
     const token = await sendMessageToBackgroundAsync({ type: "oauth" });
     if (!token) return;
     setToken(token);
@@ -102,7 +102,7 @@ export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) 
   return (
     <Dialog
       open={true}
-      fullScreen={!isUpSm}
+      {...(isXs && { maxWidth: "xl", fullWidth: true })}
       onClose={handleClose}
       PaperProps={{
         ...({
@@ -112,6 +112,9 @@ export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) 
       }}
       sx={{
         "& .MuiDialogContent-root": {
+          p: 2,
+        },
+        "& .MuiDialogTitle-root": {
           py: 1,
         },
       }}
@@ -119,6 +122,7 @@ export default function ExportDialog({ state: { setOpen } }: BackupDialogProps) 
       {!isSuccess ? (
         <>
           <DialogTitle>Backup entries</DialogTitle>
+          <Divider />
           <DialogContent>
             <DialogContentText sx={{ mb: 2 }}>
               To export the backup, please enter the name of the file. We will save the backup in JSON format.
@@ -162,6 +166,7 @@ const SuccessDialog = ({ handleClose }: { handleClose: () => void }) => {
   return (
     <>
       <DialogTitle>Success</DialogTitle>
+      <Divider />
       <DialogContent>
         <DialogContentText>The backup was successfully saved.</DialogContentText>
       </DialogContent>

@@ -67,41 +67,6 @@ export function revokeAuthTokenJS(token: string): Promise<void> {
 }
 
 /*
- * Get OAuth2 access token from the Google Identity API.
- * @returns Promise<string> - The OAuth2 access token.
- * https://developer.chrome.com/docs/extensions/how-to/integrate/oauth?hl=es-419
- * https://stackoverflow.com/questions/77351341/error-400-invalid-request-custom-uri-scheme-is-not-supported-on-chrome-apps
- */
-export function getAuthToken(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    chrome.identity.getAuthToken({ interactive: true }, (token) => {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else {
-        resolve(token);
-      }
-    });
-  });
-}
-
-/*
- * Remove OAuth2 access token from the Google Identity API.
- * @param token - The OAuth2 access token.
- * @returns Promise<void>
- */
-export function removeCachedAuthToken(token: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    chrome.identity.removeCachedAuthToken({ token }, () => {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-/*
  * Open a popup window to request OAuth2 access token from Google.
  */
 export async function oauthPopup(): Promise<void> {
@@ -120,7 +85,14 @@ export async function oauthPopup(): Promise<void> {
   await chrome.windows.create({
     url: url.toString(),
     type: "popup", //  "normal" | "panel" | "popup"
-    height: 600,
-    width: 500,
+    // height: 600,
+    // width: 500,
   });
 }
+
+/*
+ * Open a popup window to request OAuth2 access token from Google.
+ */
+export const oauthLogin = async (loginType: "popup" | "js") => {
+  return loginType === "popup" ? await oauthPopup() : oauthSignInJS();
+};

@@ -1,5 +1,5 @@
 {
-  "useLegacy": true,
+  "useLegacy": false,
   "entrustBypass": true,
   "visibleTokens": true
 }

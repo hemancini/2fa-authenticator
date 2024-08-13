@@ -2,9 +2,13 @@ import superjson from "superjson";
 import { create } from "zustand";
 import { persist, type PersistStorage } from "zustand/middleware";
 
+type LoginType = "popup" | "js";
+
 interface AuthState {
   token: string | undefined;
   setToken: (token: string) => void;
+  loginType: LoginType;
+  setLoginType: (loginType: LoginType) => void;
 }
 
 export const chromePersistStorage: PersistStorage<AuthState> = {
@@ -25,6 +29,8 @@ export const useAuth = create(
     (set) => ({
       token: undefined,
       setToken: (token) => set({ token }),
+      loginType: "popup",
+      setLoginType: (loginType) => set({ loginType }),
     }),
     {
       name: "auth",

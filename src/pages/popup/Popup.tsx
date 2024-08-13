@@ -8,9 +8,8 @@ import Container from "@mui/material/Container";
 import { t } from "@src/chrome/i18n";
 import { DEFAULT_SIDE_PANEL_URL } from "@src/config";
 import RoutesPopup from "@src/routes/Popup";
-import { useFeatureFlags } from "@src/stores/useFeatureFlags";
 import { useOptionsStore } from "@src/stores/useOptions";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Router } from "wouter";
 import makeMatcher, { MatcherFn } from "wouter/matcher";
 import { navigate, useLocationProperty } from "wouter/use-location";
@@ -44,10 +43,6 @@ export default function Popup() {
   if (isPopup) {
     document.title = t("extensionName");
   }
-
-  useEffect(() => {
-    useFeatureFlags.getState().fetchFeatureFlags();
-  }, []);
 
   return (
     <Router base={window.location.pathname} matcher={multipathMatcher} hook={useHashLocation}>

@@ -66,32 +66,7 @@ chrome.runtime.onConnect.addListener((port) => {
           });
           break;
         case "oauth":
-          {
-            const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
-              if (changeInfo.status === "complete") {
-                const url = tab?.url;
-                if (!url) return;
-
-                // auth token from google
-                if (url.startsWith(GOOGLE_REDIRECT_URI)) {
-                  chrome.tabs.remove(tabId); // close the tab
-
-                  const urlParams = new URLSearchParams(url);
-                  const token = urlParams.get("access_token");
-                  if (!token) return;
-                  // console.log("token:", token);
-                  sendMessageToClient(port, { type: "oauth", data: token });
-
-                  // remove the listener
-                  chrome.tabs.onUpdated.removeListener(onUpdated);
-                  return;
-                }
-              }
-            };
-
-            // Add listener to check the url
-            chrome.tabs.onUpdated.addListener(onUpdated);
-          }
+          oauthLogin(port);
           break;
 
         default:
@@ -153,4 +128,40 @@ async function captureQR() {
 async function getCapture(tab: chrome.tabs.Tab) {
   const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
   return dataUrl;
+}
+
+function oauthLogin(port: chrome.runtime.Port) {
+  const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
+    if (changeInfo.status === "complete") {
+      const url = tab?.url;
+      if (!url) return;
+
+      const onClose = (tabIdR: number) => {
+        if (tabId === tabIdR) {
+          const error = new Error("Tab closed");
+          sendErrorMessageToClient(port, error);
+          // remove the listeners
+          chrome.tabs.onRemoved.removeListener(onClose);
+          chrome.tabs.onUpdated.removeListener(onUpdated);
+          return;
+        }
+      };
+      // Add listener to check if the tab is closed
+      chrome.tabs.onRemoved.addListener(onClose);
+
+      // auth token from google
+      if (url.startsWith(GOOGLE_REDIRECT_URI)) {
+        chrome.tabs.remove(tabId); // close the tab
+        const urlParams = new URLSearchParams(url);
+        const token = urlParams.get("access_token");
+        sendMessageToClient(port, { type: "oauth", data: token });
+        // remove the listener
+        chrome.tabs.onRemoved.removeListener(onClose);
+        chrome.tabs.onUpdated.removeListener(onUpdated);
+        return;
+      }
+    }
+  };
+  // Add listener to check the url
+  chrome.tabs.onUpdated.addListener(onUpdated);
 }

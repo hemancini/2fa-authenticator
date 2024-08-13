@@ -1,10 +1,10 @@
-import Countdown from "@components/CardEntry/Countdown";
-import OtpCode from "@components/CardEntry/OtpCode";
-import CardUtils from "@components/CardEntry/Utils";
 import Tooltip from "@components/CustomTooltip";
 import AccountBypassDialog from "@components/dialogs/AccountBypass";
 import ConfirmRemoveEntry from "@components/dialogs/ConfirmRemoveEntry";
 import ShowQR from "@components/dialogs/ShowQR";
+import Countdown from "@components/EntryCard/Countdown";
+import OtpCode from "@components/EntryCard/OtpCode";
+import CardUtils from "@components/EntryCard/Utils";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { Box, Card, IconButton, InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -14,7 +14,7 @@ import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useState } from "react";
 
-export default function CardEntry({ entry }: { entry: OTPEntry }) {
+export default function EntryCard({ entry }: { entry: OTPEntry }) {
   const { isVisible } = entry;
   const [isEditing] = useUrlHashState("#/edit");
 

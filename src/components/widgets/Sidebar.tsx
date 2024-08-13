@@ -18,7 +18,7 @@ import React from "react";
 import { Link, useRoute } from "wouter";
 
 const anchor = "left";
-const drawerWidth = 175;
+const drawerWidth = 120;
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 
 interface Routes {
@@ -43,15 +43,15 @@ const routes: Routes[] = [
     disabled: false,
   },
   {
-    path: "/storage",
-    name: "Storage",
-    icon: <SaveIcon />,
-    visible: isDev,
-  },
-  {
     path: "/backup",
     name: "Backup",
     icon: <BackupIcon />,
+    visible: isDev,
+  },
+  {
+    path: "/storage",
+    name: "Storage",
+    icon: <SaveIcon />,
     visible: isDev,
   },
 ];

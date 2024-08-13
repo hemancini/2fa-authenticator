@@ -1,4 +1,4 @@
-import EntryCard from "@components/CardEntry";
+import EntryCard from "@components/EntryCard";
 import NotEntriesFound from "@components/NotEntriesFound";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntries } from "@src/stores/useEntries";
