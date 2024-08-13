@@ -8,21 +8,18 @@ import { EntriesProviderLegacy } from "@src/legacy/contexts/Entries";
 import EntriesLegacy from "@src/legacy/routes/EntriesLegacy";
 import EntriesLegacyEdit from "@src/legacy/routes/EntriesLegacyEdit";
 import Options from "@src/routes/Options";
-import { useFeatureFlags } from "@src/stores/useFeatureFlags";
 import { Redirect, Route, Switch } from "wouter";
 
+const useLegacy = false;
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 
 export default function RoutesPopup() {
-  const { useLegacy } = useFeatureFlags();
   const urlObj = new URL(decodeURIComponent(window.location.href));
   const isPopup = urlObj.searchParams.get("popup") === "true";
 
   if (isPopup) {
     document.title = t("extensionName");
   }
-
-  // console.log("useLegacy:", useLegacy);
 
   return (
     <Switch>
