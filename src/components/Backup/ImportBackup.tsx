@@ -51,8 +51,8 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
     }
   };
 
-  const importBackup = async (data: { data: string }) => {
-    const entries = await decryptBackup(data);
+  const importBackup = (data: { data: string }) => {
+    const entries = decryptBackup(data);
     if (entries.size === 0) throw new Error("No data found", { cause: "notEntriesFound" });
     setEntries(entries);
   };

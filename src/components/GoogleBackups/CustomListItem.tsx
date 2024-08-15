@@ -2,12 +2,14 @@ import Tooltip from "@components/CustomTooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CircularProgress, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import { t } from "@src/chrome/i18n";
 import { OTPEntry } from "@src/entry/otp";
 import { useAsync } from "@src/hooks/useAsync";
+import { decryptBackup } from "@src/utils/backup";
 import { useState } from "react";
 
-import { Appdata, deleteAppdata, getAppdataContent } from "../../oauth";
-import { useAuth } from "../../stores/useAuth";
+import { Appdata, deleteAppdata, getAppdataContent } from "../../develop/oauth";
+import { useAuth } from "../../develop/stores/useAuth";
 import BackupDetail from "./BackupDetail";
 
 interface CustomListItemProps {
@@ -30,17 +32,17 @@ export default function CustomListItem({ data, setListAppdata }: CustomListItemP
       console.error("Error:", errorData);
       return;
     }
+    // console.log("appData", appData);
 
-    const entriesBackup = JSON.parse(JSON.stringify(appData));
-    const entriesMap = new Map(entriesBackup.map((entry: OTPEntry) => [entry.hash, entry])) as Map<string, OTPEntry>;
+    const otpEntries = decryptBackup(appData) as Map<string, OTPEntry>;
+    // console.log("otpEntries", otpEntries);
 
-    // alert(JSON.stringify(appData));
-    setEntries(entriesMap);
+    setEntries(otpEntries);
     setShowDetail(true);
   };
 
   const handleDeleteAppdata = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this backup?")) {
+    if (!confirm(t("confirmDeleteBackup"))) {
       return;
     }
 
@@ -66,7 +68,7 @@ export default function CustomListItem({ data, setListAppdata }: CustomListItemP
         // disablePadding
         sx={{ pl: 0, pr: 4, "& .MuiListItemButton-root": { p: 0, px: 1 } }}
         secondaryAction={
-          <Tooltip title="Delete backup">
+          <Tooltip title={t("deleteBackup")}>
             <IconButton
               edge="end"
               onClick={async () => await handleDeleteAppdata(data.id)}
@@ -81,8 +83,9 @@ export default function CustomListItem({ data, setListAppdata }: CustomListItemP
           onClick={async () => await handleGetAppdata(data.id)}
           sx={{ ...(isLoadingData && { pointerEvents: "none" }) }}
         >
-          <Tooltip title="Show backup">
+          <Tooltip title={t("showBackups")}>
             <ListItemText
+              // secondary={item.modifiedTime}
               primary={data.name}
               sx={{
                 // width: 130,
@@ -90,12 +93,11 @@ export default function CustomListItem({ data, setListAppdata }: CustomListItemP
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
-              // secondary={item.modifiedTime}
             />
           </Tooltip>
         </ListItemButton>
       </ListItem>
-      {showDetail && <BackupDetail entries={entries} handleClose={handleClose} />}
+      {showDetail && <BackupDetail title={data.name} entries={entries} handleClose={handleClose} />}
     </>
   );
 }

@@ -7,22 +7,22 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import { t } from "@src/chrome/i18n";
 import { sendMessageToBackgroundAsync } from "@src/chrome/message";
 import { oauthLogin } from "@src/chrome/oauth";
 import { useAsync } from "@src/hooks/useAsync";
 import { useScreenSize } from "@src/hooks/useScreenSize";
-import { useEntries } from "@src/stores/useEntries";
+import { exportBackup } from "@src/utils/backup";
 import React, { useState } from "react";
 
-import { uploadAppdata } from "../../oauth";
-import { useAuth } from "../../stores/useAuth";
+import { uploadAppdata } from "../../develop/oauth";
+import { useAuth } from "../../develop/stores/useAuth";
 
 interface ExportBackupProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function ExportBackup({ setOpen }: ExportBackupProps) {
-  const { entries } = useEntries();
   const { isXs } = useScreenSize();
   const { token, setToken, loginType } = useAuth();
 
@@ -33,11 +33,13 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    hour: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   });
 
   const formattedDate = formatter.format(new Date());
-  const fileName = `${formattedDate?.replace(/\//g, "-").toLowerCase()}.json`;
+  const fileName = `${formattedDate?.toLowerCase()}`;
 
   const { execute, isLoading, error } = useAsync(uploadAppdata);
 
@@ -50,6 +52,8 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
     const token = await sendMessageToBackgroundAsync({ type: "oauth" });
     if (!token) return;
     setToken(token);
+    if (isXs) alert(`Login succes ✅`); // para mantener el popup abierto
+
     const appData = await execute(token, fileName, fileContent);
     // console.log(JSON.stringify(appData, null, 2));
     if (appData?.error?.code === 401) {
@@ -73,14 +77,18 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
     const formJson = Object.fromEntries(formData.entries());
     const fileName = formJson.fileName as string;
 
-    if (!fileName.endsWith(".json")) {
-      setFormError("The file name must end with .json");
+    if (fileName.length >= 45) {
+      setFormError("The file name is too long.");
+      return;
+    } else if (fileName.length === 0) {
+      setFormError("The file name is required.");
       return;
     }
 
-    const fileContent = JSON.stringify(Array.from(entries.values()));
+    const entries = await exportBackup();
+    const fileContent = JSON.stringify({ data: entries });
+    // console.log("fileContent:", fileContent);
     const appData = await execute(token, fileName, fileContent);
-    // console.log(JSON.stringify(appData, null, 2));
 
     if (appData?.error?.code === 401) {
       // setFormError(appData?.error?.message);
@@ -118,24 +126,23 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
           p: 2,
         },
         "& .MuiDialogTitle-root": {
+          p: 0.5,
           py: 1,
+          pl: 1,
         },
       }}
     >
       {!isSuccess ? (
         <>
-          <DialogTitle>Backup entries</DialogTitle>
+          <DialogTitle>{t("backupEntries")}</DialogTitle>
           <Divider />
           <DialogContent>
-            <DialogContentText sx={{ mb: 2 }}>
-              To export the backup, please enter the name of the file. We will save the backup in JSON format.
-            </DialogContentText>
             <TextField
               autoFocus
               required
               name="fileName"
               margin="dense"
-              label="File Name"
+              label={t("fileName")}
               fullWidth
               variant="standard"
               defaultValue={fileName}
@@ -144,8 +151,8 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
               helperText={formError}
             />
           </DialogContent>
-          <DialogActions sx={{ m: 1 }}>
-            <Button onClick={handleClose}>Cancel</Button>
+          <DialogActions sx={{ my: 1 }}>
+            <Button onClick={handleClose}>{t("cancel")}</Button>
             <Button
               type="submit"
               variant="contained"
@@ -154,7 +161,7 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
               sx={{ minWidth: 100 }}
               color="primary"
             >
-              Save
+              {t("save")}
             </Button>
           </DialogActions>
         </>
@@ -168,16 +175,16 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
 const SuccessDialog = ({ handleClose }: { handleClose: () => void }) => {
   return (
     <>
-      <DialogTitle>Success</DialogTitle>
+      <DialogTitle>{t("backupEntries")}</DialogTitle>
       <Divider />
       <DialogContent>
         <DialogContentText sx={{ justifyContent: "center", textAlign: "center" }}>
-          Backup saved successfully.
+          {t("exportBackupSuccess")}
         </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ m: 1, justifyContent: "center" }}>
         <Button onClick={handleClose} variant="contained" color="primary" autoFocus sx={{ px: 4 }}>
-          Close
+          {t("close")}
         </Button>
       </DialogActions>
     </>

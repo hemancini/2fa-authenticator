@@ -6,6 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import { t } from "@src/chrome/i18n";
 import type { OTPEntry } from "@src/entry/type";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useEntries } from "@src/stores/useEntries";
@@ -13,11 +14,12 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 
 interface BackupDetailProps {
+  title: string;
   entries: Map<string, OTPEntry>;
   handleClose: () => void;
 }
 
-export default function BackupDetail({ entries, handleClose }: BackupDetailProps) {
+export default function BackupDetail({ title, entries, handleClose }: BackupDetailProps) {
   const [importedList, setImportedList] = useState<string[]>([]);
 
   const entriesArray = Array.from(entries.values());
@@ -39,9 +41,23 @@ export default function BackupDetail({ entries, handleClose }: BackupDetailProps
       open={true}
       onClose={handleClose}
       //  maxWidth={"xs"}
-      fullWidth={true}
+      // fullWidth={isXs}
+      sx={{
+        "& .MuiDialogTitle-root": { p: 1, pl: 2, pb: 0 },
+        "& .MuiDialogActions-root": { p: 1, pb: { md: 2 }, justifyContent: "space-evenly" },
+      }}
     >
-      <DialogTitle sx={{ py: 1 }}>Entries</DialogTitle>
+      <DialogTitle
+        title={title}
+        sx={{
+          width: { sm: 300 },
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {title}
+      </DialogTitle>
       <Divider />
       <DialogContent
         sx={{
@@ -52,8 +68,8 @@ export default function BackupDetail({ entries, handleClose }: BackupDetailProps
       >
         <List dense disablePadding>
           {entriesNotFound ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 50 }}>
-              <p>No entries found.</p>
+            <Box sx={{ textAlign: "center", minHeight: 50 }}>
+              <p>{t("noEntriesFound")}</p>
             </Box>
           ) : (
             entriesArray.map((entry) => (
@@ -65,43 +81,47 @@ export default function BackupDetail({ entries, handleClose }: BackupDetailProps
                 divider
                 secondaryAction={<ImportEntryButton {...{ entry, setImportedList }} />}
               >
-                <Tooltip title={entry.account}>
-                  <ListItemText
-                    primary={entry.account}
-                    secondary={entry.issuer}
-                    sx={{
-                      mr: 2.5,
-                      "& .MuiTypography-root": isXs && {
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      },
-                    }}
-                  />
-                </Tooltip>
+                <ListItemText
+                  title={entry.account}
+                  primary={entry.issuer}
+                  secondary={entry.account}
+                  sx={{
+                    mr: 2.5,
+                    "& .MuiTypography-root": isXs && {
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    },
+                  }}
+                />
               </ListItem>
             ))
           )}
         </List>
       </DialogContent>
-      <DialogActions sx={{ py: 2, justifyContent: "space-evenly" }}>
+      <DialogActions>
         {entriesNotFound ? (
           <Button onClick={handleClose} size="small" autoFocus variant="contained" sx={{ px: 4 }}>
-            Back
+            {t("close")}
           </Button>
         ) : (
           <>
             <Button onClick={handleClose} size="small">
-              back
+              {t("close")}
             </Button>
-            <Tooltip title="Import all entries">
+            <Tooltip title={t("importAllEntries")}>
               <Button
                 onClick={handleImportAll}
                 variant="contained"
                 size="small"
+                sx={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
                 disabled={importedList.length === entriesLength}
               >
-                Import all
+                {t("importAll")}
               </Button>
             </Tooltip>
           </>
@@ -127,8 +147,8 @@ const ImportEntryButton = ({ entry, setImportedList }: ImportEntryButtonProps) =
   };
 
   return (
-    <Tooltip title={added ? "Added" : "Add"}>
-      <IconButton edge="end" aria-label="add" onClick={() => handleImport(entry)}>
+    <Tooltip title={added ? t("added") : t("add")}>
+      <IconButton edge="end" aria-label={t("add")} onClick={() => handleImport(entry)}>
         {added ? <CheckCircleIcon sx={{ fontSize: 22 }} /> : <AddCircleOutlineIcon sx={{ fontSize: 22 }} />}
       </IconButton>
     </Tooltip>

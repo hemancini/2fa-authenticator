@@ -14,6 +14,9 @@
   "add": {
     "message": "Añadir"
   },
+  "added": {
+    "message": "Añadido"
+  },
   "remove": {
     "message": "Eliminar"
   },
@@ -22,6 +25,15 @@
   },
   "close": {
     "message": "Cerrar"
+  },
+  "retry": {
+    "message": "Reintentar"
+  },
+  "loading": {
+    "message": "Cargando..."
+  },
+  "back": {
+    "message": "Atras"
   },
   "editEntries": {
     "message": "Editar cuentas"
@@ -132,10 +144,10 @@
     "message": "Sincronizar reloj con Google"
   },
   "exportBackup": {
-    "message": "Exportar copia de seguridad"
+    "message": "Exportar backup local"
   },
   "importBackup": {
-    "message": "Importar copia de seguridad"
+    "message": "Importar backup local"
   },
   "importBackupInfo": {
     "message": "Esta acción agrega las nuevas entradas y reemplaza las existentes."
@@ -160,5 +172,50 @@
   },
   "visibleTokensDesc": {
     "message": "Mostrar o ocultar los tokens"
+  },
+  "backups": {
+    "message": "Mis backups"
+  },
+  "showBackups": {
+    "message": "Mostrar backups"
+  },
+  "showGooglebackups": {
+    "message": "Mostrar backups de Google"
+  },
+  "exportBackupsToGoogle": {
+    "message": "Generar backups a Google"
+  },
+  "backupEntries": {
+    "message": "Backup de tus cuentas"
+  },
+  "revokeGoogleToken": {
+    "message": "Revocar sessión"
+  },
+  "importAll": {
+    "message": "Importar todo"
+  },
+  "importAllEntries": {
+    "message": "Importar todas las entradas"
+  },
+  "noEntriesFound": {
+    "message": "No se han encontrado entradas"
+  },
+  "noBackupsFound": {
+    "message": "No se han encontrado backups"
+  },
+  "deleteBackup": {
+    "message": "Eliminar backup"
+  },
+  "confirmDeleteBackup": {
+    "message": "¿Está seguro de que desea eliminar la backup?"
+  },
+  "exportBackupDesc": {
+    "message": "Para exportar la backup, por favor, introduzca el nombre del archivo en formato JSON."
+  },
+  "fileName": {
+    "message": "Nombre del archivo"
+  },
+  "exportBackupSuccess": {
+    "message": "El backup se ha guardado correctamente."
   }
 }

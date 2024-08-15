@@ -1,6 +1,6 @@
 import ThemeModeSelect from "@components/ThemeMode";
 import ToolbarOffset from "@components/ToolbarOffset";
-import BackupIcon from "@mui/icons-material/Backup";
+import CloudSyncIcon from "@mui/icons-material/CloudSync";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import SaveIcon from "@mui/icons-material/Save";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -44,9 +44,9 @@ const routes: Routes[] = [
   },
   {
     path: "/backup",
-    name: "Backup",
-    icon: <BackupIcon />,
-    visible: isDev,
+    name: "Backups",
+    icon: <CloudSyncIcon />,
+    // visible: isDev,
   },
   {
     path: "/storage",

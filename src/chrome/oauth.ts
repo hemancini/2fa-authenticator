@@ -86,7 +86,7 @@ export async function oauthPopup(): Promise<void> {
     url: url.toString(),
     type: "popup", //  "normal" | "panel" | "popup"
     // height: 600,
-    // width: 500,
+    // width: 1000,
   });
 }
 

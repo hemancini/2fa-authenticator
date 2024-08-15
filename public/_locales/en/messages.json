@@ -14,6 +14,9 @@
   "add": {
     "message": "Add"
   },
+  "added": {
+    "message": "Added"
+  },
   "remove": {
     "message": "Remove"
   },
@@ -22,6 +25,15 @@
   },
   "close": {
     "message": "Close"
+  },
+  "retry": {
+    "message": "Retry"
+  },
+  "loading": {
+    "message": "Loading..."
+  },
+  "back": {
+    "message": "Back"
   },
   "editEntries": {
     "message": "Edit entries"
@@ -132,10 +144,10 @@
     "message": "Sync time with Google"
   },
   "exportBackup": {
-    "message": "Export backup"
+    "message": "Export local backup"
   },
   "importBackup": {
-    "message": "Import backup"
+    "message": "Import local backup"
   },
   "importBackupInfo": {
     "message": "This action adds new entries and replaces existing ones."
@@ -160,5 +172,50 @@
   },
   "visibleTokensDesc": {
     "message": "Show or hide the tokens"
+  },
+  "backups": {
+    "message": "My backups"
+  },
+  "showBackups": {
+    "message": "Show backups"
+  },
+  "showGooglebackups": {
+    "message": "Show Google backups"
+  },
+  "exportBackupsToGoogle": {
+    "message": "Generate Google backups"
+  },
+  "backupEntries": {
+    "message": "Backup entries"
+  },
+  "revokeGoogleToken": {
+    "message": "Revoke session"
+  },
+  "importAll": {
+    "message": "Import all"
+  },
+  "importAllEntries": {
+    "message": "Import all entries"
+  },
+  "noEntriesFound": {
+    "message": "No entries found."
+  },
+  "noBackupsFound": {
+    "message": "No backups found."
+  },
+  "deleteBackup": {
+    "message": "Delete backup"
+  },
+  "confirmDeleteBackup": {
+    "message": "Are you sure you want to delete this backup"
+  },
+  "exportBackupDesc": {
+    "message": "To export the backup, please enter the name of the file. We will save the backup in JSON format."
+  },
+  "fileName": {
+    "message": "File name"
+  },
+  "exportBackupSuccess": {
+    "message": "Backup saved successfully."
   }
 }

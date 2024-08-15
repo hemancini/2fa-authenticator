@@ -1,7 +1,7 @@
+import ImportBackup from "@components/Backup/ImportBackup";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Divider, List, ListItem, ListItemButton, ListItemText, Paper } from "@mui/material";
 import { t } from "@src/chrome/i18n";
-import ImportBackup from "@src/components/Options/Backup/ImportBackup";
 import CustomItemIcon from "@src/components/Options/CustomItemIcon";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
@@ -14,9 +14,10 @@ export default function Backup() {
 
   const handleDownloadJson = async () => {
     try {
-      const dataBlob = await exportBackup();
+      const data = await exportBackup();
+      const blobData = new Blob([JSON.stringify({ data }, null, 2)], { type: "application/json" });
       const fileName = `${new Date().toISOString().split(".")[0]}.json`;
-      const url = window.URL.createObjectURL(dataBlob);
+      const url = window.URL.createObjectURL(blobData);
       const link = document.createElement("a");
 
       link.href = url;

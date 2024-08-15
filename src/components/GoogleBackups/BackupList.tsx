@@ -6,13 +6,15 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import type { SxProps } from "@mui/material/styles";
+import { t } from "@src/chrome/i18n";
 import { sendMessageToBackgroundAsync } from "@src/chrome/message";
 import { oauthLogin } from "@src/chrome/oauth";
+import { Appdata, getListAppdata } from "@src/develop/oauth";
+import { useAuth } from "@src/develop/stores/useAuth";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useEffect, useState } from "react";
 
-import { Appdata, getListAppdata } from "../../oauth";
-import { useAuth } from "../../stores/useAuth";
 import CustomListItem from "./CustomListItem";
 
 interface BackupListProps {
@@ -24,8 +26,8 @@ export default function BackupList({ setOpen }: BackupListProps) {
   const [loginError, setLoginError] = useState<string | undefined>();
   const [listAppdata, setListAppdata] = useState<Appdata[]>();
 
-  const { isXs } = useScreenSize();
   const { token, setToken, loginType } = useAuth();
+  const { isXs } = useScreenSize();
 
   const appdataNotFound = listAppdata?.length === 0;
 
@@ -50,8 +52,9 @@ export default function BackupList({ setOpen }: BackupListProps) {
       return "";
     });
     if (!token) return;
-
     setToken(token);
+    if (isXs) alert(`Login succes ✅`); // para mantener el popup abierto
+
     const appDatas = await getListAppdata(token);
     setListAppdata(appDatas.files);
   };
@@ -76,18 +79,17 @@ export default function BackupList({ setOpen }: BackupListProps) {
     <Dialog
       open={true}
       onClose={handleClose}
-      // maxWidth={false}
-      fullWidth={true}
       sx={{
-        "& .MuiDialogContent-root": { p: 1, pb: 2 },
+        "& .MuiDialogTitle-root": { p: 1, pl: 2, pb: 0 },
+        "& .MuiDialogContent-root": { p: 1, pb: 2, minHeight: 120, minWidth: 220 },
         "& .MuiDialogActions-root": { py: 0.5 },
       }}
     >
-      <DialogTitle sx={{ py: 1 }}>Backups</DialogTitle>
+      <DialogTitle>{t("backups")}</DialogTitle>
       <Divider />
       <IconButton
         size="small"
-        aria-label="close"
+        aria-label={t("close")}
         onClick={handleClose}
         sx={{
           top: 5,
@@ -98,11 +100,11 @@ export default function BackupList({ setOpen }: BackupListProps) {
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent sx={{ minHeight: !isXs && 200 }}>
+      <DialogContent>
         {isLoading && !loginError && (
-          <CustomFlexBox>
-            <CircularProgress size={50} />
-            <Typography>Loading...</Typography>
+          <CustomFlexBox sx={{ minWidth: 200 }}>
+            <CircularProgress size={50} sx={{ mt: 5 }} />
+            <Typography>{t("loading")}</Typography>
           </CustomFlexBox>
         )}
         {loginError && (
@@ -121,7 +123,7 @@ export default function BackupList({ setOpen }: BackupListProps) {
         )}
         {appdataNotFound ? (
           <CustomFlexBox>
-            <p>No backups found.</p>
+            <Typography>{t("noBackupsFound")}</Typography>
           </CustomFlexBox>
         ) : (
           <List dense>
@@ -140,31 +142,34 @@ export default function BackupList({ setOpen }: BackupListProps) {
               mb: 1.5,
             }}
           >
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>{t("cancel")}</Button>
             <Button onClick={handleRetry} variant="contained" sx={{ px: 4 }}>
-              Retry
+              {t("retry")}
             </Button>
           </Box>
         )}
       </DialogContent>
-      <DialogActions sx={{ pb: 2, pr: 2 }}>
-        <Button autoFocus onClick={handleClose}>
-          Close
-        </Button>
-      </DialogActions>
+      {!loginError && (
+        <DialogActions sx={{ pb: 2, pr: 2 }}>
+          <Button autoFocus onClick={handleClose}>
+            {t("close")}
+          </Button>
+        </DialogActions>
+      )}
     </Dialog>
   );
 }
 
-const CustomFlexBox = ({ children }: { children: React.ReactNode }) => (
+const CustomFlexBox = ({ children, sx = {} }: { children: React.ReactNode; sx?: SxProps }) => (
   <Box
     sx={{
       display: "flex",
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      flexDirection: "column",
-      minHeight: 150,
+      minHeight: 120,
       gap: 2,
+      ...sx,
     }}
   >
     {children}

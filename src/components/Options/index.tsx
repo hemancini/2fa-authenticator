@@ -15,9 +15,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import { t } from "@src/chrome/i18n";
-import Backup from "@src/components/Options/Backup";
 import { DEFAULT_POPUP_URL } from "@src/config";
-import GoogleBackups from "@src/develop/components/GoogleBackups";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
@@ -27,8 +25,6 @@ import packageJson from "../../../package.json";
 import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
-
-const useCloudBackup = true;
 
 const isDev = import.meta.env.VITE_IS_DEV === "true";
 const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
@@ -141,7 +137,6 @@ export default function Options() {
           )}
         </List>
       </Paper>
-      {useCloudBackup ? <GoogleBackups /> : <Backup />}
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
           <ListItem disablePadding>
