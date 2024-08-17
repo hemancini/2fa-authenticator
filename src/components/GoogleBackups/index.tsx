@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "@src/chrome/i18n";
 import { revokeAuthTokenJS } from "@src/chrome/oauth";
+import { IS_DEV } from "@src/config";
 import { useAuth } from "@src/develop/stores/useAuth";
 import { useAsync } from "@src/hooks/useAsync";
 import { useState } from "react";
@@ -22,8 +23,6 @@ interface GoogleBackupProps {
   isPage?: boolean;
   showDetail?: boolean;
 }
-
-const isDev = import.meta.env.VITE_IS_DEV === "true";
 
 export default function GoogleBackups({ isPage = false, showDetail = false }: GoogleBackupProps) {
   const { token, setToken } = useAuth();
@@ -65,7 +64,7 @@ export default function GoogleBackups({ isPage = false, showDetail = false }: Go
           />
         </List>
       </Paper>
-      {showDetail && isDev && (
+      {showDetail && IS_DEV && (
         <>
           <SelectLoginType />
           <TextField

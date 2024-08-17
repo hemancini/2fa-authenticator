@@ -33,4 +33,6 @@ interface OptionsStore {
   toggleXraysEnabled: () => void;
   isVisibleTokens: boolean;
   toggleVisibleTokens: () => void;
+  useLegacyAddEntryMenu?: boolean;
+  toggleUseLegacyAddEntryMenu?: () => void;
 }

@@ -43,6 +43,10 @@ export const useOptionsStore = create<OptionsStore>()(
           return { isVisibleTokens: !state.isVisibleTokens };
         });
       },
+      useLegacyAddEntryMenu: true,
+      toggleUseLegacyAddEntryMenu: () => {
+        set((state) => ({ useLegacyAddEntryMenu: !state.useLegacyAddEntryMenu }));
+      },
     }),
     {
       name: STORAGE_OPTIONS_KEY,

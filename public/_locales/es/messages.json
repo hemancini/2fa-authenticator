@@ -69,7 +69,7 @@
     "message": "Está seguro de que desea eliminar la cuenta <span style=\"font-style: italic;\">$1</span>?"
   },
   "addEntrySuccess": {
-    "message": "La nueva cuenta se ha añadido correctamente."
+    "message": "$1 se ha añadido correctamente."
   },
   "regexTotpError": {
     "message": "La url no es válida."
@@ -155,6 +155,9 @@
   "import": {
     "message": "Importar"
   },
+  "importSuccess": {
+    "message": "La importación se ha realizado correctamente."
+  },
   "scale": {
     "message": "Escala"
   },
@@ -217,5 +220,8 @@
   },
   "exportBackupSuccess": {
     "message": "El backup se ha guardado correctamente."
+  },
+  "fileSizeError": {
+    "message": "El tamaño del archivo no debe superar los 2 MB."
   }
 }

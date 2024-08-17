@@ -1,11 +1,11 @@
 import ImportBackup from "@components/Backup/ImportBackup";
-import AddQrButton from "@components/dialogs/AddEntryButtons/AddQrButton";
-import UploadImage from "@components/dialogs/AddEntryButtons/UploadImage";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import LinkIcon from "@mui/icons-material/Link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
+import AddQrButton from "@src/legacy/components/dialogs/AddEntryButtons/AddQrButton";
+import UploadImage from "@src/legacy/components/dialogs/AddEntryButtons/UploadImage";
 import React, { useState } from "react";
 
 interface AddOptionsProps {

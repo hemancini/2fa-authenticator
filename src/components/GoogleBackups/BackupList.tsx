@@ -53,8 +53,8 @@ export default function BackupList({ setOpen }: BackupListProps) {
     });
     if (!token) return;
     setToken(token);
-    if (isXs) alert(`Login succes ✅`); // para mantener el popup abierto
 
+    if (isXs) alert(`Login succes ✅`); // para mantener el popup abierto
     const appDatas = await getListAppdata(token);
     setListAppdata(appDatas.files);
   };

@@ -69,13 +69,13 @@
     "message": "Are you sure you want to delete <span style=\"font-style: italic;\">$1</span> account?"
   },
   "addEntrySuccess": {
-    "message": "New entry has been added successfully."
+    "message": "$1 added successfully."
   },
   "regexTotpError": {
     "message": "Invalid TOTP URL."
   },
   "addAccountSuccess": {
-    "message": "New account $1 has been added successfully."
+    "message": "$1 has been added successfully."
   },
   "qrCodeNotFound": {
     "message": "QR Code not found."
@@ -155,6 +155,9 @@
   "import": {
     "message": "Import"
   },
+  "importSuccess": {
+    "message": "Imported successfully."
+  },
   "scale": {
     "message": "Scale"
   },
@@ -217,5 +220,8 @@
   },
   "exportBackupSuccess": {
     "message": "Backup saved successfully."
+  },
+  "fileSizeError": {
+    "message": "File size should be less than 2MB."
   }
 }

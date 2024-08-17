@@ -63,3 +63,5 @@ export const DEFAULT_COLORS = {
     dark: "#00796b",
   },
 };
+
+export const IS_DEV = import.meta.env.VITE_IS_DEV === "true";

@@ -1,3 +1,4 @@
+import AddEntryMenu from "@components/addNewEntry/Menu";
 import Tooltip from "@components/CustomTooltip";
 import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -10,9 +11,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import AddEntryMenu from "@src/components/dialogs/AddEntryMenu";
+import { IS_DEV } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import useUrlHashState from "@src/hooks/useUrlHashState";
+import AddEntryMenuLegacy from "@src/legacy/components/dialogs/AddEntryMenu";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useModalStore } from "@src/stores/useModal";
@@ -34,8 +36,6 @@ export default function CustomAppBar({
   const [captureQRError, setCaptureQRError] = useState<boolean>(false);
   const { isOpenModal: modal } = useModalStore();
   const [isEditing] = useUrlHashState("#/edit");
-
-  const isDev = import.meta.env.VITE_IS_DEV === "true";
 
   const { isUpSm } = useScreenSize();
 
@@ -65,7 +65,7 @@ export default function CustomAppBar({
             textAlign="center"
             sx={{
               fontSize: 16,
-              fontWeight: !isDev && "bold",
+              fontWeight: !IS_DEV && "bold",
               // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
             }}
           >
@@ -94,6 +94,7 @@ export default function CustomAppBar({
         </Toolbar>
       </AppBar>
       <ErrorCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
+      {(isEditing || modal["add-entry-modal-legacy"]) && <AddEntryMenuLegacy />}
       {(isEditing || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );

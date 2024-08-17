@@ -27,6 +27,10 @@ jobs:
       - run: pnpm build
         env:
           VITE_FEATURE_FLAGS_URI: ${{ vars.VITE_FEATURE_FLAGS_URI }}
+          VITE_GOOGLE_REDIRECT_URI: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
+          VITE_GOOGLE_SCOPE: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
+          VITE_GOOGLE_OAUTH2_ENDPOINT: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
 
       - uses: actions/upload-artifact@v3
         with:

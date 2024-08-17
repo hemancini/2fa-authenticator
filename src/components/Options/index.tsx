@@ -4,6 +4,7 @@ import CodeIcon from "@mui/icons-material/Code";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import MenuIcon from '@mui/icons-material/Menu';
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import TabIcon from "@mui/icons-material/Tab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -15,6 +16,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import { t } from "@src/chrome/i18n";
+import { IS_DEV } from "@src/config";
 import { DEFAULT_POPUP_URL } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
@@ -26,7 +28,6 @@ import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
 
-const isDev = import.meta.env.VITE_IS_DEV === "true";
 const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
 
 export default function Options() {
@@ -43,6 +44,8 @@ export default function Options() {
     isVisibleTokens,
     xraysEnabled,
     toggleXraysEnabled,
+    useLegacyAddEntryMenu,
+    toggleUseLegacyAddEntryMenu,
   } = useOptionsStore();
 
   const { isUpSm } = useScreenSize();
@@ -123,7 +126,7 @@ export default function Options() {
               isVisibleTokens ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />
             }
           />
-          {isDev && (
+          {IS_DEV && (
             <>
               <Divider />
               <CustomItemSwitch
@@ -132,6 +135,14 @@ export default function Options() {
                 switchEnabled={xraysEnabled}
                 toggleSwitch={toggleXraysEnabled}
                 icon={<DataArrayIcon sx={{ fontSize: 20 }} />}
+              />
+              <Divider />
+              <CustomItemSwitch
+                primary={"New add entry menu"}
+                tooltip={"Use new add entry menu"}
+                switchEnabled={!useLegacyAddEntryMenu}
+                toggleSwitch={toggleUseLegacyAddEntryMenu}
+                icon={<MenuIcon sx={{ fontSize: 20 }} />}
               />
             </>
           )}
@@ -167,7 +178,7 @@ export default function Options() {
             icon={<CodeIcon />}
             isNewTab={true}
           />
-          {isDev && (
+          {IS_DEV && (
             <>
               <Divider />
               <CustomListButton

@@ -16,7 +16,7 @@ const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 export function newEntryFromUrl(url: string): TOTPEntry {
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
   if (!regexTotp.test(url)) {
-    throw new Error("La URL no es una URL otpauth válida.");
+    throw new Error("Invalid URI string format");
   }
 
   const decompose = decomposeOtpAuthUrl(url);

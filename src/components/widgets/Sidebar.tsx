@@ -12,6 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { t } from "@src/chrome/i18n";
+import { IS_DEV } from "@src/config";
 import { DEFAULT_POPUP_URL } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import React from "react";
@@ -19,7 +20,6 @@ import { Link, useRoute } from "wouter";
 
 const anchor = "left";
 const drawerWidth = 120;
-const isDev = import.meta.env.VITE_IS_DEV === "true";
 
 interface Routes {
   path: string;
@@ -52,7 +52,7 @@ const routes: Routes[] = [
     path: "/storage",
     name: "Storage",
     icon: <SaveIcon />,
-    visible: isDev,
+    visible: IS_DEV,
   },
 ];
 

@@ -1,3 +1,4 @@
+import { useAddType } from "@components/addNewEntry/useAddType";
 import Tooltip from "@components/CustomTooltip";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -10,6 +11,7 @@ import { t } from "@src/chrome/i18n";
 import type { OTPEntry } from "@src/entry/type";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useEntries } from "@src/stores/useEntries";
+import { useModalStore } from "@src/stores/useModal";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
@@ -21,6 +23,8 @@ interface BackupDetailProps {
 
 export default function BackupDetail({ title, entries, handleClose }: BackupDetailProps) {
   const [importedList, setImportedList] = useState<string[]>([]);
+  const { setAddType, setSuccessMessage } = useAddType();
+  const { isOpenModal } = useModalStore();
 
   const entriesArray = Array.from(entries.values());
   const entriesNotFound = !entriesArray || entriesArray.length === 0;
@@ -32,8 +36,15 @@ export default function BackupDetail({ title, entries, handleClose }: BackupDeta
 
   const handleImportAll = () => {
     entriesArray.forEach((entry) => upsertEntry(entry));
-    // handleClose();
-    setLocation("/");
+
+    if (isOpenModal["add-entry-modal"]) {
+      setAddType("success");
+      setSuccessMessage(t("importSuccess"));
+    } else {
+      setLocation("/");
+    }
+
+    handleClose();
   };
 
   return (
