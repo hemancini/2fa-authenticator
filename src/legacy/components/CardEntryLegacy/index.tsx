@@ -13,7 +13,6 @@ import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
 import { DEFAULT_COLORS } from "@src/config";
-import { OTPEntry } from "@src/entry/type";
 import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypass";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useCounter from "@src/legacy/hooks/useCounter";

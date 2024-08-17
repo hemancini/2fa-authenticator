@@ -1,5 +1,4 @@
 import { generateOTP } from "@src/entry/otp";
-import { Entry } from "@src/entry/type";
 import { decrypData } from "@src/utils/crypto";
 import { getBackgroundEntries } from "@src/utils/entry";
 import { getOptionsStorage } from "@src/utils/options";
@@ -14,12 +13,12 @@ chrome.runtime.onMessage.addListener(async (request) => {
     );
     const entry = filter?.[0];
     if (entry?.site?.includes(request?.data)) {
-      autoLoginEntrust(entry as Entry);
+      autoLoginEntrust(entry as TEntry);
     }
   }
 });
 
-const autoLoginEntrust = async (entry: Entry) => {
+const autoLoginEntrust = async (entry: TEntry) => {
   let iteration = 0;
   let intervalOTP = undefined;
   let intervalOptions = undefined;

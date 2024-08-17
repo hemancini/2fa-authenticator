@@ -1,11 +1,9 @@
-// totp url example: otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example
-
 type OTPPeriod = 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39;
 type OTPAlgorithm = "SHA1" | "SHA256" | "SHA512";
 type OTPType = "totp" | "hotp";
 type OTPDigits = 6 | 8;
 
-interface Entry {
+interface TEntry {
   issuer: string;
   account: string;
   secret: string;
@@ -20,14 +18,14 @@ interface Entry {
   pass?: string;
 }
 
-interface OTPEntry extends Entry {
+interface OTPEntry extends TEntry {
   hash: string;
 }
 
-export type TEntries = Map<string, OTPEntry>;
+type TEntries = Map<string, OTPEntry>;
 
 interface EntryState {
-  entries: Map<string, OTPEntry>;
+  entries: TEntries;
   setEntries: (entries: Map<string, OTPEntry>) => void;
   addEntry: (entry: OTPEntry) => void;
   removeEntry: (hash: string) => void;
@@ -53,23 +51,10 @@ interface OTPCodesStore {
   getOTPCode: (hash: string) => string;
 }
 
-export {
-  AddTypeOption,
-  Entry,
-  EntryState,
-  OTPAlgorithm,
-  OTPCodesStore,
-  OTPCodeType,
-  OTPDigits,
-  OTPEntry,
-  OTPPeriod,
-  OTPType,
-};
-
 /**
  * @deprecated since version 1.3.0
  */
-export interface OTPEntryLegacy {
+interface OTPEntryLegacy {
   type: OTPType | number;
   index: number;
   issuer: string;

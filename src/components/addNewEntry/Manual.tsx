@@ -19,7 +19,6 @@ import Divider from "@mui/material/Divider";
 import type { TextFieldProps } from "@mui/material/TextField";
 import { t } from "@src/chrome/i18n";
 import { OTPEntry } from "@src/entry/otp";
-import { OTPAlgorithm, OTPDigits, OTPPeriod, OTPType } from "@src/entry/type";
 import { useEntries } from "@src/stores/useEntries";
 import { useState } from "react";
 

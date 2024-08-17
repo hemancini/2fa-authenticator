@@ -1,4 +1,3 @@
-import type { OTPEntry } from "@src/entry/type";
 import { decrypData, encrypData } from "@src/utils/crypto";
 import { getBackgroundEntries } from "@src/utils/entry";
 

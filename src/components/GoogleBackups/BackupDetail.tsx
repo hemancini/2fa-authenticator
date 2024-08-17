@@ -8,7 +8,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry } from "@src/entry/type";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useEntries } from "@src/stores/useEntries";
 import { useModalStore } from "@src/stores/useModal";

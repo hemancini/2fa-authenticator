@@ -2,10 +2,9 @@ import HexEncoder from "crypto-js/enc-hex";
 import HmacSHA1 from "crypto-js/hmac-sha1";
 import HmacSHA256 from "crypto-js/hmac-sha256";
 
-import type { Entry, OTPAlgorithm, OTPDigits, OTPPeriod, OTPType } from "./type";
 import { base32tohex, dec2hex, hex2dec, leftpad } from "./utils";
 
-export class OTPEntry implements Entry {
+export class OTPEntry implements TEntry {
   hash: string;
   issuer: string;
   account: string;
@@ -18,7 +17,7 @@ export class OTPEntry implements Entry {
   encrypted?: boolean;
   site: string;
 
-  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false }: Entry) {
+  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false }: TEntry) {
     this.issuer = issuer;
     this.account = account;
     this.secret = secret;
@@ -40,7 +39,7 @@ export class OTPEntry implements Entry {
   }
 }
 
-export function generateOTP(entry: Entry): string {
+export function generateOTP(entry: TEntry): string {
   const key = base32tohex(entry.secret);
   const epoch = Math.round(new Date().getTime() / 1000.0);
   const time = leftpad(dec2hex(Math.floor(epoch / entry.period)), 16, "0");

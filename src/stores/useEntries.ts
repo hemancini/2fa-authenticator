@@ -1,5 +1,4 @@
 import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
-import type { EntryState, OTPEntry } from "@src/entry/type";
 import { useOptionsStore } from "@src/stores/useOptions";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
