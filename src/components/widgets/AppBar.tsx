@@ -70,7 +70,6 @@ export default function CustomAppBar({
             }}
           >
             {t("extensionName")}
-            {/* {isDev && " dev"} */}
           </Typography>
           <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}>
             {isEditing ? (

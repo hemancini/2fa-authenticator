@@ -35,8 +35,8 @@ export function ManualButton() {
     <>
       <Divider />
       <CustomItemButton
-        primary={"Manual Entry"}
-        toolltip={"Manual Entry"}
+        primary={t("manualEntry")}
+        toolltip={t("manualEntry")}
         handleButton={handleManual}
         icon={<KeyboardIcon />}
         disableLeftPadding

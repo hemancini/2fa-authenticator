@@ -23,8 +23,12 @@ import { decryptBackup } from "@src/utils/backup";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
-export default function ImportBackup(props: { returnRaw?: boolean }) {
-  const { returnRaw = false } = props;
+interface ImportBackupProps {
+  returnRaw?: boolean;
+  disableLeftPadding?: boolean;
+}
+
+export default function ImportBackup({ returnRaw = false, disableLeftPadding = false }: ImportBackupProps) {
   const [, setLocation] = useLocation();
   const { showMessage } = useBackupStore();
   const { isOpenModal, toggleModal } = useModalStore();
@@ -36,6 +40,8 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
     useBackupStore();
 
   const { isUpSm } = useScreenSize();
+
+  const disablePading = disableLeftPadding ? { "& .MuiButtonBase-root": { pl: 0.5, py: 1 } } : {};
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -116,7 +122,7 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
         </>
       ) : (
         <label htmlFor="update-file-button">
-          <ListItem disablePadding dense={!isUpSm}>
+          <ListItem disablePadding dense={!isUpSm} sx={disablePading}>
             <ListItemButton>
               <CustomItemIcon>
                 <UploadFileIcon />

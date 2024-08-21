@@ -52,7 +52,7 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
     const token = await sendMessageToBackgroundAsync({ type: "oauth" });
     if (!token) return;
     setToken(token);
-    if (isXs) alert(`Login succes ✅`); // para mantener el popup abierto
+    if (isXs) alert(`✅ Login succes`); // para mantener el popup abierto
 
     const appData = await execute(token, fileName, fileContent);
     // console.log(JSON.stringify(appData, null, 2));

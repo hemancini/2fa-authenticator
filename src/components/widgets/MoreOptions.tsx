@@ -59,33 +59,16 @@ export default function MoreOptions() {
             "& .MuiDivider-root.MuiDivider-fullWidth": { my: 0.5 },
           }}
         >
-          {useLegacyAddEntryMenu || !IS_DEV ? (
-            <MenuItem
-              divider
-              onClick={() => {
-                toggleModal("add-entry-modal-legacy");
-                handleClose();
-              }}
-            >
-              <ListItemIcon>
-                <AddIcon />
-              </ListItemIcon>
-              {t("addEntry")}
-            </MenuItem>
-          ) : (
-            <MenuItem
-              divider
-              onClick={() => {
-                toggleModal("add-entry-modal");
-                handleClose();
-              }}
-            >
-              <ListItemIcon>
-                <DataSaverOnIcon />
-              </ListItemIcon>
-              {t("addEntry")}
-            </MenuItem>
-          )}
+          <MenuItem
+            divider
+            onClick={() => {
+              toggleModal(useLegacyAddEntryMenu ? "add-entry-modal-legacy" : "add-entry-modal");
+              handleClose();
+            }}
+          >
+            <ListItemIcon>{useLegacyAddEntryMenu ? <AddIcon /> : <DataSaverOnIcon />}</ListItemIcon>
+            {t("addEntry")}
+          </MenuItem>
           <MenuItem
             divider
             disabled={emptyEntries}

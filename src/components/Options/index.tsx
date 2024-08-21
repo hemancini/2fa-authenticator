@@ -1,10 +1,11 @@
 import ChromeStoreIcon from "@assets/img/chrome-store-192px.svg";
+import ArticleIcon from "@mui/icons-material/Article";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import TabIcon from "@mui/icons-material/Tab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -18,6 +19,7 @@ import Paper from "@mui/material/Paper";
 import { t } from "@src/chrome/i18n";
 import { IS_DEV } from "@src/config";
 import { DEFAULT_POPUP_URL } from "@src/config";
+import { CHROME_WEB_STORE_URL, DOCUMENTATION_URL } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
@@ -27,8 +29,6 @@ import packageJson from "../../../package.json";
 import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
-
-const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
 
 export default function Options() {
   const { showMessage } = useBackupStore();
@@ -182,6 +182,14 @@ export default function Options() {
             <>
               <Divider />
               <CustomListButton
+                primary={t("documentation")}
+                toolltip={t("documentation")}
+                handleButton={() => window.open(DOCUMENTATION_URL, "_blank")}
+                icon={<ArticleIcon />}
+                isNewTab={true}
+              />
+              <Divider />
+              <CustomListButton
                 isNewTab
                 primary="Open in browser"
                 toolltip="Open in browser"
@@ -196,7 +204,7 @@ export default function Options() {
               <CustomListButton
                 primary={"Chrome Web Store"}
                 toolltip={"Chrome Web Store"}
-                handleButton={() => window.open(chromeWebStoreUrl, "_blank")}
+                handleButton={() => window.open(CHROME_WEB_STORE_URL, "_blank")}
                 icon={<img src={ChromeStoreIcon} alt="icon" width={22} height={22} />}
                 isNewTab={true}
               />

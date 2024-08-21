@@ -1,5 +1,6 @@
 import CustomItemButton from "@components/Options/CustomItemButton";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import { t } from "@src/chrome/i18n";
 import { sendMessageToBackgroundAsync } from "@src/chrome/message";
 import { useLocation } from "wouter";
 
@@ -29,8 +30,8 @@ export function ScanQRCodeButton() {
 
   return (
     <CustomItemButton
-      primary={"Scan QR Code"}
-      toolltip={"Scan QR Code"}
+      primary={t("scanQRCode")}
+      toolltip={t("scanQRCode")}
       handleButton={handleScanQRCode}
       icon={<QrCodeScannerIcon />}
       disableLeftPadding

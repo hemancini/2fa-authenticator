@@ -164,6 +164,9 @@
   "sourceCode": {
     "message": "Source code"
   },
+  "documentation": {
+    "message": "Documentation"
+  },
   "autofill": {
     "message": "Autofill"
   },
@@ -223,5 +226,8 @@
   },
   "fileSizeError": {
     "message": "File size should be less than 2MB."
+  },
+  "importFromBackups": {
+    "message": "Import from backups"
   }
 }

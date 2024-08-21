@@ -51,7 +51,7 @@
     "message": "Arrastrar"
   },
   "notEntriesFound": {
-    "message": "No se han encontrado cuentas"
+    "message": "No hay cuentas"
   },
   "scanQRCode": {
     "message": "Escanear QR"
@@ -164,6 +164,9 @@
   "sourceCode": {
     "message": "Código fuente"
   },
+  "documentation": {
+    "message": "Documentación"
+  },
   "autofill": {
     "message": "Autocompletar"
   },
@@ -223,5 +226,8 @@
   },
   "fileSizeError": {
     "message": "El tamaño del archivo no debe superar los 2 MB."
+  },
+  "importFromBackups": {
+    "message": "Importar desde respaldos"
   }
 }

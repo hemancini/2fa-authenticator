@@ -73,12 +73,16 @@ export default function AddEntryMenu() {
       <Divider />
       <DialogContent>
         <List sx={{ p: 0 }}>
-          {!addType && <ScanQRCodeButton />}
-          {!addType && <UploadQRImageButton />}
-          {!addType && <TotpUriButton />}
-          {!addType && <ImportFromBackupsButton />}
-          {!addType && <ManualButton />}
-          {IS_DEV && !addType && <RandomButton />}
+          {!addType && (
+            <>
+              <ScanQRCodeButton />
+              <UploadQRImageButton />
+              <TotpUriButton />
+              <ImportFromBackupsButton />
+              <ManualButton />
+              {IS_DEV && <RandomButton />}
+            </>
+          )}
 
           {addType === "upload-qr-image" && <UploadQRImage />}
           {addType === "totp-uri" && <TotpUri />}

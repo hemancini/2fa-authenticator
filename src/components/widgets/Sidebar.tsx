@@ -15,6 +15,7 @@ import { t } from "@src/chrome/i18n";
 import { IS_DEV } from "@src/config";
 import { DEFAULT_POPUP_URL } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
+import { useOptionsStore } from "@src/stores/useOptions";
 import React from "react";
 import { Link, useRoute } from "wouter";
 
@@ -29,71 +30,45 @@ interface Routes {
   visible?: boolean;
 }
 
-const routes: Routes[] = [
-  {
-    path: "/",
-    name: t("entries"),
-    icon: <LockClockIcon />,
-    disabled: false,
-  },
-  {
-    path: "/options",
-    name: t("options"),
-    icon: <SettingsIcon />,
-    disabled: false,
-  },
-  {
-    path: "/backup",
-    name: "Backups",
-    icon: <CloudSyncIcon />,
-    // visible: isDev,
-  },
-  {
-    path: "/storage",
-    name: "Storage",
-    icon: <SaveIcon />,
-    visible: IS_DEV,
-  },
-];
-
-const ListItemButtonRoute = ({
-  href,
-  disabled,
-  children,
-  hrefPopup,
-}: {
-  href: string;
-  hrefPopup?: string;
-  disabled?: boolean;
-  children: React.ReactNode;
-}) => {
-  const [isActive] = useRoute(href);
-  return (
-    <ListItemButton
-      dense={true}
-      component={Link}
-      sx={{ "& .MuiListItemText-root": { mr: 1 } }}
-      disabled={disabled}
-      selected={isActive}
-      href={hrefPopup || href}
-    >
-      {children}
-    </ListItemButton>
-  );
-};
-
-export default function Siderbar({
-  drawerOpen,
-  setDrawerOpen,
-}: {
+interface SidebarProps {
   drawerOpen: boolean;
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}
+
+export default function Siderbar({ drawerOpen, setDrawerOpen }: SidebarProps) {
   const { isUpSm } = useScreenSize();
+  const { useGoogleBackup } = useOptionsStore();
 
   const handleClose = () => {
     setDrawerOpen(false);
   };
+
+  const routes: Routes[] = [
+    {
+      path: "/",
+      name: t("entries"),
+      icon: <LockClockIcon />,
+      disabled: false,
+    },
+    {
+      path: "/options",
+      name: t("options"),
+      icon: <SettingsIcon />,
+      disabled: false,
+    },
+    {
+      path: "/backup",
+      name: "Backups",
+      icon: <CloudSyncIcon />,
+      visible: useGoogleBackup,
+    },
+    {
+      path: "/storage",
+      name: "Storage",
+      icon: <SaveIcon />,
+      visible: IS_DEV,
+    },
+  ];
 
   return (
     <Drawer
@@ -138,3 +113,29 @@ export default function Siderbar({
     </Drawer>
   );
 }
+
+const ListItemButtonRoute = ({
+  href,
+  disabled,
+  children,
+  hrefPopup,
+}: {
+  href: string;
+  hrefPopup?: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) => {
+  const [isActive] = useRoute(href);
+  return (
+    <ListItemButton
+      dense={true}
+      component={Link}
+      sx={{ "& .MuiListItemText-root": { mr: 1 } }}
+      disabled={disabled}
+      selected={isActive}
+      href={hrefPopup || href}
+    >
+      {children}
+    </ListItemButton>
+  );
+};

@@ -3,7 +3,6 @@ import KeyIcon from "@mui/icons-material/Key";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { t } from "@src/chrome/i18n";
-import { IS_DEV } from "@src/config";
 import { useModalStore } from "@src/stores/useModal";
 import { useOptionsStore } from "@src/stores/useOptions";
 
@@ -12,11 +11,11 @@ export default function NotEntriesFound() {
   const { useLegacyAddEntryMenu } = useOptionsStore();
   return (
     <div style={{ display: "grid", placeItems: "center", gap: 20 }}>
-      <div style={{ display: "grid", placeItems: "center" }}>
+      <div style={{ display: "grid", placeItems: "center", textAlign: "center" }}>
         <KeyIcon color="disabled" style={{ marginTop: 30, fontSize: 80, transform: "rotate(45deg)" }} />
         <Typography variant="h6">{t("notEntriesFound")}</Typography>
       </div>
-      {useLegacyAddEntryMenu || !IS_DEV ? (
+      {useLegacyAddEntryMenu ? (
         <Button
           variant="outlined"
           startIcon={<AddIcon />}
