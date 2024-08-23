@@ -88,7 +88,7 @@ export default function CustomAppBar({
           ) : (
             <>
               <AppbarButton type="cancel" />
-              <Divider orientation="vertical" flexItem sx={{ my: 1, mx: { xs: 3.5, md: 10 } }} />
+              <Divider orientation="vertical" flexItem sx={{ my: 1, mx: { xs: 3.5, sm: 10 } }} />
               <AppbarButton type="save" />
             </>
           )}

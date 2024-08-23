@@ -47,7 +47,7 @@ export const useOptionsStore = create<OptionsStore>()(
       toggleUseLegacyEntryCard: () => {
         set((state) => ({ useLegacyEntryCard: !state.useLegacyEntryCard }));
       },
-      useLegacyAddEntryMenu: true,
+      useLegacyAddEntryMenu: false,
       toggleUseLegacyAddEntryMenu: () => {
         set((state) => ({ useLegacyAddEntryMenu: !state.useLegacyAddEntryMenu }));
       },

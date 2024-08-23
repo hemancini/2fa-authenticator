@@ -38,6 +38,7 @@ export default function DataList() {
                   disableGutters
                   onClick={() => handleShowData({ type: area, title: key, value: storage[key] })}
                 >
+                  <ListItemText title={key} primary={key} sx={{ pl: 0.5 }} />
                   <ListItemIcon>
                     <Chip
                       label={area}
@@ -46,11 +47,10 @@ export default function DataList() {
                       sx={{
                         mx: 1,
                         height: 17,
-                        "& .MuiChip-label": { px: 0.5, fontSize: "0.8rem" },
+                        "& .MuiChip-label": { fontSize: "0.8rem" },
                       }}
                     />
                   </ListItemIcon>
-                  <ListItemText title={key} primary={key} />
                 </ListItemButton>
               </ListItem>
             ));
