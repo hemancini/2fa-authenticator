@@ -85,7 +85,7 @@ export default function BackupList({ setOpen }: BackupListProps) {
         "& .MuiDialogActions-root": { py: 0.5 },
       }}
     >
-      <DialogTitle>{t("backups")}</DialogTitle>
+      <DialogTitle>{t("myBackups")}</DialogTitle>
       <Divider />
       <IconButton
         size="small"

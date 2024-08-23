@@ -180,6 +180,9 @@
     "message": "Show or hide the tokens"
   },
   "backups": {
+    "message": "Backups"
+  },
+  "myBackups": {
     "message": "My backups"
   },
   "showBackups": {

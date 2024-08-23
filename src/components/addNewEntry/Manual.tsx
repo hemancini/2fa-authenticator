@@ -82,7 +82,7 @@ export default function Manual() {
       algorithm: algorithm as OTPAlgorithm,
     });
 
-    alert(JSON.stringify(newEntry, null, 2));
+    // alert(JSON.stringify(newEntry, null, 2));
     addEntry(newEntry);
 
     setAddType("success");
@@ -128,6 +128,9 @@ export default function Manual() {
             <InputLabel>type</InputLabel>
             <Select name="type" label="type" defaultValue="totp">
               <MenuItem value="totp">TOTP</MenuItem>
+              <MenuItem value="hotp" disabled>
+                HOTP
+              </MenuItem>
             </Select>
           </FormControl>
         </Grid>

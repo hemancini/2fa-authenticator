@@ -180,16 +180,19 @@
     "message": "Mostrar o ocultar los tokens"
   },
   "backups": {
-    "message": "Mis backups"
+    "message": "Respaldos"
+  },
+  "myBackups": {
+    "message": "Mis Respaldos"
   },
   "showBackups": {
-    "message": "Mostrar backups"
+    "message": "Mostrar respaldos"
   },
   "showGooglebackups": {
-    "message": "Mostrar backups de Google"
+    "message": "Mostrar respaldos de Google"
   },
   "exportBackupsToGoogle": {
-    "message": "Generar backups a Google"
+    "message": "Generar respaldos a Google"
   },
   "backupEntries": {
     "message": "Backup de tus cuentas"
@@ -207,7 +210,7 @@
     "message": "No se han encontrado entradas"
   },
   "noBackupsFound": {
-    "message": "No se han encontrado backups"
+    "message": "No se han encontrado respaldos"
   },
   "deleteBackup": {
     "message": "Eliminar backup"

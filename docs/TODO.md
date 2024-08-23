@@ -1,6 +1,7 @@
 TODO: 2FA Authentication
 ===
 
+- [ ] Password for the app
 - [ ] Pubic oauth screen
 - [x] Refactor add menu
 - [x] Google drive backups
@@ -14,5 +15,5 @@ TODO: 2FA Authentication
   - [ ] Add more examples
 - [ ] Pipelines
   - [ ] 2fa-authenticator extension
-  - [ ] 2fa-authenticator web
+  - [X] 2fa-authenticator web
 

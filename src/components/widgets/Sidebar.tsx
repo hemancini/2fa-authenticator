@@ -58,7 +58,7 @@ export default function Siderbar({ drawerOpen, setDrawerOpen }: SidebarProps) {
     },
     {
       path: "/backup",
-      name: "Backups",
+      name: t("backups"),
       icon: <CloudSyncIcon />,
       visible: useGoogleBackup,
     },

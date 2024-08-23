@@ -1,18 +1,12 @@
 import { create } from "zustand";
 
-type ModalStoreProps = {
-  isOpenModal: {
-    modal1: boolean;
-    modal2: boolean;
-  };
+interface ModalStoreProps {
+  isOpenModal: Record<string, boolean>;
   toggleModal: (modalName: string) => void;
-};
+}
 
 export const useModalStore = create<ModalStoreProps>()((set) => ({
-  isOpenModal: {
-    modal1: false,
-    modal2: false,
-  },
+  isOpenModal: {},
   toggleModal: (modalName) => {
     set((state) => ({
       isOpenModal: {
