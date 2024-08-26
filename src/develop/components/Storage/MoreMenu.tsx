@@ -56,7 +56,9 @@ export default function MoreMenu({ data, closeDialog }: MoreMenuProps) {
         <MoreVertIcon />
       </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleEdit} divider>
+          Edit
+        </MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>

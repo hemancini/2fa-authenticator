@@ -50,24 +50,21 @@ export default function BackupDetail({ title, entries, handleClose }: BackupDeta
     <Dialog
       open={true}
       onClose={handleClose}
-      //  maxWidth={"xs"}
-      // fullWidth={isXs}
       sx={{
-        "& .MuiDialogTitle-root": { p: 1, pl: 2, pb: 0 },
-        "& .MuiDialogActions-root": { p: 1, pb: { md: 2 }, justifyContent: "space-evenly" },
-      }}
-    >
-      <DialogTitle
-        title={title}
-        sx={{
+        "& .MuiDialog-paper": { m: 1 },
+        "& .MuiDialogTitle-root": {
+          p: 1,
+          pl: 2,
+          pb: 0,
           width: { sm: 300 },
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-        }}
-      >
-        {title}
-      </DialogTitle>
+        },
+        "& .MuiDialogActions-root": { p: 1, pb: { md: 2 }, justifyContent: "space-evenly" },
+      }}
+    >
+      <DialogTitle title={title}>{title}</DialogTitle>
       <Divider />
       <DialogContent
         sx={{

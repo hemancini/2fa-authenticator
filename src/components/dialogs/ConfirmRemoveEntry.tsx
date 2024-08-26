@@ -34,30 +34,37 @@ export default function ConfirmRemoveEntry({ entry, isConfirmOpen, setIsConfirmO
       <Dialog
         open={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
-        sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1 } }}
+        sx={(theme) => ({
+          "& .MuiDialog-paper": { m: 1, px: 1, py: 2, gap: 2 },
+          "& .MuiDialogContent-root": {
+            p: 2,
+            borderRadius: 1,
+            backgroundColor: theme.palette.background.paper,
+          },
+          "& .MuiDialogActions-root": { p: 0, gap: 1 },
+        })}
       >
-        <DialogContent sx={{ p: 1, py: 1.5 }}>
-          <Typography variant="body2" gutterBottom>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: t("confirmRemoveDescription", account),
-              }}
-            />
-          </Typography>
+        <DialogContent>
+          <Typography
+            gutterBottom
+            variant="body2"
+            dangerouslySetInnerHTML={{
+              __html: t("confirmRemoveDescription", account),
+            }}
+          />
         </DialogContent>
-        <Divider />
         <DialogActions>
-          <Button size="small" variant="outlined" fullWidth onClick={() => setIsConfirmOpen(false)}>
+          <Button size="small" variant="outlined" sx={{ px: 4 }} onClick={() => setIsConfirmOpen(false)}>
             {t("cancel")}
           </Button>
           <Button
+            autoFocus
+            fullWidth
             size="small"
             variant="contained"
-            fullWidth
             onClick={() => {
               addRemove(hash);
             }}
-            autoFocus
           >
             {t("remove")}
           </Button>

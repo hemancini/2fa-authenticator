@@ -77,8 +77,8 @@ export default function AddEntryMenu() {
             <>
               <ScanQRCodeButton />
               <UploadQRImageButton />
-              <TotpUriButton />
               <ImportFromBackupsButton />
+              <TotpUriButton />
               <ManualButton />
               {IS_DEV && <RandomButton />}
             </>

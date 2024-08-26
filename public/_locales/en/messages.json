@@ -66,7 +66,7 @@
     "message": "Refresh Page"
   },
   "confirmRemoveDescription": {
-    "message": "Are you sure you want to delete <span style=\"font-style: italic;\">$1</span> account?"
+    "message": "Are you sure you want to delete <span style=\"font-weight: bolder;\">$1</span> account?"
   },
   "addEntrySuccess": {
     "message": "$1 added successfully."

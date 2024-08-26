@@ -80,6 +80,7 @@ export default function BackupList({ setOpen }: BackupListProps) {
       open={true}
       onClose={handleClose}
       sx={{
+        "& .MuiDialog-paper": { m: 1 },
         "& .MuiDialogTitle-root": { p: 1, pl: 2, pb: 0 },
         "& .MuiDialogContent-root": { p: 1, pb: 2, minHeight: 120, minWidth: 220 },
         "& .MuiDialogActions-root": { py: 0.5 },
