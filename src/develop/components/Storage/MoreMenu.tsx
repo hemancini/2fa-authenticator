@@ -55,16 +55,10 @@ export default function MoreMenu({ data, closeDialog }: MoreMenuProps) {
       >
         <MoreVertIcon />
       </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+      <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
+        <MenuItem onClick={handleEdit} divider>
+          Edit
+        </MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>

@@ -9,7 +9,6 @@ import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { Box, Card, IconButton, InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { t } from "@src/chrome/i18n";
-import type { OTPEntry } from "@src/entry/type";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useState } from "react";

@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import type { SxProps } from "@mui/material/styles";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 
 import CustomItemIcon from "./CustomItemIcon";
@@ -17,6 +18,8 @@ interface CustomItemButtonProps {
   isNewTab?: boolean;
   disabled?: boolean;
   isLoading?: boolean;
+  sx?: SxProps;
+  disableLeftPadding?: boolean;
 }
 
 export default function CustomItemButton({
@@ -27,11 +30,14 @@ export default function CustomItemButton({
   isNewTab = false,
   disabled = false,
   isLoading = false,
+  sx = {},
+  disableLeftPadding = false,
 }: CustomItemButtonProps) {
   const { isUpSm } = useScreenSize();
+  const disablePading = disableLeftPadding ? { "& .MuiButtonBase-root": { pl: 0.5, py: 1 } } : {};
 
   return (
-    <ListItem disablePadding>
+    <ListItem disablePadding sx={{ ...sx, ...disablePading }}>
       <Tooltip title={toolltip ?? ""} disableInteractive>
         <ListItemButton dense={!isUpSm} onClick={handleButton} disabled={isLoading || disabled}>
           <CustomItemIcon>{icon ? icon : <Avatar sx={{ width: 24, height: 24 }} />}</CustomItemIcon>

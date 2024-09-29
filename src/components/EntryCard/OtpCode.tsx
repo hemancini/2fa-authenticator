@@ -2,7 +2,6 @@ import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/ma
 import { grey } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
 import { sendMessageToBackground } from "@src/chrome/message";
-import type { OTPEntry } from "@src/entry/type";
 import useCountdown from "@src/hooks/useCountdown";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useOptionsStore } from "@src/stores/useOptions";

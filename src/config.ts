@@ -5,6 +5,8 @@ export const DEFAULT_APP_KEY = "PAaD&z7XC_-WQE";
 export const DEFAULT_POPUP_URL = `/${manifest.action.default_popup}`;
 export const DEFAULT_SIDE_PANEL_URL = `/${manifest.side_panel.default_path}`;
 
+export const IS_DEV = import.meta.env.VITE_IS_DEV === "true";
+
 export const STORAGE_OPTIONS_KEY = "options";
 export const STORAGE_ENTRIES_KEY = "entries";
 export const CHROME_STORAGE_AREA = "sync";
@@ -63,3 +65,7 @@ export const DEFAULT_COLORS = {
     dark: "#00796b",
   },
 };
+
+export const DOCUMENTATION_URL = "https://2fa-authenticator.cl/docs";
+export const CHROME_WEB_STORE_URL =
+  "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";

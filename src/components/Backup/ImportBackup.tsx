@@ -1,3 +1,4 @@
+import { useAddType } from "@components/addNewEntry/useAddType";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Button,
@@ -22,11 +23,16 @@ import { decryptBackup } from "@src/utils/backup";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
-export default function ImportBackup(props: { returnRaw?: boolean }) {
-  const { returnRaw = false } = props;
+interface ImportBackupProps {
+  returnRaw?: boolean;
+  disableLeftPadding?: boolean;
+}
+
+export default function ImportBackup({ returnRaw = false, disableLeftPadding = false }: ImportBackupProps) {
   const [, setLocation] = useLocation();
   const { showMessage } = useBackupStore();
   const { isOpenModal, toggleModal } = useModalStore();
+  const { setAddType, setSuccessMessage } = useAddType();
 
   const { setEntries } = useEntries();
 
@@ -34,6 +40,8 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
     useBackupStore();
 
   const { isUpSm } = useScreenSize();
+
+  const disablePading = disableLeftPadding ? { "& .MuiButtonBase-root": { pl: 0.5, py: 1 } } : {};
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -45,14 +53,14 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
   };
 
   const handleCloseBackgroupModal = () => {
-    const addEntryModalKey = "add-entry-modal";
+    const addEntryModalKey = "add-entry-modal-legacy";
     if (isOpenModal[addEntryModalKey]) {
       toggleModal(addEntryModalKey);
     }
   };
 
-  const importBackup = async (data: { data: string }) => {
-    const entries = await decryptBackup(data);
+  const importBackup = (data: { data: string }) => {
+    const entries = decryptBackup(data);
     if (entries.size === 0) throw new Error("No data found", { cause: "notEntriesFound" });
     setEntries(entries);
   };
@@ -61,10 +69,15 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
     if (!jsonData) return;
     try {
       const data = JSON.parse(jsonData);
-      await importBackup(data);
-      handleCloseBackgroupModal();
+      importBackup(data);
       handleCloseModal();
-      setLocation(DEFAULT_POPUP_URL);
+      if (isOpenModal["add-entry-modal"]) {
+        setAddType("success");
+        setSuccessMessage(t("importSuccess"));
+      } else {
+        handleCloseBackgroupModal();
+        setLocation(DEFAULT_POPUP_URL);
+      }
     } catch (error) {
       showMessage(error.message);
     }
@@ -109,7 +122,7 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
         </>
       ) : (
         <label htmlFor="update-file-button">
-          <ListItem disablePadding dense={!isUpSm}>
+          <ListItem disablePadding dense={!isUpSm} sx={disablePading}>
             <ListItemButton>
               <CustomItemIcon>
                 <UploadFileIcon />
@@ -121,30 +134,36 @@ export default function ImportBackup(props: { returnRaw?: boolean }) {
         </label>
       )}
 
-      <Dialog open={isOpen} onClose={() => setOpen(false)} sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1 } }}>
-        <DialogContent sx={{ p: 1 }}>
-          <Typography variant="body2" gutterBottom>
-            {infoText}
-          </Typography>
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          {!isCloseAccion ? (
-            <>
-              <Button onClick={handleCloseModal} size="small" fullWidth>
-                {t("cancel")}
+      {isOpen && (
+        <Dialog
+          open={isOpen}
+          onClose={() => setOpen(false)}
+          sx={{ m: 0.5, p: 0, "& .MuiDialog-paper": { m: 1, p: 1 } }}
+        >
+          <DialogContent sx={{ p: 1 }}>
+            <Typography variant="body2" gutterBottom>
+              {infoText}
+            </Typography>
+          </DialogContent>
+          <Divider />
+          <DialogActions>
+            {!isCloseAccion ? (
+              <>
+                <Button onClick={handleCloseModal} size="small" fullWidth>
+                  {t("cancel")}
+                </Button>
+                <Button onClick={hendleImportData} size="small" fullWidth variant="contained">
+                  {t("import")}
+                </Button>
+              </>
+            ) : (
+              <Button onClick={handleCloseModal} size="small" fullWidth variant="contained">
+                Cerrar
               </Button>
-              <Button onClick={hendleImportData} size="small" fullWidth variant="contained">
-                {t("import")}
-              </Button>
-            </>
-          ) : (
-            <Button onClick={handleCloseModal} size="small" fullWidth variant="contained">
-              Cerrar
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog>
+            )}
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   );
 }

@@ -1,6 +1,5 @@
 import { CHROME_STORAGE_AREA, STORAGE_ENTRIES_KEY } from "@src/config";
 import { OTPEntry } from "@src/entry/otp";
-import type { EntryState, OTPDigits, OTPEntry as TOTPEntry, OTPEntryLegacy, OTPPeriod, OTPType } from "@src/entry/type";
 import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
@@ -13,10 +12,10 @@ interface OtpAuth {
 
 const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
-export function newEntryFromUrl(url: string): TOTPEntry {
+export function newEntryFromUrl(url: string): OTPEntry {
   const regexTotp = /^otpauth:\/\/totp\/.*[?&]secret=/;
   if (!regexTotp.test(url)) {
-    throw new Error("La URL no es una URL otpauth válida.");
+    throw new Error("Invalid URI string format");
   }
 
   const decompose = decomposeOtpAuthUrl(url);
@@ -72,10 +71,10 @@ export const getBackgroundEntries = async () => {
     const entriesStorageParse = superjson.parse(isEncrypted ? decrypt(data) : data) as StorageValue<EntryState>;
     return entriesStorageParse.state.entries;
   }
-  return new Map<string, TOTPEntry>();
+  return new Map<string, OTPEntry>();
 };
 
-export async function addFromBackground(entry: TOTPEntry) {
+export async function addFromBackground(entry: OTPEntry) {
   const entriesStorage = await chrome.storage[CHROME_STORAGE_AREA].get([STORAGE_ENTRIES_KEY]);
   if (entriesStorage) {
     const data = entriesStorage[STORAGE_ENTRIES_KEY];
@@ -152,7 +151,7 @@ export const migrateLegacy = async () => {
   if (legacyEntries.length === 0) {
     legacyEntries = await getLegacyEntries("sync");
     if (legacyEntries.length === 0) {
-      return new Map<string, TOTPEntry>();
+      return new Map<string, OTPEntry>();
     }
   }
 

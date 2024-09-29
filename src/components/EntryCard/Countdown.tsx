@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import CircularProgress, { CircularProgressProps } from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
-import type { OTPEntry } from "@src/entry/type";
 import useCountdown from "@src/hooks/useCountdown";
 
 export default function CountdownCircle({ entry }: { entry: OTPEntry }) {

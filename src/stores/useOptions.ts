@@ -43,6 +43,18 @@ export const useOptionsStore = create<OptionsStore>()(
           return { isVisibleTokens: !state.isVisibleTokens };
         });
       },
+      useLegacyEntryCard: false,
+      toggleUseLegacyEntryCard: () => {
+        set((state) => ({ useLegacyEntryCard: !state.useLegacyEntryCard }));
+      },
+      useLegacyAddEntryMenu: false,
+      toggleUseLegacyAddEntryMenu: () => {
+        set((state) => ({ useLegacyAddEntryMenu: !state.useLegacyAddEntryMenu }));
+      },
+      useGoogleBackup: false,
+      toggleGoogleBackup: () => {
+        set((state) => ({ useGoogleBackup: !state.useGoogleBackup }));
+      },
     }),
     {
       name: STORAGE_OPTIONS_KEY,

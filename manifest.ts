@@ -9,7 +9,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   default_locale: "es",
   version: packageJson.version,
   description: "__MSG_extensionDescription__",
-  homepage_url: packageJson.repository.url,
+  homepage_url: "https://2fa-authenticator.cl/",
   options_page: "src/pages/popup/index.html#/options",
   permissions: ["tabs", "activeTab", "storage", "scripting"],
   side_panel: {

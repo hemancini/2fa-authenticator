@@ -14,6 +14,9 @@
   "add": {
     "message": "Add"
   },
+  "added": {
+    "message": "Added"
+  },
   "remove": {
     "message": "Remove"
   },
@@ -22,6 +25,15 @@
   },
   "close": {
     "message": "Close"
+  },
+  "retry": {
+    "message": "Retry"
+  },
+  "loading": {
+    "message": "Loading..."
+  },
+  "back": {
+    "message": "Back"
   },
   "editEntries": {
     "message": "Edit entries"
@@ -54,16 +66,16 @@
     "message": "Refresh Page"
   },
   "confirmRemoveDescription": {
-    "message": "Are you sure you want to delete <span style=\"font-style: italic;\">$1</span> account?"
+    "message": "Are you sure you want to delete <span style=\"font-weight: bolder;\">$1</span> account?"
   },
   "addEntrySuccess": {
-    "message": "New entry has been added successfully."
+    "message": "$1 added successfully."
   },
   "regexTotpError": {
     "message": "Invalid TOTP URL."
   },
   "addAccountSuccess": {
-    "message": "New account $1 has been added successfully."
+    "message": "$1 has been added successfully."
   },
   "qrCodeNotFound": {
     "message": "QR Code not found."
@@ -132,10 +144,10 @@
     "message": "Sync time with Google"
   },
   "exportBackup": {
-    "message": "Export backup"
+    "message": "Export local backup"
   },
   "importBackup": {
-    "message": "Import backup"
+    "message": "Import local backup"
   },
   "importBackupInfo": {
     "message": "This action adds new entries and replaces existing ones."
@@ -143,11 +155,17 @@
   "import": {
     "message": "Import"
   },
+  "importSuccess": {
+    "message": "Imported successfully."
+  },
   "scale": {
     "message": "Scale"
   },
   "sourceCode": {
     "message": "Source code"
+  },
+  "documentation": {
+    "message": "Documentation"
   },
   "autofill": {
     "message": "Autofill"
@@ -160,5 +178,59 @@
   },
   "visibleTokensDesc": {
     "message": "Show or hide the tokens"
+  },
+  "backups": {
+    "message": "Backups"
+  },
+  "myBackups": {
+    "message": "My backups"
+  },
+  "showBackups": {
+    "message": "Show backups"
+  },
+  "showGooglebackups": {
+    "message": "Show Google backups"
+  },
+  "exportBackupsToGoogle": {
+    "message": "Generate Google backups"
+  },
+  "backupEntries": {
+    "message": "Backup entries"
+  },
+  "revokeGoogleToken": {
+    "message": "Revoke session"
+  },
+  "importAll": {
+    "message": "Import all"
+  },
+  "importAllEntries": {
+    "message": "Import all entries"
+  },
+  "noEntriesFound": {
+    "message": "No entries found."
+  },
+  "noBackupsFound": {
+    "message": "No backups found."
+  },
+  "deleteBackup": {
+    "message": "Delete backup"
+  },
+  "confirmDeleteBackup": {
+    "message": "Are you sure you want to delete this backup"
+  },
+  "exportBackupDesc": {
+    "message": "To export the backup, please enter the name of the file. We will save the backup in JSON format."
+  },
+  "fileName": {
+    "message": "File name"
+  },
+  "exportBackupSuccess": {
+    "message": "Backup saved successfully."
+  },
+  "fileSizeError": {
+    "message": "File size should be less than 2MB."
+  },
+  "importFromBackups": {
+    "message": "Import from backups"
   }
 }

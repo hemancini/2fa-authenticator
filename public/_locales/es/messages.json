@@ -14,6 +14,9 @@
   "add": {
     "message": "Añadir"
   },
+  "added": {
+    "message": "Añadido"
+  },
   "remove": {
     "message": "Eliminar"
   },
@@ -22,6 +25,15 @@
   },
   "close": {
     "message": "Cerrar"
+  },
+  "retry": {
+    "message": "Reintentar"
+  },
+  "loading": {
+    "message": "Cargando..."
+  },
+  "back": {
+    "message": "Atras"
   },
   "editEntries": {
     "message": "Editar cuentas"
@@ -39,7 +51,7 @@
     "message": "Arrastrar"
   },
   "notEntriesFound": {
-    "message": "No se han encontrado cuentas"
+    "message": "No hay cuentas"
   },
   "scanQRCode": {
     "message": "Escanear QR"
@@ -54,10 +66,10 @@
     "message": "Actualizar página"
   },
   "confirmRemoveDescription": {
-    "message": "Está seguro de que desea eliminar la cuenta <span style=\"font-style: italic;\">$1</span>?"
+    "message": "Está seguro de que desea eliminar la cuenta <span style=\"font-weight: bolder;\">$1</span>?"
   },
   "addEntrySuccess": {
-    "message": "La nueva cuenta se ha añadido correctamente."
+    "message": "$1 se ha añadido correctamente."
   },
   "regexTotpError": {
     "message": "La url no es válida."
@@ -132,10 +144,10 @@
     "message": "Sincronizar reloj con Google"
   },
   "exportBackup": {
-    "message": "Exportar copia de seguridad"
+    "message": "Exportar backup local"
   },
   "importBackup": {
-    "message": "Importar copia de seguridad"
+    "message": "Importar backup local"
   },
   "importBackupInfo": {
     "message": "Esta acción agrega las nuevas entradas y reemplaza las existentes."
@@ -143,11 +155,17 @@
   "import": {
     "message": "Importar"
   },
+  "importSuccess": {
+    "message": "La importación se ha realizado correctamente."
+  },
   "scale": {
     "message": "Escala"
   },
   "sourceCode": {
     "message": "Código fuente"
+  },
+  "documentation": {
+    "message": "Documentación"
   },
   "autofill": {
     "message": "Autocompletar"
@@ -160,5 +178,59 @@
   },
   "visibleTokensDesc": {
     "message": "Mostrar o ocultar los tokens"
+  },
+  "backups": {
+    "message": "Respaldos"
+  },
+  "myBackups": {
+    "message": "Mis Respaldos"
+  },
+  "showBackups": {
+    "message": "Mostrar respaldos"
+  },
+  "showGooglebackups": {
+    "message": "Mostrar respaldos de Google"
+  },
+  "exportBackupsToGoogle": {
+    "message": "Generar respaldos a Google"
+  },
+  "backupEntries": {
+    "message": "Backup de tus cuentas"
+  },
+  "revokeGoogleToken": {
+    "message": "Revocar sessión"
+  },
+  "importAll": {
+    "message": "Importar todo"
+  },
+  "importAllEntries": {
+    "message": "Importar todas las entradas"
+  },
+  "noEntriesFound": {
+    "message": "No se han encontrado entradas"
+  },
+  "noBackupsFound": {
+    "message": "No se han encontrado respaldos"
+  },
+  "deleteBackup": {
+    "message": "Eliminar backup"
+  },
+  "confirmDeleteBackup": {
+    "message": "¿Está seguro de que desea eliminar la backup?"
+  },
+  "exportBackupDesc": {
+    "message": "Para exportar la backup, por favor, introduzca el nombre del archivo en formato JSON."
+  },
+  "fileName": {
+    "message": "Nombre del archivo"
+  },
+  "exportBackupSuccess": {
+    "message": "El backup se ha guardado correctamente."
+  },
+  "fileSizeError": {
+    "message": "El tamaño del archivo no debe superar los 2 MB."
+  },
+  "importFromBackups": {
+    "message": "Importar desde respaldos"
   }
 }

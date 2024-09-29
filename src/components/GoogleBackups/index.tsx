@@ -1,5 +1,5 @@
 import CustomItemButton from "@components/Options/CustomItemButton";
-import CloudSyncIcon from "@mui/icons-material/CloudSync";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Divider, TextField } from "@mui/material";
@@ -9,7 +9,9 @@ import List from "@mui/material/List";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { t } from "@src/chrome/i18n";
 import { revokeAuthTokenJS } from "@src/chrome/oauth";
+import { IS_DEV } from "@src/config";
 import { useAuth } from "@src/develop/stores/useAuth";
 import { useAsync } from "@src/hooks/useAsync";
 import { useState } from "react";
@@ -17,10 +19,15 @@ import { useState } from "react";
 import BackupList from "./BackupList";
 import ExportBackup from "./ExportBackup";
 
-export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) {
+interface GoogleBackupProps {
+  isPage?: boolean;
+  showDetail?: boolean;
+}
+
+export default function GoogleBackups({ isPage = false, showDetail = false }: GoogleBackupProps) {
   const { token, setToken } = useAuth();
-  const [showDialogOpen, setShowDialogOpen] = useState(false);
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [backupListOpen, setBackupListOpen] = useState(false);
+  const [exportBackupOpen, setExportBackupOpen] = useState(false);
 
   const { execute: executeRevokeAuthTokenJS, isLoading: isLoadingRevokeAuthTokenJS } = useAsync(revokeAuthTokenJS);
 
@@ -34,22 +41,22 @@ export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) 
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
           <CustomItemButton
-            primary="Show Google backups"
-            toolltip="Show Google backups"
-            handleButton={() => setShowDialogOpen(true)}
-            icon={<CloudSyncIcon />}
+            primary={t("showGooglebackups")}
+            toolltip={t("showGooglebackups")}
+            handleButton={() => setBackupListOpen(true)}
+            icon={<CloudDownloadIcon />}
           />
           <Divider />
           <CustomItemButton
-            primary="Export backups to Google"
-            toolltip="Export backups to Google"
-            handleButton={() => setExportDialogOpen(true)}
+            primary={t("exportBackupsToGoogle")}
+            toolltip={t("exportBackupsToGoogle")}
+            handleButton={() => setExportBackupOpen(true)}
             icon={<CloudUploadIcon />}
           />
           <Divider />
           <CustomItemButton
-            primary="Revoke session"
-            toolltip="Revoke session"
+            primary={t("revokeGoogleToken")}
+            toolltip={t("revokeGoogleToken")}
             handleButton={handleRevokeAuthTokenJS}
             isLoading={isLoadingRevokeAuthTokenJS}
             disabled={!token}
@@ -57,7 +64,7 @@ export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) 
           />
         </List>
       </Paper>
-      {isPage && (
+      {showDetail && IS_DEV && (
         <>
           <SelectLoginType />
           <TextField
@@ -71,8 +78,8 @@ export default function GoogleBackups({ isPage = false }: { isPage?: boolean }) 
         </>
       )}
 
-      {showDialogOpen && <BackupList state={{ setOpen: setShowDialogOpen }} />}
-      {exportDialogOpen && <ExportBackup state={{ setOpen: setExportDialogOpen }} />}
+      {backupListOpen && <BackupList {...{ setOpen: setBackupListOpen }} />}
+      {exportBackupOpen && <ExportBackup {...{ setOpen: setExportBackupOpen }} />}
     </main>
   );
 }

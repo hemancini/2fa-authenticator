@@ -1,24 +1,26 @@
+import Tooltip from "@components/CustomTooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CircularProgress, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import { t } from "@src/chrome/i18n";
 import { OTPEntry } from "@src/entry/otp";
 import { useAsync } from "@src/hooks/useAsync";
+import { decryptBackup } from "@src/utils/backup";
 import { useState } from "react";
 
-import { Appdata, deleteAppdata, getAppdataContent } from "../../oauth";
-import { useAuth } from "../../stores/useAuth";
+import { Appdata, deleteAppdata, getAppdataContent } from "../../develop/oauth";
+import { useAuth } from "../../develop/stores/useAuth";
 import BackupDetail from "./BackupDetail";
 
-export default function CustomListItem({
-  data,
-  setListAppdata,
-}: {
+interface CustomListItemProps {
   data: Appdata;
   setListAppdata: React.Dispatch<React.SetStateAction<Appdata[] | undefined>>;
-}) {
+}
+
+export default function CustomListItem({ data, setListAppdata }: CustomListItemProps) {
   const { token } = useAuth();
-  const [entries, setEntries] = useState<Map<string, OTPEntry>>(new Map());
   const [showDetail, setShowDetail] = useState(false);
+  const [entries, setEntries] = useState<Map<string, OTPEntry>>(new Map());
 
   const { execute: executeData, isLoading: isLoadingData, error: errorData } = useAsync(getAppdataContent);
   const { execute: executeDelete, isLoading: isLoadingDelete, error: errorDelete } = useAsync(deleteAppdata);
@@ -30,17 +32,17 @@ export default function CustomListItem({
       console.error("Error:", errorData);
       return;
     }
+    // console.log("appData", appData);
 
-    const entriesBackup = JSON.parse(JSON.stringify(appData));
-    const entriesMap = new Map(entriesBackup.map((entry: OTPEntry) => [entry.hash, entry])) as Map<string, OTPEntry>;
+    const otpEntries = decryptBackup(appData) as Map<string, OTPEntry>;
+    // console.log("otpEntries", otpEntries);
 
-    // alert(JSON.stringify(appData));
-    setEntries(entriesMap);
+    setEntries(otpEntries);
     setShowDetail(true);
   };
 
   const handleDeleteAppdata = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this backup?")) {
+    if (!confirm(t("confirmDeleteBackup"))) {
       return;
     }
 
@@ -64,28 +66,38 @@ export default function CustomListItem({
         key={data.id}
         divider
         // disablePadding
-        sx={{ pl: 0, "& .MuiListItemButton-root": { p: 0, px: 1 } }}
+        sx={{ pl: 0, pr: 4, "& .MuiListItemButton-root": { p: 0, px: 1 } }}
         secondaryAction={
-          <IconButton
-            edge="end"
-            onClick={async () => await handleDeleteAppdata(data.id)}
-            sx={{ ...(isLoading && { pointerEvents: "none" }) }}
-          >
-            {isLoading ? <CircularProgress size={24} /> : <DeleteIcon sx={{ fontSize: 16 }} />}
-          </IconButton>
+          <Tooltip title={t("deleteBackup")}>
+            <IconButton
+              edge="end"
+              onClick={async () => await handleDeleteAppdata(data.id)}
+              sx={{ p: 0.3, ...(isLoading && { pointerEvents: "none" }) }}
+            >
+              {isLoading ? <CircularProgress size={24} /> : <DeleteIcon sx={{ fontSize: 16 }} />}
+            </IconButton>
+          </Tooltip>
         }
       >
         <ListItemButton
           onClick={async () => await handleGetAppdata(data.id)}
           sx={{ ...(isLoadingData && { pointerEvents: "none" }) }}
         >
-          <ListItemText
-            primary={data.name}
-            // secondary={item.modifiedTime}
-          />
+          <Tooltip title={t("showBackups")}>
+            <ListItemText
+              // secondary={item.modifiedTime}
+              primary={data.name}
+              sx={{
+                // width: 130,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            />
+          </Tooltip>
         </ListItemButton>
       </ListItem>
-      {showDetail && <BackupDetail entries={entries} handleClose={handleClose} />}
+      {showDetail && <BackupDetail title={data.name} entries={entries} handleClose={handleClose} />}
     </>
   );
 }

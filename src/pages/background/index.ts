@@ -66,7 +66,7 @@ chrome.runtime.onConnect.addListener((port) => {
           });
           break;
         case "oauth":
-          oauthLogin(port);
+          await oauthLogin(port);
           break;
 
         default:
@@ -130,13 +130,13 @@ async function getCapture(tab: chrome.tabs.Tab) {
   return dataUrl;
 }
 
-function oauthLogin(port: chrome.runtime.Port) {
-  const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
+async function oauthLogin(port: chrome.runtime.Port) {
+  const onUpdated = async (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
     if (changeInfo.status === "complete") {
       const url = tab?.url;
       if (!url) return;
 
-      const onClose = (tabIdR: number) => {
+      const onClose = async (tabIdR: number) => {
         if (tabId === tabIdR) {
           const error = new Error("Tab closed");
           sendErrorMessageToClient(port, error);
@@ -151,10 +151,12 @@ function oauthLogin(port: chrome.runtime.Port) {
 
       // auth token from google
       if (url.startsWith(GOOGLE_REDIRECT_URI)) {
-        chrome.tabs.remove(tabId); // close the tab
         const urlParams = new URLSearchParams(url);
         const token = urlParams.get("access_token");
+
         sendMessageToClient(port, { type: "oauth", data: token });
+        setTimeout(() => chrome.tabs.remove(tabId), 500); // close the tab
+
         // remove the listener
         chrome.tabs.onRemoved.removeListener(onClose);
         chrome.tabs.onUpdated.removeListener(onUpdated);

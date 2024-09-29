@@ -1,4 +1,3 @@
-import type { OTPEntry } from "@src/entry/type";
 import { create } from "zustand";
 
 interface utilsState {

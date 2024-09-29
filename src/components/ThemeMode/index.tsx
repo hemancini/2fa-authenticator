@@ -18,6 +18,7 @@ const Version = () => {
       }}
     >
       version: {packageJson.version}
+      {/* &nbsp; */}
     </Typography>
   );
 };

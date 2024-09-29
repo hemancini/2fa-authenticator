@@ -1,7 +1,7 @@
 import { t } from "@src/chrome/i18n";
 import { create } from "zustand";
 
-type BackupStoreProps = {
+interface BackupStoreProps {
   isOpen: boolean;
   setOpen: (value: boolean) => void;
   jsonData: string | null;
@@ -11,7 +11,7 @@ type BackupStoreProps = {
   isCloseAccion: boolean;
   setCloseAction: (value: boolean) => void;
   showMessage: (message: string, isInfo?: boolean) => void;
-};
+}
 
 export const useBackupStore = create<BackupStoreProps>((set) => ({
   isOpen: false,

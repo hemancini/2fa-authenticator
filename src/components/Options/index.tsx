@@ -1,9 +1,11 @@
 import ChromeStoreIcon from "@assets/img/chrome-store-192px.svg";
+import ArticleIcon from "@mui/icons-material/Article";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import CodeIcon from "@mui/icons-material/Code";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import TabIcon from "@mui/icons-material/Tab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -15,9 +17,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import { t } from "@src/chrome/i18n";
-import Backup from "@src/components/Options/Backup";
+import { IS_DEV } from "@src/config";
 import { DEFAULT_POPUP_URL } from "@src/config";
-import GoogleBackups from "@src/develop/components/GoogleBackups";
+import { CHROME_WEB_STORE_URL, DOCUMENTATION_URL } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import { useBackupStore } from "@src/stores/useBackup";
 import { useOptionsStore } from "@src/stores/useOptions";
@@ -27,11 +29,6 @@ import packageJson from "../../../package.json";
 import CustomListButton from "./CustomItemButton";
 import CustomItemIcon from "./CustomItemIcon";
 import CustomItemSwitch from "./CustomItemSwitch";
-
-const useCloudBackup = false;
-
-const isDev = import.meta.env.VITE_IS_DEV === "true";
-const chromeWebStoreUrl = "https://chromewebstore.google.com/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh";
 
 export default function Options() {
   const { showMessage } = useBackupStore();
@@ -47,6 +44,8 @@ export default function Options() {
     isVisibleTokens,
     xraysEnabled,
     toggleXraysEnabled,
+    useLegacyAddEntryMenu,
+    toggleUseLegacyAddEntryMenu,
   } = useOptionsStore();
 
   const { isUpSm } = useScreenSize();
@@ -127,7 +126,7 @@ export default function Options() {
               isVisibleTokens ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />
             }
           />
-          {isDev && (
+          {IS_DEV && (
             <>
               <Divider />
               <CustomItemSwitch
@@ -137,11 +136,18 @@ export default function Options() {
                 toggleSwitch={toggleXraysEnabled}
                 icon={<DataArrayIcon sx={{ fontSize: 20 }} />}
               />
+              <Divider />
+              <CustomItemSwitch
+                primary={"New add entry menu"}
+                tooltip={"Use new add entry menu"}
+                switchEnabled={!useLegacyAddEntryMenu}
+                toggleSwitch={toggleUseLegacyAddEntryMenu}
+                icon={<MenuIcon sx={{ fontSize: 20 }} />}
+              />
             </>
           )}
         </List>
       </Paper>
-      {useCloudBackup ? <GoogleBackups /> : <Backup />}
       <Paper variant="outlined" sx={{ my: 1 }}>
         <List sx={{ p: 0 }}>
           <ListItem disablePadding>
@@ -172,8 +178,16 @@ export default function Options() {
             icon={<CodeIcon />}
             isNewTab={true}
           />
-          {isDev && (
+          {IS_DEV && (
             <>
+              <Divider />
+              <CustomListButton
+                primary={t("documentation")}
+                toolltip={t("documentation")}
+                handleButton={() => window.open(DOCUMENTATION_URL, "_blank")}
+                icon={<ArticleIcon />}
+                isNewTab={true}
+              />
               <Divider />
               <CustomListButton
                 isNewTab
@@ -190,7 +204,7 @@ export default function Options() {
               <CustomListButton
                 primary={"Chrome Web Store"}
                 toolltip={"Chrome Web Store"}
-                handleButton={() => window.open(chromeWebStoreUrl, "_blank")}
+                handleButton={() => window.open(CHROME_WEB_STORE_URL, "_blank")}
                 icon={<img src={ChromeStoreIcon} alt="icon" width={22} height={22} />}
                 isNewTab={true}
               />

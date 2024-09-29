@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two-Factor Authentication</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<!-- <body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen mr-20 m-w"> -->
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen max-w-screen-auto">
+  <section class="max-w-md w-full">
+    <div class="mb-4 bg-gray-200 py-2 font-bold text-center text-gray-700 rounded-md shadow-md">
+      <h1 class="text-gray-700">Register a one-time password authenticator</h1>
+    </div>
+
+    <div class="flex items-center gap-6 bg-white p-6 rounded-md shadow-md">
+      <div id="qr-list" class="flex-shrink-0">
+        <!-- <img src="https://via.placeholder.com/150" alt="QR Code" class="w-30 h-30"> -->
+      </div>
+      <div id="codeVerify" class="flex flex-col gap-3 w-full px-3">
+        <label for="code" class="block text-md font-medium text-gray-700">Enter verification code</label>
+        <input type="text" id="pin_code" name="code" placeholder="Verification code"
+          class="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <button id="validateButton"
+          class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded rever">
+          Validate
+        </button>
+      </div>
+      <div id="successMessage" class="flex flex-col gap-3 m-11 hidden w-full">
+        <div class="flex items-center justify-center text-center gap-2 bg-green-100 p-3 rounded-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span class="text-green text-xl font-xl text-green-900 py-1 px-0.5">Registration successful</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+<script type="text/javascript">
+  const $id = (id) => document.getElementById(id);
+
+  $id("validateButton").addEventListener("click", () => {
+    $id("qr-list").classList.toggle("hidden");
+    $id("codeVerify").classList.toggle("hidden");
+    $id("successMessage").classList.toggle("hidden");
+  });
+
+  window.onload = () => {
+    const qrApiUrl = new URL("https://qrcode.tec-it.com/API/QRCode");
+    qrApiUrl.searchParams.set("data", "otpauth://totp/azure:clout_test_user?secret=XZCLYN1T2HMDFCLG&issuer=azure");
+
+    const qrListElement = $id("qr-list");
+    if (qrListElement) {
+
+      const qrContent = document.createElement("div");
+      const qrImg = document.createElement("img");
+
+      qrApiUrl.searchParams.set("size", "small");
+      qrImg.setAttribute("src", qrApiUrl);
+      qrImg.setAttribute("alt", qrApiUrl);
+      qrImg.classList.add("w-36");
+
+      qrListElement.appendChild(qrImg);
+    }
+  };
+</script>
+
+</html>

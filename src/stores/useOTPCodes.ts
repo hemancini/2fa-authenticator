@@ -1,5 +1,4 @@
 import { generateOTP } from "@src/entry/otp";
-import type { OTPCodesStore, OTPCodeType } from "@src/entry/type";
 import { useEntries } from "@src/stores/useEntries";
 import { create } from "zustand";
 

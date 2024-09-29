@@ -10,7 +10,6 @@ import { useModalStore } from "@src/stores/useModal";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
-import AddRandom from "../../develop/components/AddRandom";
 import ManualEntry from "./AddEntryButtons/ManualEntry";
 import ManualTotpEntry from "./AddEntryButtons/ManualTotpEntry";
 import OptionsButtonList from "./AddEntryButtons/OptionsButtonList";
@@ -30,7 +29,7 @@ export default function AddEntryMenu() {
   const { isOpenModal, toggleModal } = useModalStore();
 
   const handleOnAddEntryClose = () => {
-    toggleModal("add-entry-modal");
+    toggleModal("add-entry-modal-legacy");
     setTimeout(() => {
       setManualEntryOptions("");
     }, 500);
@@ -47,7 +46,7 @@ export default function AddEntryMenu() {
 
   return (
     <Dialog
-      open={isOpenModal["add-entry-modal"] || false}
+      open={isOpenModal["add-entry-modal-legacy"] || false}
       onClose={handleOnAddEntryClose}
       sx={{
         mx: 3,
@@ -100,7 +99,6 @@ export default function AddEntryMenu() {
         ) : (
           <OptionsButtonList handleCloseModal={handlerGoToHome} setManualEntryOptions={setManualEntryOptions} />
         )}
-        {manualEntryOptions === "" && <AddRandom />}
       </DialogContent>
     </Dialog>
   );
