@@ -1,6 +1,6 @@
 import Tooltip from "@components/CustomTooltip";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { Button, Dialog, DialogActions, DialogContent, Divider, IconButton, Typography } from "@mui/material";
+import { Button, Card, CardContent, Dialog, DialogActions, IconButton, Typography } from "@mui/material";
 import { t } from "@src/chrome/i18n";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 
@@ -34,25 +34,24 @@ export default function ConfirmRemoveEntry({ entry, isConfirmOpen, setIsConfirmO
       <Dialog
         open={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
-        sx={(theme) => ({
+        sx={{
           "& .MuiDialog-paper": { m: 1, px: 1, py: 2, gap: 2 },
-          "& .MuiDialogContent-root": {
-            p: 2,
-            borderRadius: 1,
-            backgroundColor: theme.palette.background.paper,
-          },
+          "& .MuiCardContent-root:last-child": { p: 1 },
           "& .MuiDialogActions-root": { p: 0, gap: 1 },
-        })}
+          "& .MuiTypography-root": { pb: 0 },
+        }}
       >
-        <DialogContent>
-          <Typography
-            gutterBottom
-            variant="body2"
-            dangerouslySetInnerHTML={{
-              __html: t("confirmRemoveDescription", account),
-            }}
-          />
-        </DialogContent>
+        <Card variant="outlined">
+          <CardContent>
+            <Typography
+              gutterBottom
+              variant="body2"
+              dangerouslySetInnerHTML={{
+                __html: t("confirmRemoveDescription", account),
+              }}
+            />
+          </CardContent>
+        </Card>
         <DialogActions>
           <Button size="small" variant="outlined" sx={{ px: 4 }} onClick={() => setIsConfirmOpen(false)}>
             {t("cancel")}

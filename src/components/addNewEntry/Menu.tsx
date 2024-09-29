@@ -40,39 +40,35 @@ export default function AddEntryMenu() {
       open={isOpenModal["add-entry-modal"] || false}
       onClose={handleClose}
       sx={{
-        "& .MuiDialogContent-root": { p: 2, px: 1 },
-      }}
-    >
-      <DialogTitle
-        sx={{
-          m: 1,
-          p: 1.2,
-          py: 0.2,
-          pr: 4,
+        "& .MuiDialogContent-root": { p: 2, px: 1, "& .MuiList-root": { p: 0 } },
+        "& .MuiDialogTitle-root": {
+          py: 1,
+          px: 1.5,
           fontWeight: "bold",
           fontSize: { xs: 14, sm: 18 },
           color: (theme) => theme.palette.text.secondary,
-        }}
-      >
+          // bgcolor: (theme) => (theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[100]),
+        },
+        "& .MuiIconButton-root": {
+          top: 4,
+          right: 5,
+          position: "absolute",
+          color: (theme) => theme.palette.grey[500],
+          "& .MuiSvgIcon-root": { fontSize: 18 },
+        },
+      }}
+    >
+      <DialogTitle>
         {t("addNewEntry")}
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            top: 4,
-            right: 5,
-            position: "absolute",
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
+        <IconButton aria-label="close" onClick={handleClose}>
           <Tooltip title={t("cancel")} disableInteractive>
-            <CloseIcon sx={{ fontSize: 18 }} />
+            <CloseIcon />
           </Tooltip>
         </IconButton>
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <List sx={{ p: 0 }}>
+        <List>
           {!addType && (
             <>
               <ScanQRCodeButton />

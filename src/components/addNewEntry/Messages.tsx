@@ -46,7 +46,7 @@ export const ErrorMesssage = ({ lastType }: { lastType: AddType }) => {
         {successMessage}
       </Alert>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-        <Button size="small" onClick={handleBack}>
+        <Button size="small" onClick={handleBack} variant="outlined">
           {t("back")}
         </Button>
         <Button size="small" variant="contained" fullWidth onClick={handleRetry}>

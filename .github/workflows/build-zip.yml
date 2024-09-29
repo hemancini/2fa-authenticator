@@ -32,6 +32,14 @@ jobs:
           VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
           VITE_GOOGLE_OAUTH2_ENDPOINT: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
 
+      - name: Get version from package.json
+        id: version
+        run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
+      - name: Create zip with version
+        run: zip -r extension-v${{ env.VERSION }}.zip dist/*
+
       - uses: actions/upload-artifact@v3
         with:
-          path: dist/*
+          name: extension-v${{ env.VERSION }}.zip
+          path: extension-v${{ env.VERSION }}.zip
