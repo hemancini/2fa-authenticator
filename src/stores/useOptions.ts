@@ -51,7 +51,7 @@ export const useOptionsStore = create<OptionsStore>()(
       toggleUseLegacyAddEntryMenu: () => {
         set((state) => ({ useLegacyAddEntryMenu: !state.useLegacyAddEntryMenu }));
       },
-      useGoogleBackup: false,
+      useGoogleBackup: true,
       toggleGoogleBackup: () => {
         set((state) => ({ useGoogleBackup: !state.useGoogleBackup }));
       },
