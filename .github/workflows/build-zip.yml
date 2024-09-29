@@ -3,7 +3,7 @@ name: Build And Upload Extension Zip Via Artifact
 on:
   push:
     branches: [main]
-  pull_request:
+  # pull_request:
 
 jobs:
   build:
@@ -28,9 +28,9 @@ jobs:
         env:
           VITE_FEATURE_FLAGS_URI: ${{ vars.VITE_FEATURE_FLAGS_URI }}
           VITE_GOOGLE_REDIRECT_URI: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
-          VITE_GOOGLE_SCOPE: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
-          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
-          VITE_GOOGLE_OAUTH2_ENDPOINT: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
+          VITE_GOOGLE_SCOPE: ${{ vars.VITE_GOOGLE_SCOPE }}
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_OAUTH2_ENDPOINT: ${{ vars.VITE_GOOGLE_OAUTH2_ENDPOINT }}
 
       - name: Get version from package.json
         id: version
