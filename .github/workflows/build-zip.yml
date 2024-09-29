@@ -36,10 +36,7 @@ jobs:
         id: version
         run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
-      - name: Create zip with version
-        run: cd dist && zip -r ../extension-v${{ env.VERSION }}.zip ./*
-
       - uses: actions/upload-artifact@v4
         with:
-          name: extension-v${{ env.VERSION }}.zip
-          path: extension-v${{ env.VERSION }}.zip
+          name: extension-v${{ env.VERSION }}
+          path: dist/*
