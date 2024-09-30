@@ -65,7 +65,7 @@ export default function CustomAppBar({
                 textAlign="center"
                 sx={{
                   fontSize: 16,
-                  fontWeight: !IS_DEV && "bold",
+                  fontWeight: IS_DEV ? "normal" : "bold",
                   // color: (theme) => theme.palette.mode === "dark" && theme.palette.primary.main,
                 }}
               >

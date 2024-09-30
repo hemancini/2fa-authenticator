@@ -38,5 +38,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: extension-v${{ env.VERSION }}
+          name: 2fa-authenticator-v${{ env.VERSION }}
           path: dist/*
