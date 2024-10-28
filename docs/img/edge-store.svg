@@ -1,0 +1,20 @@
+<svg width="240" height="75" viewBox="0 0 240 75" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo negro con esquinas redondeadas -->
+  <rect width="240" height="75" fill="#000000" />
+
+  <!-- Logo de Microsoft (cuatro cuadros de colores, más grandes) -->
+  <rect x="18" y="20" width="15" height="15" fill="#F25022" />
+  <rect x="36" y="20" width="15" height="15" fill="#7FBA00" />
+  <rect x="18" y="40" width="15" height="15" fill="#00A4EF" />
+  <rect x="36" y="40" width="15" height="15" fill="#FFB900" />
+
+  <!-- Texto "Get it from", más grande -->
+  <text x="65" y="32" fill="#FFFFFF" font-size="15" font-family="Arial, sans-serif" font-weight="normal">
+    Get it from
+  </text>
+
+  <!-- Texto "Microsoft", más grande -->
+  <text x="65" y="55" fill="#FFFFFF" font-size="24" font-family="Arial, sans-serif" font-weight="bold">
+    Microsoft
+  </text>
+</svg>
