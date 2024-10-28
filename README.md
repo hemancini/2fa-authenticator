@@ -7,20 +7,27 @@
 ![](https://badges.aleen42.com/src/vitejs.svg)
 ![GitHub action badge](https://github.com/hemancini/2fa-authenticator/actions/workflows/build-zip.yml/badge.svg)
 <a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
-<img alt="Chrome" src="https://img.shields.io/chrome-web-store/v/pnnmjhghimefjdmdilmlhnojccjgpgeh?color=blue&label=Chrome&style=flat-square&logo=google-chrome&logoColor=white" />
+<img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/v/pnnmjhghimefjdmdilmlhnojccjgpgeh?color=blue&label=Chrome&style=flat-square&logo=google-chrome&logoColor=white" />
+</a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/hgnbjfcmpjakgfkjmmidclfkhedggmeo" target="_blank">
+<img alt="Chrome" src="https://img.shields.io/badge/dynamic/json?label=Edge%20Add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fhgnbjfcmpjakgfkjmmidclfkhedggmeo&style=flat-square&logo=microsoftedge&logoColor=fff" />
 </a>
 
-> This project was generated from [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
-
-### 2FA Authenticator is a Chrome extension that provides 2FA authentication codes in the browser.
+### 2FA-Authenticator is a extension that provides 2FA authentication codes in the browser.
 
 </div>
 
-You no longer need to use your phone to authenticate. This 2FA authenticator extension gives you 2-step verification codes right in your browser.
+> You no longer need to use your phone to authenticate. This extension gives you 2-step verification codes right in your browser.
 
-<a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
-<img src="docs/img/ChromeWebStore_BadgeWBorder.svg" alt="Chrome Web Store" width="200"/>
-</a>
+## Available on Chrome Web Store and Microsoft Edge Add-ons <a name="available"></a>
+<div style="display: flex; gap: 20px;">
+   <a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
+      <img src="docs/img/chrome-store.svg" alt="Chrome Web Store" width="200"/>
+   </a>
+   <a href="https://microsoftedge.microsoft.com/addons/detail/hgnbjfcmpjakgfkjmmidclfkhedggmeo" target="_blank">
+      <img src="docs/img/edge-store.svg" alt="Microsoft Edge" width="196"/>
+   </a>
+</div>
 
 ## Features <a name="features"></a>
 
@@ -28,7 +35,7 @@ You no longer need to use your phone to authenticate. This 2FA authenticator ext
 - One click to autofill verification codes
 - Scan QR codes from the page
 - Show QR codes for quick scan
-- Backup your secrets to a file
+- Backup your accounts in Google Drive
 - Open source
 
 ## Developer features <a name="developer-features"></a>

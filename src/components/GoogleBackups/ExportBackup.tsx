@@ -50,7 +50,13 @@ export default function ExportBackup({ setOpen }: ExportBackupProps) {
   const retryUploadAppdata = async (fileName: string, fileContent: string): Promise<void> => {
     await oauthLogin(loginType); // Open the OAuth
     const token = await sendMessageToBackgroundAsync({ type: "oauth" });
-    if (!token) return;
+
+    if (!token) {
+      alert("❌ Login failed");
+      setFormError("Login failed");
+      return;
+    }
+
     setToken(token);
     if (isXs) alert(`✅ Login succes`); // para mantener el popup abierto
 

@@ -51,9 +51,14 @@ export default function BackupList({ setOpen }: BackupListProps) {
       setLoginError(error?.message);
       return "";
     });
-    if (!token) return;
-    setToken(token);
 
+    if (!token) {
+      alert("❌ Login failed");
+      setLoginError("Login failed");
+      return;
+    }
+
+    setToken(token);
     if (isXs) alert(`✅ Login succes`); // para mantener el popup abierto
     const appDatas = await getListAppdata(token);
     setListAppdata(appDatas.files);
@@ -140,7 +145,7 @@ export default function BackupList({ setOpen }: BackupListProps) {
               justifyContent: "center",
               alignItems: "center",
               gap: 4,
-              mb: 1.5,
+              mb: 0,
             }}
           >
             <Button onClick={handleClose}>{t("cancel")}</Button>
