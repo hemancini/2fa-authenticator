@@ -20,14 +20,8 @@
 > You no longer need to use your phone to authenticate. This extension gives you 2-step verification codes right in your browser.
 
 ## Available on Chrome Web Store and Microsoft Edge Add-ons <a name="available"></a>
-<div style="display: flex; gap: 20px;">
-   <a href="https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh" target="_blank">
-      <img src="docs/img/chrome-store.svg" alt="Chrome Web Store" width="200"/>
-   </a>
-   <a href="https://microsoftedge.microsoft.com/addons/detail/hgnbjfcmpjakgfkjmmidclfkhedggmeo" target="_blank">
-      <img src="docs/img/edge-store.svg" alt="Microsoft Edge" width="196"/>
-   </a>
-</div>
+
+[<img src="docs/img/chrome-store.svg" title="Chrome Web Store" alt="Chrome Web Store" width="200" />](https://chrome.google.com/webstore/detail/2fa-authenticator/pnnmjhghimefjdmdilmlhnojccjgpgeh)  [<img src="docs/img/edge-store.svg" title="Microsoft Edge Add-ons" alt="Microsoft Edge Add-ons" width="196" height="61" />](https://microsoftedge.microsoft.com/addons/detail/hgnbjfcmpjakgfkjmmidclfkhedggmeo)
 
 ## Features <a name="features"></a>
 
@@ -50,6 +44,7 @@
 - [Prettier](https://prettier.io/)
 - [Chrome Extension Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/)
 - HRR (Hot Rebuild & Refresh/Reload)
+- [Material UI](https://mui.com/)
 - [Zustand](https://github.com/pmndrs/zustand)
 
 ## Building <a name="building"></a>
@@ -76,5 +71,4 @@
 
 ## Credit <a name="credit"></a>
 
-- Originally forked from [Authenticator extension](https://github.com/Authenticator-Extension/Authenticator)
 - Thanks to [Chrome Extension Boilerplate](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
