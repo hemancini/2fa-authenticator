@@ -30,13 +30,12 @@ interface ImportBackupProps {
 
 export default function ImportBackup({ returnRaw = false, disableLeftPadding = false }: ImportBackupProps) {
   const [, setLocation] = useLocation();
-  const { showMessage } = useBackupStore();
   const { isOpenModal, toggleModal } = useModalStore();
   const { setAddType, setSuccessMessage } = useAddType();
 
   const { setEntries } = useEntries();
 
-  const { isOpen, setOpen, infoText, setInfoText, isCloseAccion, setCloseAction, jsonData, setJsonData } =
+  const { isOpen, setOpen, infoText, setInfoText, isCloseAccion, setCloseAction, jsonData, setJsonData, showMessage } =
     useBackupStore();
 
   const { isUpSm } = useScreenSize();

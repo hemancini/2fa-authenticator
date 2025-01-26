@@ -34,9 +34,6 @@ export function base32tohex(base32: string): string {
     hex = hex + Number(`0b${chunk}`).toString(16);
   }
 
-  // if (hex.length % 2 && hex[hex.length - 1] === '0') {
-  //   hex = hex.substr(0, hex.length - 1);
-  // }
   switch (padding) {
     case 0:
       break;
@@ -53,7 +50,7 @@ export function base32tohex(base32: string): string {
       hex = hex.substr(0, hex.length - 2);
       break;
     default:
-      throw new Error("Invalid Base32 string");
+      console.error("Invalid Base32 string");
   }
 
   return hex;
