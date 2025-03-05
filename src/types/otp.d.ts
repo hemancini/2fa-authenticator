@@ -16,6 +16,7 @@ interface TEntry {
   site?: string;
   user?: string;
   pass?: string;
+  totpURI?: string;
 }
 
 interface OTPEntry extends TEntry {

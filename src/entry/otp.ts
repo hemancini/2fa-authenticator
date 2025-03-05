@@ -16,8 +16,9 @@ export class OTPEntry implements TEntry {
   isVisible?: boolean;
   encrypted?: boolean;
   site: string;
+  totpURI?: string;
 
-  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false }: TEntry) {
+  constructor({ issuer, account, secret, period, type, digits, algorithm, encrypted = false, totpURI }: TEntry) {
     this.issuer = issuer;
     this.account = account;
     this.secret = secret;
@@ -28,6 +29,7 @@ export class OTPEntry implements TEntry {
     this.encrypted = encrypted;
     this.hash = this.generateHash();
     this.site = window.location.hostname ?? "";
+    this.totpURI = totpURI;
 
     if (!this.algorithm) this.algorithm = "SHA1";
     if (!this.period) this.period = 30;

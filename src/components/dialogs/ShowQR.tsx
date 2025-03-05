@@ -13,7 +13,7 @@ export default function ShowQR({
 }) {
   const defaultSize = 190;
   const { issuer = "", secret, account = "" } = entry || {};
-  const authURL = `otpauth://totp/${account}?secret=${secret}&issuer=${issuer}`;
+  const authURL = `otpauth://totp/${issuer}:${account}?secret=${secret}&issuer=${issuer}`;
 
   const handleClose = () => {
     setOpen(false);

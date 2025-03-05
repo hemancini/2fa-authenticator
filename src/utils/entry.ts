@@ -4,12 +4,6 @@ import { decrypt, encrypt } from "@src/utils/crypto";
 import superjson from "superjson";
 import type { StorageValue } from "zustand/middleware";
 
-interface OtpAuth {
-  type: string;
-  label: string;
-  params: Record<string, string>;
-}
-
 const isEncrypted = !(import.meta.env.VITE_DATA_ENCRYPTED === "false");
 
 export function newEntryFromUrl(url: string): OTPEntry {
@@ -18,12 +12,8 @@ export function newEntryFromUrl(url: string): OTPEntry {
     throw new Error("Invalid URI string format");
   }
 
-  const decompose = decomposeOtpAuthUrl(url);
-  const {
-    type,
-    label: email,
-    params: { secret, issuer, period = 30 },
-  } = decompose;
+  const decodedUrl = decodeURIComponent(url);
+  const [{ issuer, account: email, secret, period, type }] = parseTOTPURI(decodedUrl);
 
   const { digits = 6, algorithm = "SHA1" } = {};
   // period: (Math.floor(Math.random() * (39 - 10 + 1)) + 10) as OTPPeriod,
@@ -36,6 +26,7 @@ export function newEntryFromUrl(url: string): OTPEntry {
     type: type as OTPType,
     digits: digits,
     algorithm: algorithm,
+    totpURI: decodedUrl,
   });
 
   return newEntry;
@@ -59,6 +50,7 @@ export async function getRandomEntry(): Promise<OTPEntry> {
     type: "totp",
     digits: 6,
     algorithm: "SHA1",
+    totpURI: "",
   });
 
   return newEntry;
@@ -94,37 +86,34 @@ export async function addFromBackground(entry: OTPEntry) {
   }
 }
 
-function decomposeOtpAuthUrl(url: string) {
-  if (!url) {
-    throw new Error("La URL es requerida.");
+function parseTOTPURI(uri: string) {
+  const regex = /otpauth:\/\/totp\/([^:]+):([^?]+)\?([^&]+)&?([^&]+)?&?([^&]+)?&?([^&]+)?/;
+  const match = uri.match(regex);
+
+  if (!match) {
+    throw new Error("Invalid TOTP URI");
   }
 
-  const replaceIssuer = true;
-  const modifiedUrl = replaceIssuer ? url.replace(/(?<=\/)[^/]+:/, "") : url;
-  const parsedUrl = new URL(modifiedUrl);
+  const issuer = match[1];
+  const account = match[2];
+  const params = new URLSearchParams(uri.split("?")[1]);
 
-  if (parsedUrl.protocol !== "otpauth:") {
-    throw new Error("La URL no es una URL otpauth válida.");
-  }
+  const secret = params.get("secret");
+  const algorithm = params.get("algorithm") || "SHA1";
+  const digits = params.get("digits") || 6;
+  const period = params.get("period") || 30;
 
-  const pathSegments = parsedUrl.pathname.split("/").filter(Boolean);
-  if (pathSegments.length < 2) {
-    throw new Error("La URL otpauth no tiene el formato esperado.");
-  }
-
-  const [type, ...resto] = pathSegments;
-  const label = resto.join("/");
-
-  const otpauth: OtpAuth = { type, label, params: {} };
-
-  if (parsedUrl.search) {
-    const params = new URLSearchParams(parsedUrl.search);
-    params.forEach((value, key) => {
-      otpauth.params[key] = value;
-    });
-  }
-
-  return otpauth;
+  return [
+    {
+      issuer,
+      account,
+      secret,
+      period: parseInt(period.toString(), 10),
+      type: "totp",
+      algorithm,
+      digits: parseInt(digits.toString(), 10),
+    },
+  ];
 }
 
 const draftStorage = {
@@ -173,6 +162,7 @@ export const migrateLegacy = async () => {
             !entryLegacy.algorithm || entryLegacy.algorithm === 1 || entryLegacy.algorithm === ("SHA1" as unknown)
               ? "SHA1"
               : "SHA256",
+          totpURI: "",
         });
 
         return [newEntry.hash, newEntry];

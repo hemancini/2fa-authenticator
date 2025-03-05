@@ -80,6 +80,7 @@ export default function Manual() {
       digits: parseInt(digits as string) as OTPDigits,
       type: type as OTPType,
       algorithm: algorithm as OTPAlgorithm,
+      totpURI: "",
     });
 
     // alert(JSON.stringify(newEntry, null, 2));
