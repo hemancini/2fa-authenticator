@@ -1,14 +1,14 @@
-TODO: 2FA Authentication
+TODO: 2FA Authenticator
 ===
 
 - [ ] Password for the app
-- [x] Pubic oauth screen
+- [x] Public OAuth screen
 - [x] Refactor add menu
-- [x] Google drive backups
+- [x] Google Drive backups
 - [x] `https://2fa-authenticator.cl`
 - [x] `2fa_authenticator@googlegroups.com`
-- [x] Remove alerts from google drive backups **(refactored)**
-- [ ] Download png QR image
+- [x] Remove alerts from Google Drive backups **(refactored)**
+- [ ] Download PNG QR code image
 - [x] Refactor edit bar actions
 - [x] Documentation
   - [x] First version 
@@ -19,3 +19,16 @@ TODO: 2FA Authentication
 - [x] Image optimization
 - [ ] Update universal captures extension [en, es]
 - [ ] Automatically sync accounts
+- [x] Improve English translations
+- [ ] Add Chinese translations
+- [ ] Add Portuguese translations
+- [ ] Add French translations
+- [ ] Add German translations
+- [ ] Add Italian translations
+- [ ] Add Russian translations
+- [ ] Add Arabic translations
+- [ ] Add Japanese translations
+- [ ] Add Korean translations
+- [ ] Add Hindi translations
+- [ ] Add Turkish translations
+- [ ] Review permissions (Read your browsing history)

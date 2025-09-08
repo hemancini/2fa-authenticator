@@ -3,7 +3,7 @@
     "message": "2FA Authenticator"
   },
   "extensionDescription": {
-    "message": "This extension provides 2FA authentication codes in the browser."
+  "message": "This extension generates 2FA authentication codes in your browser."
   },
   "cancel": {
     "message": "Cancel"
@@ -36,28 +36,28 @@
     "message": "Back"
   },
   "editEntries": {
-    "message": "Edit entries"
+    "message": "Edit accounts"
   },
   "addEntry": {
-    "message": "Add entry"
+    "message": "Add account"
   },
   "addNewEntry": {
-    "message": "Add new entry"
+    "message": "Add new account"
   },
   "removeEntry": {
-    "message": "Remove entry"
+    "message": "Remove account"
   },
   "dragEntry": {
     "message": "Drag"
   },
   "notEntriesFound": {
-    "message": "Entries not found"
+    "message": "No accounts found."
   },
   "scanQRCode": {
-    "message": "Scan QR Code"
+  "message": "Scan QR code"
   },
   "manualEntry": {
-    "message": "Manual Entry"
+    "message": "Manual account"
   },
   "totpUrl": {
     "message": "TOTP URL"
@@ -66,7 +66,7 @@
     "message": "Refresh Page"
   },
   "confirmRemoveDescription": {
-    "message": "Are you sure you want to delete <span style=\"font-weight: bolder;\">$1</span> account?"
+  "message": "Are you sure you want to delete the <span style=\"font-weight: bolder;\">$1</span> account?"
   },
   "addEntrySuccess": {
     "message": "$1 added successfully."
@@ -78,16 +78,16 @@
     "message": "$1 has been added successfully."
   },
   "qrCodeNotFound": {
-    "message": "QR Code not found."
+  "message": "QR code not found."
   },
   "errorNoActiveTab": {
     "message": "No active tab found"
   },
   "errorNoActiveTabDesc": {
-    "message": "Please restore the focus of the tab and try again."
+  "message": "Please focus the tab and try again."
   },
   "showTooltip": {
-    "message": "Show or hide tooltip"
+  "message": "Show or hide the tooltip"
   },
   "popupMode": {
     "message": "Popup mode"
@@ -108,7 +108,7 @@
     "message": "System mode"
   },
   "entries": {
-    "message": "Entries"
+    "message": "Accounts"
   },
   "options": {
     "message": "Options"
@@ -132,7 +132,7 @@
     "message": "Password"
   },
   "bypass": {
-    "message": "Enable o disable bypass"
+  "message": "Enable or disable the bypass"
   },
   "copied": {
     "message": "Copied"
@@ -150,13 +150,13 @@
     "message": "Import local backup"
   },
   "importBackupInfo": {
-    "message": "This action adds new entries and replaces existing ones."
+  "message": "This action adds new accounts and replaces existing ones."
   },
   "import": {
     "message": "Import"
   },
   "importSuccess": {
-    "message": "Imported successfully."
+  "message": "Import completed successfully."
   },
   "scale": {
     "message": "Scale"
@@ -171,13 +171,13 @@
     "message": "Autofill"
   },
   "autofillDesc": {
-    "message": "Autofill the code in the input field"
+  "message": "Automatically fill the verification code into the input field."
   },
   "visibleTokens": {
     "message": "Visible tokens"
   },
   "visibleTokensDesc": {
-    "message": "Show or hide the tokens"
+  "message": "Show or hide tokens"
   },
   "backups": {
     "message": "Backups"
@@ -192,22 +192,22 @@
     "message": "Show Google backups"
   },
   "exportBackupsToGoogle": {
-    "message": "Generate Google backups"
+  "message": "Create Google backups"
   },
   "backupEntries": {
-    "message": "Backup entries"
+    "message": "Back up accounts"
   },
   "revokeGoogleToken": {
-    "message": "Revoke session"
+  "message": "Revoke Google session"
   },
   "importAll": {
     "message": "Import all"
   },
   "importAllEntries": {
-    "message": "Import all entries"
+    "message": "Import all accounts"
   },
   "noEntriesFound": {
-    "message": "No entries found."
+    "message": "No accounts found."
   },
   "noBackupsFound": {
     "message": "No backups found."
@@ -216,10 +216,10 @@
     "message": "Delete backup"
   },
   "confirmDeleteBackup": {
-    "message": "Are you sure you want to delete this backup"
+  "message": "Are you sure you want to delete this backup?"
   },
   "exportBackupDesc": {
-    "message": "To export the backup, please enter the name of the file. We will save the backup in JSON format."
+  "message": "To export the backup, enter a file name. The backup will be saved in JSON format."
   },
   "fileName": {
     "message": "File name"
@@ -228,7 +228,7 @@
     "message": "Backup saved successfully."
   },
   "fileSizeError": {
-    "message": "File size should be less than 2MB."
+  "message": "The file size must be less than 2 MB."
   },
   "importFromBackups": {
     "message": "Import from backups"

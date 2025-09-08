@@ -33,7 +33,7 @@ export default function NotEntriesFound() {
             toggleModal("add-entry-modal");
           }}
         >
-          Add new entries
+          {t("addNewEntry")}
         </Button>
       )}
     </div>
