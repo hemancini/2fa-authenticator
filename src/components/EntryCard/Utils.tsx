@@ -56,7 +56,7 @@ function AutofillButton({ entry }: { entry: OTPEntry }) {
 
   if (!autofillEnabled) return null;
 
-  const handleAutofill = () => sendAutofill(otpCodes.get(hash)?.otpCode || getOTPCode(hash));
+  const handleAutofill = async () => sendAutofill(otpCodes.get(hash)?.otpCode || (await getOTPCode(hash)));
 
   return (
     <CustomIconButton title={t("autofill")} onClick={handleAutofill}>

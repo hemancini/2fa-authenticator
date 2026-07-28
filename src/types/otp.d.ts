@@ -48,8 +48,8 @@ type OTPCodeType = {
 
 interface OTPCodesStore {
   otpCodes: Map<string, OTPCodeType>;
-  updateOTPCode: (hash: string) => void;
-  getOTPCode: (hash: string) => string;
+  updateOTPCode: (hash: string) => Promise<void>;
+  getOTPCode: (hash: string) => Promise<string>;
 }
 
 /**

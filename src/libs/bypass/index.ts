@@ -102,18 +102,18 @@ const autoLoginEntrust = async (entry: TEntry) => {
     }
   };
 
-  const setOTP = () => {
+  const setOTP = async () => {
     iteration++;
     // console.log("setOTP");
-    const code = generateOTP(entry);
     const otpInput = document.getElementById("otp");
     if (otpInput) {
+      iteration = 0;
+      clearInterval(intervalOTP);
+      const code = await generateOTP(entry);
       otpInput.click();
       document.execCommand("insertText", false, code);
       const nextButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
       if (nextButton) nextButton.click();
-      iteration = 0;
-      clearInterval(intervalOTP);
     } else if (iteration > 10) {
       iteration = 0;
       clearInterval(intervalOTP);

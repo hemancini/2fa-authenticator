@@ -4,18 +4,22 @@ import { t } from "@src/chrome/i18n";
 import useCountdown from "@src/hooks/useCountdown";
 import useUrlHashState from "@src/hooks/useUrlHashState";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function OtpCode({ entry, isVisible }: { entry: OTPEntry; isVisible: boolean }) {
   const { hash } = entry;
-  const { otpCodes, getOTPCode } = useOTPCodes();
+  const { otpCodes, updateOTPCode } = useOTPCodes();
   const [isToolpipCopyOpen, setToolpipCopyOpen] = useState(false);
   const [isEditing] = useUrlHashState("#/edit");
 
-  let optCode = otpCodes.get(hash)?.otpCode;
-  if (!optCode) optCode = getOTPCode(hash);
+  const optCode = otpCodes.get(hash)?.otpCode ?? "";
+
+  useEffect(() => {
+    if (!optCode) updateOTPCode(hash);
+  }, [hash, optCode]);
 
   const handleCopyCode = () => {
+    if (!optCode) return;
     navigator.clipboard.writeText(optCode).then(() => {
       setToolpipCopyOpen(true);
       setTimeout(() => setToolpipCopyOpen(false), 1000);
@@ -71,7 +75,7 @@ const CustomTypography = ({
       })}
       className={isParpadeando && !isEditing ? "parpadea" : ""}
     >
-      {isVisible ? optCode : "••••••"}
+      {isVisible && optCode ? optCode : "••••••"}
     </Typography>
   );
 };

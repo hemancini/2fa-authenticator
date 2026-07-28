@@ -21,7 +21,7 @@ export default function useCustomCountdown({ entry }: { entry: OTPEntry }) {
     initialRemainingTime: countdown,
     colors: primaryColor as ColorFormat,
     onComplete: () => {
-      updateOTPCode(hash);
+      void updateOTPCode(hash);
       return { shouldRepeat: true, delay: 0 };
     },
   });

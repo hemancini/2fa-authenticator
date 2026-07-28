@@ -2,21 +2,22 @@ import { generateOTP } from "@src/entry/otp";
 import { useEntries } from "@src/stores/useEntries";
 import { create } from "zustand";
 
-const getOTPCode = (hash: string) => {
+const getOTPCode = async (hash: string) => {
   const { entries } = useEntries.getState();
   const entry = entries.get(hash);
   if (!entry) return "••••••";
-  const optCode = generateOTP(entry);
+  const optCode = await generateOTP(entry);
   return optCode;
 };
 
 export const useOTPCodes = create<OTPCodesStore>((set) => ({
   otpCodes: new Map<string, OTPCodeType>(),
-  updateOTPCode: (hash: string) =>
+  updateOTPCode: async (hash: string) => {
+    const otpCode = await getOTPCode(hash);
     set((state) => {
-      const otpCode = getOTPCode(hash);
       state.otpCodes.set(hash, { otpCode });
-      return { otpCodes: state.otpCodes };
-    }),
+      return { otpCodes: new Map(state.otpCodes) };
+    });
+  },
   getOTPCode,
 }));
