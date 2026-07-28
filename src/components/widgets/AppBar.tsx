@@ -15,7 +15,6 @@ import { sendMessageToBackground } from "@src/chrome/message";
 import { IS_DEV } from "@src/config";
 import { useScreenSize } from "@src/hooks/useScreenSize";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import AddEntryMenuLegacy from "@src/legacy/components/dialogs/AddEntryMenu";
 import { useEntries } from "@src/stores/useEntries";
 import { useEntriesUtils } from "@src/stores/useEntriesUtils";
 import { useModalStore } from "@src/stores/useModal";
@@ -95,7 +94,6 @@ export default function CustomAppBar({
         </Toolbar>
       </AppBar>
       <ErrorCaptureQR open={captureQRError} setOpen={setCaptureQRError} />
-      {(isEditing || modal["add-entry-modal-legacy"]) && <AddEntryMenuLegacy />}
       {(isEditing || modal["add-entry-modal"]) && <AddEntryMenu />}
     </>
   );

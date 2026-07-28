@@ -5,7 +5,6 @@ import CodeIcon from "@mui/icons-material/Code";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import GoogleIcon from "@mui/icons-material/Google";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MenuIcon from "@mui/icons-material/Menu";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import TabIcon from "@mui/icons-material/Tab";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -44,8 +43,6 @@ export default function Options() {
     isVisibleTokens,
     xraysEnabled,
     toggleXraysEnabled,
-    useLegacyAddEntryMenu,
-    toggleUseLegacyAddEntryMenu,
   } = useOptionsStore();
 
   const { isUpSm } = useScreenSize();
@@ -135,14 +132,6 @@ export default function Options() {
                 switchEnabled={xraysEnabled}
                 toggleSwitch={toggleXraysEnabled}
                 icon={<DataArrayIcon sx={{ fontSize: 20 }} />}
-              />
-              <Divider />
-              <CustomItemSwitch
-                primary={"New add entry menu"}
-                tooltip={"Use new add entry menu"}
-                switchEnabled={!useLegacyAddEntryMenu}
-                toggleSwitch={toggleUseLegacyAddEntryMenu}
-                icon={<MenuIcon sx={{ fontSize: 20 }} />}
               />
             </>
           )}

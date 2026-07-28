@@ -1,5 +1,4 @@
 import Tooltip from "@components/CustomTooltip";
-import AddIcon from "@mui/icons-material/Add";
 import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,7 +20,7 @@ import React, { useState } from "react";
 export default function MoreOptions() {
   const [, toggleEditing] = useUrlHashState("#/edit");
   const { toggleModal } = useModalStore();
-  const { isVisibleTokens, toggleVisibleTokens, useLegacyAddEntryMenu } = useOptionsStore();
+  const { isVisibleTokens, toggleVisibleTokens } = useOptionsStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { entries, removeAll } = useEntries();
@@ -62,11 +61,13 @@ export default function MoreOptions() {
           <MenuItem
             divider
             onClick={() => {
-              toggleModal(useLegacyAddEntryMenu ? "add-entry-modal-legacy" : "add-entry-modal");
+              toggleModal("add-entry-modal");
               handleClose();
             }}
           >
-            <ListItemIcon>{useLegacyAddEntryMenu ? <AddIcon /> : <DataSaverOnIcon />}</ListItemIcon>
+            <ListItemIcon>
+              <DataSaverOnIcon />
+            </ListItemIcon>
             {t("addEntry")}
           </MenuItem>
           <MenuItem

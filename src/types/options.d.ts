@@ -33,10 +33,6 @@ interface OptionsStore {
   toggleXraysEnabled: () => void;
   isVisibleTokens: boolean;
   toggleVisibleTokens: () => void;
-  useLegacyEntryCard?: boolean;
-  toggleUseLegacyEntryCard?: () => void;
-  useLegacyAddEntryMenu?: boolean;
-  toggleUseLegacyAddEntryMenu?: () => void;
   useGoogleBackup?: boolean;
   toggleGoogleBackup?: () => void;
 }

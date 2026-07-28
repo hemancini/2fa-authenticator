@@ -43,14 +43,6 @@ export const useOptionsStore = create<OptionsStore>()(
           return { isVisibleTokens: !state.isVisibleTokens };
         });
       },
-      useLegacyEntryCard: false,
-      toggleUseLegacyEntryCard: () => {
-        set((state) => ({ useLegacyEntryCard: !state.useLegacyEntryCard }));
-      },
-      useLegacyAddEntryMenu: false,
-      toggleUseLegacyAddEntryMenu: () => {
-        set((state) => ({ useLegacyAddEntryMenu: !state.useLegacyAddEntryMenu }));
-      },
       useGoogleBackup: true,
       toggleGoogleBackup: () => {
         set((state) => ({ useGoogleBackup: !state.useGoogleBackup }));
@@ -59,6 +51,14 @@ export const useOptionsStore = create<OptionsStore>()(
     {
       name: STORAGE_OPTIONS_KEY,
       storage: chromePersistStorage,
+      version: 1,
+      // v1: dropped the legacy entry card / add entry menu flags
+      migrate: (persistedState) => {
+        const state = persistedState as Partial<OptionsStore> & Record<string, unknown>;
+        delete state.useLegacyEntryCard;
+        delete state.useLegacyAddEntryMenu;
+        return state as OptionsStore;
+      },
     }
   )
 );

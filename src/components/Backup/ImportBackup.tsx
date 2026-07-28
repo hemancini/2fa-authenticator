@@ -30,7 +30,7 @@ interface ImportBackupProps {
 
 export default function ImportBackup({ returnRaw = false, disableLeftPadding = false }: ImportBackupProps) {
   const [, setLocation] = useLocation();
-  const { isOpenModal, toggleModal } = useModalStore();
+  const { isOpenModal } = useModalStore();
   const { setAddType, setSuccessMessage } = useAddType();
 
   const { setEntries } = useEntries();
@@ -51,13 +51,6 @@ export default function ImportBackup({ returnRaw = false, disableLeftPadding = f
     }, 200);
   };
 
-  const handleCloseBackgroupModal = () => {
-    const addEntryModalKey = "add-entry-modal-legacy";
-    if (isOpenModal[addEntryModalKey]) {
-      toggleModal(addEntryModalKey);
-    }
-  };
-
   const importBackup = (data: { data: string }) => {
     const entries = decryptBackup(data);
     if (entries.size === 0) throw new Error("No data found", { cause: "notEntriesFound" });
@@ -74,7 +67,6 @@ export default function ImportBackup({ returnRaw = false, disableLeftPadding = f
         setAddType("success");
         setSuccessMessage(t("importSuccess"));
       } else {
-        handleCloseBackgroupModal();
         setLocation(DEFAULT_POPUP_URL);
       }
     } catch (error) {
