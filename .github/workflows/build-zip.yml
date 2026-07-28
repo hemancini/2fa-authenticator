@@ -8,11 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -23,8 +26,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
 
-      - run: pnpm install
-      - run: pnpm build
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
         env:
           VITE_GOOGLE_REDIRECT_URI: ${{ vars.VITE_GOOGLE_REDIRECT_URI }}
           VITE_GOOGLE_SCOPE: ${{ vars.VITE_GOOGLE_SCOPE }}
