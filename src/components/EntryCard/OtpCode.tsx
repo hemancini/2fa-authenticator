@@ -1,16 +1,13 @@
 import { CardActionArea, Fade, Tooltip as MuiTooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
-import { sendMessageToBackground } from "@src/chrome/message";
 import useCountdown from "@src/hooks/useCountdown";
 import useUrlHashState from "@src/hooks/useUrlHashState";
-import { useOptionsStore } from "@src/stores/useOptions";
 import { useOTPCodes } from "@src/stores/useOTPCodes";
 import { useState } from "react";
 
 export default function OtpCode({ entry, isVisible }: { entry: OTPEntry; isVisible: boolean }) {
   const { hash } = entry;
-  const { autofillEnabled } = useOptionsStore();
   const { otpCodes, getOTPCode } = useOTPCodes();
   const [isToolpipCopyOpen, setToolpipCopyOpen] = useState(false);
   const [isEditing] = useUrlHashState("#/edit");
@@ -22,18 +19,7 @@ export default function OtpCode({ entry, isVisible }: { entry: OTPEntry; isVisib
     navigator.clipboard.writeText(optCode).then(() => {
       setToolpipCopyOpen(true);
       setTimeout(() => setToolpipCopyOpen(false), 1000);
-      handleAutoFill(optCode);
     });
-  };
-
-  const handleAutoFill = (code: string) => {
-    if (autofillEnabled && code) {
-      return new Promise((resolve, reject) => {
-        sendMessageToBackground({
-          message: { type: "autofill", data: { code } },
-        });
-      });
-    }
   };
 
   return (

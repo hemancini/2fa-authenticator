@@ -1,5 +1,6 @@
 import Tooltip from "@components/CustomTooltip";
 import { AccountBypassButton } from "@components/dialogs/AccountBypass";
+import InputIcon from "@mui/icons-material/Input";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -7,6 +8,9 @@ import { Box } from "@mui/material";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { t } from "@src/chrome/i18n";
 import { useEntries } from "@src/stores/useEntries";
+import { useOptionsStore } from "@src/stores/useOptions";
+import { useOTPCodes } from "@src/stores/useOTPCodes";
+import { sendAutofill } from "@src/utils/autofill";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 type CardUtilsProps = {
@@ -33,6 +37,7 @@ export default function CardUtils({ entry, showQR, setShowQR, showCardUtils = fa
         }}
       >
         <AccountBypassButton entry={entry} />
+        <AutofillButton entry={entry} />
         <CustomIconButton title={t("showToken")} onClick={() => toggleVisible(hash)}>
           {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
         </CustomIconButton>
@@ -41,6 +46,22 @@ export default function CardUtils({ entry, showQR, setShowQR, showCardUtils = fa
         </CustomIconButton>
       </Box>
     )
+  );
+}
+
+function AutofillButton({ entry }: { entry: OTPEntry }) {
+  const { hash } = entry;
+  const { autofillEnabled } = useOptionsStore();
+  const { otpCodes, getOTPCode } = useOTPCodes();
+
+  if (!autofillEnabled) return null;
+
+  const handleAutofill = () => sendAutofill(otpCodes.get(hash)?.otpCode || getOTPCode(hash));
+
+  return (
+    <CustomIconButton title={t("autofill")} onClick={handleAutofill}>
+      <InputIcon />
+    </CustomIconButton>
   );
 }
 

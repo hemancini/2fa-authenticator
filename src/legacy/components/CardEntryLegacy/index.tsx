@@ -2,6 +2,7 @@ import CustomIconButton from "@components/CustomIconButton";
 import Tooltip from "@components/CustomTooltip";
 import ShowQR from "@components/dialogs/ShowQR";
 import { CounterProgress } from "@components/EntryCard/Countdown";
+import InputIcon from "@mui/icons-material/Input";
 import PersonIcon from "@mui/icons-material/Person";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
@@ -11,13 +12,13 @@ import { Card, CardActionArea, CardContent, Fade, Theme, Tooltip as MuiTooltip, 
 import Box, { BoxProps } from "@mui/material/Box";
 import { red } from "@mui/material/colors";
 import { t } from "@src/chrome/i18n";
-import { sendMessageToBackground } from "@src/chrome/message";
 import { DEFAULT_COLORS } from "@src/config";
 import AccountBypassLegacy from "@src/legacy/components/dialogs/AccountBypass";
 import EntriesContext from "@src/legacy/contexts/Entries";
 import useCounter from "@src/legacy/hooks/useCounter";
 import { OTPEntry as OTPEntryLegacy } from "@src/legacy/models/otp";
 import { useOptionsStore } from "@src/stores/useOptions";
+import { sendAutofill } from "@src/utils/autofill";
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 
 type EntryContentProps = {
@@ -32,7 +33,7 @@ const regexEAS = /^[A-Za-z0-9+/=]+$/;
 const defaultEyesIconSize = 20;
 
 export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
-  const { bypassEnabled, isVisibleTokens } = useOptionsStore();
+  const { autofillEnabled, bypassEnabled, isVisibleTokens } = useOptionsStore();
   const [isVisible, setVisible] = useState(isVisibleTokens);
 
   const { handleEntriesUpdate } = useContext(EntriesContext);
@@ -49,19 +50,7 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
     navigator.clipboard.writeText(entry?.code).then(() => {
       setToolpipCopyOpen(true);
       setTimeout(() => setToolpipCopyOpen(false), 1000);
-      handleAutoFill();
     });
-  };
-
-  const handleAutoFill = () => {
-    const { code } = entry;
-    if (code) {
-      return new Promise((resolve, reject) => {
-        sendMessageToBackground({
-          message: { type: "autofill", data: { code } },
-        });
-      });
-    }
   };
 
   useEffect(() => {
@@ -117,6 +106,13 @@ export default function CardEntryLegacy({ entry }: { entry: OTPEntryLegacy }) {
                 [entry, showAccount, showOptions, isValidData, bypassEnabled]
               )}
               <Box display={showOptions ? "block" : "none"}>
+                {autofillEnabled && (
+                  <CustomIconButton onClick={() => sendAutofill(entry?.code)}>
+                    <Tooltip title={t("autofill")} disableInteractive>
+                      <InputIcon />
+                    </Tooltip>
+                  </CustomIconButton>
+                )}
                 <CustomIconButton onClick={() => setVisible(!isVisible)} style={{ display: "none" }}>
                   <Tooltip title={t("showToken")} disableInteractive>
                     {isVisible ? (

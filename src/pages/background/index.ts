@@ -37,33 +37,7 @@ chrome.runtime.onConnect.addListener((port) => {
           });
           break;
         case "autofill":
-          chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
-            if (!tabs?.[0]?.id) {
-              console.warn("autofill: No active tab found");
-              throw new Error("No active tab found");
-            }
-            chrome.permissions.request(
-              {
-                permissions: ["tabs"],
-                origins: [tabs?.[0]?.url],
-              },
-              async (granted) => {
-                if (granted) {
-                  await chrome.scripting.executeScript({
-                    target: { tabId: tabs?.[0].id, allFrames: true },
-                    files: ["/src/libs/autofill/index.js"],
-                  });
-                  chrome.tabs.sendMessage(tabs?.[0].id, {
-                    message: "pastecode",
-                    data: data,
-                  });
-                } else {
-                  console.warn("autofill: Granted permission denied");
-                  throw new Error("Granted permission denied");
-                }
-              }
-            );
-          });
+          await autofill(data);
           break;
         case "oauth":
           await oauthLogin(port);
@@ -123,6 +97,60 @@ async function captureQR() {
     });
     chrome.tabs.sendMessage(tab?.[0].id, { type: "capture" });
   });
+}
+
+/**
+ * Injects the autofill script in the active tab and sends it the code.
+ *
+ * The host permission is only requested as a last resort: when the popup is opened
+ * from the extension action, `activeTab` already grants temporary access to the
+ * active tab, so the injection succeeds without prompting the user.
+ */
+async function autofill(data: Message["data"]) {
+  const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  if (!tab?.id) {
+    console.warn("autofill: No active tab found");
+    throw new Error("No active tab found");
+  }
+
+  const pasteCode = async () => {
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id as number, allFrames: true },
+      files: ["/src/libs/autofill/index.js"],
+    });
+    await chrome.tabs.sendMessage(tab.id as number, { message: "pastecode", data });
+  };
+
+  try {
+    // Works when the host permission was already granted or when `activeTab`
+    // covers the tab the user was on when the popup was opened
+    await pasteCode();
+    return;
+  } catch (error) {
+    console.warn("autofill: injection failed, requesting host permission", error);
+  }
+
+  const origin = getOriginMatchPattern(tab.url);
+  if (!origin) throw new Error("Invalid tab url");
+
+  const granted = await chrome.permissions.request({ origins: [origin] });
+  if (!granted) {
+    console.warn("autofill: Granted permission denied");
+    throw new Error("Granted permission denied");
+  }
+  await pasteCode();
+}
+
+/** `https://github.com/some/path` -> `https://github.com/*` */
+function getOriginMatchPattern(url?: string) {
+  if (!url) return undefined;
+  try {
+    const { origin, protocol } = new URL(url);
+    if (!["http:", "https:"].includes(protocol)) return undefined;
+    return `${origin}/*`;
+  } catch {
+    return undefined;
+  }
 }
 
 async function getCapture(tab: chrome.tabs.Tab) {
